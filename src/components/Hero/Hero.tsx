@@ -2,10 +2,10 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "./Hero.scss";
-import banner1 from "../../assets/Banner/1.jpg";
-import banner2 from "../../assets/Banner/2.jpg";
-import banner3 from "../../assets/Banner/3.jpg";
-import banner4 from "../../assets/Banner/4.jpg";
+import banner1 from "../../assets/Banner/b-1.png";
+import banner2 from "../../assets/Banner/b-2.png";
+import banner3 from "../../assets/Banner/b-3.png";
+import banner4 from "../../assets/Banner/b-4.png";
 
 const heroSlides = [
   {
