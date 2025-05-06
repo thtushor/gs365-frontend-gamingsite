@@ -5,6 +5,10 @@
     margin-top: 70px;
   }
 
+  @media (max-width: 460px) {
+    margin-top: 65px !important;
+  }
+
   .hero-swiper {
     .swiper-button-next,
     .swiper-button-prev {
@@ -43,6 +47,11 @@
     @media (max-width: 768px) {
       height: 50vh;
       min-height: 300px;
+    }
+
+    @media (max-width: 480px) {
+      height: 20vh;
+      min-height: 150px;
     }
 
     position: relative;
@@ -99,7 +108,7 @@
         }
 
         @media (max-width: 480px) {
-          font-size: 24px;
+          font-size: 20px;
         }
       }
 
@@ -116,7 +125,8 @@
         }
 
         @media (max-width: 480px) {
-          font-size: 14px;
+          font-size: 12px;
+          margin: 0 0 16px;
         }
       }
 
@@ -147,8 +157,8 @@
         }
 
         @media (max-width: 480px) {
-          padding: 8px 20px;
-          font-size: 14px;
+          padding: 4px 8px;
+          font-size: 12px;
         }
       }
     }
