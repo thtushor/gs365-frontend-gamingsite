@@ -1,6 +1,10 @@
 .hero-section {
   margin-top: 100px;
 
+  @media (max-width: 1024px) {
+    margin-top: 60px !important;
+  }
+
   @media (max-width: 768px) {
     margin-top: 70px;
   }
@@ -36,6 +40,11 @@
       &-active {
         background: #2c8f3d;
       }
+
+      @media screen and (max-width: 480px) {
+        width: 8px;
+        height: 8px;
+      }
     }
   }
 
@@ -45,8 +54,8 @@
     max-height: 800px;
 
     @media (max-width: 768px) {
-      height: 50vh;
-      min-height: 300px;
+      height: 30vh;
+      min-height: 150px;
     }
 
     @media (max-width: 480px) {
