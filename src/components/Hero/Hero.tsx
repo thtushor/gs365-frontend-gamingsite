@@ -66,11 +66,11 @@ export const Hero: React.FC = () => {
             {({ isActive }) => (
               <motion.div
                 className="image-wrapper"
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 1 }}
                 animate={
                   isActive
                     ? { opacity: 1, scale: 1 }
-                    : { opacity: 0.7, scale: 0.98 }
+                    : { opacity: 0.7, scale: 1 }
                 }
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
