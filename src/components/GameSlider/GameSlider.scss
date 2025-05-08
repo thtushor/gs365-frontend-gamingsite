@@ -1,7 +1,7 @@
 .game-slider-container {
   padding: 24px 0;
   // background: rgba(15, 25, 35, 0.9);
-  max-width: 1440px;
+  // max-width: 1440px;
   margin: 0 auto;
 
   .swiper {
@@ -19,22 +19,22 @@
     .swiper-slide {
       height: auto;
       padding: 0 8px;
-      width: calc(100% / 6);
+      // width: calc(100% / 6);
 
-      @media (max-width: 1280px) {
-        width: calc(100% / 5);
-      }
+      // @media (max-width: 1280px) {
+      //   width: calc(100% / 5);
+      // }
 
-      @media (max-width: 1024px) {
-        width: calc(100% / 4);
-      }
+      // @media (max-width: 1024px) {
+      //   width: calc(100% / 4);
+      // }
 
       @media (max-width: 768px) {
-        width: calc(100% / 3);
+        width: 350px !important;
       }
 
       @media (max-width: 480px) {
-        width: calc(100% / 2);
+        width: 200px !important;
         padding: 0 4px;
       }
     }
