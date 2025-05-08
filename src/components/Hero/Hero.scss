@@ -30,8 +30,8 @@
       }
 
       @media (max-width: 480px) {
-        width: 200px !important;
-        height: 80px;
+        width: 225px !important;
+        height: 120px;
       }
 
       .image-wrapper {
@@ -59,6 +59,23 @@
 
       &:hover {
         background: rgba(0, 0, 0, 0.8);
+      }
+
+      @media (max-width: 768px) {
+        width: 40px;
+        height: 40px;
+        &:after {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        width: 32px;
+        height: 32px;
+
+        &:after {
+          font-size: 14px;
+        }
       }
     }
 
