@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaUser,
-  FaTelegramPlane,
-  FaFacebook,
-  FaWallet,
-  FaTrophy,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
-import { BiSupport } from "react-icons/bi";
-import { MdEmail } from "react-icons/md";
+import { FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { Logo } from "../Logo/Logo";
 import "./Navbar.scss";
 import { CurrencyModal } from "../Modal/CurrencyModal";
@@ -17,6 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { WalletIcon } from "../Icon/WalletIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
+import { MobileDrawer } from "./MobileDrawer";
 
 export const Navbar: React.FC = () => {
   const [data, setCurrency] = useState({
@@ -58,6 +49,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <div>
+      <MobileDrawer open={isMenuOpen} onClose={toggleMenu} />
       <nav className="main-navbar">
         <div className="navbar-container">
           <div className="navbar-left ">
@@ -77,7 +69,7 @@ export const Navbar: React.FC = () => {
             </NavLink>
           </div>
 
-          <div className={`main-menu-wrapper ${isMenuOpen ? "active" : ""}`}>
+          <div className="main-menu-wrapper hidden md:block">
             <div className="main-menu">
               <NavLink to="/sports" className="menu-item sports">
                 Sports
@@ -108,52 +100,8 @@ export const Navbar: React.FC = () => {
               </NavLink>
             </div>
 
-            <div className="mobile-actions">
-              <div className="user-balance">
-                <div className="balance-item">
-                  <FaWallet />
-                  <span>€1,234.56</span>
-                </div>
-                <div className="balance-item">
-                  <FaTrophy />
-                  <span>1,234 CP</span>
-                </div>
-                <div></div>
-              </div>
-
-              <div className="user-actions">
-                <button className="btn-deposit" onClick={handleDepositClick}>
-                  Deposit
-                </button>
-                <button className="btn-register">REGISTRATION</button>
-                <button className="btn-login">
-                  <FaUser />
-                  LOG IN
-                </button>
-              </div>
-              {/* contact information */}
-              <div className="top-navbar__right mobile-only">
-                <div className="top-navbar__right__item">
-                  <FaUser />
-                  <span>+1 123 456 7890</span>
-                </div>
-                <div className="top-navbar__right__item">
-                  <BiSupport />
-                  <span>24/7 Support</span>
-                </div>
-                <div className="top-navbar__right__item">
-                  <FaTelegramPlane />
-                  <span>Telegram</span>
-                </div>
-                <div className="top-navbar__right__item">
-                  <FaFacebook />
-                  <span>Facebook</span>
-                </div>
-                <div className="top-navbar__right__item">
-                  <MdEmail />
-                  <span>Email</span>
-                </div>
-              </div>
+            <div className="mobile-actions hidden">
+              {/* This is now hidden, handled by MobileDrawer */}
             </div>
           </div>
 
