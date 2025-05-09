@@ -100,11 +100,15 @@ body,
         height: 44px;
         margin-bottom: 4px;
         filter: drop-shadow(0 2px 12px #ffd70055);
-        transition: transform 0.2s;
+        transition: transform 0.4s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s;
+        will-change: transform;
+        perspective: 400px;
       }
 
-      .category-tabs button:hover img {
-        /* Removed transform: scale(1.15) rotate(-8deg); */
+      .category-tabs button:hover img,
+      .category-tabs button:focus img {
+        transform: perspective(400px) rotateY(18deg) scale(1.12);
+        box-shadow: 0 4px 24px #ffd70099;
       }
 
       .category-tabs .active img {
