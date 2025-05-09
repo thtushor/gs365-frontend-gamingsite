@@ -2,7 +2,7 @@ import React from "react";
 import { GameSlider } from "../components/GameSlider/GameSlider";
 import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 
-import { Hero } from "../components/Hero/Hero";
+// import { Hero } from "../components/Hero/Hero";
 import { NoticeBoard } from "../components/Notice/NoticeBoard";
 import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
 import { FAQ } from "../components/FAQ/FAQ";
@@ -16,11 +16,12 @@ import {
   popularGames,
   slotGames,
 } from "../lib/mock";
+import { HeroV2 } from "../components/Hero/HeroV2";
 
 const HomePage: React.FC = () => {
   return (
     <div className="home-page">
-      <Hero />
+      <HeroV2 />
       <div className="notice-section">
         <NoticeBoard notices={notices} />
       </div>
