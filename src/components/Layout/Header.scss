@@ -1,0 +1,98 @@
+.gs365-header {
+  width: 100%;
+  background: #23272f;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.header-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: #2d2d2d;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 4px 24px;
+  gap: 18px;
+}
+
+.header-time,
+.header-currency {
+  margin-right: 18px;
+  color: #bdbdbd;
+}
+
+.header-socials {
+  display: flex;
+  gap: 10px;
+  a {
+    color: #bdbdbd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    &:hover {
+      color: #ffd700;
+    }
+  }
+}
+
+.header-auth {
+  display: flex;
+  gap: 8px;
+  .login-btn {
+    background: none;
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    padding: 4px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    &:hover {
+      background: #ffd700;
+      color: #23272f;
+    }
+  }
+  .signup-btn {
+    background: #ffd700;
+    color: #23272f;
+    border: none;
+    padding: 4px 16px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 4px;
+    transition: background 0.2s, color 0.2s;
+    &:hover {
+      background: #ffb700;
+      color: #23272f;
+    }
+  }
+}
+
+.header-mainbar {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #1e5631 0%, #145a32 100%);
+  padding: 18px 32px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.gs365-logo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffd700;
+  text-shadow: 1px 2px 8px #000, 0 1px 0 #fff2;
+}
+
+@media (max-width: 768px) {
+  .header-topbar,
+  .header-mainbar {
+    padding: 8px 8px;
+    font-size: 0.85rem;
+  }
+  .gs365-logo {
+    font-size: 1.3rem;
+  }
+}

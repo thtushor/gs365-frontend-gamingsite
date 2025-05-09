@@ -1,8 +1,18 @@
 .hero-section {
-  width: 100%;
-  position: relative;
-  margin: 0 auto;
-  overflow: hidden;
+  margin-top: 100px;
+
+  @media (max-width: 1024px) {
+    margin-top: 60px !important;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 70px;
+  }
+
+  @media (max-width: 460px) {
+    margin-top: 65px !important;
+  }
+  // overflow: hidden;
 
   .slick-slider {
     width: 100%;
@@ -52,8 +62,24 @@
 
 @media screen and (max-width: 768px) {
   .hero-section {
-    .slick-slide img {
-      height: 400px;
+    .slick-slider {
+      .slick-dots {
+        bottom: 10px;
+        li {
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+
+    .slick-slide {
+      padding: 0 4px !important;
+
+      img {
+        width: 325px;
+        height: 100px !important;
+        object-fit: cover;
+      }
     }
   }
 }

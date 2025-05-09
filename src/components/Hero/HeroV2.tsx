@@ -8,9 +8,13 @@ const settings = {
   speed: 500,
   slidesToShow: 1,
   slidesToScroll: 1,
-  autoplay: true,
+  autoplay: false,
   autoplaySpeed: 3000,
   arrows: false,
+  focusOnSelect: false,
+  // centerMode: true,
+
+  // variableWidth: true,
   responsive: [
     {
       breakpoint: 1024,
@@ -24,6 +28,8 @@ const settings = {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
+        centerMode: true,
+        // variableWidth: true,
       },
     },
   ],
@@ -45,7 +51,7 @@ import "./HeroV2.scss";
 // import "swiper/css";
 // import "swiper/css/pagination";
 
-import "./Hero.scss";
+// import "./Hero.scss";
 import banner1 from "../../assets/Banner/b-1.png";
 import banner2 from "../../assets/Banner/b-2.png";
 import banner3 from "../../assets/Banner/b-3.png";
