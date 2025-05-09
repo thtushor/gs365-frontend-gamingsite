@@ -82,7 +82,7 @@ export const FilterableGames: React.FC<FilterableGamesProps> = ({ games }) => {
             <div className="game-title-row">
               <p className="text-sm">{game.title}</p>
             </div>
-            <button className="play-now-btn">Play Now</button>
+            {/* <button className="play-now-btn">Play Now</button> */}
           </div>
         ))}
       </div>
