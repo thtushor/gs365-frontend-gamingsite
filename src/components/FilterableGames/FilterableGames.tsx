@@ -63,7 +63,7 @@ export const FilterableGames: React.FC<FilterableGamesProps> = ({ games }) => {
                 <img src={category.icon} alt={category.label} />
                 <div
                   className={cn(
-                    "px-[17px] py-[5px] text-sm cursor-pointer rounded-md",
+                    "px-[17px] py-[5px] text-sm cursor-pointer rounded-md w-[100%]",
                     category.className
                   )}
                 >
@@ -75,20 +75,14 @@ export const FilterableGames: React.FC<FilterableGamesProps> = ({ games }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-1">
+      <div className="games-grid">
         {filteredGames.map((game) => (
-          <div
-            className="gap-1 flex flex-col justify-center items-center bg-[#0436A1] p-[10px] "
-            key={game.id}
-          >
-            <img src={cricket} className="w-[30px] h-[30px]" alt={game.title} />
-            <div className="flex justify-between items-center w-full">
-              <div className="flex items-center gap-2 w-full">
-                <p className="text-white text-sm truncate w-full">
-                  {game.title}
-                </p>
-              </div>
+          <div className="game-card-item" key={game.id}>
+            <img src={game.imageUrl || cricket} alt={game.title} />
+            <div className="game-title-row">
+              <p className="text-sm">{game.title}</p>
             </div>
+            <button className="play-now-btn">Play Now</button>
           </div>
         ))}
       </div>

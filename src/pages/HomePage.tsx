@@ -12,7 +12,7 @@ import {
   liveGames,
   newGames,
   notices,
-  players,
+  // players,
   popularGames,
   slotGames,
 } from "../lib/mock";

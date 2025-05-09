@@ -1,10 +1,37 @@
+body,
+#root,
+.App {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  background-attachment: fixed;
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .filterable-games {
-  padding: 24px;
+  background: rgba(20, 30, 50, 0.6);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  padding: 24px 10px 28px 10px;
+  margin: 24px 0;
   max-width: 1440px;
   margin: 0 auto;
 
   .games-header {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
 
     h2 {
       font-size: 24px;
@@ -21,63 +48,191 @@
 
       .category-tabs {
         display: flex;
-        gap: 8px;
+        gap: 10px;
+        width: 100%;
         overflow-x: auto;
         padding-bottom: 8px;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #ffd700 #23272f;
+      }
 
-        &::-webkit-scrollbar {
-          height: 4px;
-        }
+      .category-tabs::-webkit-scrollbar {
+        height: 6px;
+      }
+      .category-tabs::-webkit-scrollbar-thumb {
+        background: #ffd700;
+        border-radius: 6px;
+      }
+      .category-tabs::-webkit-scrollbar-track {
+        background: #23272f;
+        border-radius: 6px;
+      }
 
-        &::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 4px;
-        }
+      .category-tabs button {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 16px;
+        padding: 12px 0 8px 0;
+        transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        min-width: 90px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid transparent;
+      }
 
-        &::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.3);
-          border-radius: 4px;
-        }
+      .category-tabs button.active {
+        background: linear-gradient(90deg, #1e5631 0%, #ffd700 100%);
+        color: #23272f;
+        box-shadow: 0 0 24px 4px #ffd70099, 0 2px 8px rgba(0, 0, 0, 0.18);
+        z-index: 2;
+        border: 2px solid #ffd700;
+      }
 
-        .category-tab {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 20px;
-          padding: 8px 16px;
-          color: #ffffff;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          white-space: nowrap;
-          font-size: 14px;
+      .category-tabs button img {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 4px;
+        filter: drop-shadow(0 2px 12px #ffd70055);
+        transition: transform 0.2s;
+      }
 
-          &:hover {
-            background: rgba(255, 255, 255, 0.1);
-          }
+      .category-tabs button:hover img {
+        /* Removed transform: scale(1.15) rotate(-8deg); */
+      }
 
-          &.active {
-            background: #ff9f1c;
-            border-color: #ff9f1c;
-          }
-        }
+      .category-tabs .active img {
+        filter: drop-shadow(0 0 18px #ffd700cc);
+      }
+
+      .category-tabs .active div {
+        color: #23272f;
+        font-weight: 700;
+      }
+
+      .category-tabs div {
+        font-size: 1.08rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 4px 0;
+        border-radius: 8px;
+        transition: color 0.2s;
       }
     }
   }
 
   .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-
-    @media (max-width: 768px) {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+    width: 100%;
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    @media (max-width: 480px) {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 8px;
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
+  }
+}
+
+.game-card-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 #1e5631cc, 0 2px 12px #ffd70033;
+  padding: 18px 8px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  cursor: pointer;
+  min-height: 100px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  backdrop-filter: blur(6px);
+}
+
+.game-card-item:hover {
+  transform: scale(1.09) rotateY(10deg);
+  box-shadow: 0 0 32px 8px #ffd700cc, 0 2px 16px #1e5631cc;
+  z-index: 2;
+  background: linear-gradient(135deg, #ffd70033 0%, #1e5631 100%);
+  border: 2px solid #ffd700;
+}
+
+.game-card-item img {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #ffd70033;
+  background: #fff2;
+}
+
+.game-title-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.game-title-row .text-sm {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.2px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-now-btn {
+  display: none;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: linear-gradient(90deg, #ffd700 0%, #ffb700 100%);
+  color: #23272f;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 22px;
+  box-shadow: 0 2px 12px #ffd70055;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  opacity: 0.98;
+  z-index: 3;
+}
+
+.game-card-item:hover .play-now-btn {
+  display: block;
+  animation: fadeInUp 0.3s;
+  transform: translateX(-50%) scale(1.12);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1.12);
   }
 }
 
