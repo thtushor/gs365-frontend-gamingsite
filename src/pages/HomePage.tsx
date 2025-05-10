@@ -15,6 +15,7 @@ import {
 import { HeroV2 } from "../components/Hero/HeroV2";
 import { ProviderGames } from "../components/ProviderGames/ProviderGames";
 import { providerGames } from "../lib/mockProviderGames";
+import { GameTypes } from "../components/GameTypes/GameTypes";
 
 // import { Hero } from "../components/Hero/Hero";
 // import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
@@ -28,6 +29,7 @@ const HomePage: React.FC = () => {
       </div>
       {/* <NoticeBoardCard players={players} /> */}
       <FilterableGames games={gamesData} />
+      <GameTypes/>
       <ProviderGames games={providerGames} />
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
