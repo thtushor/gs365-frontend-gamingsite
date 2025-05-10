@@ -12,9 +12,11 @@ interface NoticeBoardProps {
 export const NoticeBoard: React.FC<NoticeBoardProps> = ({ notices }) => {
   return (
     <div className="notice-board">
-     
       <div className="notice-content">
-      <FaBullhorn className="notice-icon" style={{color:"#2EF5FF"}} />
+        <FaBullhorn
+          className="notice-icon"
+          style={{ color: "rgba(255, 255, 255, 1)" }}
+        />
         <div className="marquee-container">
           <div className="marquee">
             {[...notices, ...notices].map((notice, index) => (

@@ -42,12 +42,7 @@
 
 .app-container {
   min-height: 100vh;
-  background: linear-gradient(
-    169.06deg,
-    #074ce3 0%,
-    #074ce3 23.13%,
-    #042a7d 73.67%
-  );
+  background: rgba(26, 26, 46, 0.95);
   width: 100%;
   overflow-x: hidden;
   padding: 0;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { cn } from "../../lib/utils";
 import "./ProviderGames.scss";
 import { Heart, Play } from "lucide-react";
+import { providerLogos } from "../../lib/mockProviderLogos";
 
 interface Game {
   id: string;
@@ -46,6 +47,13 @@ export const ProviderGames: React.FC<ProviderGamesProps> = ({ games }) => {
       selectedProviders.includes(game.provider)
   );
 
+  const getProviderLogo = (providerName: string) => {
+    return (
+      providerLogos.find((logo) => logo.name === providerName) ||
+      providerLogos[0]
+    );
+  };
+
   return (
     <div className="provider-games">
       <div className="providers-filter">
@@ -56,21 +64,35 @@ export const ProviderGames: React.FC<ProviderGamesProps> = ({ games }) => {
               selectedProviders.length === 0 && "active"
             )}
             onClick={() => setSelectedProviders([])}
+            style={{ color: "#4361ee" }}
           >
-            All
+            <div className="provider-logo">
+              <img
+                src="https://placehold.co/100x100/4361ee/ffffff?text=ALL"
+                alt="All"
+              />
+            </div>
+            <span className="provider-name">All</span>
           </button>
-          {providers.map((provider) => (
-            <button
-              key={provider}
-              className={cn(
-                "provider-chip",
-                selectedProviders.includes(provider) && "active"
-              )}
-              onClick={() => toggleProvider(provider)}
-            >
-              {provider}
-            </button>
-          ))}
+          {providers.map((provider) => {
+            const providerLogo = getProviderLogo(provider);
+            return (
+              <button
+                key={provider}
+                className={cn(
+                  "provider-chip",
+                  selectedProviders.includes(provider) && "active"
+                )}
+                onClick={() => toggleProvider(provider)}
+                style={{ color: providerLogo.color }}
+              >
+                <div className="provider-logo">
+                  <img src={providerLogo.logo} alt={provider} />
+                </div>
+                <span className="provider-name">{provider}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

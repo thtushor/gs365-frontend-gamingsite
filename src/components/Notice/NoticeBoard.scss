@@ -3,7 +3,7 @@
   margin: 0;
   flex: 1;
   // padding: 20px;
-  background: #2C8F3D;
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   // border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -18,7 +18,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
     .notice-icon {
-      color: #2EF5FF;
+      color: #2ef5ff;
       font-size: 24px;
       animation: bounce 2s infinite;
     }
@@ -39,7 +39,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
 
     .marquee-container {
       overflow: hidden;
@@ -79,7 +78,6 @@
       transition: all 0.3s ease;
       width: 300px;
       flex-shrink: 0;
-   
 
       .notice-info {
         display: flex;
@@ -90,7 +88,7 @@
       }
 
       .notice-badge {
-        background: #FF4D4D;
+        background: #ff4d4d;
         color: #ffffff;
         padding: 4px 8px;
         border-radius: 4px;
