@@ -187,7 +187,7 @@ export const GameTypes = () => {
     };
 
     return <div className='flex flex-col overflow-hidden p-2 gap-4 items-start py-10'>
-        <div className='flex overflow-auto gap-1 '>
+        <div className='game-types-selector'>
             {
                 gametypes.map((item) => (
                     <div key={item?.id} className={`hover:bg-[#2a3254] cursor-pointer  relative w-[50px] py-4  ${selected === item?.id ? "gametype-box bg-[#2a3254]":"bg-[#222843]"}`} onClick={() => handleSelect(item.id)}>

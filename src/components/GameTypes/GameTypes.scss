@@ -102,3 +102,42 @@
     transform: translateX(0);
   }
 }
+
+// Responsive, scrollable game types selector
+.game-types-selector {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.game-types-selector::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
+
+// Responsive adjustments for the game type boxes
+.gametype-box,
+.bg-\[\#222843\],
+.bg-\[\#2a3254\] {
+  min-width: 50px;
+  max-width: 60px;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .game-types-selector {
+    gap: 2px;
+    padding-bottom: 2px;
+  }
+  .gametype-box,
+  .bg-\[\#222843\],
+  .bg-\[\#2a3254\] {
+    min-width: 44px;
+    max-width: 48px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
