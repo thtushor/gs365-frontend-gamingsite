@@ -27,6 +27,7 @@
       .provider-chip {
         position: relative;
         padding: 0.5rem 1rem;
+        // width: 150px;
         border-radius: 2rem;
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
@@ -37,7 +38,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        overflow: hidden;
+        // overflow: hidden;
 
         &::before {
           content: "";
