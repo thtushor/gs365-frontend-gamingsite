@@ -621,7 +621,8 @@ export const gamesData = [
   {
     id: "1",
     title: "IPL 2024",
-    imageUrl: "https://images.unsplash.com/photo-1618221492835-1e1f3b6c1a1e",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW__LeJsnrSCy0twaCt-Mb8ew21k1ob41nZg&s",
     category: "sports",
     provider: "Betfair",
     badge: "LIVE",
@@ -629,14 +630,16 @@ export const gamesData = [
   {
     id: "2",
     title: "Premier League",
-    imageUrl: "https://images.unsplash.com/photo-1603988363607-3f9c3d3f3f3f",
+    imageUrl:
+      "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "sports",
     provider: "Bet365",
   },
   {
     id: "3",
     title: "NBA Finals",
-    imageUrl: "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
+    imageUrl:
+      "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "sports",
     provider: "Betway",
   },
@@ -657,7 +660,8 @@ export const gamesData = [
   {
     id: "29",
     title: "UFC Fight Night",
-    imageUrl: "https://images.unsplash.com/photo-1614282729245-8b0d5d5d5d5d",
+    imageUrl:
+      "https://images.pexels.com/photos/7045726/pexels-photo-7045726.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "sports",
     provider: "Bet365",
   },
@@ -673,7 +677,8 @@ export const gamesData = [
   {
     id: "4",
     title: "Aviator",
-    imageUrl: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde",
+    imageUrl:
+      "https://images.pexels.com/photos/7045726/pexels-photo-7045726.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "crash",
     provider: "Spribe",
     badge: "HOT",
@@ -690,14 +695,16 @@ export const gamesData = [
   {
     id: "6",
     title: "Roulette Royale",
-    imageUrl: "https://images.unsplash.com/photo-1567598508482-4e0b0f0f0f0f",
+    imageUrl:
+      "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "casino",
     provider: "Evolution Gaming",
   },
   {
     id: "7",
     title: "Blackjack Classic",
-    imageUrl: "https://images.unsplash.com/photo-1588776814546-1c1e1e1e1e1e",
+    imageUrl:
+      "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600",
     category: "casino",
     provider: "Playtech",
   },

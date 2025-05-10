@@ -9,12 +9,12 @@ import { FAQ } from "../components/FAQ/FAQ";
 import {
   crashGames,
   gamesData,
-  liveGames,
-  newGames,
+  // liveGames,
+  // newGames,
   notices,
   // players,
-  popularGames,
-  slotGames,
+  // popularGames,
+  // slotGames,
 } from "../lib/mock";
 import { HeroV2 } from "../components/Hero/HeroV2";
 
@@ -28,11 +28,11 @@ const HomePage: React.FC = () => {
       {/* <NoticeBoardCard players={players} /> */}
       <FilterableGames games={gamesData} />
       <GameSlider title="CRASH GAMES" games={crashGames} />
-      <GameSlider title="POPULAR SLOTS" games={slotGames} />
+      {/* <GameSlider title="POPULAR SLOTS" games={slotGames} />
       <GameSlider title="LIVE CASINO" games={liveGames} />
       <GameSlider title="TRENDING NOW" games={popularGames} />
       <GameSlider title="NEW RELEASES" games={newGames} />
-      <GameSlider title="EXCLUSIVE GAMES" games={crashGames} />
+      <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
 
       <FAQ />
     </div>
