@@ -1,11 +1,11 @@
 import React from "react";
 // import { GameSlider } from "../components/GameSlider/GameSlider";
-import { FilterableGames } from "../components/FilterableGames/FilterableGames";
+// import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 import { NoticeBoard } from "../components/Notice/NoticeBoard";
 import { FAQ } from "../components/FAQ/FAQ";
 import {
   // crashGames,
-  gamesData,
+  // gamesData,
   // liveGames,
   // newGames,
   notices,
@@ -28,8 +28,8 @@ const HomePage: React.FC = () => {
         <NoticeBoard notices={notices} />
       </div>
       {/* <NoticeBoardCard players={players} /> */}
-      <FilterableGames games={gamesData} />
-      <GameTypes/>
+      {/* <FilterableGames games={gamesData} /> */}
+      <GameTypes />
       <ProviderGames games={providerGames} />
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
