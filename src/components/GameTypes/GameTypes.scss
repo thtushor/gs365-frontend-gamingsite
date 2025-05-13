@@ -77,6 +77,75 @@
 }
 
 .game-types-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+  padding: 0.25rem;
+  animation: fadeIn 0.3s ease;
+  cursor: pointer;
+
+  &.slide-in {
+    animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  li {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    min-width: 0;
+
+    &:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem;
+      text-decoration: none;
+      color: #fff;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 0.25rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.35rem;
+      object-fit: contain;
+    }
+
+    p {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-align: center;
+      margin: 0;
+      padding: 0 0.25rem;
+      line-height: 1.2;
+    }
+  }
+
+  li:empty {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
+}
+
+.game-types-list {
   opacity: 1;
   transform: translateX(0);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
@@ -145,8 +214,9 @@
   padding: 0.5rem;
   display: none; // Hide by default
 
-  @media (max-width: 480px) {
-    display: block; // Show only on mobile
+  @media (max-width: 1024px) {
+    // Show on both mobile and tablet
+    display: block;
   }
 }
 
@@ -220,66 +290,6 @@
   }
 }
 
-.game-types-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.35rem;
-  padding: 0.25rem;
-  animation: fadeIn 0.3s ease;
-
-  &.slide-in {
-    animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  li {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0.5rem;
-      text-decoration: none;
-      color: #fff;
-      width: 100%;
-      height: 100%;
-      justify-content: center;
-    }
-
-    img {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 0.25rem;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.35rem;
-      object-fit: contain;
-    }
-
-    p {
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-align: center;
-      margin: 0;
-      padding: 0 0.25rem;
-      line-height: 1.2;
-    }
-  }
-}
-
 .content-title {
   display: flex;
   align-items: center;
@@ -325,5 +335,113 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+// Tablet specific styles
+@media (min-width: 481px) and (max-width: 1024px) {
+  .game-types-container {
+    padding: 1rem;
+  }
+
+  .game-types-selector {
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+
+  .gametype-box {
+    min-width: 60px;
+    max-width: 70px;
+    padding: 0.5rem 0.35rem;
+
+    .game-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0.5rem;
+    }
+
+    .game-name {
+      font-size: 0.75rem;
+    }
+  }
+
+  .game-types-list {
+    gap: 0.5rem;
+    padding: 0.5rem;
+
+    li {
+      img {
+        width: 40px;
+        height: 40px;
+        padding: 0.5rem;
+      }
+
+      p {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .content-title {
+    padding: 1rem 0;
+    margin-bottom: 0.75rem;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Mobile specific styles
+@media (max-width: 480px) {
+  .game-types-container {
+    padding: 0.5rem;
+  }
+
+  .game-types-selector {
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+  }
+
+  .gametype-box {
+    min-width: 45px;
+    max-width: 55px;
+    padding: 0.35rem 0.25rem;
+
+    .game-icon {
+      width: 28px;
+      height: 28px;
+      padding: 0.35rem;
+    }
+
+    .game-name {
+      font-size: 0.65rem;
+    }
+  }
+
+  .game-types-list {
+    gap: 0.35rem;
+    padding: 0.25rem;
+
+    li {
+      img {
+        width: 32px;
+        height: 32px;
+        padding: 0.35rem;
+      }
+
+      p {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .content-title {
+    padding: 0.75rem 0;
+    margin-bottom: 0.5rem;
+
+    h2 {
+      font-size: 1rem;
+    }
   }
 }

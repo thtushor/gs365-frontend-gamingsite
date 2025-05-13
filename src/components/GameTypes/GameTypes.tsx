@@ -196,6 +196,22 @@ export const GameTypes = () => {
     }
   };
 
+  // Function to ensure 4 items per row
+  const getGridItems = (items: JSX.Element[]) => {
+    const itemsPerRow = 4;
+    const totalItems = items.length;
+    const rows = Math.ceil(totalItems / itemsPerRow);
+    const totalSlots = rows * itemsPerRow;
+    const emptySlots = totalSlots - totalItems;
+
+    console.log({ itemsPerRow, totalItems, rows, totalSlots, emptySlots });
+
+    return [
+      ...items,
+      ...Array(emptySlots).fill(<li key={`empty-${Math.random()}`}></li>),
+    ];
+  };
+
   return (
     <div className="game-types-container">
       <div className="game-types-selector">
@@ -216,7 +232,7 @@ export const GameTypes = () => {
       </div>
 
       <ul className={`game-types-list ${animate ? "slide-in" : ""}`}>
-        {gameTypeContent[selected!] || null}
+        {getGridItems(gameTypeContent[selected!] || [])}
       </ul>
     </div>
   );
