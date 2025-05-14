@@ -65,6 +65,29 @@ const FilterContainer = ({ onFilter, onSearch }) => {
     { id: "fastspin", name: "FastSpin" },
   ];
 
+  const renderQuickFilters = () => {
+    return providers.slice(0, 5).map((provider) => (
+      <div
+        key={provider.id}
+        className={`filter-bar-item ${
+          activeFilters.includes(provider.id) ? "active" : ""
+        }`}
+        onClick={() => toggleFilter(provider.id)}
+      >
+        <input
+          type="checkbox"
+          id={`quick-filter-${provider.id}`}
+          checked={activeFilters.includes(provider.id)}
+          onChange={() => {}} // Handled by onClick
+        />
+        <label htmlFor={`quick-filter-${provider.id}`}>
+          <span className="check-box"></span>
+          <span className="filter-name">{provider.name}</span>
+        </label>
+      </div>
+    ));
+  };
+
   return (
     <div className="filter-container">
       {/* Top filter bar with search and quick filters */}
@@ -88,27 +111,8 @@ const FilterContainer = ({ onFilter, onSearch }) => {
             <div className="filter-bar-title">
               <span>ফিল্টার:</span>
             </div>
-            <div className="filter-bar-items">
-              {providers.slice(0, 5).map((provider) => (
-                <div
-                  key={provider.id}
-                  className={`filter-bar-item ${
-                    activeFilters.includes(provider.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleFilter(provider.id)}
-                >
-                  <input
-                    type="checkbox"
-                    id={`quick-filter-${provider.id}`}
-                    checked={activeFilters.includes(provider.id)}
-                    onChange={() => {}} // Handled by onClick
-                  />
-                  <label htmlFor={`quick-filter-${provider.id}`}>
-                    <span className="check-box"></span>
-                    <span className="filter-name">{provider.name}</span>
-                  </label>
-                </div>
-              ))}
+            <div className="filter-bar-items-container">
+              <div className="filter-bar-items">{renderQuickFilters()}</div>
             </div>
             <div
               className={`filter-more-btn ${showAllFilters ? "active" : ""}`}
