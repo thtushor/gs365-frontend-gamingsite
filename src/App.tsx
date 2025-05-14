@@ -15,8 +15,8 @@ import "./components/GameSlider/SliderHeader.scss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Deposit } from "./pages/Deposit";
 import HomePage from "./pages/HomePage";
-import { TopBar } from "./components/Navbar/Topbar";
-import { Navbar } from "./components/Navbar/Navbar";
+// import { TopBar } from "./components/Navbar/Topbar";
+// import { Navbar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Layout/Header";
 
