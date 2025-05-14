@@ -206,10 +206,14 @@ export const GameTypes = () => {
 
     console.log({ itemsPerRow, totalItems, rows, totalSlots, emptySlots });
 
-    return [
+    const output = [
       ...items,
       ...Array(emptySlots).fill(<li key={`empty-${Math.random()}`}></li>),
     ];
+
+    console.log({ output });
+
+    return output;
   };
 
   return (
