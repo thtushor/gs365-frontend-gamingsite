@@ -18,14 +18,17 @@ import HomePage from "./pages/HomePage";
 import { TopBar } from "./components/Navbar/Topbar";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
+import Header from "./components/Layout/Header";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="app-container">
         <div className="navbar-container">
-          <TopBar />
-          <Navbar />
+          {/* <TopBar /> */}
+          {/* <Navbar /> */}
+
+          <Header />
         </div>
         <Routes>
           <Route path="/" element={<HomePage />} />
