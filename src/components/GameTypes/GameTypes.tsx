@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import sports from "../../assets/gameType/icon-sport.png";
 import Casino from "../../assets/gameType/icon-casino.png";
 import Slots from "../../assets/gameType/icon-slot.png";
