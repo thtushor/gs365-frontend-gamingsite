@@ -1,0 +1,164 @@
+.hero-filter-bar {
+  width: 100%;
+  background-color: #006241;
+  padding: 10px 0;
+  margin-top: -1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.filter-bar-inner {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+}
+
+.filter-bar-title {
+  flex-shrink: 0;
+  color: #fff;
+  font-weight: 500;
+  padding-right: 15px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.filter-bar-items {
+  display: flex;
+  gap: 10px;
+  flex-grow: 1;
+  overflow-x: auto;
+  padding: 5px 0;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.filter-bar-item {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  &.active {
+    background-color: #ffc107;
+
+    label {
+      color: #000;
+    }
+
+    .check-box {
+      border-color: #000;
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.check-box {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  margin-right: 8px;
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #000;
+    border-radius: 1px;
+    left: 3px;
+    top: 3px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}
+
+.filter-more-btn {
+  flex-shrink: 0;
+  color: #ffc107;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-bar-title {
+    font-size: 12px;
+  }
+
+  .filter-bar-item label {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .check-box {
+    width: 14px;
+    height: 14px;
+
+    &:after {
+      width: 6px;
+      height: 6px;
+      left: 3px;
+      top: 3px;
+    }
+  }
+
+  .filter-more-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
