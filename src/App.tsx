@@ -25,9 +25,6 @@ function App() {
     <BrowserRouter>
       <div className="app-container">
         <div className="navbar-container">
-          {/* <TopBar /> */}
-          {/* <Navbar /> */}
-
           <Header />
         </div>
         <Routes>
