@@ -28,6 +28,13 @@ const sliderSettings = {
         slidesToShow: 1,
       },
     },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        autoplaySpeed: 2000,
+      },
+    },
   ],
 };
 

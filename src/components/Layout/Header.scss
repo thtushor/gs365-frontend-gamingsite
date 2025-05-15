@@ -277,18 +277,142 @@
 @media (max-width: 600px) {
   .custom-header {
     border-radius: 0 0 10px 10px;
-    padding-bottom: 0;
+    padding-bottom: 4px;
   }
+
+  .header-inner {
+    padding: 6px 4px 0 4px;
+  }
+
   .login-btn,
   .signup-btn {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 5px 10px;
+    min-height: 32px;
+    border-radius: 6px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover,
+    &:active {
+      transform: translateY(-2px);
+    }
   }
+
+  .login-btn {
+    border-width: 1px;
+  }
+
+  .signup-btn {
+    box-shadow: 0 2px 8px 0 rgba(255, 215, 0, 0.2);
+  }
+
+  .sponsor-slider-wrapper {
+    min-width: 70px;
+    max-width: 70px;
+    width: 70px;
+    padding: 4px 4px;
+    border-radius: 8px;
+  }
+
+  .sponsor-slide-item {
+    height: 36px;
+  }
+
+  .sponsor-img {
+    height: 24px;
+    max-width: 60px;
+  }
+
   .country-select {
-    padding: 2px 6px 2px 2px;
+    padding: 2px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
   .country-flag {
-    height: 18px;
-    width: 18px;
+    height: 22px;
+    width: 22px;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .custom-header {
+    padding: 5px 10px;
+
+    .header-inner {
+      gap: 8px;
+    }
+
+    .header-left {
+      .logo-container {
+        max-width: 120px;
+      }
+
+      .sponsor-slider-wrapper {
+        max-width: 100px;
+
+        .sponsor-slide-item {
+          .sponsor-img {
+            max-height: 30px;
+          }
+        }
+      }
+    }
+
+    .header-right {
+      gap: 5px;
+
+      .login-btn,
+      .signup-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+        height: 30px;
+        min-width: 60px;
+      }
+
+      .country-select {
+        width: 25px;
+        height: 25px;
+
+        .country-flag {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .custom-header {
+    .header-right {
+      .login-btn,
+      .signup-btn {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        min-height: 28px;
+        min-width: 50px;
+        border-radius: 5px;
+      }
+
+      .country-select {
+        width: 24px;
+        height: 24px;
+      }
+
+      .country-flag {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 }
