@@ -191,14 +191,14 @@ const Sponsors: React.FC = () => {
                   <div className="item__content">
                     <div className="txt">{ambassador.name}</div>
                     <div className="sub-txt">
-                      <span className="signature-container">
+                      {/* <span className="signature-container">
                         <img
                           className="signature"
                           alt={`${ambassador.name} signature`}
                           src={ambassador.signature}
                           loading="lazy"
                         />
-                      </span>
+                      </span> */}
                       <span className="sub-txt__years">{ambassador.years}</span>
                     </div>
                   </div>

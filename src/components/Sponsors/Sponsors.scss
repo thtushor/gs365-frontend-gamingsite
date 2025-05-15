@@ -1,12 +1,12 @@
 .sponsors-section {
-  background: #161616;
-  padding: 20px 15px;
-  border-radius: 10px;
+  background: #0a0a0a;
+  padding: 15px;
+  border-radius: 8px;
   margin: 20px 0;
 }
 
 .ambassador-lists {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 
   &:last-child {
     margin-bottom: 0;
@@ -14,17 +14,17 @@
 
   &__title {
     color: #12b886;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &__wrap {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
 
     @media (min-width: 768px) {
       grid-template-columns: repeat(4, 1fr);
@@ -32,10 +32,10 @@
   }
 
   &__item {
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 
     &:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
 
       .txt {
         color: #12b886;
@@ -45,8 +45,8 @@
 }
 
 .item {
-  background: #1e1e1e;
-  border-radius: 8px;
+  background: #171717;
+  border-radius: 6px;
   overflow: hidden;
   height: 100%;
 
@@ -59,107 +59,115 @@
 
   &__icon {
     position: relative;
-    padding: 12px;
+    padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     height: 100%;
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      flex-shrink: 0;
     }
   }
 
   &__content {
-    text-align: center;
-    width: 100%;
+    text-align: left;
+    flex: 1;
   }
 
   .txt {
     font-weight: 600;
-    font-size: 14px;
-    color: white;
-    margin-bottom: 4px;
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 2px;
     transition: color 0.2s ease;
+    line-height: 1.2;
   }
 
   .sub-txt {
-    font-size: 12px;
+    font-size: 11px;
     color: rgba(255, 255, 255, 0.7);
     display: flex;
     flex-direction: column;
 
     &__title {
-      font-weight: 500;
-      margin-bottom: 2px;
+      font-weight: 400;
+      margin-bottom: 1px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.2;
     }
 
     &__years {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 10px;
+      line-height: 1.2;
     }
   }
 }
 
 // Brand Ambassadors specific styling
 .brand-ambassadors {
+  margin-top: 20px;
+
   .item__icon {
+    flex-direction: row;
+
     .ambassador-img {
-      width: 60px;
-      height: 60px;
+      width: 36px;
+      height: 36px;
       object-fit: cover;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(18, 184, 134, 0.3);
+      background: transparent;
+      border: none;
     }
   }
 
   .signature-container {
     display: flex;
-    justify-content: center;
-    margin: 5px 0;
-    height: 28px;
+    justify-content: flex-start;
+    margin: 2px 0;
+    height: 20px;
     overflow: hidden;
 
     .signature {
-      width: 100px;
-      height: 40px;
+      width: 60px;
+      height: 20px;
       background: transparent;
-      opacity: 0.9;
+      opacity: 0.8;
       object-fit: contain;
       border-radius: 0;
-      transform: translateY(-5px) scale(1.2);
+      transform: translateY(-2px) scale(1);
       filter: brightness(1.5) contrast(1.2);
     }
   }
 
   .sub-txt {
-    align-items: center;
+    align-items: flex-start;
 
     &__years {
-      margin-top: 2px;
-      font-size: 11px;
+      margin-top: 1px;
+      font-size: 10px;
     }
   }
+}
 
-  // Add hover effect for the ambassador image
-  .item:hover .ambassador-img {
-    border-color: rgba(18, 184, 134, 0.8);
-    box-shadow: 0 0 12px rgba(18, 184, 134, 0.3);
-  }
+// Hover effects
+.item:hover {
+  background: #1c1c1c;
 }
 
 // Dark mode specific adjustments
 @media (prefers-color-scheme: dark) {
   .sponsors-section {
-    background: #121212;
+    background: #0a0a0a;
   }
 
   .item {
-    background: #1a1a1a;
+    background: #141414;
   }
 }
