@@ -105,7 +105,7 @@
 }
 
 .header-inner {
-  max-width: 1200px;
+  // max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -190,12 +190,12 @@
 }
 
 .sponsor-slider-wrapper {
-  background: rgba(30, 40, 60, 0.7);
+  // background: rgba(30, 40, 60, 0.7);
   border-radius: 12px;
-  padding: 8px 18px;
-  min-width: 80px;
-  max-width: 80px;
-  width: 80px;
+  // padding: 8px 18px;
+  min-width: 40px;
+  max-width: 40px;
+  width: 40px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
   flex-shrink: 0;
