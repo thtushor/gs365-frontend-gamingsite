@@ -1,149 +1,186 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MainNav.scss";
 import {
   FaHome,
   FaMobileAlt,
-  FaAngleDown,
   FaChevronLeft,
   FaChevronRight,
+  FaChevronDown,
 } from "react-icons/fa";
+import { BsFillTrophyFill } from "react-icons/bs";
+import { GiPokerHand } from "react-icons/gi";
+import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
+import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 
 interface SubNavItem {
-  title: string;
-  img1: string;
-  img2: string;
-  img3: string;
-  vendor: string;
-  href?: string;
+  name: string;
+  image1: string;
+  image2: string;
+  image3: string;
 }
 
+const sports: SubNavItem[] = [
+  {
+    name: "ক্রিকেট",
+    image1: "/assets/sports/cricket1.png",
+    image2: "/assets/sports/cricket2.png",
+    image3: "/assets/sports/cricket3.png",
+  },
+  {
+    name: "ফুটবল",
+    image1: "/assets/sports/football1.png",
+    image2: "/assets/sports/football2.png",
+    image3: "/assets/sports/football3.png",
+  },
+  {
+    name: "টেনিস",
+    image1: "/assets/sports/tennis1.png",
+    image2: "/assets/sports/tennis2.png",
+    image3: "/assets/sports/tennis3.png",
+  },
+  {
+    name: "বাস্কেটবল",
+    image1: "/assets/sports/basketball1.png",
+    image2: "/assets/sports/basketball2.png",
+    image3: "/assets/sports/basketball3.png",
+  },
+  {
+    name: "ভলিবল",
+    image1: "/assets/sports/volleyball1.png",
+    image2: "/assets/sports/volleyball2.png",
+    image3: "/assets/sports/volleyball3.png",
+  },
+  {
+    name: "টেবল টেনিস",
+    image1: "/assets/sports/tabletennis1.png",
+    image2: "/assets/sports/tabletennis2.png",
+    image3: "/assets/sports/tabletennis3.png",
+  },
+  {
+    name: "বোলিং",
+    image1: "/assets/sports/bowling1.png",
+    image2: "/assets/sports/bowling2.png",
+    image3: "/assets/sports/bowling3.png",
+  },
+  {
+    name: "বেসবল",
+    image1: "/assets/sports/baseball1.png",
+    image2: "/assets/sports/baseball2.png",
+    image3: "/assets/sports/baseball3.png",
+  },
+];
+
 const MainNav: React.FC = () => {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [openSubNav, setOpenSubNav] = useState<number | null>(null);
+  const [subNavIndex, setSubNavIndex] = useState(0);
   const [transformStyles, setTransformStyles] = useState<{
-    [key: number]: React.CSSProperties;
+    [key: string]: React.CSSProperties;
   }>({});
 
-  const handleMouseMove = (e: React.MouseEvent, index: number) => {
-    const card = e.currentTarget as HTMLElement;
-    const rect = card.getBoundingClientRect();
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".nav-item")) {
+        setOpenSubNav(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleMouseMove = (
+    e: React.MouseEvent<HTMLDivElement>,
+    itemIndex: number
+  ) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left; // x position within the element
     const y = e.clientY - rect.top; // y position within the element
 
+    // Calculate the center of the element
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    // Calculate rotation based on mouse position
-    // Further from center = more rotation
-    const rotateY = ((x - centerX) / centerX) * 15; // max 15 degrees
-    const rotateX = -((y - centerY) / centerY) * 10; // max 10 degrees
+    // Calculate the rotation based on mouse position relative to center
+    // Divide by 25 to reduce the rotation amount for subtle effect
+    const rotateX = -((y - centerY) / 25);
+    const rotateY = (x - centerX) / 25;
 
-    const style: React.CSSProperties = {
-      transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`,
-      transition: "transform 0.1s ease",
-    };
+    // Create a unique identifier for this item
+    const itemKey = `item-${itemIndex}`;
 
-    setTransformStyles({
-      ...transformStyles,
-      [index]: style,
-    });
+    // Update styles for this specific item
+    setTransformStyles((prev) => ({
+      ...prev,
+      [itemKey]: {
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`,
+        transition: "transform 0.1s ease",
+      },
+      [`${itemKey}-img1`]: {
+        transform: `translateZ(20px) rotateX(${rotateX * 0.2}deg) rotateY(${
+          rotateY * 0.2
+        }deg)`,
+        boxShadow: "0 20px 30px rgba(0, 0, 0, 0.5)",
+      },
+      [`${itemKey}-img2`]: {
+        transform: `translateZ(10px) translateX(${
+          rotateY * 0.7
+        }px) translateY(${rotateX * -0.7}px) rotateX(${
+          rotateX * 0.1
+        }deg) rotateY(${rotateY * 0.1}deg)`,
+        boxShadow: "0 15px 25px rgba(0, 0, 0, 0.4)",
+      },
+      [`${itemKey}-img3`]: {
+        transform: `translateZ(0px) translateX(${rotateY * 1.2}px) translateY(${
+          rotateX * -1.2
+        }px)`,
+        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.3)",
+      },
+    }));
   };
 
-  const handleMouseLeave = (index: number) => {
-    // Reset to default style with a smoother transition
-    setTransformStyles({
-      ...transformStyles,
-      [index]: {
-        transform:
-          "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+  const handleMouseLeave = (itemIndex: number) => {
+    const itemKey = `item-${itemIndex}`;
+
+    // Reset transformations with a longer transition for a smooth return
+    setTransformStyles((prev) => ({
+      ...prev,
+      [itemKey]: {
+        transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
         transition: "transform 0.5s ease",
       },
-    });
+      [`${itemKey}-img1`]: {
+        transform: "translateZ(0)",
+        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.5s ease",
+      },
+      [`${itemKey}-img2`]: {
+        transform: "translateZ(0)",
+        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.5s ease",
+      },
+      [`${itemKey}-img3`]: {
+        transform: "translateZ(0)",
+        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.5s ease",
+      },
+    }));
   };
 
-  const sportSubNavItems: SubNavItem[] = [
-    {
-      title: "I-Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
-      vendor: "Saba",
-      href: "/guest/viewGame?t=sport&v=Saba&act=50",
-    },
-    {
-      title: "BTi Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/sbtech_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/sbtech_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/sbtech_bdt_03.png",
-      vendor: "SBTech",
-      href: "/guest/viewGame?t=sport&v=SBTech&act=SBTech",
-    },
-    {
-      title: "Exchange",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/exchange_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/exchange_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/exchange_bdt_03.png",
-      vendor: "CRICKET",
-      href: "/guest/viewGame?t=sport&v=CRICKET",
-    },
-    {
-      title: "SBO Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/sbobet_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/sbobet_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/sbobet_bdt_03.png",
-      vendor: "SBOv2",
-    },
-    {
-      title: "UG Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/unitedgaming_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/unitedgaming_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/unitedgaming_bdt_03.png",
-      vendor: "UGv3",
-    },
-    {
-      title: "CMD Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/cmd_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/cmd_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/cmd_bdt_03.png",
-      vendor: "CMD",
-      href: "/guest/viewGame?t=sport&v=CMD&act=CMD",
-    },
-    {
-      title: "E-Sports",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/e1_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/e1_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/e1_bdt_03.png",
-      vendor: "AWCV2_E1SPORT",
-    },
-    {
-      title: "Horsebook",
-      img1: "https://img.b112j.com/images/web/nav/subnav-slide/horsebook_bdt_01.png",
-      img2: "https://img.b112j.com/images/web/nav/subnav-slide/horsebook_bdt_02.png",
-      img3: "https://img.b112j.com/images/web/nav/subnav-slide/horsebook_bdt_03.png",
-      vendor: "AWCV2_HORSEBOOK",
-    },
-  ];
-
-  const toggleDropdown = (menu: string) => {
-    if (activeDropdown === menu) {
-      setActiveDropdown(null);
+  const handleNavToggle = (index: number | null) => {
+    if (openSubNav === index) {
+      setOpenSubNav(null);
     } else {
-      setActiveDropdown(menu);
+      setOpenSubNav(index);
     }
   };
 
-  const [subNavIndex, setSubNavIndex] = useState(0);
-  const visibleItems = 4;
-
-  const nextSubNav = () => {
-    if (subNavIndex + visibleItems < sportSubNavItems.length) {
-      setSubNavIndex(subNavIndex + 1);
-    }
-  };
-
-  const prevSubNav = () => {
-    if (subNavIndex > 0) {
-      setSubNavIndex(subNavIndex - 1);
-    }
+  const displayItems = () => {
+    const startIdx = subNavIndex;
+    const endIdx = Math.min(startIdx + 4, sports.length);
+    return sports.slice(startIdx, endIdx);
   };
 
   return (
@@ -159,73 +196,76 @@ const MainNav: React.FC = () => {
             <FaMobileAlt className="nav-icon" />
           </a>
         </li>
-        <li
-          className={`nav-item ${activeDropdown === "sport" ? "active" : ""}`}
-          onMouseEnter={() => toggleDropdown("sport")}
-          onMouseLeave={() => toggleDropdown("")}
-        >
-          <a href="#" onClick={(e) => e.preventDefault()}>
-            স্পোর্ট <FaAngleDown className="nav-dropdown-icon" />
+        <li className={`nav-item ${openSubNav === 0 ? "active" : ""}`}>
+          <a
+            href="#sports"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavToggle(0);
+            }}
+          >
+            <MdSportsSoccer className="nav-icon" />
+            স্পোর্ট
+            <FaChevronDown className="nav-dropdown-icon" />
           </a>
-          {activeDropdown === "sport" && (
+          {openSubNav === 0 && (
             <div className="sub-nav-slide">
               <div className="sub-nav-inner">
                 <button
                   className="arrow-prev"
+                  onClick={() => setSubNavIndex(Math.max(0, subNavIndex - 1))}
                   disabled={subNavIndex === 0}
-                  onClick={prevSubNav}
                 >
                   <FaChevronLeft />
                 </button>
                 <div className="sub-nav-draggable">
-                  <div className="sub-nav-track">
-                    {sportSubNavItems
-                      .slice(subNavIndex, subNavIndex + visibleItems)
-                      .map((item, index) => (
-                        <div
-                          className={`sub-nav-item ${
-                            index === 0 ? "first-item" : ""
-                          }`}
-                          key={index}
-                        >
-                          <span>{item.title}</span>
-                          <a href={item.href || "#"} data-vendor={item.vendor}>
-                            <div
-                              className="item-box"
-                              onMouseMove={(e) => handleMouseMove(e, index)}
-                              onMouseLeave={() => handleMouseLeave(index)}
-                              style={transformStyles[index]}
-                            >
-                              <div className="item-inner">
-                                <img
-                                  className="item-1st"
-                                  src={item.img1}
-                                  alt={`${item.vendor} Betting`}
-                                />
-                                <img
-                                  className="item-2nd"
-                                  src={item.img2}
-                                  alt={`${item.vendor} Betting`}
-                                />
-                                <img
-                                  className="item-3rd"
-                                  src={item.img3}
-                                  alt={`${item.vendor} Betting`}
-                                />
-                              </div>
-                            </div>
-                            <p>এখনি খেলুন</p>
-                          </a>
-                        </div>
-                      ))}
+                  <div
+                    className="sub-nav-track"
+                    style={{
+                      transform: `translateX(0px)`,
+                    }}
+                  >
+                    {displayItems().map((sport, idx) => (
+                      <div className="sub-nav-item" key={idx}>
+                        <span>{sport.name}</span>
+                        <a href={`#${sport.name}`}>
+                          <div
+                            className="item-box"
+                            style={transformStyles[`item-${idx}`]}
+                            onMouseMove={(e) => handleMouseMove(e, idx)}
+                            onMouseLeave={() => handleMouseLeave(idx)}
+                          >
+                            <img
+                              className="item-1st"
+                              src={sport.image1}
+                              alt={sport.name}
+                              style={transformStyles[`item-${idx}-img1`]}
+                            />
+                            <img
+                              className="item-2nd"
+                              src={sport.image2}
+                              alt={sport.name}
+                              style={transformStyles[`item-${idx}-img2`]}
+                            />
+                            <img
+                              className="item-3rd"
+                              src={sport.image3}
+                              alt={sport.name}
+                              style={transformStyles[`item-${idx}-img3`]}
+                            />
+                          </div>
+                          <p>{sport.name}</p>
+                        </a>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <button
                   className="arrow-next"
-                  disabled={
-                    subNavIndex + visibleItems >= sportSubNavItems.length
+                  onClick={() =>
+                    setSubNavIndex(Math.min(sports.length - 4, subNavIndex + 1))
                   }
-                  onClick={nextSubNav}
+                  disabled={subNavIndex >= sports.length - 4}
                 >
                   <FaChevronRight />
                 </button>
@@ -234,31 +274,52 @@ const MainNav: React.FC = () => {
           )}
         </li>
         <li className="nav-item">
-          <a href="/casino/">ক্যাসিনো</a>
+          <a href="#live-casino">
+            <MdCasino className="nav-icon" />
+            লাইভ ক্যাসিনো
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/slot/">স্লট</a>
+          <a href="#casino">
+            <MdCasino className="nav-icon" />
+            ক্যাসিনো
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/table/">টেবিল</a>
+          <a href="#slots">
+            <RiGamepadFill className="nav-icon" />
+            স্লট
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/fishing/">ফিশিং</a>
+          <a href="#games">
+            <RiGamepadFill className="nav-icon" />
+            গেমস
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/crash/">ক্রাশ</a>
+          <a href="#poker">
+            <GiPokerHand className="nav-icon" />
+            পোকার
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/arcade/">আর্কেড</a>
+          <a href="#lottery">
+            <BsFillTrophyFill className="nav-icon" />
+            লটারি
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/lottery/">লটারি</a>
+          <a href="#vip">
+            <RiVipDiamondFill className="nav-icon" />
+            VIP
+          </a>
         </li>
         <li className="nav-item">
-          <a href="/promotions.jsp">প্রমোশনাল অফার</a>
-        </li>
-        <li className="nav-item">
-          <a href="/vip/">ভিআইপি</a>
+          <a href="#promotions">
+            <MdLiveTv className="nav-icon" />
+            প্রমোশন
+          </a>
         </li>
         <li className="nav-item">
           <a href="/referral/">রেফারেল</a>
