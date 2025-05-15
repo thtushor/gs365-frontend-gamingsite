@@ -18,6 +18,7 @@ import { HeroV2 } from "../components/Hero/HeroV2";
 import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
 import GameGrid from "../components/GameGrid";
+import Sponsors from "../components/Sponsors";
 // import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
 
 const HomePage: React.FC = () => {
@@ -54,6 +55,8 @@ const HomePage: React.FC = () => {
       {/* <ProviderGames games={providerGames} /> */}
 
       <GameGrid />
+
+      <Sponsors />
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
       <GameSlider title="LIVE CASINO" games={liveGames} />
