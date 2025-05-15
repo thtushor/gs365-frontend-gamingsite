@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import "./MainNav.scss";
-import { FaHome, FaMobileAlt, FaAngleDown } from "react-icons/fa";
+import {
+  FaHome,
+  FaMobileAlt,
+  FaAngleDown,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 
 interface SubNavItem {
   title: string;
@@ -13,6 +19,46 @@ interface SubNavItem {
 
 const MainNav: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [transformStyles, setTransformStyles] = useState<{
+    [key: number]: React.CSSProperties;
+  }>({});
+
+  const handleMouseMove = (e: React.MouseEvent, index: number) => {
+    const card = e.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x position within the element
+    const y = e.clientY - rect.top; // y position within the element
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation based on mouse position
+    // Further from center = more rotation
+    const rotateY = ((x - centerX) / centerX) * 15; // max 15 degrees
+    const rotateX = -((y - centerY) / centerY) * 10; // max 10 degrees
+
+    const style: React.CSSProperties = {
+      transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`,
+      transition: "transform 0.1s ease",
+    };
+
+    setTransformStyles({
+      ...transformStyles,
+      [index]: style,
+    });
+  };
+
+  const handleMouseLeave = (index: number) => {
+    // Reset to default style with a smoother transition
+    setTransformStyles({
+      ...transformStyles,
+      [index]: {
+        transform:
+          "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+        transition: "transform 0.5s ease",
+      },
+    });
+  };
 
   const sportSubNavItems: SubNavItem[] = [
     {
@@ -128,63 +174,45 @@ const MainNav: React.FC = () => {
                   className="arrow-prev"
                   disabled={subNavIndex === 0}
                   onClick={prevSubNav}
-                ></button>
+                >
+                  <FaChevronLeft />
+                </button>
                 <div className="sub-nav-draggable">
                   <div className="sub-nav-track">
                     {sportSubNavItems
                       .slice(subNavIndex, subNavIndex + visibleItems)
                       .map((item, index) => (
-                        <div className="sub-nav-item" key={index}>
+                        <div
+                          className={`sub-nav-item ${
+                            index === 0 ? "first-item" : ""
+                          }`}
+                          key={index}
+                        >
                           <span>{item.title}</span>
                           <a href={item.href || "#"} data-vendor={item.vendor}>
                             <div
                               className="item-box"
-                              style={{
-                                transform:
-                                  index === 0
-                                    ? "perspective(400px) rotateX(12.57deg) rotateY(-8.51deg) scale3d(1.08, 1.08, 1.08)"
-                                    : "",
-                              }}
+                              onMouseMove={(e) => handleMouseMove(e, index)}
+                              onMouseLeave={() => handleMouseLeave(index)}
+                              style={transformStyles[index]}
                             >
-                              <img
-                                className="item-1st"
-                                src={item.img1}
-                                alt={`${item.vendor} Betting`}
-                                style={
-                                  index === 0
-                                    ? {
-                                        transform:
-                                          "perspective(600px) scale3d(1.1, 1.1, 1.1)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              <img
-                                className="item-2nd"
-                                src={item.img2}
-                                alt={`${item.vendor} Betting`}
-                                style={
-                                  index === 0
-                                    ? {
-                                        transform:
-                                          "perspective(600px) scale3d(1.05, 1.05, 1.05) translate(4.19px, -2.84px)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              <img
-                                className="item-3rd"
-                                src={item.img3}
-                                alt={`${item.vendor} Betting`}
-                                style={
-                                  index === 0
-                                    ? {
-                                        transform:
-                                          "perspective(1800px) scale3d(1.02, 1.02, 1.02) translate(12.57px, -8.51px)",
-                                      }
-                                    : {}
-                                }
-                              />
+                              <div className="item-inner">
+                                <img
+                                  className="item-1st"
+                                  src={item.img1}
+                                  alt={`${item.vendor} Betting`}
+                                />
+                                <img
+                                  className="item-2nd"
+                                  src={item.img2}
+                                  alt={`${item.vendor} Betting`}
+                                />
+                                <img
+                                  className="item-3rd"
+                                  src={item.img3}
+                                  alt={`${item.vendor} Betting`}
+                                />
+                              </div>
                             </div>
                             <p>এখনি খেলুন</p>
                           </a>
@@ -198,7 +226,9 @@ const MainNav: React.FC = () => {
                     subNavIndex + visibleItems >= sportSubNavItems.length
                   }
                   onClick={nextSubNav}
-                ></button>
+                >
+                  <FaChevronRight />
+                </button>
               </div>
             </div>
           )}

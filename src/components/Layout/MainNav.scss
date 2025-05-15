@@ -94,22 +94,23 @@
             padding: 0;
             transition: all 0.2s ease;
             position: relative;
+            color: #ffd700;
+
+            svg {
+              font-size: 14px;
+            }
 
             &:disabled {
               opacity: 0.5;
               cursor: not-allowed;
+              color: #888;
             }
 
             &:not(:disabled):hover {
               background-color: rgba(0, 0, 0, 0.8);
               border-color: #ffd700;
-            }
-
-            &::before {
-              content: "";
-              border-style: solid;
-              border-width: 6px;
-              position: absolute;
+              color: #ffea80;
+              transform: scale(1.1);
             }
           }
 
@@ -132,6 +133,7 @@
               display: flex;
               padding: 10px 0;
               transition: transform 0.3s ease;
+              perspective: 1000px;
             }
           }
         }
@@ -141,6 +143,8 @@
           width: 220px;
           padding: 0 10px;
           text-align: center;
+          transition: transform 0.5s ease;
+          transform-style: preserve-3d;
 
           span {
             display: block;
@@ -148,6 +152,7 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
           }
 
           a {
@@ -156,33 +161,80 @@
             border: none;
             margin: 0;
             text-decoration: none;
-
-            &:hover .item-box {
-              transform: perspective(400px) rotateX(12.57deg) rotateY(-8.51deg)
-                scale3d(1.08, 1.08, 1.08) !important;
-              z-index: 2;
-
-              .item-1st {
-                transform: perspective(600px) scale3d(1.1, 1.1, 1.1) !important;
-              }
-
-              .item-2nd {
-                transform: perspective(600px) scale3d(1.05, 1.05, 1.05)
-                  translate(4.19px, -2.84px) !important;
-              }
-
-              .item-3rd {
-                transform: perspective(1800px) scale3d(1.02, 1.02, 1.02)
-                  translate(12.57px, -8.51px) !important;
-              }
-            }
+            transform-style: preserve-3d;
+            perspective: 1000px;
 
             .item-box {
               position: relative;
               width: 100%;
               height: 150px;
               margin-bottom: 10px;
-              transition: all 0.5s ease;
+              transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+              transform-style: preserve-3d;
+              perspective: 1000px;
+              cursor: pointer;
+              will-change: transform;
+
+              &::before {
+                content: "";
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+                border-radius: 15px;
+                background: linear-gradient(
+                  45deg,
+                  transparent,
+                  transparent,
+                  transparent,
+                  #ffd700
+                );
+                z-index: 1;
+                transform: scale(0.98) translateZ(-5px);
+                transition: all 0.6s ease;
+                opacity: 0;
+                pointer-events: none;
+              }
+
+              &:hover {
+                z-index: 10;
+
+                &::before {
+                  opacity: 1;
+                  transform: scale(1.03) translateZ(-5px);
+                  background: linear-gradient(
+                    45deg,
+                    #ffd700,
+                    transparent,
+                    #ffd700,
+                    transparent
+                  );
+                  animation: goldRing 1.5s linear infinite;
+                }
+
+                .item-1st {
+                  transform: translateZ(25px) !important;
+                  box-shadow: 0 25px 35px rgba(0, 0, 0, 0.5);
+                }
+
+                .item-2nd {
+                  transform: translateZ(15px) translateX(8px) translateY(-5px) !important;
+                  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+                }
+
+                .item-3rd {
+                  transform: translateZ(5px) translateX(15px) translateY(-10px) !important;
+                  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+                }
+              }
+
+              .item-inner {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+              }
 
               img {
                 position: absolute;
@@ -192,20 +244,29 @@
                 height: 100%;
                 object-fit: cover;
                 border-radius: 10px;
-                transition: all 0.5s ease;
+                transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                will-change: transform, box-shadow;
               }
 
               .item-1st {
                 z-index: 3;
+                transform: translateZ(0);
+                transition: transform 0.2s ease;
               }
 
               .item-2nd {
                 z-index: 2;
+                transform: translateZ(-10px);
+                transition: transform 0.2s ease;
               }
 
               .item-3rd {
                 z-index: 1;
+                transform: translateZ(-20px);
+                transition: transform 0.2s ease;
               }
             }
 
@@ -213,16 +274,33 @@
               margin: 0;
               color: #fff;
               font-size: 14px;
-              transition: color 0.2s ease;
+              transition: color 0.2s ease, transform 0.3s ease;
             }
 
             &:hover p {
               color: #ffd700;
+              transform: translateY(2px) scale(1.05);
             }
+          }
+
+          &:hover {
+            transform: translateY(-5px);
           }
         }
       }
     }
+  }
+}
+
+@keyframes goldRing {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
   }
 }
 
@@ -234,6 +312,67 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// First item should always have the 3D effect
+.main-nav
+  .nav-inner
+  .nav-item
+  .sub-nav-slide
+  .sub-nav-item.first-item
+  .item-box {
+  z-index: 5;
+}
+
+.main-nav
+  .nav-inner
+  .nav-item
+  .sub-nav-slide
+  .sub-nav-item.first-item
+  .item-box
+  .item-1st {
+  transform: translateZ(15px);
+}
+
+.main-nav
+  .nav-inner
+  .nav-item
+  .sub-nav-slide
+  .sub-nav-item.first-item
+  .item-box
+  .item-2nd {
+  transform: translateZ(5px) translateX(8px) translateY(-5px);
+}
+
+.main-nav
+  .nav-inner
+  .nav-item
+  .sub-nav-slide
+  .sub-nav-item.first-item
+  .item-box
+  .item-3rd {
+  transform: translateZ(-5px) translateX(15px) translateY(-10px);
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes rotateAnimation {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
   }
 }
 
