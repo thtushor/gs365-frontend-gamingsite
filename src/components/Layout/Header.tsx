@@ -16,26 +16,11 @@ const sliderSettings = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 2,
+  slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 3000,
   arrows: false,
-  responsive: [
-    {
-      breakpoint: 900,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-        autoplaySpeed: 2000,
-      },
-    },
-  ],
 };
 
 const Header: React.FC = () => {
@@ -51,17 +36,18 @@ const Header: React.FC = () => {
                   <img
                     src={img}
                     alt={`sponsor-${idx}`}
-                    className="sponsor-img static-sponsor"
+                    className="sponsor-img"
                   />
                 </div>
               ))}
             </Slider>
           </div>
         </div>
+        <div className="header-center">{/* Empty center section */}</div>
         <div className="header-right">
           <button className="login-btn">লগইন</button>
           <button className="signup-btn">সাইন আপ</button>
-          <div className="country-select">
+          <div className="country-flag-container">
             <img
               src="https://img.b112j.com/bj/h5/assets/v3/images/icon-set/flag-type/BD.png"
               alt="Bangladesh Flag"

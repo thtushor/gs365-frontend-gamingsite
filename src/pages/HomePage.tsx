@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { GameSlider } from "../components/GameSlider/GameSlider";
 // import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 import { NoticeBoard } from "../components/Notice/NoticeBoard";
-import { FAQ } from "../components/FAQ/FAQ";
+// import { FAQ } from "../components/FAQ/FAQ";
 import {
   // crashGames,
   // gamesData,
@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
       <GameSlider title="TRENDING NOW" games={popularGames} />
       <GameSlider title="NEW RELEASES" games={newGames} />
       <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
-      <FAQ />
+      {/* <FAQ /> */}
     </div>
   );
 };
