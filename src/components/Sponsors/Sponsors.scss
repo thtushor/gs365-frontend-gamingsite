@@ -122,18 +122,18 @@
     display: flex;
     justify-content: center;
     margin: 5px 0;
-    height: 22px;
+    height: 28px;
     overflow: hidden;
 
     .signature {
-      width: 70px;
-      height: 30px;
+      width: 100px;
+      height: 40px;
       background: transparent;
-      opacity: 0.8;
+      opacity: 0.9;
       object-fit: contain;
       border-radius: 0;
-      transform: translateY(-3px);
-      filter: brightness(1.2);
+      transform: translateY(-5px) scale(1.2);
+      filter: brightness(1.5) contrast(1.2);
     }
   }
 

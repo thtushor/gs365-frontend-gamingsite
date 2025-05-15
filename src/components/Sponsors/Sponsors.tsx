@@ -89,8 +89,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     id: "mia-khalifa",
     name: "Mia Khalifa",
     years: "২০২৪",
-    signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/mia-khalifa.svg",
+    signature: "https://signature.freefire-name.com/img.php?f=2&t=Mia+Khalifa",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/afc-bournemouth.png",
   },
@@ -99,7 +98,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     name: "Kevin Pietersen",
     years: "২০২৪ - ২০২৫",
     signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/kevin-pietersen.svg",
+      "https://signature.freefire-name.com/img.php?f=2&t=Kevin+Pietersen",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/bologna-fc-1909.png",
   },
@@ -107,8 +106,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     id: "amy-jackson",
     name: "Amy Jackson",
     years: "২০২৩ - ২০২৪",
-    signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/amy-jackson.svg",
+    signature: "https://signature.freefire-name.com/img.php?f=2&t=Amy+Jackson",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/quetta-gladiators.png",
   },
@@ -117,7 +115,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     name: "Hansika Motwani",
     years: "২০২৩ - ২০২৪",
     signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/hansika-motwani.svg",
+      "https://signature.freefire-name.com/img.php?f=2&t=Hansika+Motwani",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/sunrisers-eastern-cape.png",
   },
@@ -125,8 +123,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     id: "wasim-akram",
     name: "Wasim Akram",
     years: "২০২৪ - ২০২৫",
-    signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/wasim-akram.svg",
+    signature: "https://signature.freefire-name.com/img.php?f=2&t=Wasim+Akram",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/deccan-gladiators.png",
   },
@@ -134,8 +131,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     id: "chan-samart",
     name: "Chan Samart",
     years: "২০২৪ - ২০২৫",
-    signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/chan-samart.svg",
+    signature: "https://signature.freefire-name.com/img.php?f=2&t=Chan+Samart",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/st-kitts-and-nevis-patriots.png",
   },
@@ -144,7 +140,7 @@ const ambassadorsList: BrandAmbassadorItem[] = [
     name: "Keya Akter Payel",
     years: "২০২৫",
     signature:
-      "https://img.b112j.com/bj/h5/assets/v3/images/sign/keya-akter-payel.svg",
+      "https://signature.freefire-name.com/img.php?f=2&t=Keya+Akter+Payel",
     image:
       "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/biratnagar-kings.png",
   },
