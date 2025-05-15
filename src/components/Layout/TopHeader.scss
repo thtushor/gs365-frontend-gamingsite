@@ -1,0 +1,138 @@
+.top-header {
+  width: 100%;
+  background-color: #0a0a0a;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  padding: 8px 0;
+  color: #cccccc;
+  font-size: 13px;
+
+  .top-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+  }
+
+  .top-header-time {
+    font-family: monospace;
+    font-size: 13px;
+    color: #cccccc;
+
+    @media (max-width: 768px) {
+      order: 1;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+
+  .language-wrap {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      order: 2;
+    }
+
+    .language {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      img {
+        width: 18px;
+        height: 18px;
+        margin-right: 6px;
+        border-radius: 2px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #cccccc;
+
+        span {
+          color: #ffd700;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .header-online-service {
+    @media (max-width: 768px) {
+      order: 3;
+      width: 100%;
+    }
+
+    .online-service-inner {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      gap: 10px;
+
+      @media (max-width: 768px) {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      li {
+        margin: 0;
+      }
+
+      .service-link {
+        display: flex;
+        align-items: center;
+        color: #cccccc;
+        text-decoration: none;
+        font-size: 13px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        transition: all 0.3s;
+
+        &:hover {
+          color: #ffd700;
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .service-icon {
+          font-size: 14px;
+          margin-right: 5px;
+        }
+
+        &.whatsapp-link:hover {
+          color: #25d366;
+        }
+
+        &.email-link:hover {
+          color: #ffd700;
+        }
+
+        &.facebook-link:hover {
+          color: #1877f2;
+        }
+
+        &.forum-link:hover {
+          color: #ffd700;
+        }
+      }
+    }
+  }
+}
