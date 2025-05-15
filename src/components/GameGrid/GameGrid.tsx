@@ -122,6 +122,9 @@ const GameGrid: React.FC = () => {
   const [filteredGames, setFilteredGames] = useState<GameItem[]>(demoGames);
   const [isLoading, setIsLoading] = useState(true);
   const [animateCards, setAnimateCards] = useState(false);
+  const [visibleGames, setVisibleGames] = useState<GameItem[]>([]);
+  const [gamesPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     // Simulate loading
@@ -135,6 +138,7 @@ const GameGrid: React.FC = () => {
 
   useEffect(() => {
     setAnimateCards(false);
+    setCurrentPage(1); // Reset to first page when category changes
 
     // Filter games based on selected category
     const timer = setTimeout(() => {
@@ -151,6 +155,12 @@ const GameGrid: React.FC = () => {
     return () => clearTimeout(timer);
   }, [activeCategory]);
 
+  useEffect(() => {
+    // Update visible games based on current page
+    const lastIndex = currentPage * gamesPerPage;
+    setVisibleGames(filteredGames.slice(0, lastIndex));
+  }, [filteredGames, currentPage, gamesPerPage]);
+
   const handleCategoryChange = (categoryId: string) => {
     setActiveCategory(categoryId);
   };
@@ -159,6 +169,15 @@ const GameGrid: React.FC = () => {
     console.log(`Game clicked: ${gameId}`);
     // Here you could implement logic to launch the game
   };
+
+  const handleLoadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const progressPercentage = Math.min(
+    (visibleGames.length / filteredGames.length) * 100,
+    100
+  );
 
   if (isLoading) {
     return (
@@ -187,7 +206,7 @@ const GameGrid: React.FC = () => {
       </div>
 
       <div className={`game-grid ${animateCards ? "animate-in" : ""}`}>
-        {filteredGames.map((game, index) => (
+        {visibleGames.map((game, index) => (
           <div
             key={game.id}
             className="game-card"
@@ -212,6 +231,24 @@ const GameGrid: React.FC = () => {
 
       {filteredGames.length === 0 && (
         <div className="no-games-message">No games found in this category.</div>
+      )}
+
+      {visibleGames.length < filteredGames.length && (
+        <div className="load-more-container">
+          <button className="load-more-btn" onClick={handleLoadMore}>
+            আরও লোড করুন
+          </button>
+          <div className="progress-container">
+            <div
+              className="progress-bar"
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
+          <div className="progress-text">
+            {filteredGames.length}টি গেমের মধ্যে {visibleGames.length}টি দেখানো
+            হয়েছে
+          </div>
+        </div>
       )}
     </div>
   );

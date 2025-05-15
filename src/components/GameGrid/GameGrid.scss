@@ -213,6 +213,61 @@
   font-size: 1.1rem;
 }
 
+.load-more-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.load-more-btn {
+  background: #262626;
+  color: white;
+  border: none;
+  padding: 0.7rem 2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+
+  &:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.progress-container {
+  width: 100%;
+  max-width: 300px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-bottom: 0.7rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #3cb371, #00b060);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
 // Mobile optimization
 @media (max-width: 480px) {
   .game-grid-container {
@@ -267,5 +322,18 @@
   .game-provider-tag {
     font-size: 0.6rem;
     padding: 0.2rem 0.4rem;
+  }
+
+  .load-more-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .progress-container {
+    max-width: 250px;
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
   }
 }
