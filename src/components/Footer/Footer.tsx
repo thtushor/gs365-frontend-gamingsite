@@ -174,8 +174,33 @@ export const Footer: React.FC = () => {
           <div className="payment-methods">
             <img src="/payments/visa.png" alt="Visa" />
             <img src="/payments/mastercard.png" alt="Mastercard" />
-            <img src="/payments/americanexpress.png" alt="americanexpress" />
-            {/* Add more payment methods */}
+            <img src="/payments/americanexpress.png" alt="American Express" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Skrill_logo.svg/640px-Skrill_logo.svg.png"
+              alt="Skrill"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Neteller.svg/2560px-Neteller.svg.png"
+              alt="Neteller"
+            />
+            <img
+              src="https://icon2.cleanpng.com/20180804/uqu/8763d2bc06870bbba5ad66bff9273690.webp"
+              alt="PayPal"
+            />
+            <img src="https://pngimg.com/d/bitcoin_PNG35.png" alt="Bitcoin" />
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW5ayzOGf4LF-EBxrjFixKlHRoLKQunLF7cQ&s"
+              alt="Ethereum"
+            />
+            <img
+              src="https://download.logo.wine/logo/JCB_(company)/JCB_(company)-Logo.wine.png"
+              alt="JCB"
+            />
+            <img
+              src="https://e7.pngegg.com/pngimages/925/4/png-clipart-logo-unionpay-credit-card-atm-card-bank-card-credit-card-text-payment.png"
+              alt="UnionPay"
+            />
+            {/* Add more as needed */}
           </div>
           <div className="footer-text">
             <p>
