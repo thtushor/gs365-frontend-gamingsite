@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopHeader from "./TopHeader";
 import MainNav from "./MainNav";
+// import SeoSection from "./SeoSection";
 
 const sponsorImages = [
   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/biratnagar-kings.png",
@@ -29,6 +30,7 @@ const Header: React.FC = () => {
   return (
     <>
       <TopHeader />
+
       <header className="custom-header">
         <div className="header-inner">
           <div className="header-left">

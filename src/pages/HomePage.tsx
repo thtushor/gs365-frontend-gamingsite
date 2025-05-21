@@ -9,6 +9,8 @@ import {
   // liveGames,
   // newGames,
   notices,
+  seoContent,
+  seoTitle,
   // popularGames,
   // slotGames,
 } from "../lib/mock";
@@ -19,6 +21,7 @@ import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
 import GameGrid from "../components/GameGrid";
 import Sponsors from "../components/Sponsors";
+import SeoSection from "../components/Layout/SeoSection";
 // import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
 
 const HomePage: React.FC = () => {
@@ -55,7 +58,7 @@ const HomePage: React.FC = () => {
       {/* <ProviderGames games={providerGames} /> */}
 
       <GameGrid />
-
+      <SeoSection title={seoTitle} content={seoContent} />
       <Sponsors />
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />

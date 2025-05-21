@@ -29,7 +29,7 @@ const App: React.FC = () => {
     // Simulate loading time for resources
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 5000); // Show loader for 2 seconds
+    }, 3000); // Show loader for 2 seconds
 
     return () => clearTimeout(timer);
   }, []);
@@ -44,6 +44,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/deposit" element={<Deposit />} />
+          <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

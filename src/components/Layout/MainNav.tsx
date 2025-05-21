@@ -198,7 +198,7 @@ const MainNav: React.FC = () => {
         </li>
         <li className={`nav-item ${openSubNav === 0 ? "active" : ""}`}>
           <a
-            href="#sports"
+            href="/sports"
             onClick={(e) => {
               e.preventDefault();
               handleNavToggle(0);
@@ -228,7 +228,7 @@ const MainNav: React.FC = () => {
                     {displayItems().map((sport, idx) => (
                       <div className="sub-nav-item" key={idx}>
                         <span>{sport.name}</span>
-                        <a href={`#${sport.name}`}>
+                        <a href={`/${sport.name}`}>
                           <div
                             className="item-box"
                             style={transformStyles[`item-${idx}`]}
@@ -274,49 +274,49 @@ const MainNav: React.FC = () => {
           )}
         </li>
         <li className="nav-item">
-          <a href="#live-casino">
+          <a href="/live-casino">
             <MdCasino className="nav-icon" />
             লাইভ ক্যাসিনো
           </a>
         </li>
         <li className="nav-item">
-          <a href="#casino">
+          <a href="/casino">
             <MdCasino className="nav-icon" />
             ক্যাসিনো
           </a>
         </li>
         <li className="nav-item">
-          <a href="#slots">
+          <a href="/slots">
             <RiGamepadFill className="nav-icon" />
             স্লট
           </a>
         </li>
         <li className="nav-item">
-          <a href="#games">
+          <a href="/games">
             <RiGamepadFill className="nav-icon" />
             গেমস
           </a>
         </li>
         <li className="nav-item">
-          <a href="#poker">
+          <a href="/poker">
             <GiPokerHand className="nav-icon" />
             পোকার
           </a>
         </li>
         <li className="nav-item">
-          <a href="#lottery">
+          <a href="/lottery">
             <BsFillTrophyFill className="nav-icon" />
             লটারি
           </a>
         </li>
         <li className="nav-item">
-          <a href="#vip">
+          <a href="/vip">
             <RiVipDiamondFill className="nav-icon" />
             VIP
           </a>
         </li>
         <li className="nav-item">
-          <a href="#promotions">
+          <a href="/promotions">
             <MdLiveTv className="nav-icon" />
             প্রমোশন
           </a>
