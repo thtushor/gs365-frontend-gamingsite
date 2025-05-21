@@ -19,8 +19,25 @@ import HomePage from "./pages/HomePage";
 // import { Navbar } from "./components/Navbar/Navbar";
 import Layout from "./components/Layout/Layout";
 import "./components/Layout/Layout.scss";
+import React, { useState, useEffect } from "react";
+import LoadingScreen from "./components/Loader/LoadingScreen";
 
-function App() {
+const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time for resources
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000); // Show loader for 2 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <BrowserRouter>
       <Layout>
@@ -31,6 +48,6 @@ function App() {
       </Layout>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
