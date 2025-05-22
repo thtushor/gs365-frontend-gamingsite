@@ -22,6 +22,7 @@ import "./components/Layout/Layout.scss";
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./components/Loader/LoadingScreen";
 import Register from "./pages/Register";
+import VipPage from "./pages/VipPage";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +47,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/vip" element={<VipPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
