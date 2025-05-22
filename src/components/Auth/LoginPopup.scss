@@ -4,89 +4,122 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 7000;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
   .pop-wrap {
-    background-color: #ffffff; /* White background for the popup */
-    border-radius: 8px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     width: 90%;
-    max-width: 400px; /* Max width for the popup */
+    max-width: 420px;
+    animation: slideUp 0.3s ease;
+    border: 1px solid rgba(255, 215, 0, 0.1);
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 
     .pop-title {
-      background-color: #28a745; /* Green header background */
-      color: #ffffff;
-      padding: 15px 20px;
+      background: linear-gradient(90deg, #ffd700 0%, #ffa500 100%);
+      color: #000000;
+      padding: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
 
       h3 {
         margin: 0;
-        font-size: 20px;
+        font-size: 22px;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
 
       .btn-close {
-        background: none;
+        background: rgba(0, 0, 0, 0.1);
         border: none;
-        color: #ffffff;
-        font-size: 24px;
+        color: #000000;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
         cursor: pointer;
-        padding: 0;
-        /* Simple X icon using pseudo-elements or an SVG/icon font */
-        position: relative;
-        width: 20px;
-        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.2);
+          transform: rotate(90deg);
+        }
 
         &::before,
         &::after {
           content: "";
           position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 2px;
-          height: 20px;
-          background-color: #ffffff;
+          width: 16px;
+          height: 2px;
+          background-color: #000000;
+          transition: all 0.3s ease;
         }
 
         &::before {
-          transform: translate(-50%, -50%) rotate(45deg);
+          transform: rotate(45deg);
         }
 
         &::after {
-          transform: translate(-50%, -50%) rotate(-45deg);
+          transform: rotate(-45deg);
         }
       }
     }
 
     .pop-inner {
-      padding: 20px;
+      padding: 24px;
+      min-height: 400px;
 
       .input-slides {
-        transition: height 0.3s ease; /* Smooth transition for height */
+        transition: height 0.3s ease;
 
         .input-login,
         .input-forget {
-          /* Basic form styling */
           form {
             ul.input-group {
               list-style: none;
               padding: 0;
-              margin: 0 0 20px 0;
+              margin: 0 0 24px 0;
 
               li {
-                margin-bottom: 15px;
+                margin-bottom: 20px;
 
                 label {
                   display: block;
-                  margin-bottom: 5px;
-                  font-weight: bold;
-                  color: #555; /* Darker label color */
+                  margin-bottom: 8px;
+                  font-weight: 500;
+                  color: #ffd700;
+                  font-size: 14px;
                 }
 
                 .input-icon-type {
@@ -96,29 +129,49 @@
 
                   i {
                     position: absolute;
-                    left: 10px;
-                    color: #888; /* Icon color */
+                    left: 12px;
+                    color: #ffd700;
+                    font-size: 18px;
                   }
 
                   input[type="text"],
                   input[type="password"],
                   input[type="email"] {
                     width: 100%;
-                    padding: 10px 10px 10px 35px; /* Adjust padding for icon */
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    font-size: 16px;
+                    padding: 12px 12px 12px 40px;
+                    border: 1px solid rgba(255, 215, 0, 0.2);
+                    border-radius: 8px;
+                    font-size: 14px;
+                    background: rgba(255, 215, 0, 0.05);
+                    color: #ffffff;
+                    transition: all 0.3s ease;
+
+                    &:focus {
+                      outline: none;
+                      border-color: #ffd700;
+                      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+                    }
+
+                    &::placeholder {
+                      color: rgba(255, 215, 0, 0.4);
+                    }
                   }
 
                   .eyes {
-                    /* Placeholder for password eye icon */
                     position: absolute;
-                    right: 10px;
-                    width: 20px;
-                    height: 20px;
-                    background-color: #ccc; /* Placeholder color */
+                    right: 12px;
+                    width: 24px;
+                    height: 24px;
                     cursor: pointer;
-                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #ffd700;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                      color: #ffed4a;
+                    }
                   }
                 }
               }
@@ -127,12 +180,14 @@
             .link.forget {
               display: block;
               text-align: right;
-              margin-bottom: 20px;
-              color: #007bff; /* Link color */
+              margin-bottom: 24px;
+              color: #ffd700;
               text-decoration: none;
               font-size: 14px;
+              transition: all 0.3s ease;
 
               &:hover {
+                color: #ffed4a;
                 text-decoration: underline;
               }
             }
@@ -140,42 +195,49 @@
             .btn-default-xs {
               display: block;
               width: 100%;
-              padding: 12px;
-              background: linear-gradient(
-                45deg,
-                #ffd700,
-                #ff8c00
-              ); /* Golden gradient */
-              color: #1a1a1a; /* Dark text */
+              padding: 14px;
+              background: linear-gradient(90deg, #ffd700 0%, #ffa500 100%);
+              color: #000000;
               border: none;
-              border-radius: 4px;
-              font-size: 18px;
-              font-weight: bold;
+              border-radius: 8px;
+              font-size: 16px;
+              font-weight: 600;
               cursor: pointer;
               transition: all 0.3s ease;
               text-align: center;
+              margin: 24px 0;
+              text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
               &:hover {
-                background: linear-gradient(
-                  45deg,
-                  #ff8c00,
-                  #ffd700
-                ); /* Reverse gradient on hover */
-                box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+                transform: translateY(-1px);
+                background: linear-gradient(90deg, #ffed4a 0%, #ffd700 100%);
+                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+              }
+
+              &:active {
+                transform: translateY(0);
               }
             }
 
             p {
               text-align: center;
-              margin-top: 20px;
-              color: #555; /* Darker text color */
+              margin: 20px 0;
+              padding: 0 10px;
+              color: rgba(255, 215, 0, 0.7);
+              font-size: 14px;
+              line-height: 1.5;
 
               .link {
-                color: #007bff; /* Link color */
+                color: #ffd700;
                 text-decoration: none;
-                font-weight: bold;
+                font-weight: 600;
+                margin-left: 4px;
+                transition: all 0.3s ease;
+                display: inline-block;
+                padding: 2px 0;
 
                 &:hover {
+                  color: #ffed4a;
                   text-decoration: underline;
                 }
               }
@@ -183,12 +245,11 @@
           }
         }
 
-        /* Forget password specific styles */
         .input-forget {
           .tab-primary-box {
             display: flex;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            margin-bottom: 24px;
             position: relative;
 
             ul {
@@ -204,73 +265,72 @@
 
                 a {
                   display: block;
-                  padding: 10px 0;
+                  padding: 12px 0;
                   text-decoration: none;
-                  color: #555; /* Default tab color */
-                  font-weight: bold;
-                  transition: color 0.3s ease;
+                  color: rgba(255, 215, 0, 0.6);
+                  font-weight: 500;
+                  transition: all 0.3s ease;
+                  font-size: 14px;
 
                   &:hover {
-                    color: #000;
+                    color: #ffd700;
                   }
                 }
 
                 &.active a {
-                  color: #000; /* Active tab color */
+                  color: #ffd700;
                 }
               }
             }
 
             .slider-tab {
               position: absolute;
-              bottom: -2px; /* Align with bottom border */
+              bottom: -1px;
               height: 2px;
-              background-color: #ffd700; /* Golden slider */
-              transition: transform 0.3s ease; /* Smooth slide transition */
+              background: linear-gradient(90deg, #ffd700 0%, #ffa500 100%);
+              transition: transform 0.3s ease;
             }
           }
 
-          .main-tab-content {
-            .tab-pane {
-              /* Content for each tab */
-            }
-          }
+          .phone-info {
+            display: flex;
+            gap: 12px;
 
-          .link.forget {
-            margin-bottom: 10px; /* Adjust margin */
+            .phone-area-code {
+              width: 120px;
+              flex-shrink: 0;
+
+              .lang-select {
+                .btn-select {
+                  width: 100%;
+                  padding: 12px;
+                  background: rgba(255, 215, 0, 0.05);
+                  border: 1px solid rgba(255, 215, 0, 0.2);
+                  border-radius: 8px;
+                  color: #ffffff;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+
+                  &:hover {
+                    background: rgba(255, 215, 0, 0.1);
+                    border-color: #ffd700;
+                  }
+
+                  img {
+                    width: 20px;
+                    height: 15px;
+                    object-fit: cover;
+                    border-radius: 2px;
+                  }
+                }
+              }
+            }
           }
         }
       }
-
-      /* Placeholder styles for fail/lock popups */
-      .fail-pop {
-        /* styles */
-      }
-
-      .login-lock-pop {
-        /* styles */
-      }
     }
   }
-
-  /* Optional: Animation for popup entry/exit */
-  /*
-  &.entering,
-  &.entered {
-    opacity: 1;
-    .pop-wrap {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  &.exiting,
-  &.exited {
-    opacity: 0;
-    .pop-wrap {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-  }
-  */
 }

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { Logo } from "../Logo/Logo";
 import Slider from "react-slick";
@@ -6,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopHeader from "./TopHeader";
 import MainNav from "./MainNav";
+import LoginPopup from "../Auth/LoginPopup";
 // import SeoSection from "./SeoSection";
 
 const sponsorImages = [
@@ -27,6 +29,17 @@ const sliderSettings = {
 };
 
 const Header: React.FC = () => {
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    setIsLoginPopupOpen(true);
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
+
   return (
     <>
       <TopHeader />
@@ -51,8 +64,12 @@ const Header: React.FC = () => {
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
-            <button className="login-btn">লগইন</button>
-            <button className="signup-btn">সাইন আপ</button>
+            <button className="login-btn" onClick={handleLoginClick}>
+              লগইন
+            </button>
+            <button className="signup-btn" onClick={handleRegisterClick}>
+              সাইন আপ
+            </button>
             <div className="country-flag-container">
               <img
                 src="https://img.b112j.com/bj/h5/assets/v3/images/icon-set/flag-type/BD.png"
@@ -64,6 +81,12 @@ const Header: React.FC = () => {
         </div>
       </header>
       <MainNav />
+
+      <LoginPopup
+        isOpen={isLoginPopupOpen}
+        onClose={() => setIsLoginPopupOpen(false)}
+        onSignUpClick={handleRegisterClick}
+      />
     </>
   );
 };

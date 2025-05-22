@@ -1,0 +1,286 @@
+.register-page {
+  min-height: calc(100vh - 120px);
+  background: linear-gradient(
+    169.06deg,
+    #074ce3 0%,
+    #074ce3 23.13%,
+    #042a7d 73.67%
+  );
+  padding: 20px;
+  color: #ffffff;
+
+  .register-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .register-notice {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #ffd700;
+
+    a {
+      text-decoration: none;
+      margin-left: 5px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .register-content {
+    display: flex;
+    gap: 24px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .left-register-info {
+    flex: 1;
+    min-width: 0;
+
+    .register-tab {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      li {
+        padding: 10px 20px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s ease;
+
+        &.active {
+          color: #ffffff;
+          border-bottom: 2px solid #ffd700;
+        }
+
+        &:hover {
+          color: #ffffff;
+        }
+      }
+    }
+
+    .general-register {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 20px;
+
+      form {
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0 0 20px 0;
+
+          li {
+            margin-bottom: 15px;
+
+            label {
+              display: block;
+              margin-bottom: 5px;
+              font-weight: 500;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            input[type="email"],
+            select {
+              width: 100%;
+              padding: 12px;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.1);
+              color: #ffffff;
+              font-size: 14px;
+              transition: all 0.3s ease;
+
+              &:focus {
+                outline: none;
+                border-color: #ffd700;
+                box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+              }
+
+              &::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+              }
+            }
+
+            .password-condition {
+              margin-top: 5px;
+              font-size: 12px;
+              color: rgba(255, 255, 255, 0.7);
+            }
+
+            .phone-info {
+              display: flex;
+              gap: 10px;
+
+              .phone-area-code {
+                width: 120px;
+                flex-shrink: 0;
+
+                .lang-select {
+                  .btn-select {
+                    width: 100%;
+                    padding: 12px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 4px;
+                    color: #ffffff;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    cursor: pointer;
+
+                    img {
+                      width: 20px;
+                      height: 15px;
+                      object-fit: cover;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .check-wrap {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 20px;
+
+          input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ffd700;
+          }
+
+          label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+
+            p {
+              margin: 0;
+              font-size: 14px;
+            }
+          }
+        }
+
+        .form-btn-box {
+          display: flex;
+          gap: 10px;
+          justify-content: flex-end;
+
+          button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &.btn-register-prev {
+              background: rgba(255, 255, 255, 0.1);
+              color: #ffffff;
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.2);
+              }
+            }
+
+            &.btn-register-submit,
+            &.btn-register-next {
+              background: #ffd700;
+              color: #000000;
+
+              &:hover {
+                background: #ffed4a;
+                transform: translateY(-1px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .right-register-banner {
+    width: 400px;
+    min-width: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    .banner-slide {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .banner-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.8) 0%,
+          rgba(0, 0, 0, 0) 100%
+        );
+
+        h3 {
+          margin: 0 0 8px 0;
+          font-size: 24px;
+          color: #ffffff;
+        }
+
+        p {
+          margin: 0;
+          font-size: 16px;
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+
+    // Slick slider customization
+    .slick-dots {
+      bottom: 10px;
+      z-index: 1;
+
+      li {
+        button:before {
+          color: rgba(255, 255, 255, 0.5);
+          font-size: 8px;
+        }
+
+        &.slick-active button:before {
+          color: #ffd700;
+        }
+      }
+    }
+  }
+}
