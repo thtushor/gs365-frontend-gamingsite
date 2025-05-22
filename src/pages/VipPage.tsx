@@ -4,6 +4,28 @@ import Sponsors from "../components/Sponsors";
 import { seoContent, seoTitle } from "../lib/mock";
 import { HiUserGroup, HiGift, HiCurrencyDollar } from "react-icons/hi";
 import { MdPayment } from "react-icons/md";
+import VipFilterBar from "../components/UI/VipFilterBar";
+
+const filterOptions = [
+  { label: "অল", value: "all" },
+  { label: "ওয়েলকাম অফার", value: "welcome" },
+  { label: "স্লট", value: "slot" },
+  { label: "ক্যাসিনো", value: "casino" },
+  { label: "স্পোর্ট", value: "sport" },
+  { label: "ফিশিং", value: "fishing" },
+  { label: "Card Game", value: "cardgame" },
+  { label: "ESports", value: "esports" },
+  { label: "লটারি", value: "lottery" },
+  { label: "P2P", value: "p2p" },
+  { label: "টেবিল", value: "table" },
+  { label: "আর্কেড", value: "arcade" },
+  { label: "মোরগ লড়াই", value: "cockfight" },
+  { label: "বৃষ্টি", value: "rain" },
+  { label: "ক্রাশ", value: "crash" },
+  { label: "ui.text.fe.game_type.free", value: "free" },
+  { label: "Tips", value: "tips" },
+  { label: "অন্যান্য", value: "other" },
+];
 
 const vipPrivileges = [
   {
@@ -46,6 +68,7 @@ const VipPage: React.FC = () => {
           এখনই যোগ দিন
         </button>
       </div>
+      <VipFilterBar options={filterOptions} />
       <div className="vip-privileges-section-attractive max-w-5xl mx-auto">
         <h2 className="vip-privileges-title text-2xl md:text-3xl font-bold text-yellow-200 mb-8 text-center">
           ভিআইপি এর বিশেষ সুবিধা

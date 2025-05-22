@@ -830,6 +830,27 @@ export const players = [
   { name: "Alice Brown", win: 1450, userId: "user321" },
 ];
 
+export const filterOptions = [
+  { label: "অল", value: "all" },
+  { label: "ওয়েলকাম অফার", value: "welcome" },
+  { label: "স্লট", value: "slot" },
+  { label: "ক্যাসিনো", value: "casino" },
+  { label: "স্পোর্ট", value: "sport" },
+  { label: "ফিশিং", value: "fishing" },
+  { label: "Card Game", value: "cardgame" },
+  { label: "ESports", value: "esports" },
+  { label: "লটারি", value: "lottery" },
+  { label: "P2P", value: "p2p" },
+  { label: "টেবিল", value: "table" },
+  { label: "আর্কেড", value: "arcade" },
+  { label: "মোরগ লড়াই", value: "cockfight" },
+  { label: "বৃষ্টি", value: "rain" },
+  { label: "ক্রাশ", value: "crash" },
+  { label: "ui.text.fe.game_type.free", value: "free" },
+  { label: "Tips", value: "tips" },
+  { label: "অন্যান্য", value: "other" },
+];
+
 export const seoTitle =
   "GameStar365 বাংলাদেশ - বাংলাদেশে শীর্ষ ক্র্যাশ গেম প্রদানকারীরা: উত্তেজনাপূর্ণ গেমপ্লেতে আপনার প্রবেশদ্বার";
 export const seoContent = `
