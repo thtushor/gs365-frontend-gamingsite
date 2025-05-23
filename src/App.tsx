@@ -24,6 +24,7 @@ import LoadingScreen from "./components/Loader/LoadingScreen";
 import Register from "./pages/Register";
 import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
+import Reference from "./pages/Reference";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,6 +50,8 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
+          <Route path="/promotions/:id" element={<PromotionPage />} />
+          <Route path="/referral" element={<Reference />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
