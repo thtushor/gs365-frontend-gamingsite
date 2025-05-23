@@ -57,15 +57,39 @@ const vipPrivileges = [
 const VipPage: React.FC = () => {
   return (
     <div className="vip-page bg-gray-900 min-h-screen pb-10">
-      <div className="w-full mx-auto mb-6">
-        <a href="#">
-          <div
-            className="w-full h-[200px] md:h-[500px] bg-cover bg-center bg-no-repeat rounded-lg"
-            style={{
-              backgroundImage: `url(https://lh7-rt.googleusercontent.com/docsz/AD_4nXdFErQgUQKF5vPmgWEaRlbCeln2IxGSiHJ5auC9k90TSJv8Ie57LiPR7HZA5szK75L8BEQVYd4_q1RQeUR-doAa1Y4xCrhHAFiq6lYgYeLrkezEKTc3qigsquf-AY57QNXUwR40?key=ydb9FianOk5tINzTuCEKdjdc)`,
-            }}
-          />
-        </a>
+      <div className="w-full mx-auto mb-6 relative h-[220px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+        {/* Banner Image */}
+        <img
+          src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXdFErQgUQKF5vPmgWEaRlbCeln2IxGSiHJ5auC9k90TSJv8Ie57LiPR7HZA5szK75L8BEQVYd4_q1RQeUR-doAa1Y4xCrhHAFiq6lYgYeLrkezEKTc3qigsquf-AY57QNXUwR40?key=ydb9FianOk5tINzTuCEKdjdc"
+          alt="VIP Banner"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+          <div className="flex items-center gap-2 mb-2">
+            <svg
+              className="w-10 h-10 text-yellow-400"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2l2.09 6.26L20 9.27l-5 3.64L16.18 20 12 16.77 7.82 20 9 12.91l-5-3.64 5.91-.01z" />
+            </svg>
+            <span className="text-3xl font-extrabold tracking-wide">
+              VIP Club
+            </span>
+          </div>
+          <p className="text-lg md:text-2xl font-medium mb-4">
+            Unlock exclusive rewards and privileges as a VIP member!
+          </p>
+          <a
+            href="#"
+            className="inline-block bg-yellow-400 text-black font-bold px-6 py-2 rounded-full shadow hover:bg-yellow-300 transition"
+          >
+            Join Now
+          </a>
+        </div>
       </div>
       {/* <VipFilterBar options={filterOptions} /> */}
       <div className="vip-privileges-section-attractive max-w-5xl mx-auto">

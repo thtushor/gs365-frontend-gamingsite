@@ -115,7 +115,7 @@ const Reference: React.FC = () => {
   const bannerItems: BannerItem[] = [
     {
       id: "message-message-125716",
-      imageUrl: "https://img.b112j.com/upload/announcement/image_221254.jpg",
+      imageUrl: "https://betvisa88.online/all-data/referral-web.jpg",
       link: "#",
     },
   ];
