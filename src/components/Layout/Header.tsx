@@ -47,7 +47,9 @@ const Header: React.FC = () => {
       <header className="custom-header">
         <div className="header-inner">
           <div className="header-left">
-            <Logo />
+            <div onClick={() => navigate("/")}>
+              <Logo />
+            </div>
             <div className="sponsor-slider-wrapper">
               <Slider {...sliderSettings}>
                 {sponsorImages.map((img, idx) => (

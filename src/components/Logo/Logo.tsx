@@ -1,15 +1,15 @@
 import React from "react";
 import "./Logo.scss";
-import logo from '../../assets/brand-logo.png'
+import logo from "../../assets/brand-logo.png";
 
-export const Logo: React.FC = () => {
+export const Logo: React.FC = ({ onClick }: { onClick?: () => void }) => {
   return (
-    <div className="h-[40px]">
+    <div className="h-[40px]" onClick={onClick}>
       {/* <span className="logo-text">
         G<span className="highlight">Bet</span>
-      </span> */} 
+      </span> */}
 
-      <img src={logo} className="h-full"/>
+      <img src={logo} className="h-full" />
     </div>
   );
 };
