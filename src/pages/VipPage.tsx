@@ -4,28 +4,28 @@ import Sponsors from "../components/Sponsors";
 import { seoContent, seoTitle } from "../lib/mock";
 import { HiUserGroup, HiGift, HiCurrencyDollar } from "react-icons/hi";
 import { MdPayment } from "react-icons/md";
-import VipFilterBar from "../components/UI/VipFilterBar";
+// import VipFilterBar from "../components/UI/VipFilterBar";
 
-const filterOptions = [
-  { label: "অল", value: "all" },
-  { label: "ওয়েলকাম অফার", value: "welcome" },
-  { label: "স্লট", value: "slot" },
-  { label: "ক্যাসিনো", value: "casino" },
-  { label: "স্পোর্ট", value: "sport" },
-  { label: "ফিশিং", value: "fishing" },
-  { label: "Card Game", value: "cardgame" },
-  { label: "ESports", value: "esports" },
-  { label: "লটারি", value: "lottery" },
-  { label: "P2P", value: "p2p" },
-  { label: "টেবিল", value: "table" },
-  { label: "আর্কেড", value: "arcade" },
-  { label: "মোরগ লড়াই", value: "cockfight" },
-  { label: "বৃষ্টি", value: "rain" },
-  { label: "ক্রাশ", value: "crash" },
-  { label: "ui.text.fe.game_type.free", value: "free" },
-  { label: "Tips", value: "tips" },
-  { label: "অন্যান্য", value: "other" },
-];
+// const filterOptions = [
+//   { label: "অল", value: "all" },
+//   { label: "ওয়েলকাম অফার", value: "welcome" },
+//   { label: "স্লট", value: "slot" },
+//   { label: "ক্যাসিনো", value: "casino" },
+//   { label: "স্পোর্ট", value: "sport" },
+//   { label: "ফিশিং", value: "fishing" },
+//   { label: "Card Game", value: "cardgame" },
+//   { label: "ESports", value: "esports" },
+//   { label: "লটারি", value: "lottery" },
+//   { label: "P2P", value: "p2p" },
+//   { label: "টেবিল", value: "table" },
+//   { label: "আর্কেড", value: "arcade" },
+//   { label: "মোরগ লড়াই", value: "cockfight" },
+//   { label: "বৃষ্টি", value: "rain" },
+//   { label: "ক্রাশ", value: "crash" },
+//   { label: "ui.text.fe.game_type.free", value: "free" },
+//   { label: "Tips", value: "tips" },
+//   { label: "অন্যান্য", value: "other" },
+// ];
 
 const vipPrivileges = [
   {
@@ -57,18 +57,17 @@ const vipPrivileges = [
 const VipPage: React.FC = () => {
   return (
     <div className="vip-page bg-gray-900 min-h-screen pb-10">
-      <div className="vip-hero-section text-center py-12 bg-gradient-to-r from-yellow-900 via-yellow-800 to-yellow-900 mb-10 rounded-b-3xl shadow-lg">
-        <h1 className="vip-title text-4xl md:text-5xl font-extrabold text-yellow-300 mb-4 drop-shadow-lg">
-          BAJI ভিআইপি ক্লাব
-        </h1>
-        <p className="vip-subtitle text-lg md:text-xl text-yellow-100 mb-6">
-          এখনও পর্যন্ত সবচেয়ে এক্সক্লুসিভ ভিআইপি প্রোগ্রাম
-        </p>
-        <button className="vip-join-btn bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition">
-          এখনই যোগ দিন
-        </button>
+      <div className="w-full mx-auto mb-6">
+        <a href="#">
+          <div
+            className="w-full h-[200px] md:h-[500px] bg-cover bg-center bg-no-repeat rounded-lg"
+            style={{
+              backgroundImage: `url(https://lh7-rt.googleusercontent.com/docsz/AD_4nXdFErQgUQKF5vPmgWEaRlbCeln2IxGSiHJ5auC9k90TSJv8Ie57LiPR7HZA5szK75L8BEQVYd4_q1RQeUR-doAa1Y4xCrhHAFiq6lYgYeLrkezEKTc3qigsquf-AY57QNXUwR40?key=ydb9FianOk5tINzTuCEKdjdc)`,
+            }}
+          />
+        </a>
       </div>
-      <VipFilterBar options={filterOptions} />
+      {/* <VipFilterBar options={filterOptions} /> */}
       <div className="vip-privileges-section-attractive max-w-5xl mx-auto">
         <h2 className="vip-privileges-title text-2xl md:text-3xl font-bold text-yellow-200 mb-8 text-center">
           ভিআইপি এর বিশেষ সুবিধা
