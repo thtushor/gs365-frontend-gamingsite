@@ -6,10 +6,16 @@ import {
   FaFacebookF,
   FaComments,
 } from "react-icons/fa";
+import { CurrencyModal } from "../Modal/CurrencyModal";
 
 const TopHeader: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currencyLang, setCurrencyLang] = useState({
+    currency: "BDT",
+    language: "bn",
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -43,7 +49,10 @@ const TopHeader: React.FC = () => {
         </span>
 
         <div className="language-wrap">
-          <div className="language">
+          <div
+            className="language cursor-pointer"
+            onClick={() => setModalOpen(true)}
+          >
             <img src="https://img.b112j.com/images/web/flag/BD.png" alt="bn" />
             <p>
               <span>৳&nbsp;BDT</span>&nbsp;বাংলা
@@ -95,6 +104,12 @@ const TopHeader: React.FC = () => {
           </ul>
         </div>
       </div>
+      <CurrencyModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onChange={setCurrencyLang}
+        value={currencyLang}
+      />
     </div>
   );
 };
