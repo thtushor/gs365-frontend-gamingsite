@@ -276,16 +276,16 @@
 
 .logo-watermark {
   position: absolute;
-  top: 0.8rem;
-  left: 0.8rem;
+  top: 0.5rem;
+  left: 0.5rem;
   z-index: 2;
-  opacity: 0.8;
+  opacity: 1;
   transform: scale(1.1);
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   
   img {
-    height: 32px;
+    height: 24px;
     width: auto;
   }
 }
