@@ -5,6 +5,7 @@ import {
   FaEnvelope,
   FaFacebookF,
   FaComments,
+  FaTelegram,
 } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 
@@ -97,8 +98,8 @@ const TopHeader: React.FC = () => {
                 }}
                 className="service-link forum-link"
               >
-                <FaComments className="service-icon" />
-                <span>Forum</span>
+                <FaTelegram className="service-icon" />
+                <span>Telegram</span>
               </a>
             </li>
           </ul>
