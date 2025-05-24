@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./GameGrid.scss";
+import { Logo } from "../Logo/Logo";
 
 interface GameItem {
   id: string;
@@ -322,6 +323,9 @@ const GameGrid: React.FC = () => {
                 <button className="play-now-btn">PLAY NOW</button>
               </div>
               <div className="game-provider-tag">{game.provider}</div>
+              <div className="logo-watermark">
+                <Logo />
+              </div>
             </div>
             <div className="game-card-content">
               <h3 className="game-title">{game.title}</h3>
