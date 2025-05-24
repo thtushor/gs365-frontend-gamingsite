@@ -4,7 +4,7 @@ import {
   FaWhatsapp,
   FaEnvelope,
   FaFacebookF,
-  FaComments,
+  // FaComments,
   FaTelegram,
 } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
