@@ -162,7 +162,7 @@ const SubnavCard: React.FC<{
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl shadow-2xl transition-all duration-500"
+              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl shadow-2xl transition-all duration-300"
               style={{
                 zIndex: 10 + i,
                 transform: `
@@ -194,125 +194,16 @@ const SubnavCard: React.FC<{
 };
 
 export const SubnavSlider: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [animated, setAnimated] = useState<{ x: number; y: number }[]>(
-    subnavOptions[0].images.map(() => ({ x: 0, y: 0 }))
-  );
-  const animRef = useRef<number>();
-
-  // Animation loop: each image animates toward its own target
-  useEffect(() => {
-    const animate = () => {
-      setAnimated((prev) =>
-        prev.map((a, i) => {
-          // Each image has a different "depth" factor
-          const depth = 1 - i * 0.5; // 1 for top, less for others
-          const targetX = mouse.x * depth;
-          const targetY = mouse.y * depth;
-
-          const lerp = (a: number, b: number, t: number) => a + (b - a) * 0.25;
-          return {
-            x: lerp(a.x, targetX, 0.25),
-            y: lerp(a.y, targetY, 0.25),
-          };
-        })
-      );
-      animRef.current = requestAnimationFrame(animate);
-    };
-    animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current!);
-  }, [mouse.x, mouse.y, currentSlide]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 to 1
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2; // -1 to 1
-    setMouse({ x, y });
-  };
-
-  const handleMouseLeave = () => {
-    setMouse({ x: 0, y: 0 });
-  };
-
-  const goToPrev = () =>
-    setCurrentSlide(
-      (prev) => (prev - 1 + subnavOptions.length) % subnavOptions.length
-    );
-  const goToNext = () =>
-    setCurrentSlide((prev) => (prev + 1) % subnavOptions.length);
-
   return (
-    <div className="w-full bg-[#232323] flex items-center justify-center py-4 relative overflow-hidden">
-      <button
-        onClick={goToPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 hover:bg-green-600 transition text-yellow-400 text-2xl shadow-lg"
-        aria-label="Previous"
-      >
-        &#60;
-      </button>
+    <div className="w-full bg-[#232323] flex items-center justify-center py-4 overflow-x-auto">
       <div
-        className="w-[340px] md:w-[520px] h-[200px] flex items-center justify-center relative group"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ perspective: 1000 }}
+        className="flex flex-nowrap items-stretch justify-start gap-4 px-4"
+        style={{ minWidth: 900 }}
       >
-        {subnavOptions.map((slide, idx) => (
-          <div
-            key={slide.title}
-            className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-all duration-500
-              ${
-                idx === currentSlide
-                  ? "opacity-100 scale-100 z-10"
-                  : "opacity-0 scale-90 z-0"
-              }
-            `}
-          >
-            {slide.images.map((img, i) => {
-              const a = animated[i] || { x: 0, y: 0 };
-              const rotateY = -a.x * 30;
-              const rotateX = a.y * 30;
-              const translateX = -a.x * 30;
-              const translateY = a.y * 15;
-              return (
-                <img
-                  key={img}
-                  src={img}
-                  alt={slide.title}
-                  className={`absolute left-1/2 top-1/2 w-48 md:w-64 h-auto object-contain rounded-xl shadow-2xl transition-all duration-500`}
-                  style={{
-                    zIndex: 10 + i,
-                    transform: `
-                      translate(-50%, -50%)
-                      rotateY(${rotateY}deg)
-                      rotateX(${rotateX}deg)
-                      translateX(${translateX}px)
-                      translateY(${translateY}px)
-                      scale(${1 + 0.05 * (1 - i * 0.2)})
-                    `,
-                    boxShadow:
-                      i === 0
-                        ? "0 0 32px 8px #ffe066, 0 8px 32px 0 #0006"
-                        : "0 0 16px 2px #ffe06699",
-                    opacity: 1 - i * 0.15,
-                  }}
-                />
-              );
-            })}
-            {/* Optional: Title or overlay */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white text-lg font-bold bg-black/60 px-4 py-1 rounded-full shadow">
-              {slide.title}
-            </div>
-          </div>
+        {subnavOptions.map((opt, idx) => (
+          <SubnavCard key={opt.title + idx} {...opt} />
         ))}
       </div>
-      <button
-        onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 hover:bg-green-600 transition text-yellow-400 text-2xl shadow-lg"
-        aria-label="Next"
-      >
-        &#62;
-      </button>
     </div>
   );
 };
