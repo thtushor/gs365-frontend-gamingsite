@@ -121,10 +121,10 @@ const SubnavCard: React.FC<{
           const depth = 1 - i * 0.5;
           const targetX = mouse.x * depth;
           const targetY = mouse.y * depth;
-          const lerp = (a: number, b: number, t: number) => a + (b - a) * 0.25;
+          const lerp = (a: number, b: number, t: number) => a + (b - a) * 0.1;
           return {
-            x: lerp(a.x, targetX, 0.25),
-            y: lerp(a.y, targetY, 0.25),
+            x: lerp(a.x, targetX, 0.1),
+            y: lerp(a.y, targetY, 0.1),
           };
         })
       );
