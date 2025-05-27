@@ -99,8 +99,8 @@ const subnavOptions = [
     title: "SBO Sports",
     images: [
       // bgGalaxy,
-      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
     ],
     button: "এখনি খেলুন",
   },
@@ -156,22 +156,21 @@ const SubnavCard: React.FC<{
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <>
-        <img
-          src={bgGalaxy}
-          alt="galaxy background"
-          className="absolute inset-0 w-full h-full object-cover rounded-xl z-0"
-          style={{ pointerEvents: "none" }}
-        />
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <GalaxyStars />
-        </div>
-      </>
-
       <div
         className="relative w-40 h-40 mx-auto"
         style={{ perspective: 1000, zIndex: 20 }}
       >
+        <>
+          <img
+            src={bgGalaxy}
+            alt="galaxy background"
+            className="absolute inset-0 w-full h-full object-cover rounded-xl z-0"
+            style={{ pointerEvents: "none" }}
+          />
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            <GalaxyStars />
+          </div>
+        </>
         {images.map((img, i) => {
           const a = animated[i] || { x: 0, y: 0 };
           const rotateY = -a.x * 30;
@@ -183,7 +182,7 @@ const SubnavCard: React.FC<{
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl transition-all duration-300"
+              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl transition-all duration-600"
               style={{
                 zIndex: 10 + i,
                 transform: `
