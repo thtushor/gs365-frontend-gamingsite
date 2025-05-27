@@ -7,6 +7,7 @@ import { GiPokerHand } from "react-icons/gi";
 import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
+import GalaxyStars from "./GalaxyStars";
 
 interface SubNavItem {
   name: string;
@@ -70,7 +71,7 @@ const subnavOptions = [
   {
     title: "I-Sports",
     images: [
-      bgGalaxy,
+      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
     ],
@@ -79,7 +80,7 @@ const subnavOptions = [
   {
     title: "BTi Sports",
     images: [
-      bgGalaxy,
+      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -88,7 +89,7 @@ const subnavOptions = [
   {
     title: "Exchange",
     images: [
-      bgGalaxy,
+      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -97,7 +98,7 @@ const subnavOptions = [
   {
     title: "SBO Sports",
     images: [
-      bgGalaxy,
+      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -150,12 +151,27 @@ const SubnavCard: React.FC<{
 
   return (
     <div
-      className="relative flex flex-col items-center  rounded-xl  mx-2 px-4 py-4 transition-all duration-300 group"
+      className={`relative flex flex-col items-center rounded-xl mx-2 px-4 py-4 transition-all duration-300 group subnav-galaxy-card`}
       style={{ width: 260, minHeight: 320 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="relative w-40 h-40 mx-auto" style={{ perspective: 1000 }}>
+      <>
+        <img
+          src={bgGalaxy}
+          alt="galaxy background"
+          className="absolute inset-0 w-full h-full object-cover rounded-xl z-0"
+          style={{ pointerEvents: "none" }}
+        />
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <GalaxyStars />
+        </div>
+      </>
+
+      <div
+        className="relative w-40 h-40 mx-auto"
+        style={{ perspective: 1000, zIndex: 20 }}
+      >
         {images.map((img, i) => {
           const a = animated[i] || { x: 0, y: 0 };
           const rotateY = -a.x * 30;
