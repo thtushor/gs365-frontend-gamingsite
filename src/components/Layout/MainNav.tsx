@@ -6,6 +6,7 @@ import { BsFillTrophyFill } from "react-icons/bs";
 import { GiPokerHand } from "react-icons/gi";
 import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
+import bgGalaxy from "../../assets/sports/galaxy.png";
 
 interface SubNavItem {
   name: string;
@@ -69,14 +70,16 @@ const subnavOptions = [
   {
     title: "I-Sports",
     images: [
-      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
     ],
     button: "এখনি খেলুন",
   },
   {
     title: "BTi Sports",
     images: [
+      bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -85,6 +88,7 @@ const subnavOptions = [
   {
     title: "Exchange",
     images: [
+      bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -93,6 +97,7 @@ const subnavOptions = [
   {
     title: "SBO Sports",
     images: [
+      bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -145,7 +150,7 @@ const SubnavCard: React.FC<{
 
   return (
     <div
-      className="relative flex flex-col items-center bg-[#232323] rounded-xl shadow-xl mx-2 px-4 py-4 transition-all duration-300 group"
+      className="relative flex flex-col items-center  rounded-xl  mx-2 px-4 py-4 transition-all duration-300 group"
       style={{ width: 260, minHeight: 320 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -162,7 +167,7 @@ const SubnavCard: React.FC<{
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl shadow-2xl transition-all duration-300"
+              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl transition-all duration-300"
               style={{
                 zIndex: 10 + i,
                 transform: `
@@ -173,10 +178,7 @@ const SubnavCard: React.FC<{
                   translateY(${translateY}px)
                   scale(${1 + 0.05 * (1 - i * 0.2)})
                 `,
-                boxShadow:
-                  i === 0
-                    ? "0 0 32px 8px #ffe066, 0 8px 32px 0 #0006"
-                    : "0 0 16px 2px #ffe06699",
+
                 opacity: 1 - i * 0.15,
               }}
             />
