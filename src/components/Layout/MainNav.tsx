@@ -71,7 +71,6 @@ const subnavOptions = [
   {
     title: "I-Sports",
     images: [
-      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
     ],
@@ -80,7 +79,6 @@ const subnavOptions = [
   {
     title: "BTi Sports",
     images: [
-      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -89,7 +87,6 @@ const subnavOptions = [
   {
     title: "Exchange",
     images: [
-      // bgGalaxy,
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
@@ -98,9 +95,8 @@ const subnavOptions = [
   {
     title: "SBO Sports",
     images: [
-      // bgGalaxy,
-      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
     ],
     button: "এখনি খেলুন",
   },
@@ -160,24 +156,31 @@ const SubnavCard: React.FC<{
         className="relative w-40 h-40 mx-auto"
         style={{ perspective: 1000, zIndex: 20 }}
       >
-        <>
-          <img
-            src={bgGalaxy}
-            alt="galaxy background"
-            className="absolute inset-0 w-full h-full object-cover rounded-xl z-0"
-            style={{ pointerEvents: "none" }}
-          />
-          <div className="absolute inset-0 z-10 pointer-events-none">
-            <GalaxyStars />
-          </div>
-        </>
+        {/* If bgGalaxy is present, render GalaxyStars as the first layer */}
+
+        <div
+          className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-full transition-all duration-300"
+          style={{
+            zIndex: 10,
+            transform: `translate(-50%, -50%) rotateY(${
+              -animated[0]?.x * 30 || 0
+            }deg) rotateX(${animated[0]?.y * 30 || 0}deg) translateX(${
+              -animated[0]?.x * 30 || 0
+            }px) translateY(${animated[0]?.y * 15 || 0}px) scale(${1 + 0.05})`,
+            opacity: 1,
+          }}
+        >
+          <img src={bgGalaxy} />
+          <GalaxyStars />
+        </div>
+
         {images.map((img, i) => {
           const a = animated[i] || { x: 0, y: 0 };
           const rotateY = -a.x * 30;
           const rotateX = a.y * 30;
           const translateX = -a.x * 30;
           const translateY = a.y * 15;
-          return (
+          return img === bgGalaxy ? null : (
             <img
               key={img}
               src={img}
@@ -186,14 +189,13 @@ const SubnavCard: React.FC<{
               style={{
                 zIndex: 10 + i,
                 transform: `
-                  translate(-50%, -50%)
-                  rotateY(${rotateY}deg)
-                  rotateX(${rotateX}deg)
-                  translateX(${translateX}px)
-                  translateY(${translateY}px)
-                  scale(${1 + 0.05 * (1 - i * 0.2)})
-                `,
-
+                    translate(-50%, -50%)
+                    rotateY(${rotateY}deg)
+                    rotateX(${rotateX}deg)
+                    translateX(${translateX}px)
+                    translateY(${translateY}px)
+                    scale(${1 + 0.05 * (1 - i * 0.2)})
+                  `,
                 opacity: 1 - i * 0.15,
               }}
             />

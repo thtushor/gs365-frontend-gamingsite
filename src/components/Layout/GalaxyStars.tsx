@@ -1,10 +1,16 @@
 import React, { useRef, useEffect } from "react";
 
-const STAR_COUNT = 120;
-const STAR_COLOR = "rgba(255,255,255,0.85)";
+const STAR_COUNT = 320;
+const STAR_COLORS = [
+  "rgba(255,255,255,0.85)", // white
+  "rgba(180,200,255,0.7)", // blue
+  "rgba(200,180,255,0.7)", // purple
+  "rgba(255,220,200,0.6)", // orange
+  "rgba(180,255,220,0.5)", // teal
+];
 const STAR_MIN_RADIUS = 0.5;
-const STAR_MAX_RADIUS = 1.8;
-const STAR_SPEED = 0.15;
+const STAR_MAX_RADIUS = 2.2;
+const STAR_SPEED = 0.12;
 
 function randomBetween(a: number, b: number) {
   return a + Math.random() * (b - a);
@@ -17,6 +23,7 @@ interface Star {
   dx: number;
   dy: number;
   twinkle: number;
+  color: string;
 }
 
 const GalaxyStars: React.FC = () => {
@@ -27,8 +34,8 @@ const GalaxyStars: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let width = canvas.parentElement?.clientWidth || window.innerWidth;
+    let height = canvas.parentElement?.clientHeight || window.innerHeight;
     canvas.width = width;
     canvas.height = height;
 
@@ -40,6 +47,7 @@ const GalaxyStars: React.FC = () => {
       dx: randomBetween(-STAR_SPEED, STAR_SPEED),
       dy: randomBetween(-STAR_SPEED, STAR_SPEED),
       twinkle: Math.random() * Math.PI * 2,
+      color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
     }));
 
     function animate() {
@@ -49,8 +57,8 @@ const GalaxyStars: React.FC = () => {
         const twinkle = 0.5 + 0.5 * Math.sin(star.twinkle + Date.now() * 0.002);
         ctx!.beginPath();
         ctx!.arc(star.x, star.y, star.r * twinkle, 0, Math.PI * 2);
-        ctx!.fillStyle = STAR_COLOR;
-        ctx!.shadowColor = STAR_COLOR;
+        ctx!.fillStyle = star.color;
+        ctx!.shadowColor = star.color;
         ctx!.shadowBlur = 8 * twinkle;
         ctx!.fill();
         // Move star
@@ -68,8 +76,8 @@ const GalaxyStars: React.FC = () => {
 
     // Handle resize
     const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      width = canvas.parentElement?.clientWidth || window.innerWidth;
+      height = canvas.parentElement?.clientHeight || window.innerHeight;
       canvas.width = width;
       canvas.height = height;
     };
@@ -79,7 +87,13 @@ const GalaxyStars: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="galaxy-stars-overlay" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="galaxy-stars-overlay"
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 };
 
 export default GalaxyStars;
