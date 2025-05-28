@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import "./MainNav.scss";
 import { FaHome, FaMobileAlt, FaChevronDown } from "react-icons/fa";
 import { BsFillTrophyFill } from "react-icons/bs";
@@ -102,16 +102,18 @@ const subnavOptions = [
   // Add more as needed
 ];
 
-const SubnavCard: React.FC<{
+// Memoize the SubnavCard component to prevent unnecessary re-renders
+const SubnavCard = memo<{
   title: string;
   images: string[];
   button: string;
-}> = ({ title, images, button }) => {
+}>(({ title, images, button }) => {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [animated, setAnimated] = useState<{ x: number; y: number }[]>(
     images.map(() => ({ x: 0, y: 0 }))
   );
   const animRef = useRef<number>();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const animate = () => {
@@ -133,20 +135,22 @@ const SubnavCard: React.FC<{
     return () => cancelAnimationFrame(animRef.current!);
   }, [mouse.x, mouse.y, images.length]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
     setMouse({ x, y });
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setMouse({ x: 0, y: 0 });
-  };
+  }, []);
 
   return (
     <div
-      className={`relative flex flex-col items-center rounded-xl mx-2 px-4 py-4 transition-all duration-300 group subnav-galaxy-card`}
+      ref={cardRef}
+      className="relative flex flex-col items-center rounded-xl mx-2 px-4 py-4 transition-all duration-300 group subnav-galaxy-card"
       style={{ width: 260, minHeight: 320 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -209,147 +213,129 @@ const SubnavCard: React.FC<{
       </div>
     </div>
   );
-};
+});
 
-export const SubnavSlider: React.FC = () => {
+// Memoize the SubnavSlider component
+const SubnavSlider = memo(() => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    if (!sliderRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+    setShowLeftArrow(scrollLeft > 0);
+    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (slider) {
+      slider.addEventListener("scroll", checkScroll);
+      checkScroll();
+      return () => slider.removeEventListener("scroll", checkScroll);
+    }
+  }, [checkScroll]);
+
+  const scroll = useCallback((direction: "left" | "right") => {
+    if (!sliderRef.current) return;
+    const scrollAmount = 300;
+    const newScrollLeft =
+      sliderRef.current.scrollLeft +
+      (direction === "left" ? -scrollAmount : scrollAmount);
+    sliderRef.current.scrollTo({
+      left: newScrollLeft,
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
-    <div className="w-full bg-[#232323] flex items-center justify-center py-4 overflow-x-auto">
+    <div className="w-full bg-[#232323] flex items-center justify-center py-4 relative">
+      {showLeftArrow && (
+        <button
+          onClick={() => scroll("left")}
+          className="absolute left-2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+          aria-label="Scroll left"
+        >
+          ←
+        </button>
+      )}
       <div
-        className="flex flex-nowrap items-stretch justify-start gap-4 px-4"
-        style={{ minWidth: 900 }}
+        ref={sliderRef}
+        className="flex flex-nowrap items-stretch justify-start gap-4 px-4 overflow-x-auto custom-scrollbar"
+        style={{ minWidth: "min(900px, 100vw)" }}
       >
         {subnavOptions.map((opt, idx) => (
           <SubnavCard key={opt.title + idx} {...opt} />
         ))}
       </div>
+      {showRightArrow && (
+        <button
+          onClick={() => scroll("right")}
+          className="absolute right-2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+          aria-label="Scroll right"
+        >
+          →
+        </button>
+      )}
     </div>
   );
-};
+});
 
 const MainNav: React.FC = () => {
   const [openSubNav, setOpenSubNav] = useState<number | null>(null);
+  const [subMenuAnimationState, setSubMenuAnimationState] = useState<
+    "closed" | "opening" | "open" | "closing"
+  >("closed");
+  const navRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const openTimerRef = useRef<number | null>(null);
 
-  const [subNavIndex, setSubNavIndex] = useState(0);
-  const [transformStyles, setTransformStyles] = useState<{
-    [key: string]: React.CSSProperties;
-  }>({});
+  // Handle submenu state transitions
+  useEffect(() => {
+    if (openSubNav !== null) {
+      setSubMenuAnimationState("opening");
+      if (openTimerRef.current) clearTimeout(openTimerRef.current);
+      openTimerRef.current = window.setTimeout(() => {
+        setSubMenuAnimationState("open");
+      }, 300);
+    } else {
+      setSubMenuAnimationState("closing");
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = window.setTimeout(() => {
+        setSubMenuAnimationState("closed");
+      }, 300);
+    }
 
+    return () => {
+      if (openTimerRef.current) clearTimeout(openTimerRef.current);
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, [openSubNav]);
+
+  // Handle click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (!target.closest(".nav-item")) {
+      if (
+        navRef.current &&
+        !navRef.current.contains(target) &&
+        subMenuAnimationState === "open"
+      ) {
         setOpenSubNav(null);
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [subMenuAnimationState]);
+
+  const handleNavToggle = useCallback((index: number | null) => {
+    setOpenSubNav((prev) => (prev === index ? null : index));
   }, []);
 
-  const handleMouseMove = (
-    e: React.MouseEvent<HTMLDivElement>,
-    itemIndex: number
-  ) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left; // x position within the element
-    const y = e.clientY - rect.top; // y position within the element
-
-    // Calculate the center of the element
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    // Calculate the rotation based on mouse position relative to center
-    // Divide by 25 to reduce the rotation amount for subtle effect
-    const rotateX = -((y - centerY) / 25);
-    const rotateY = (x - centerX) / 25;
-
-    // Create a unique identifier for this item
-    const itemKey = `item-${itemIndex}`;
-
-    // Update styles for this specific item
-    setTransformStyles((prev) => ({
-      ...prev,
-      [itemKey]: {
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`,
-        transition: "transform 0.1s ease",
-      },
-      [`${itemKey}-img1`]: {
-        transform: `translateZ(20px) rotateX(${rotateX * 0.2}deg) rotateY(${
-          rotateY * 0.2
-        }deg)`,
-        boxShadow: "0 20px 30px rgba(0, 0, 0, 0.5)",
-      },
-      [`${itemKey}-img2`]: {
-        transform: `translateZ(10px) translateX(${
-          rotateY * 0.7
-        }px) translateY(${rotateX * -0.7}px) rotateX(${
-          rotateX * 0.1
-        }deg) rotateY(${rotateY * 0.1}deg)`,
-        boxShadow: "0 15px 25px rgba(0, 0, 0, 0.4)",
-      },
-      [`${itemKey}-img3`]: {
-        transform: `translateZ(0px) translateX(${rotateY * 1.2}px) translateY(${
-          rotateX * -1.2
-        }px)`,
-        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.3)",
-      },
-    }));
-  };
-
-  const handleMouseLeave = (itemIndex: number) => {
-    const itemKey = `item-${itemIndex}`;
-
-    // Reset transformations with a longer transition for a smooth return
-    setTransformStyles((prev) => ({
-      ...prev,
-      [itemKey]: {
-        transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
-        transition: "transform 0.5s ease",
-      },
-      [`${itemKey}-img1`]: {
-        transform: "translateZ(0)",
-        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
-        transition: "all 0.5s ease",
-      },
-      [`${itemKey}-img2`]: {
-        transform: "translateZ(0)",
-        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
-        transition: "all 0.5s ease",
-      },
-      [`${itemKey}-img3`]: {
-        transform: "translateZ(0)",
-        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)",
-        transition: "all 0.5s ease",
-      },
-    }));
-  };
-
-  const handleNavToggle = (index: number | null) => {
-    if (openSubNav === index) {
-      setOpenSubNav(null);
-    } else {
-      setOpenSubNav(index);
-    }
-  };
-
-  const displayItems = () => {
-    const startIdx = subNavIndex;
-    const endIdx = Math.min(startIdx + 4, sports.length);
-    return sports.slice(startIdx, endIdx);
-  };
-
-  console.log({
-    setOpenSubNav,
-    transformStyles,
-    setSubNavIndex,
-    handleMouseMove,
-    displayItems,
-  });
-
   return (
-    <div className="main-nav relative">
+    <div className="main-nav relative" ref={navRef}>
       <ul className="nav-inner">
         <li className="nav-item active">
           <a href="/">
@@ -369,7 +355,6 @@ const MainNav: React.FC = () => {
               handleNavToggle(0);
             }}
             onMouseEnter={() => handleNavToggle(0)}
-            onMouseLeave={() => handleMouseLeave(0)}
           >
             <MdSportsSoccer className="nav-icon" />
             স্পোর্ট
@@ -429,14 +414,17 @@ const MainNav: React.FC = () => {
         </li>
       </ul>
 
-      {/* subnav */}
-      {openSubNav === 0 && (
-        <div className="bg-red-500 absolute top-10 left-0 w-full h-full">
-          <SubnavSlider />
-        </div>
-      )}
+      {/* Subnav with animation states */}
+      <div
+        className={`sub-nav-slide ${subMenuAnimationState}`}
+        style={{
+          display: subMenuAnimationState === "closed" ? "none" : "block",
+        }}
+      >
+        <SubnavSlider />
+      </div>
     </div>
   );
 };
 
-export default MainNav;
+export default memo(MainNav);
