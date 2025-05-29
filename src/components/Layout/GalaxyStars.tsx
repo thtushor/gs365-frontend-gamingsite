@@ -1,89 +1,88 @@
-import React, { useRef, useEffect } from "react";
-
-const STAR_COUNT = 320;
-const STAR_COLORS = [
-  "rgba(255,255,255,0.85)", // white
-  "rgba(180,200,255,0.7)", // blue
-  "rgba(200,180,255,0.7)", // purple
-  "rgba(255,220,200,0.6)", // orange
-  "rgba(180,255,220,0.5)", // teal
-];
-const STAR_MIN_RADIUS = 0.5;
-const STAR_MAX_RADIUS = 2.2;
-const STAR_SPEED = 0.12;
-
-function randomBetween(a: number, b: number) {
-  return a + Math.random() * (b - a);
-}
+import React, { useEffect, useRef } from "react";
 
 interface Star {
   x: number;
   y: number;
-  r: number;
-  dx: number;
-  dy: number;
-  twinkle: number;
-  color: string;
+  size: number;
+  speed: number;
+  opacity: number;
 }
 
 const GalaxyStars: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const stars = useRef<Star[]>([]);
+  const starsRef = useRef<Star[]>([]);
+  const animationRef = useRef<number>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
-    let width = canvas.parentElement?.clientWidth || window.innerWidth;
-    let height = canvas.parentElement?.clientHeight || window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
+    if (!ctx) return;
 
-    // Generate stars
-    stars.current = Array.from({ length: STAR_COUNT }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: randomBetween(STAR_MIN_RADIUS, STAR_MAX_RADIUS),
-      dx: randomBetween(-STAR_SPEED, STAR_SPEED),
-      dy: randomBetween(-STAR_SPEED, STAR_SPEED),
-      twinkle: Math.random() * Math.PI * 2,
-      color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
-    }));
+    // Set canvas size
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-    function animate() {
-      ctx!.clearRect(0, 0, width, height);
-      for (const star of stars.current) {
-        // Twinkle effect
-        const twinkle = 0.5 + 0.5 * Math.sin(star.twinkle + Date.now() * 0.002);
-        ctx!.beginPath();
-        ctx!.arc(star.x, star.y, star.r * twinkle, 0, Math.PI * 2);
-        ctx!.fillStyle = star.color;
-        ctx!.shadowColor = star.color;
-        ctx!.shadowBlur = 8 * twinkle;
-        ctx!.fill();
-        // Move star
-        star.x += star.dx;
-        star.y += star.dy;
-        // Wrap around screen
-        if (star.x < 0) star.x = width;
-        if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        if (star.y > height) star.y = 0;
+    // Initialize stars with reduced count
+    const initStars = () => {
+      const stars: Star[] = [];
+      const starCount = 100; // Reduced from 320 to 100 stars
+
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5, // Reduced max size
+          speed: Math.random() * 0.5 + 0.1, // Reduced speed
+          opacity: Math.random() * 0.5 + 0.3, // Reduced opacity range
+        });
       }
-      requestAnimationFrame(animate);
-    }
+      starsRef.current = stars;
+    };
+
+    // Animation function with optimized rendering
+    const animate = () => {
+      if (!ctx || !canvas) return;
+
+      // Clear canvas with a semi-transparent black for trail effect
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw stars
+      starsRef.current.forEach((star) => {
+        // Update star position
+        star.y += star.speed;
+
+        // Reset star position if it goes off screen
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+
+        // Draw star with optimized rendering
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    initStars();
     animate();
 
-    // Handle resize
-    const handleResize = () => {
-      width = canvas.parentElement?.clientWidth || window.innerWidth;
-      height = canvas.parentElement?.clientHeight || window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    };
-    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, []);
 

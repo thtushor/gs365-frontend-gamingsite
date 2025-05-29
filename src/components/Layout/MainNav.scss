@@ -74,7 +74,7 @@
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     z-index: 10;
-    height: 245px;
+    height: 380px;
     padding: 0;
     margin: 0;
 
@@ -117,6 +117,16 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
+  // Smooth scrolling behavior
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  // Prevent text selection during drag
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 // Responsive styles
@@ -141,7 +151,7 @@
 
     .sub-nav-slide {
       height: auto;
-      min-height: 200px;
+      min-height: 340px;
 
       .sub-nav-inner {
         padding: 10px;
@@ -259,17 +269,196 @@
   }
 }
 
+// Subnav card styles
 .subnav-galaxy-card {
-  overflow: hidden;
+  overflow: visible;
+  background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .galaxy-stars-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 0.75rem;
+  }
 }
 
-.subnav-galaxy-card .galaxy-stars-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none;
-  z-index: 10;
-  border-radius: 0.75rem; /* match rounded-xl */
+// Floating Contact Button Styles (Refined)
+.floating-contact-button {
+  position: fixed;
+  right: 20px; // Position from the right edge
+  bottom: 20px; // Position from the bottom edge (Adjusted based on typical floating button placement, can be changed back to top/transform if needed)
+  z-index: 1000; // Ensure it's above other content
+  background-color: #2e8b57; // Green background from image
+  color: white;
+  border: none;
+  border-radius: 50%; // Circular shape
+  width: 50px; // Button size
+  height: 50px; // Button size
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Increased shadow for depth
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  // Subtle scale animation on hover
+  &:hover {
+    background-color: #3cb371; // Slightly lighter green on hover
+    transform: scale(
+      1.1
+    ); // Scale up slightly (Adjusted transform due to bottom positioning)
+  }
+
+  .icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 24px; // Adjust icon size
+
+    /* Style for the 24/7 badge */
+    .twenty-four {
+      position: absolute;
+      top: -5px; // Position above and to the right
+      right: -5px;
+      background-color: yellow; // Yellow background for the badge
+      color: black;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 50%;
+      padding: 2px 4px;
+      line-height: 1;
+      z-index: 10; // Ensure badge is above the icon
+      border: 1px solid #2e8b57; // Border matching button color
+    }
+  }
+
+  // Optional: Add a subtle pulse animation
+  // animation: pulse 2s infinite;
+}
+
+// @keyframes pulse {
+//   0% {
+//     box-shadow: 0 0 0 0 rgba(46, 139, 87, 0.7);
+//   }
+//   70% {
+//     box-shadow: 0 0 0 10px rgba(46, 139, 87, 0);
+//   }
+//   100% {
+//     box-shadow: 0 0 0 0 rgba(46, 139, 87, 0);
+//   }
+// }
+
+// Floating Contact Submenu Styles (Refined)
+.floating-contact-submenu {
+  position: fixed;
+  right: 80px; // Position next to the button
+  bottom: 20px; // Align with the button bottom
+  z-index: 999; // Below the button
+  background-color: #3a3a3a; // Dark grey background from image
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); // Darker shadow
+  padding: 0; // Remove padding from container, add to inner elements
+  width: 250px; // Adjusted width based on image
+  color: #ffffff; // White text color
+  overflow: hidden; // To contain border-radius
+
+  .submenu-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 10px; // Padding top/bottom and left/right
+    background-color: #4a4a4a; // Slightly lighter grey for header
+    border-bottom: 1px solid #5a5a5a; // Header border
+
+    .submenu-logo {
+      width: 80px; // Logo size
+      height: auto;
+      margin-bottom: 5px;
+    }
+
+    .headset-icon {
+      display: flex;
+      align-items: center;
+      font-size: 20px; // Headset icon size
+
+      span {
+        font-size: 12px;
+        margin-left: 5px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .contact-options-list {
+    padding: 0 10px; // Padding for the list container
+
+    .contact-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0; // Padding for each option
+      border-bottom: 1px solid #5a5a5a; // Separator line
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:last-child {
+        border-bottom: none; // No border for the last item
+      }
+
+      &:hover {
+        background-color: #4a4a4a; // Highlight on hover
+      }
+
+      .contact-info {
+        display: flex;
+        align-items: center;
+
+        .contact-icon {
+          font-size: 18px; // Contact icon size
+          margin-right: 10px;
+        }
+
+        span {
+          font-size: 14px; // Text size
+        }
+      }
+
+      .expand-icon {
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      &.expanded {
+        // Styles for expanded state if needed, e.g., different background
+      }
+    }
+  }
+
+  .qr-code-area {
+    display: flex;
+    justify-content: center;
+    padding: 10px; // Padding around the QR code
+    background-color: #ffffff; // White background for QR code area
+    margin: 0 10px 10px; // Margin to match padding of list
+    border-radius: 5px; // Small border radius for the QR area
+
+    .qr-code-image {
+      width: 150px; // QR code image size
+      height: auto;
+    }
+  }
 }

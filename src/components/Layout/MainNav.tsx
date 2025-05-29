@@ -7,64 +7,65 @@ import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
+import FloatingContact from "../FloatingContact/FloatingContact";
 
-interface SubNavItem {
-  name: string;
-  image1: string;
-  image2: string;
-  image3: string;
-}
+// interface SubNavItem {
+//   name: string;
+//   image1: string;
+//   image2: string;
+//   image3: string;
+// }
 
-const sports: SubNavItem[] = [
-  {
-    name: "ক্রিকেট",
-    image1: "/assets/sports/cricket1.png",
-    image2: "/assets/sports/cricket2.png",
-    image3: "/assets/sports/cricket3.png",
-  },
-  {
-    name: "ফুটবল",
-    image1: "/assets/sports/football1.png",
-    image2: "/assets/sports/football2.png",
-    image3: "/assets/sports/football3.png",
-  },
-  {
-    name: "টেনিস",
-    image1: "/assets/sports/tennis1.png",
-    image2: "/assets/sports/tennis2.png",
-    image3: "/assets/sports/tennis3.png",
-  },
-  {
-    name: "বাস্কেটবল",
-    image1: "/assets/sports/basketball1.png",
-    image2: "/assets/sports/basketball2.png",
-    image3: "/assets/sports/basketball3.png",
-  },
-  {
-    name: "ভলিবল",
-    image1: "/assets/sports/volleyball1.png",
-    image2: "/assets/sports/volleyball2.png",
-    image3: "/assets/sports/volleyball3.png",
-  },
-  {
-    name: "টেবল টেনিস",
-    image1: "/assets/sports/tabletennis1.png",
-    image2: "/assets/sports/tabletennis2.png",
-    image3: "/assets/sports/tabletennis3.png",
-  },
-  {
-    name: "বোলিং",
-    image1: "/assets/sports/bowling1.png",
-    image2: "/assets/sports/bowling2.png",
-    image3: "/assets/sports/bowling3.png",
-  },
-  {
-    name: "বেসবল",
-    image1: "/assets/sports/baseball1.png",
-    image2: "/assets/sports/baseball2.png",
-    image3: "/assets/sports/baseball3.png",
-  },
-];
+// const sports: SubNavItem[] = [
+//   {
+//     name: "ক্রিকেট",
+//     image1: "/assets/sports/cricket1.png",
+//     image2: "/assets/sports/cricket2.png",
+//     image3: "/assets/sports/cricket3.png",
+//   },
+//   {
+//     name: "ফুটবল",
+//     image1: "/assets/sports/football1.png",
+//     image2: "/assets/sports/football2.png",
+//     image3: "/assets/sports/football3.png",
+//   },
+//   {
+//     name: "টেনিস",
+//     image1: "/assets/sports/tennis1.png",
+//     image2: "/assets/sports/tennis2.png",
+//     image3: "/assets/sports/tennis3.png",
+//   },
+//   {
+//     name: "বাস্কেটবল",
+//     image1: "/assets/sports/basketball1.png",
+//     image2: "/assets/sports/basketball2.png",
+//     image3: "/assets/sports/basketball3.png",
+//   },
+//   {
+//     name: "ভলিবল",
+//     image1: "/assets/sports/volleyball1.png",
+//     image2: "/assets/sports/volleyball2.png",
+//     image3: "/assets/sports/volleyball3.png",
+//   },
+//   {
+//     name: "টেবল টেনিস",
+//     image1: "/assets/sports/tabletennis1.png",
+//     image2: "/assets/sports/tabletennis2.png",
+//     image3: "/assets/sports/tabletennis3.png",
+//   },
+//   {
+//     name: "বোলিং",
+//     image1: "/assets/sports/bowling1.png",
+//     image2: "/assets/sports/bowling2.png",
+//     image3: "/assets/sports/bowling3.png",
+//   },
+//   {
+//     name: "বেসবল",
+//     image1: "/assets/sports/baseball1.png",
+//     image2: "/assets/sports/baseball2.png",
+//     image3: "/assets/sports/baseball3.png",
+//   },
+// ];
 
 const subnavOptions = [
   {
@@ -85,6 +86,54 @@ const subnavOptions = [
   },
   {
     title: "Exchange",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
+    images: [
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
+      "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
+    ],
+    button: "এখনি খেলুন",
+  },
+  {
+    title: "SBO Sports",
     images: [
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_03.png",
       "https://img.b112j.com/images/web/nav/subnav-slide/i-sports_bdt_02.png",
@@ -150,30 +199,32 @@ const SubnavCard = memo<{
   return (
     <div
       ref={cardRef}
-      className="relative flex flex-col items-center rounded-xl mx-2 px-4 py-4 transition-all duration-300 group subnav-galaxy-card"
-      style={{ width: 260, minHeight: 320 }}
+      className="relative flex flex-col items-center rounded-xl mx-2 px-3 py-3 transition-all duration-300 group subnav-galaxy-card"
+      style={{
+        width: 200,
+        height: 280,
+        flexShrink: 0,
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <div
-        className="relative w-40 h-40 mx-auto"
+        className="relative w-32 h-32 mx-auto"
         style={{ perspective: 1000, zIndex: 20 }}
       >
-        {/* If bgGalaxy is present, render GalaxyStars as the first layer */}
-
         <div
-          className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-full transition-all duration-300"
+          className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-full transition-all duration-300"
           style={{
             zIndex: 10,
             transform: `translate(-50%, -50%) rotateY(${
               -animated[0]?.x * 30 || 0
             }deg) rotateX(${animated[0]?.y * 30 || 0}deg) translateX(${
-              -animated[0]?.x * 30 || 0
-            }px) translateY(${animated[0]?.y * 15 || 0}px) scale(${1 + 0.05})`,
+              -animated[0]?.x * 20 || 0
+            }px) translateY(${animated[0]?.y * 10 || 0}px) scale(${1 + 0.05})`,
             opacity: 1,
           }}
         >
-          <img src={bgGalaxy} />
+          <img src={bgGalaxy} className="w-full h-full object-contain" />
           <GalaxyStars />
         </div>
 
@@ -181,14 +232,14 @@ const SubnavCard = memo<{
           const a = animated[i] || { x: 0, y: 0 };
           const rotateY = -a.x * 30;
           const rotateX = a.y * 30;
-          const translateX = -a.x * 30;
-          const translateY = a.y * 15;
+          const translateX = -a.x * 20;
+          const translateY = a.y * 10;
           return img === bgGalaxy ? null : (
             <img
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-40 h-40 object-contain rounded-xl transition-all duration-600"
+              className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-xl transition-all duration-600"
               style={{
                 zIndex: 10 + i,
                 transform: `
@@ -205,9 +256,11 @@ const SubnavCard = memo<{
           );
         })}
       </div>
-      <div className="mt-4 text-center">
-        <div className="text-yellow-300 font-bold text-lg mb-1">| {title}</div>
-        <button className="mt-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold px-6 py-1.5 rounded-full shadow hover:scale-105 transition">
+      <div className="mt-3 text-center">
+        <div className="text-yellow-300 font-bold text-base mb-1">
+          | {title}
+        </div>
+        <button className="mt-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold px-4 py-1 rounded-full text-sm shadow hover:scale-105 transition">
           {button}
         </button>
       </div>
@@ -218,28 +271,29 @@ const SubnavCard = memo<{
 // Memoize the SubnavSlider component
 const SubnavSlider = memo(() => {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  const checkScroll = useCallback(() => {
+  const checkOverflow = useCallback(() => {
     if (!sliderRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-    setShowLeftArrow(scrollLeft > 0);
-    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    const { scrollWidth, clientWidth } = sliderRef.current;
+    setHasOverflow(scrollWidth > clientWidth);
   }, []);
 
   useEffect(() => {
     const slider = sliderRef.current;
     if (slider) {
-      slider.addEventListener("scroll", checkScroll);
-      checkScroll();
-      return () => slider.removeEventListener("scroll", checkScroll);
+      checkOverflow();
+      window.addEventListener("resize", checkOverflow);
+      return () => window.removeEventListener("resize", checkOverflow);
     }
-  }, [checkScroll]);
+  }, [checkOverflow]);
 
   const scroll = useCallback((direction: "left" | "right") => {
     if (!sliderRef.current) return;
-    const scrollAmount = 300;
+    const scrollAmount = sliderRef.current.clientWidth * 0.8;
     const newScrollLeft =
       sliderRef.current.scrollLeft +
       (direction === "left" ? -scrollAmount : scrollAmount);
@@ -249,35 +303,89 @@ const SubnavSlider = memo(() => {
     });
   }, []);
 
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (!sliderRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  }, []);
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (!isDragging || !sliderRef.current) return;
+      e.preventDefault();
+      const x = e.pageX - sliderRef.current.offsetLeft;
+      const walk = (x - startX) * 2;
+      sliderRef.current.scrollLeft = scrollLeft - walk;
+    },
+    [isDragging, startX, scrollLeft]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
   return (
-    <div className="w-full bg-[#232323] flex items-center justify-center py-4 relative">
-      {showLeftArrow && (
-        <button
-          onClick={() => scroll("left")}
-          className="absolute left-2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-          aria-label="Scroll left"
-        >
-          ←
-        </button>
+    <div className="w-full bg-[#232323] flex items-center justify-center py-3 relative">
+      {hasOverflow && (
+        <>
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-2 z-10 bg-black/50 text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/70 transition-colors shadow-lg"
+            aria-label="Scroll left"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-2 z-10 bg-black/50 text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/70 transition-colors shadow-lg"
+            aria-label="Scroll right"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </>
       )}
       <div
         ref={sliderRef}
-        className="flex flex-nowrap items-stretch justify-start gap-4 px-4 overflow-x-auto custom-scrollbar"
+        className="flex flex-nowrap items-stretch justify-start gap-3 px-4 overflow-x-auto custom-scrollbar cursor-grab active:cursor-grabbing"
         style={{ minWidth: "min(900px, 100vw)" }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
       >
         {subnavOptions.map((opt, idx) => (
           <SubnavCard key={opt.title + idx} {...opt} />
         ))}
       </div>
-      {showRightArrow && (
-        <button
-          onClick={() => scroll("right")}
-          className="absolute right-2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-          aria-label="Scroll right"
-        >
-          →
-        </button>
-      )}
     </div>
   );
 });
@@ -313,7 +421,7 @@ const MainNav: React.FC = () => {
     };
   }, [openSubNav]);
 
-  // Handle click outside
+  // Handle click outside for the main submenu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -423,6 +531,9 @@ const MainNav: React.FC = () => {
       >
         <SubnavSlider />
       </div>
+
+      {/* Floating Contact Button and Submenu - Now a separate component */}
+      <FloatingContact />
     </div>
   );
 };
