@@ -4,13 +4,19 @@
   right: 30px; // Adjusted position
   bottom: 30px; // Adjusted position
   z-index: 1000;
+  // Apply the golden gradient from the signup button
   background: linear-gradient(
-    45deg,
-    #ff9a8b 0%,
-    #ff6a88 55%,
-    #ff99ac 100%
-  ); // Attractive gradient background
-  color: white;
+    90deg,
+    #ffd700,
+    // Bright gold
+    #ffc107,
+    // Amber
+    #ffb700,
+    // Strong gold
+    #ffd700 // Bright gold
+  );
+  background-size: 300% 100%; // Needed for the animation
+  color: #333; // Change text color to a dark color for contrast with gold
   border: none;
   border-radius: 50%;
   width: 60px; // Slightly larger button
@@ -19,13 +25,17 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 16px rgba(255, 106, 136, 0.4); // Shadow matching gradient
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: gradientMove 3s linear infinite;
+  // Adjust box shadow to match the golden color
+  box-shadow: 0 8px 16px rgba(255, 215, 0, 0.4);
+  //   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   // Subtle scale and shadow animation on hover
   &:hover {
+    // No background-color change on hover for gradient
     transform: scale(1.1) rotate(5deg); // Add a slight rotate on hover
-    box-shadow: 0 12px 20px rgba(255, 106, 136, 0.6); // More pronounced shadow on hover
+    // More pronounced shadow on hover, matching golden color
+    box-shadow: 0 12px 20px rgba(255, 215, 0, 0.6);
   }
 
   .icon-container {
@@ -37,6 +47,8 @@
     height: 100%;
     font-size: 28px; // Larger icon size
     transition: transform 0.3s ease;
+    // Ensure icon color is visible on gold background
+    color: #333;
 
     .twenty-four {
       position: absolute;
@@ -50,24 +62,26 @@
       padding: 3px 5px; // Adjusted padding
       line-height: 1;
       z-index: 10;
-      border: 2px solid #ff6a88; // Border matching gradient
+      // Adjust border color to match golden theme
+      border: 2px solid #ffc107;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
 
-  // Add a subtle pulse animation
-  animation: pulse 2s infinite;
+  // Apply the gradient move animation
+  animation: gradientMove 3s linear infinite;
 }
 
-@keyframes pulse {
+// Keyframes for the gradient move animation
+@keyframes gradientMove {
   0% {
-    box-shadow: 0 0 0 0 rgba(255, 106, 136, 0.7);
+    background-position: 0% 50%;
   }
-  70% {
-    box-shadow: 0 0 0 15px rgba(255, 106, 136, 0);
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(255, 106, 136, 0);
+    background-position: 0% 50%;
   }
 }
 
@@ -221,5 +235,16 @@
       width: 180px; // Larger QR code image size
       height: auto;
     }
+  }
+}
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
