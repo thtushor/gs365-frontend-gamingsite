@@ -1,110 +1,227 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from "react";
-import "./FloatingContact.scss"; // We will create this file next
+import "./FloatingContact.scss";
 // Import social icons
 import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-// Import expand/collapse icon (using FaPlus and FaMinus as placeholders)
+// Import expand/collapse icon
 import { FaPlus, FaMinus } from "react-icons/fa";
-// Import headset icon (using FiHeadphones as a placeholder)
+// Import headset icon
 import { FiHeadphones } from "react-icons/fi";
-import { Logo } from "../Logo/Logo";
-// import { Logo } from "../Logo/Logo"; // Remove Logo import
-
-// Assume these imports are needed based on MainNav.tsx
-// You might need to adjust these based on what icons/images you actually use
-// import yourLogo from "../../assets/your-logo.png";
-// import whatsappQR from "../../assets/whatsapp-qr.png";
-// import emailQR from "../../assets/email-qr.png";
-// import facebookQR from "../../assets/facebook-qr.png";
+import { Logo } from "../Logo/Logo"; // Import the Logo component
 
 const FloatingContact: React.FC = () => {
-  const [showFloatingSubMenu, setShowFloatingSubMenu] = useState(false);
-  const floatingButtonRef = useRef<HTMLButtonElement>(null);
-  const floatingSubMenuRef = useRef<HTMLDivElement>(null);
+  // State for contact submenu visibility and expanded contact option
+  const [showFloatingContactSubMenu, setShowFloatingContactSubMenu] =
+    useState(false); // Renamed for clarity
+  const floatingContactSubMenuRef = useRef<HTMLDivElement>(null); // Renamed ref
   const [expandedContact, setExpandedContact] = useState<string | null>(null);
 
-  // State for dragging
-  const [isDragging, setIsDragging] = useState(false);
+  // State for dragging: null, 'contact', or 'support'
+  const [isDragging, setIsDragging] = useState<string | null>(null);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const [buttonPos, setButtonPos] = useState({
-    x: window.innerWidth - 90, // Initial position from right
-    y: window.innerHeight - 90, // Initial position from bottom
+
+  // Refs for the buttons
+  const floatingContactButtonRef = useRef<HTMLButtonElement>(null); // Ref for the contact button
+  const customerSupportButtonRef = useRef<HTMLButtonElement>(null); // Ref for the new button
+
+  // State for button positions (using useEffect to set initial position after render)
+  const [contactButtonPos, setContactButtonPos] = useState({ x: 0, y: 0 });
+  const [customerSupportButtonPos, setCustomerSupportButtonPos] = useState({
+    x: 0,
+    y: 0,
   });
+
+  // Set initial positions after the component mounts and buttons are rendered
+  useEffect(() => {
+    // Use requestAnimationFrame to ensure button sizes are calculated after render
+    requestAnimationFrame(() => {
+      if (
+        floatingContactButtonRef.current &&
+        customerSupportButtonRef.current
+      ) {
+        const contactBtnWidth = floatingContactButtonRef.current.offsetWidth;
+        const space = 10; // Space between buttons
+        const initialRightOffset = 30; // Initial distance from the right edge
+        const initialBottomOffset = 30; // Initial distance from the bottom edge
+
+        const initialContactX =
+          window.innerWidth - contactBtnWidth - initialRightOffset;
+        const initialContactY =
+          window.innerHeight -
+          (floatingContactButtonRef.current.offsetHeight || 0) -
+          initialBottomOffset;
+
+        setContactButtonPos({ x: initialContactX, y: initialContactY });
+
+        const supportBtnWidth = customerSupportButtonRef.current.offsetWidth;
+        const initialSupportX = initialContactX - supportBtnWidth - space;
+        const initialSupportY = initialContactY; // Align vertically with contact button
+
+        setCustomerSupportButtonPos({ x: initialSupportX, y: initialSupportY });
+      }
+    });
+  }, []); // Empty dependency array means this runs once on mount
 
   // Handle click outside for the floating contact submenu
   useEffect(() => {
     const handleClickOutsideFloating = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
+      // Check if the click is outside the contact submenu and the contact button
       if (
-        showFloatingSubMenu &&
-        floatingSubMenuRef.current &&
-        !floatingSubMenuRef.current.contains(target) &&
-        floatingButtonRef.current &&
-        !floatingButtonRef.current.contains(target)
+        showFloatingContactSubMenu &&
+        floatingContactSubMenuRef.current &&
+        !floatingContactSubMenuRef.current.contains(target) &&
+        floatingContactButtonRef.current &&
+        !floatingContactButtonRef.current.contains(target)
       ) {
-        console.log("Clicked outside floating submenu");
-        setShowFloatingSubMenu(false);
+        console.log("Clicked outside floating contact submenu");
+        setShowFloatingContactSubMenu(false);
         setExpandedContact(null);
       }
+      // Add checks for other potential submenus here if needed
     };
 
     document.addEventListener("mousedown", handleClickOutsideFloating);
     return () =>
       document.removeEventListener("mousedown", handleClickOutsideFloating);
-  }, [showFloatingSubMenu]);
+  }, [showFloatingContactSubMenu]);
 
-  // Handle dragging
+  // Handle dragging (Mouse and Touch)
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleMove = (clientX: number, clientY: number) => {
       if (!isDragging) return;
-      const newX = buttonPos.x + event.clientX - startPos.x;
-      const newY = buttonPos.y + event.clientY - startPos.y;
 
-      // Prevent dragging outside the viewport (optional boundary checks)
+      const currentButtonRef =
+        isDragging === "contact"
+          ? floatingContactButtonRef
+          : customerSupportButtonRef;
+      const currentButtonPos =
+        isDragging === "contact" ? contactButtonPos : customerSupportButtonPos;
+      const setCurrentButtonPos =
+        isDragging === "contact"
+          ? setContactButtonPos
+          : setCustomerSupportButtonPos;
+
+      const newX = currentButtonPos.x + clientX - startPos.x;
+      const newY = currentButtonPos.y + clientY - startPos.y;
+
+      // Prevent dragging outside the viewport
       const maxX =
-        window.innerWidth - (floatingButtonRef.current?.offsetWidth || 0);
+        window.innerWidth - (currentButtonRef.current?.offsetWidth || 0);
       const maxY =
-        window.innerHeight - (floatingButtonRef.current?.offsetHeight || 0);
+        window.innerHeight - (currentButtonRef.current?.offsetHeight || 0);
       const boundedX = Math.max(0, Math.min(newX, maxX));
       const boundedY = Math.max(0, Math.min(newY, maxY));
 
-      setButtonPos({ x: boundedX, y: boundedY });
-      setStartPos({ x: event.clientX, y: event.clientY });
+      setCurrentButtonPos({ x: boundedX, y: boundedY });
+      setStartPos({ x: clientX, y: clientY }); // Update start position for next move
     };
 
-    const handleMouseUp = () => {
-      setIsDragging(false);
+    const handleMouseMove = (event: MouseEvent) => {
+      handleMove(event.clientX, event.clientY);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (!event.touches[0]) return;
+      handleMove(event.touches[0].clientX, event.touches[0].clientY);
+      event.preventDefault(); // Prevent scrolling while dragging
+    };
+
+    const handleEnd = () => {
+      setIsDragging(null);
     };
 
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mouseup", handleEnd);
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleEnd);
     } else {
       document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseup", handleEnd);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleEnd);
     }
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseup", handleEnd);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleEnd);
     };
-  }, [isDragging, startPos, buttonPos]);
+  }, [isDragging, startPos, contactButtonPos, customerSupportButtonPos]); // Added all position states as dependencies
 
-  const handleFloatingButtonClick = useCallback(() => {
+  const handleContactButtonClick = useCallback(() => {
     // Only toggle submenu if not dragging
     if (!isDragging) {
-      console.log("Floating button clicked! Toggling submenu visibility.");
-      setShowFloatingSubMenu((prev) => !prev);
+      console.log(
+        "Floating contact button clicked! Toggling submenu visibility."
+      );
+      setShowFloatingContactSubMenu((prev) => !prev);
       setExpandedContact(null);
     }
   }, [isDragging]);
 
+  const handleCustomerSupportButtonClick = useCallback(() => {
+    // Handle click for customer support button (e.g., open a different modal/submenu)
+    console.log("Floating customer support button clicked!");
+    // Implement logic to show customer support interface here
+    // For now, let's just close the contact submenu if it's open
+    setShowFloatingContactSubMenu(false);
+    setExpandedContact(null);
+  }, []);
+
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      setIsDragging(true);
-      setStartPos({ x: event.clientX, y: event.clientY });
-      // Optional: Prevent text selection while dragging
-      event.preventDefault();
+      // Determine which button was clicked based on ref
+      if (
+        floatingContactButtonRef.current &&
+        floatingContactButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDragging("contact");
+        setStartPos({ x: event.clientX, y: event.clientY });
+        event.preventDefault(); // Prevent default for dragging
+      } else if (
+        customerSupportButtonRef.current &&
+        customerSupportButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDragging("support"); // Use 'support' for customer support button
+        setStartPos({ x: event.clientX, y: event.clientY });
+        event.preventDefault(); // Prevent default for dragging
+      }
+    },
+    []
+  );
+
+  // Add touch start handler for mobile
+  const handleTouchStart = useCallback(
+    (event: React.TouchEvent<HTMLButtonElement>) => {
+      if (!event.touches[0]) return;
+
+      // Determine which button was touched based on ref
+      if (
+        floatingContactButtonRef.current &&
+        floatingContactButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDragging("contact");
+        setStartPos({
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        });
+        event.preventDefault(); // Prevent default for dragging
+      } else if (
+        customerSupportButtonRef.current &&
+        customerSupportButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsDragging("support"); // Use 'support' for customer support button
+        setStartPos({
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        });
+        event.preventDefault(); // Prevent default for dragging
+      }
     },
     []
   );
@@ -117,161 +234,180 @@ const FloatingContact: React.FC = () => {
     <>
       {/* Floating Contact Button */}
       <button
-        ref={floatingButtonRef}
+        ref={floatingContactButtonRef} // Use renamed ref
         className="floating-contact-button"
-        onClick={handleFloatingButtonClick}
-        onMouseDown={handleMouseDown} // Add mousedown handler
+        onClick={handleContactButtonClick} // Use renamed handler
+        onMouseDown={handleMouseDown} // Use shared mousedown handler
+        onTouchStart={handleTouchStart} // Add touchstart handler
         aria-label="Open contact options"
         style={{
           position: "fixed", // Ensure fixed positioning for dragging
-          left: buttonPos.x,
-          top: buttonPos.y,
+          left: contactButtonPos.x,
+          top: contactButtonPos.y,
           // Remove bottom and right styles as they are now controlled by top/left
           // bottom: 'auto',
           // right: 'auto',
         }}
       >
-        {/* Icon and text will go here - Placeholder */}
+        {/* Icon and text */}
         <div className="icon-container">
-          {/* Placeholder for button icon - using a phone emoji for now */}📞
+          📞{/* Phone icon placeholder */}
+          <span className="twenty-four">24</span>
+        </div>
+      </button>
+
+      {/* Floating Customer Support Button */}
+      <button
+        ref={customerSupportButtonRef} // Use ref for customer support button
+        className="floating-contact-button customer-support-button" // Add a specific class
+        onClick={handleCustomerSupportButtonClick} // Handle its click
+        onMouseDown={handleMouseDown} // Use shared mousedown handler
+        onTouchStart={handleTouchStart} // Add touchstart handler
+        aria-label="Open customer support"
+        style={{
+          position: "fixed", // Ensure fixed positioning for dragging
+          left: customerSupportButtonPos.x,
+          top: customerSupportButtonPos.y,
+        }}
+      >
+        {/* Logo as icon */}
+        <div className="icon-container">
+          <Logo />
         </div>
       </button>
 
       {/* Floating Contact Submenu */}
-      <div
-        ref={floatingSubMenuRef}
-        className={`floating-contact-submenu ${
-          showFloatingSubMenu ? "visible" : ""
-        } top-[${buttonPos.y - 500}]`}
-        // Optionally hide the submenu completely when closed to prevent interaction
-        style={{
-          pointerEvents: showFloatingSubMenu ? "auto" : "none",
-          // Position the submenu relative to the button
-          position: "fixed", // Use fixed positioning
-          left: buttonPos.x - 260, // Adjust offset as needed
-          // top: , // Fixed offset from button's top
-          // Remove fixed bottom/right styles
-          // bottom: 'auto',
-          // right: 'auto',
-        }}
-      >
-        {/* Logo Area */}
-        <div className="submenu-header">
-          {/* Placeholder for Logo - Using img tag for better styling control */}
-          {/* Replace src with actual logo path */}
-          <Logo />
-          {/* 24/7 Headset Icon */}
-          <div className="headset-icon">
-            <FiHeadphones />
-            <span>24/7</span>
+      {/* Render the submenu based on showFloatingContactSubMenu state */}
+      {showFloatingContactSubMenu && (
+        <div
+          ref={floatingContactSubMenuRef} // Use renamed ref
+          className={`floating-contact-submenu ${
+            showFloatingContactSubMenu ? "visible" : ""
+          }`}
+          style={{
+            pointerEvents: showFloatingContactSubMenu ? "auto" : "none",
+            position: "fixed",
+            left: contactButtonPos.x - 260, // Position relative to contact button
+            top: contactButtonPos.y - 300, // Position relative to contact button
+          }}
+        >
+          {/* Logo Area */}
+          <div className="submenu-header">
+            {/* Use Logo component for gamestar logo */}
+            <Logo />
+            {/* 24/7 Headset Icon */}
+            <div className="headset-icon">
+              <FiHeadphones />
+              <span>24/7</span>
+            </div>
+          </div>
+
+          {/* Contact Options */}
+          <div className="contact-options-list">
+            {/* Whatsapp Option */}
+            <div
+              className={`contact-option ${
+                expandedContact === "Whatsapp" ? "expanded" : ""
+              }`}
+              onClick={() => handleContactClick("Whatsapp")}
+            >
+              <div className="contact-info">
+                {/* Whatsapp Icon */}
+                <span className="contact-icon">
+                  <FaWhatsapp />
+                </span>
+                <span>Whatsapp</span>
+              </div>
+              {/* Expand/Collapse Icon */}
+              <span className="expand-icon">
+                {expandedContact === "Whatsapp" ? <FaMinus /> : <FaPlus />}
+              </span>
+            </div>
+            {/* QR Code Area for Whatsapp */}
+            <div
+              className={`qr-code-area ${
+                expandedContact === "Whatsapp" ? "expanded" : ""
+              }`}
+            >
+              {/* Whatsapp QR Code */}
+              {/* Replace with actual QR code import if needed, otherwise uses the default */}
+              <img
+                src="src/assets/qrcode.jpg"
+                alt="Whatsapp QR Code"
+                className="qr-code-image"
+              />
+            </div>
+
+            {/* Email Option */}
+            <div
+              className={`contact-option ${
+                expandedContact === "Email" ? "expanded" : ""
+              }`}
+              onClick={() => handleContactClick("Email")}
+            >
+              <div className="contact-info">
+                {/* Email Icon */}
+                <span className="contact-icon">
+                  <MdEmail />
+                </span>
+                <span>Email</span>
+              </div>
+              {/* Expand/Collapse Icon */}
+              <span className="expand-icon">
+                {expandedContact === "Email" ? <FaMinus /> : <FaPlus />}
+              </span>
+            </div>
+            {/* QR Code Area for Email */}
+            <div
+              className={`qr-code-area ${
+                expandedContact === "Email" ? "expanded" : ""
+              }`}
+            >
+              {/* Email QR Code */}
+              {/* Replace with actual QR code import if needed, otherwise uses the default */}
+              <img
+                src="src/assets/qrcode.jpg"
+                alt="Email QR Code"
+                className="qr-code-image"
+              />
+            </div>
+
+            {/* Facebook Option */}
+            <div
+              className={`contact-option ${
+                expandedContact === "Facebook" ? "expanded" : ""
+              }`}
+              onClick={() => handleContactClick("Facebook")}
+            >
+              <div className="contact-info">
+                {/* Facebook Icon */}
+                <span className="contact-icon">
+                  <FaFacebookF />
+                </span>
+                <span>Facebook</span>
+              </div>
+              {/* Expand/Collapse Icon */}
+              <span className="expand-icon">
+                {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
+              </span>
+            </div>
+            {/* QR Code Area for Facebook */}
+            <div
+              className={`qr-code-area ${
+                expandedContact === "Facebook" ? "expanded" : ""
+              }`}
+            >
+              {/* Facebook QR Code */}
+              {/* Replace with actual QR code import if needed, otherwise uses the default */}
+              <img
+                src="src/assets/qrcode.jpg"
+                alt="Facebook QR Code"
+                className="qr-code-image"
+              />
+            </div>
           </div>
         </div>
-
-        {/* Contact Options */}
-        <div className="contact-options-list">
-          {/* Whatsapp Option */}
-          <div
-            className={`contact-option ${
-              expandedContact === "Whatsapp" ? "expanded" : ""
-            }`}
-            onClick={() => handleContactClick("Whatsapp")}
-          >
-            <div className="contact-info">
-              {/* Whatsapp Icon */}
-              <span className="contact-icon">
-                <FaWhatsapp />
-              </span>
-              <span>Whatsapp</span>
-            </div>
-            {/* Expand/Collapse Icon */}
-            <span className="expand-icon">
-              {expandedContact === "Whatsapp" ? <FaMinus /> : <FaPlus />}
-            </span>
-          </div>
-          {/* QR Code Area for Whatsapp */}
-          <div
-            className={`qr-code-area ${
-              expandedContact === "Whatsapp" ? "expanded" : ""
-            }`}
-          >
-            {/* Whatsapp QR Code */}
-            {/* Replace with actual QR code import if needed, otherwise uses the default */}
-            <img
-              src="src/assets/qrcode.jpg"
-              alt="Whatsapp QR Code"
-              className="qr-code-image"
-            />
-          </div>
-
-          {/* Email Option */}
-          <div
-            className={`contact-option ${
-              expandedContact === "Email" ? "expanded" : ""
-            }`}
-            onClick={() => handleContactClick("Email")}
-          >
-            <div className="contact-info">
-              {/* Email Icon */}
-              <span className="contact-icon">
-                <MdEmail />
-              </span>
-              <span>Email</span>
-            </div>
-            {/* Expand/Collapse Icon */}
-            <span className="expand-icon">
-              {expandedContact === "Email" ? <FaMinus /> : <FaPlus />}
-            </span>
-          </div>
-          {/* QR Code Area for Email */}
-          <div
-            className={`qr-code-area ${
-              expandedContact === "Email" ? "expanded" : ""
-            }`}
-          >
-            {/* Email QR Code */}
-            {/* Replace with actual QR code import if needed, otherwise uses the default */}
-            <img
-              src="src/assets/qrcode.jpg"
-              alt="Email QR Code"
-              className="qr-code-image"
-            />
-          </div>
-
-          {/* Facebook Option */}
-          <div
-            className={`contact-option ${
-              expandedContact === "Facebook" ? "expanded" : ""
-            }`}
-            onClick={() => handleContactClick("Facebook")}
-          >
-            <div className="contact-info">
-              {/* Facebook Icon */}
-              <span className="contact-icon">
-                <FaFacebookF />
-              </span>
-              <span>Facebook</span>
-            </div>
-            {/* Expand/Collapse Icon */}
-            <span className="expand-icon">
-              {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
-            </span>
-          </div>
-          {/* QR Code Area for Facebook */}
-          <div
-            className={`qr-code-area ${
-              expandedContact === "Facebook" ? "expanded" : ""
-            }`}
-          >
-            {/* Facebook QR Code */}
-            {/* Replace with actual QR code import if needed, otherwise uses the default */}
-            <img
-              src="src/assets/qrcode.jpg"
-              alt="Facebook QR Code"
-              className="qr-code-image"
-            />
-          </div>
-        </div>
-      </div>
+      )}
     </>
   );
 };
