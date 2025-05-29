@@ -1,28 +1,31 @@
 // Floating Contact Button Styles (Refined)
 .floating-contact-button {
   position: fixed;
-  right: 20px; // Position from the right edge
-  bottom: 20px; // Position from the bottom edge (Adjusted based on typical floating button placement, can be changed back to top/transform if needed)
-  z-index: 1000; // Ensure it's above other content
-  background-color: #2e8b57; // Green background from image
+  right: 30px; // Adjusted position
+  bottom: 30px; // Adjusted position
+  z-index: 1000;
+  background: linear-gradient(
+    45deg,
+    #ff9a8b 0%,
+    #ff6a88 55%,
+    #ff99ac 100%
+  ); // Attractive gradient background
   color: white;
   border: none;
-  border-radius: 50%; // Circular shape
-  width: 50px; // Button size
-  height: 50px; // Button size
+  border-radius: 50%;
+  width: 60px; // Slightly larger button
+  height: 60px; // Slightly larger button
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Increased shadow for depth
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 8px 16px rgba(255, 106, 136, 0.4); // Shadow matching gradient
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  // Subtle scale animation on hover
+  // Subtle scale and shadow animation on hover
   &:hover {
-    background-color: #3cb371; // Slightly lighter green on hover
-    transform: scale(
-      1.1
-    ); // Scale up slightly (Adjusted transform due to bottom positioning)
+    transform: scale(1.1) rotate(5deg); // Add a slight rotate on hover
+    box-shadow: 0 12px 20px rgba(255, 106, 136, 0.6); // More pronounced shadow on hover
   }
 
   .icon-container {
@@ -32,98 +35,124 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    font-size: 24px; // Adjust icon size
+    font-size: 28px; // Larger icon size
+    transition: transform 0.3s ease;
 
-    /* Style for the 24/7 badge */
     .twenty-four {
       position: absolute;
-      top: -5px; // Position above and to the right
-      right: -5px;
-      background-color: yellow; // Yellow background for the badge
-      color: black;
-      font-size: 10px;
+      top: -8px; // Adjusted position
+      right: -8px; // Adjusted position
+      background-color: #ffeb3b; // Vibrant yellow
+      color: #333;
+      font-size: 11px; // Slightly larger font
       font-weight: bold;
       border-radius: 50%;
-      padding: 2px 4px;
+      padding: 3px 5px; // Adjusted padding
       line-height: 1;
-      z-index: 10; // Ensure badge is above the icon
-      border: 1px solid #2e8b57; // Border matching button color
+      z-index: 10;
+      border: 2px solid #ff6a88; // Border matching gradient
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
+
+  // Add a subtle pulse animation
+  animation: pulse 2s infinite;
 }
 
-// Optional: Add a subtle pulse animation
-// @keyframes pulse {
-//   0% {
-//     box-shadow: 0 0 0 0 rgba(46, 139, 87, 0.7);
-//   }
-//   70% {
-//     box-shadow: 0 0 0 10px rgba(46, 139, 87, 0);
-//   }
-//   100% {
-//     box-shadow: 0 0 0 0 rgba(46, 139, 87, 0);
-//   }
-// }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 136, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 106, 136, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 136, 0);
+  }
+}
 
 // Floating Contact Submenu Styles (Refined)
 .floating-contact-submenu {
   position: fixed;
-  right: 80px; // Position next to the button
-  bottom: 20px; // Align with the button bottom
-  z-index: 999; // Below the button
-  background-color: #3a3a3a; // Dark grey background from image
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); // Darker shadow
-  padding: 0; // Remove padding from container, add to inner elements
-  width: 250px; // Adjusted width based on image
-  color: #ffffff; // White text color
-  overflow: hidden; // To contain border-radius
+  right: 100px; // Adjusted position relative to larger button
+  bottom: 30px; // Align with the button bottom
+  z-index: 999;
+  background: rgba(
+    45,
+    45,
+    45,
+    0.98
+  ); // Slightly darker and more opaque background
+  border-radius: 15px; // More rounded corners
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); // Stronger shadow
+  padding: 0;
+  width: 280px; // Wider submenu
+  color: #e0e0e0; // Lighter text color
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(30px); // Start further to the right
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out; // Slightly slower and smoother animation
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
   .submenu-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px 10px; // Padding top/bottom and left/right
-    background-color: #4a4a4a; // Slightly lighter grey for header
-    border-bottom: 1px solid #5a5a5a; // Header border
+    padding: 20px 15px; // More padding
+    background: rgba(
+      60,
+      60,
+      60,
+      0.98
+    ); // Slightly different background for header
+    border-bottom: 1px solid #757575; // Lighter border
 
     .submenu-logo {
-      width: 80px; // Logo size
+      width: 100px; // Larger logo size
       height: auto;
-      margin-bottom: 5px;
+      margin-bottom: 10px; // More margin
+      filter: brightness(0) invert(1); // Keep logo white
     }
 
     .headset-icon {
       display: flex;
       align-items: center;
-      font-size: 20px; // Headset icon size
+      font-size: 24px; // Larger headset icon
+      color: #ffeb3b; // Match 24/7 badge color
 
       span {
-        font-size: 12px;
-        margin-left: 5px;
+        font-size: 14px; // Larger text
+        margin-left: 8px; // More margin
         font-weight: bold;
+        color: #e0e0e0; // Match submenu text color
       }
     }
   }
 
   .contact-options-list {
-    padding: 0 10px; // Padding for the list container
+    padding: 10px 20px; // More padding for the list
 
     .contact-option {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0; // Padding for each option
-      border-bottom: 1px solid #5a5a5a; // Separator line
+      padding: 15px 0; // More padding for each option
+      border-bottom: 1px solid #5a5a5a; // Separator line color
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.3s ease, color 0.3s ease; // Added color transition
+      font-size: 16px; // Larger text
 
       &:last-child {
-        border-bottom: none; // No border for the last item
+        border-bottom: none;
       }
 
       &:hover {
         background-color: #4a4a4a; // Highlight on hover
+        color: #ffffff; // White text on hover
       }
 
       .contact-info {
@@ -131,22 +160,34 @@
         align-items: center;
 
         .contact-icon {
-          font-size: 18px; // Contact icon size
-          margin-right: 10px;
+          font-size: 22px; // Larger contact icon size
+          margin-right: 15px; // More margin
+          // Specific icon colors can be added here if needed
+          .fa-whatsapp {
+            color: #25d366;
+          } // Example: Whatsapp green
+          .md-email {
+            color: #ffeb3b;
+          } // Example: Email yellow
+          .fa-facebook-f {
+            color: #1877f2;
+          } // Example: Facebook blue
         }
 
         span {
-          font-size: 14px; // Text size
+          // Inherits color
         }
       }
 
       .expand-icon {
-        font-size: 14px;
+        font-size: 18px; // Larger icon
         font-weight: bold;
-      }
+        color: #ffeb3b; // Match 24/7 badge color
+        transition: transform 0.3s ease;
 
-      &.expanded {
-        // Styles for expanded state if needed, e.g., different background
+        &.rotated {
+          transform: rotate(180deg); // Rotate icon when expanded
+        }
       }
     }
   }
@@ -154,13 +195,30 @@
   .qr-code-area {
     display: flex;
     justify-content: center;
-    padding: 10px; // Padding around the QR code
+    // Initial state for smooth transition
+    max-height: 0; // Start with no height
+    opacity: 0; // Start hidden
+    overflow: hidden; // Hide content when not expanded
+    padding: 0 20px; // Remove padding from initial state, add in expanded
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
+      padding 0.5s ease-out; // Smooth transition for height, opacity, and padding
     background-color: #ffffff; // White background for QR code area
-    margin: 0 10px 10px; // Margin to match padding of list
-    border-radius: 5px; // Small border radius for the QR area
+    margin: 0 20px; // Adjusted margin
+    border-radius: 10px; // More rounded corners
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Stronger shadow
+    // Remove bottom margin from initial state
+    margin-bottom: 0; // Remove bottom margin
+
+    &.expanded {
+      // Styles when expanded
+      max-height: 300px; // Set a max height large enough to show the QR code
+      opacity: 1; // Fade in
+      padding: 20px; // Add padding when expanded
+      margin-bottom: 20px; // Add bottom margin when expanded
+    }
 
     .qr-code-image {
-      width: 150px; // QR code image size
+      width: 180px; // Larger QR code image size
       height: auto;
     }
   }

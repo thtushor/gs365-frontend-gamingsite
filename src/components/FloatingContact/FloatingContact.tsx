@@ -7,6 +7,8 @@ import { MdEmail } from "react-icons/md";
 import { FaPlus, FaMinus } from "react-icons/fa";
 // Import headset icon (using FiHeadphones as a placeholder)
 import { FiHeadphones } from "react-icons/fi";
+import { Logo } from "../Logo/Logo";
+// import { Logo } from "../Logo/Logo"; // Remove Logo import
 
 // Assume these imports are needed based on MainNav.tsx
 // You might need to adjust these based on what icons/images you actually use
@@ -65,126 +67,134 @@ const FloatingContact: React.FC = () => {
         {/* Icon and text will go here - Placeholder */}
         <div className="icon-container">
           {/* Placeholder for button icon - using a phone emoji for now */}📞
-          <span className="twenty-four">24</span>
         </div>
       </button>
 
       {/* Floating Contact Submenu */}
-      {showFloatingSubMenu && (
-        <div ref={floatingSubMenuRef} className="floating-contact-submenu">
-          {/* Logo Area */}
-          <div className="submenu-header">
-            {/* Placeholder for Logo */}
-            {/* Replace with actual logo import */}
-            <img
-              src="/path/to/your/logo.png"
-              alt="Logo"
-              className="submenu-logo"
-            />
-            {/* 24/7 Headset Icon */}
-            <div className="headset-icon">
-              <FiHeadphones />
-              <span>24/7</span>
-            </div>
-          </div>
-
-          {/* Contact Options */}
-          <div className="contact-options-list">
-            {/* Whatsapp Option */}
-            <div
-              className={`contact-option ${
-                expandedContact === "Whatsapp" ? "expanded" : ""
-              }`}
-              onClick={() => handleContactClick("Whatsapp")}
-            >
-              <div className="contact-info">
-                {/* Whatsapp Icon */}
-                <span className="contact-icon">
-                  <FaWhatsapp />
-                </span>
-                <span>Whatsapp</span>
-              </div>
-              {/* Expand/Collapse Icon */}
-              <span className="expand-icon">
-                {expandedContact === "Whatsapp" ? <FaMinus /> : <FaPlus />}
-              </span>
-            </div>
-            {expandedContact === "Whatsapp" && (
-              <div className="qr-code-area">
-                {/* Whatsapp QR Code */}
-                {/* Replace with actual QR code import if needed, otherwise uses the default */}
-                <img
-                  src="src/assets/qrcode.jpg"
-                  alt="Whatsapp QR Code"
-                  className="qr-code-image"
-                />
-              </div>
-            )}
-
-            {/* Email Option */}
-            <div
-              className={`contact-option ${
-                expandedContact === "Email" ? "expanded" : ""
-              }`}
-              onClick={() => handleContactClick("Email")}
-            >
-              <div className="contact-info">
-                {/* Email Icon */}
-                <span className="contact-icon">
-                  <MdEmail />
-                </span>
-                <span>Email</span>
-              </div>
-              {/* Expand/Collapse Icon */}
-              <span className="expand-icon">
-                {expandedContact === "Email" ? <FaMinus /> : <FaPlus />}
-              </span>
-            </div>
-            {expandedContact === "Email" && (
-              <div className="qr-code-area">
-                {/* Email QR Code */}
-                {/* Replace with actual QR code import if needed, otherwise uses the default */}
-                <img
-                  src="src/assets/qrcode.jpg"
-                  alt="Email QR Code"
-                  className="qr-code-image"
-                />
-              </div>
-            )}
-
-            {/* Facebook Option */}
-            <div
-              className={`contact-option ${
-                expandedContact === "Facebook" ? "expanded" : ""
-              }`}
-              onClick={() => handleContactClick("Facebook")}
-            >
-              <div className="contact-info">
-                {/* Facebook Icon */}
-                <span className="contact-icon">
-                  <FaFacebookF />
-                </span>
-                <span>Facebook</span>
-              </div>
-              {/* Expand/Collapse Icon */}
-              <span className="expand-icon">
-                {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
-              </span>
-            </div>
-            {expandedContact === "Facebook" && (
-              <div className="qr-code-area">
-                {/* Facebook QR Code */}
-                {/* Replace with actual QR code import if needed, otherwise uses the default */}
-                <img
-                  src="src/assets/qrcode.jpg"
-                  alt="Facebook QR Code"
-                  className="qr-code-image"
-                />
-              </div>
-            )}
+      <div
+        ref={floatingSubMenuRef}
+        className={`floating-contact-submenu ${
+          showFloatingSubMenu ? "visible" : ""
+        }`}
+        style={{ pointerEvents: showFloatingSubMenu ? "auto" : "none" }}
+      >
+        {/* Logo Area */}
+        <div className="submenu-header">
+          {/* Placeholder for Logo - Using img tag for better styling control */}
+          {/* Replace src with actual logo path */}
+          <Logo />
+          {/* 24/7 Headset Icon */}
+          <div className="headset-icon">
+            <FiHeadphones />
+            <span>24/7</span>
           </div>
         </div>
-      )}
+
+        {/* Contact Options */}
+        <div className="contact-options-list">
+          {/* Whatsapp Option */}
+          <div
+            className={`contact-option ${
+              expandedContact === "Whatsapp" ? "expanded" : ""
+            }`}
+            onClick={() => handleContactClick("Whatsapp")}
+          >
+            <div className="contact-info">
+              {/* Whatsapp Icon */}
+              <span className="contact-icon">
+                <FaWhatsapp />
+              </span>
+              <span>Whatsapp</span>
+            </div>
+            {/* Expand/Collapse Icon */}
+            <span className="expand-icon">
+              {expandedContact === "Whatsapp" ? <FaMinus /> : <FaPlus />}
+            </span>
+          </div>
+          {/* QR Code Area for Whatsapp */}
+          <div
+            className={`qr-code-area ${
+              expandedContact === "Whatsapp" ? "expanded" : ""
+            }`}
+          >
+            {/* Whatsapp QR Code */}
+            {/* Replace with actual QR code import if needed, otherwise uses the default */}
+            <img
+              src="src/assets/qrcode.jpg"
+              alt="Whatsapp QR Code"
+              className="qr-code-image"
+            />
+          </div>
+
+          {/* Email Option */}
+          <div
+            className={`contact-option ${
+              expandedContact === "Email" ? "expanded" : ""
+            }`}
+            onClick={() => handleContactClick("Email")}
+          >
+            <div className="contact-info">
+              {/* Email Icon */}
+              <span className="contact-icon">
+                <MdEmail />
+              </span>
+              <span>Email</span>
+            </div>
+            {/* Expand/Collapse Icon */}
+            <span className="expand-icon">
+              {expandedContact === "Email" ? <FaMinus /> : <FaPlus />}
+            </span>
+          </div>
+          {/* QR Code Area for Email */}
+          <div
+            className={`qr-code-area ${
+              expandedContact === "Email" ? "expanded" : ""
+            }`}
+          >
+            {/* Email QR Code */}
+            {/* Replace with actual QR code import if needed, otherwise uses the default */}
+            <img
+              src="src/assets/qrcode.jpg"
+              alt="Email QR Code"
+              className="qr-code-image"
+            />
+          </div>
+
+          {/* Facebook Option */}
+          <div
+            className={`contact-option ${
+              expandedContact === "Facebook" ? "expanded" : ""
+            }`}
+            onClick={() => handleContactClick("Facebook")}
+          >
+            <div className="contact-info">
+              {/* Facebook Icon */}
+              <span className="contact-icon">
+                <FaFacebookF />
+              </span>
+              <span>Facebook</span>
+            </div>
+            {/* Expand/Collapse Icon */}
+            <span className="expand-icon">
+              {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
+            </span>
+          </div>
+          {/* QR Code Area for Facebook */}
+          <div
+            className={`qr-code-area ${
+              expandedContact === "Facebook" ? "expanded" : ""
+            }`}
+          >
+            {/* Facebook QR Code */}
+            {/* Replace with actual QR code import if needed, otherwise uses the default */}
+            <img
+              src="src/assets/qrcode.jpg"
+              alt="Facebook QR Code"
+              className="qr-code-image"
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 };
