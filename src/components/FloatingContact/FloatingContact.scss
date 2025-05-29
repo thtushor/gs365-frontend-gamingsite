@@ -1,40 +1,32 @@
 // Floating Contact Button Styles (Refined)
 .floating-contact-button {
   position: fixed;
-  right: 30px; // Adjusted position
-  bottom: 30px; // Adjusted position
+  right: 30px;
+  bottom: 30px;
   z-index: 1000;
-  // Apply the golden gradient from the signup button
   background: linear-gradient(
     90deg,
-    #ffd700,
+    #ffd700 0%,
     // Bright gold
-    #ffc107,
+    #ffc107 50%,
     // Amber
-    #ffb700,
-    // Strong gold
-    #ffd700 // Bright gold
+    #ffb700 100% // Strong gold
   );
-  background-size: 300% 100%; // Needed for the animation
-  color: #333; // Change text color to a dark color for contrast with gold
+  background-size: 300% 100%;
+  color: #333;
   border: none;
   border-radius: 50%;
-  width: 60px; // Slightly larger button
-  height: 60px; // Slightly larger button
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  animation: gradientMove 3s linear infinite;
-  // Adjust box shadow to match the golden color
   box-shadow: 0 8px 16px rgba(255, 215, 0, 0.4);
-  //   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  // Subtle scale and shadow animation on hover
   &:hover {
-    // No background-color change on hover for gradient
-    transform: scale(1.1) rotate(5deg); // Add a slight rotate on hover
-    // More pronounced shadow on hover, matching golden color
+    transform: scale(1.1) rotate(5deg);
     box-shadow: 0 12px 20px rgba(255, 215, 0, 0.6);
   }
 
@@ -45,30 +37,27 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    font-size: 28px; // Larger icon size
+    font-size: 28px;
     transition: transform 0.3s ease;
-    // Ensure icon color is visible on gold background
     color: #333;
 
     .twenty-four {
       position: absolute;
-      top: -8px; // Adjusted position
-      right: -8px; // Adjusted position
-      background-color: #ffeb3b; // Vibrant yellow
+      top: -8px;
+      right: -8px;
+      background-color: #ffeb3b;
       color: #333;
-      font-size: 11px; // Slightly larger font
+      font-size: 11px;
       font-weight: bold;
       border-radius: 50%;
-      padding: 3px 5px; // Adjusted padding
+      padding: 3px 5px;
       line-height: 1;
       z-index: 10;
-      // Adjust border color to match golden theme
       border: 2px solid #ffc107;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
 
-  // Apply the gradient move animation
   animation: gradientMove 3s linear infinite;
 }
 
@@ -82,6 +71,149 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+// Responsive adjustments for the button
+@media (max-width: 768px) {
+  // Adjust for tablets and smaller
+  .floating-contact-button {
+    width: 50px; // Smaller size
+    height: 50px;
+    right: 20px; // Adjusted position
+    bottom: 20px; // Adjusted position
+    font-size: 24px; // Adjust icon size
+
+    .icon-container {
+      font-size: 24px; // Adjust icon size
+    }
+
+    .twenty-four {
+      font-size: 10px; // Smaller badge font
+      padding: 2px 4px; // Smaller badge padding
+      top: -6px; // Adjusted badge position
+      right: -6px; // Adjusted badge position
+    }
+  }
+
+  .floating-contact-submenu {
+    right: 70px; // Adjusted position relative to smaller button
+    bottom: 20px; // Align with the button bottom
+    width: 240px; // Slightly smaller submenu
+
+    .submenu-header {
+      padding: 15px 10px; // Adjusted padding
+
+      .submenu-logo {
+        width: 80px; // Smaller logo size
+      }
+
+      .headset-icon {
+        font-size: 20px; // Smaller headset icon
+
+        span {
+          font-size: 12px; // Smaller text
+        }
+      }
+    }
+
+    .contact-options-list {
+      padding: 8px 15px; // Adjusted padding
+
+      .contact-option {
+        padding: 12px 0; // Adjusted padding
+        font-size: 15px; // Adjusted text size
+
+        .contact-icon {
+          font-size: 20px; // Adjusted icon size
+          margin-right: 10px; // Adjusted margin
+        }
+
+        .expand-icon {
+          font-size: 16px; // Adjusted icon size
+        }
+      }
+    }
+
+    .qr-code-area {
+      padding: 15px; // Adjusted padding
+      margin: 0 15px 15px; // Adjusted margin
+
+      .qr-code-image {
+        width: 150px; // Smaller QR code size
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  // Adjust for mobile phones
+  .floating-contact-button {
+    width: 45px; // Even smaller size
+    height: 45px;
+    right: 15px; // Adjusted position
+    bottom: 15px; // Adjusted position
+    font-size: 20px; // Adjust icon size
+
+    .icon-container {
+      font-size: 20px; // Adjust icon size
+    }
+
+    .twenty-four {
+      font-size: 9px; // Even smaller badge font
+      padding: 1px 3px; // Even smaller badge padding
+      top: -5px; // Adjusted badge position
+      right: -5px; // Adjusted badge position
+    }
+  }
+
+  .floating-contact-submenu {
+    right: 65px; // Adjusted position relative to even smaller button
+    bottom: 15px; // Align with the button bottom
+    width: 220px; // Even smaller submenu
+
+    .submenu-header {
+      padding: 12px 8px; // Adjusted padding
+
+      .submenu-logo {
+        width: 70px; // Even smaller logo size
+      }
+
+      .headset-icon {
+        font-size: 18px; // Even smaller headset icon
+
+        span {
+          font-size: 11px; // Even smaller text
+        }
+      }
+    }
+
+    .contact-options-list {
+      padding: 6px 10px; // Adjusted padding
+
+      .contact-option {
+        padding: 10px 0; // Adjusted padding
+        font-size: 14px; // Adjusted text size
+
+        .contact-icon {
+          font-size: 18px; // Adjusted icon size
+          margin-right: 8px; // Adjusted margin
+        }
+
+        .expand-icon {
+          font-size: 14px; // Adjusted icon size
+        }
+      }
+    }
+
+    .qr-code-area {
+      padding: 10px; // Adjusted padding
+      margin: 0 10px 10px; // Adjusted margin
+
+      .qr-code-image {
+        width: 130px; // Even smaller QR code size
+      }
+    }
   }
 }
 
@@ -210,41 +342,30 @@
     display: flex;
     justify-content: center;
     // Initial state for smooth transition
-    max-height: 0; // Start with no height
-    opacity: 0; // Start hidden
-    overflow: hidden; // Hide content when not expanded
-    padding: 0 20px; // Remove padding from initial state, add in expanded
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 20px;
     transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
-      padding 0.5s ease-out; // Smooth transition for height, opacity, and padding
-    background-color: #ffffff; // White background for QR code area
-    margin: 0 20px; // Adjusted margin
-    border-radius: 10px; // More rounded corners
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); // Stronger shadow
+      padding 0.5s ease-out;
+    background-color: #ffffff;
+    margin: 0 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     // Remove bottom margin from initial state
-    margin-bottom: 0; // Remove bottom margin
+    margin-bottom: 0;
 
     &.expanded {
       // Styles when expanded
-      max-height: 300px; // Set a max height large enough to show the QR code
-      opacity: 1; // Fade in
-      padding: 20px; // Add padding when expanded
-      margin-bottom: 20px; // Add bottom margin when expanded
+      max-height: 300px;
+      opacity: 1;
+      padding: 20px;
+      margin-bottom: 20px;
     }
 
     .qr-code-image {
-      width: 180px; // Larger QR code image size
+      width: 180px;
       height: auto;
     }
-  }
-}
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }
