@@ -8,6 +8,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 // Import headset icon
 import { FiHeadphones } from "react-icons/fi";
 import { Logo } from "../Logo/Logo"; // Import the Logo component
+import SupportUs from "../SupportUs/SupportUs"; // Adjust the path as needed
 
 const FloatingContact: React.FC = () => {
   // State for contact submenu visibility and expanded contact option
@@ -22,25 +23,16 @@ const FloatingContact: React.FC = () => {
 
   // Refs for the buttons
   const floatingContactButtonRef = useRef<HTMLButtonElement>(null); // Ref for the contact button
-  const customerSupportButtonRef = useRef<HTMLButtonElement>(null); // Ref for the new button
 
   // State for button positions (using useEffect to set initial position after render)
   const [contactButtonPos, setContactButtonPos] = useState({ x: 0, y: 0 });
-  const [customerSupportButtonPos, setCustomerSupportButtonPos] = useState({
-    x: 0,
-    y: 0,
-  });
 
   // Set initial positions after the component mounts and buttons are rendered
   useEffect(() => {
     // Use requestAnimationFrame to ensure button sizes are calculated after render
     requestAnimationFrame(() => {
-      if (
-        floatingContactButtonRef.current &&
-        customerSupportButtonRef.current
-      ) {
+      if (floatingContactButtonRef.current) {
         const contactBtnWidth = floatingContactButtonRef.current.offsetWidth;
-        const space = 10; // Space between buttons
         const initialRightOffset = 30; // Initial distance from the right edge
         const initialBottomOffset = 30; // Initial distance from the bottom edge
 
@@ -52,12 +44,6 @@ const FloatingContact: React.FC = () => {
           initialBottomOffset;
 
         setContactButtonPos({ x: initialContactX, y: initialContactY });
-
-        const supportBtnWidth = customerSupportButtonRef.current.offsetWidth;
-        const initialSupportX = initialContactX - supportBtnWidth - space;
-        const initialSupportY = initialContactY; // Align vertically with contact button
-
-        setCustomerSupportButtonPos({ x: initialSupportX, y: initialSupportY });
       }
     });
   }, []); // Empty dependency array means this runs once on mount
@@ -91,16 +77,9 @@ const FloatingContact: React.FC = () => {
     const handleMove = (clientX: number, clientY: number) => {
       if (!isDragging) return;
 
-      const currentButtonRef =
-        isDragging === "contact"
-          ? floatingContactButtonRef
-          : customerSupportButtonRef;
-      const currentButtonPos =
-        isDragging === "contact" ? contactButtonPos : customerSupportButtonPos;
-      const setCurrentButtonPos =
-        isDragging === "contact"
-          ? setContactButtonPos
-          : setCustomerSupportButtonPos;
+      const currentButtonRef = floatingContactButtonRef;
+      const currentButtonPos = contactButtonPos;
+      const setCurrentButtonPos = setContactButtonPos;
 
       const newX = currentButtonPos.x + clientX - startPos.x;
       const newY = currentButtonPos.y + clientY - startPos.y;
@@ -151,7 +130,7 @@ const FloatingContact: React.FC = () => {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleEnd);
     };
-  }, [isDragging, startPos, contactButtonPos, customerSupportButtonPos]); // Added all position states as dependencies
+  }, [isDragging, startPos, contactButtonPos]); // Added all position states as dependencies
 
   const handleContactButtonClick = useCallback(() => {
     // Only toggle submenu if not dragging
@@ -164,68 +143,6 @@ const FloatingContact: React.FC = () => {
     }
   }, [isDragging]);
 
-  const handleCustomerSupportButtonClick = useCallback(() => {
-    // Handle click for customer support button (e.g., open a different modal/submenu)
-    console.log("Floating customer support button clicked!");
-    // Implement logic to show customer support interface here
-    // For now, let's just close the contact submenu if it's open
-    setShowFloatingContactSubMenu(false);
-    setExpandedContact(null);
-  }, []);
-
-  const handleMouseDown = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      // Determine which button was clicked based on ref
-      if (
-        floatingContactButtonRef.current &&
-        floatingContactButtonRef.current.contains(event.target as Node)
-      ) {
-        setIsDragging("contact");
-        setStartPos({ x: event.clientX, y: event.clientY });
-        event.preventDefault(); // Prevent default for dragging
-      } else if (
-        customerSupportButtonRef.current &&
-        customerSupportButtonRef.current.contains(event.target as Node)
-      ) {
-        setIsDragging("support"); // Use 'support' for customer support button
-        setStartPos({ x: event.clientX, y: event.clientY });
-        event.preventDefault(); // Prevent default for dragging
-      }
-    },
-    []
-  );
-
-  // Add touch start handler for mobile
-  const handleTouchStart = useCallback(
-    (event: React.TouchEvent<HTMLButtonElement>) => {
-      if (!event.touches[0]) return;
-
-      // Determine which button was touched based on ref
-      if (
-        floatingContactButtonRef.current &&
-        floatingContactButtonRef.current.contains(event.target as Node)
-      ) {
-        setIsDragging("contact");
-        setStartPos({
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY,
-        });
-        event.preventDefault(); // Prevent default for dragging
-      } else if (
-        customerSupportButtonRef.current &&
-        customerSupportButtonRef.current.contains(event.target as Node)
-      ) {
-        setIsDragging("support"); // Use 'support' for customer support button
-        setStartPos({
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY,
-        });
-        event.preventDefault(); // Prevent default for dragging
-      }
-    },
-    []
-  );
-
   const handleContactClick = useCallback((contact: string) => {
     setExpandedContact((prev) => (prev === contact ? null : contact));
   }, []);
@@ -237,8 +154,6 @@ const FloatingContact: React.FC = () => {
         ref={floatingContactButtonRef} // Use renamed ref
         className="floating-contact-button"
         onClick={handleContactButtonClick} // Use renamed handler
-        onMouseDown={handleMouseDown} // Use shared mousedown handler
-        onTouchStart={handleTouchStart} // Add touchstart handler
         aria-label="Open contact options"
         style={{
           position: "fixed", // Ensure fixed positioning for dragging
@@ -256,26 +171,6 @@ const FloatingContact: React.FC = () => {
         </div>
       </button>
 
-      {/* Floating Customer Support Button */}
-      <button
-        ref={customerSupportButtonRef} // Use ref for customer support button
-        className="floating-contact-button customer-support-button" // Add a specific class
-        onClick={handleCustomerSupportButtonClick} // Handle its click
-        onMouseDown={handleMouseDown} // Use shared mousedown handler
-        onTouchStart={handleTouchStart} // Add touchstart handler
-        aria-label="Open customer support"
-        style={{
-          position: "fixed", // Ensure fixed positioning for dragging
-          left: customerSupportButtonPos.x,
-          top: customerSupportButtonPos.y,
-        }}
-      >
-        {/* Logo as icon */}
-        <div className="icon-container">
-          <Logo />
-        </div>
-      </button>
-
       {/* Floating Contact Submenu */}
       {/* Render the submenu based on showFloatingContactSubMenu state */}
       {showFloatingContactSubMenu && (
@@ -287,8 +182,8 @@ const FloatingContact: React.FC = () => {
           style={{
             pointerEvents: showFloatingContactSubMenu ? "auto" : "none",
             position: "fixed",
-            left: contactButtonPos.x - 260, // Position relative to contact button
-            top: contactButtonPos.y - 300, // Position relative to contact button
+            // left: contactButtonPos.x - 260, // Position relative to contact button
+            // top: contactButtonPos.y - 300, // Position relative to contact button
           }}
         >
           {/* Logo Area */}
@@ -408,6 +303,7 @@ const FloatingContact: React.FC = () => {
           </div>
         </div>
       )}
+      <SupportUs />
     </>
   );
 };
