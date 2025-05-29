@@ -23,6 +23,14 @@ const FloatingContact: React.FC = () => {
   const floatingSubMenuRef = useRef<HTMLDivElement>(null);
   const [expandedContact, setExpandedContact] = useState<string | null>(null);
 
+  // State for dragging
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+  const [buttonPos, setButtonPos] = useState({
+    x: window.innerWidth - 90, // Initial position from right
+    y: window.innerHeight - 90, // Initial position from bottom
+  });
+
   // Handle click outside for the floating contact submenu
   useEffect(() => {
     const handleClickOutsideFloating = (event: MouseEvent) => {
@@ -45,11 +53,61 @@ const FloatingContact: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutsideFloating);
   }, [showFloatingSubMenu]);
 
+  // Handle dragging
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!isDragging) return;
+      const newX = buttonPos.x + event.clientX - startPos.x;
+      const newY = buttonPos.y + event.clientY - startPos.y;
+
+      // Prevent dragging outside the viewport (optional boundary checks)
+      const maxX =
+        window.innerWidth - (floatingButtonRef.current?.offsetWidth || 0);
+      const maxY =
+        window.innerHeight - (floatingButtonRef.current?.offsetHeight || 0);
+      const boundedX = Math.max(0, Math.min(newX, maxX));
+      const boundedY = Math.max(0, Math.min(newY, maxY));
+
+      setButtonPos({ x: boundedX, y: boundedY });
+      setStartPos({ x: event.clientX, y: event.clientY });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, startPos, buttonPos]);
+
   const handleFloatingButtonClick = useCallback(() => {
-    console.log("Floating button clicked! Toggling submenu visibility.");
-    setShowFloatingSubMenu((prev) => !prev);
-    setExpandedContact(null);
-  }, []);
+    // Only toggle submenu if not dragging
+    if (!isDragging) {
+      console.log("Floating button clicked! Toggling submenu visibility.");
+      setShowFloatingSubMenu((prev) => !prev);
+      setExpandedContact(null);
+    }
+  }, [isDragging]);
+
+  const handleMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setIsDragging(true);
+      setStartPos({ x: event.clientX, y: event.clientY });
+      // Optional: Prevent text selection while dragging
+      event.preventDefault();
+    },
+    []
+  );
 
   const handleContactClick = useCallback((contact: string) => {
     setExpandedContact((prev) => (prev === contact ? null : contact));
@@ -62,7 +120,16 @@ const FloatingContact: React.FC = () => {
         ref={floatingButtonRef}
         className="floating-contact-button"
         onClick={handleFloatingButtonClick}
+        onMouseDown={handleMouseDown} // Add mousedown handler
         aria-label="Open contact options"
+        style={{
+          position: "fixed", // Ensure fixed positioning for dragging
+          left: buttonPos.x,
+          top: buttonPos.y,
+          // Remove bottom and right styles as they are now controlled by top/left
+          // bottom: 'auto',
+          // right: 'auto',
+        }}
       >
         {/* Icon and text will go here - Placeholder */}
         <div className="icon-container">
@@ -75,8 +142,18 @@ const FloatingContact: React.FC = () => {
         ref={floatingSubMenuRef}
         className={`floating-contact-submenu ${
           showFloatingSubMenu ? "visible" : ""
-        }`}
-        style={{ pointerEvents: showFloatingSubMenu ? "auto" : "none" }}
+        } top-[${buttonPos.y - 500}]`}
+        // Optionally hide the submenu completely when closed to prevent interaction
+        style={{
+          pointerEvents: showFloatingSubMenu ? "auto" : "none",
+          // Position the submenu relative to the button
+          position: "fixed", // Use fixed positioning
+          left: buttonPos.x - 260, // Adjust offset as needed
+          // top: , // Fixed offset from button's top
+          // Remove fixed bottom/right styles
+          // bottom: 'auto',
+          // right: 'auto',
+        }}
       >
         {/* Logo Area */}
         <div className="submenu-header">

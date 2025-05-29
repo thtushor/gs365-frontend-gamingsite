@@ -142,6 +142,10 @@
       .qr-code-image {
         width: 150px; // Smaller QR code size
       }
+      // Adjust expanded max-height for this screen size
+      &.expanded {
+        max-height: 250px; // Reduced max-height for tablets and smaller
+      }
     }
   }
 }
@@ -212,6 +216,10 @@
 
       .qr-code-image {
         width: 130px; // Even smaller QR code size
+      }
+      // Adjust expanded max-height for this screen size
+      &.expanded {
+        max-height: 200px; // Reduced max-height for mobile phones
       }
     }
   }
