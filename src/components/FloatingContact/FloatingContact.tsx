@@ -3,6 +3,8 @@ import "./FloatingContact.scss";
 // Import social icons
 import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+
+import qrCode from "../../assets/qrcode.jpg";
 // Import expand/collapse icon
 import { FaPlus, FaMinus } from "react-icons/fa";
 // Import headset icon
@@ -227,7 +229,7 @@ const FloatingContact: React.FC = () => {
               {/* Whatsapp QR Code */}
               {/* Replace with actual QR code import if needed, otherwise uses the default */}
               <img
-                src="src/assets/qrcode.jpg"
+                src={qrCode}
                 alt="Whatsapp QR Code"
                 className="qr-code-image"
               />
@@ -260,11 +262,7 @@ const FloatingContact: React.FC = () => {
             >
               {/* Email QR Code */}
               {/* Replace with actual QR code import if needed, otherwise uses the default */}
-              <img
-                src="src/assets/qrcode.jpg"
-                alt="Email QR Code"
-                className="qr-code-image"
-              />
+              <img src={qrCode} alt="Email QR Code" className="qr-code-image" />
             </div>
 
             {/* Facebook Option */}
@@ -295,7 +293,7 @@ const FloatingContact: React.FC = () => {
               {/* Facebook QR Code */}
               {/* Replace with actual QR code import if needed, otherwise uses the default */}
               <img
-                src="src/assets/qrcode.jpg"
+                src={qrCode}
                 alt="Facebook QR Code"
                 className="qr-code-image"
               />
