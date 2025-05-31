@@ -13,10 +13,52 @@
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(18px);
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &.dragging {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+      0 0 0 2px rgba(255, 217, 61, 0.2);
+    transform: scale(1.02);
+    z-index: 1000;
+  }
+
+  .drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: grab;
+    z-index: 10;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    svg {
+      color: #ffd93d;
+      opacity: 0.7;
+      width: 24px;
+      height: 24px;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
 
   .help-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin: 2.5rem 0 2rem 0;
 
     h2 {
       font-size: 2.2rem;
@@ -220,10 +262,15 @@
 
 @media (max-width: 600px) {
   .support-help-tab {
-    max-width: 100vw;
-    min-height: 100vh;
-    border-radius: 0;
+    max-width: 90vw;
+    min-height: 80vh;
+    border-radius: 20px;
     padding: 1.5rem 1rem;
     margin: 0;
+    touch-action: none;
+
+    .drag-handle {
+      height: 48px;
+    }
   }
 }
