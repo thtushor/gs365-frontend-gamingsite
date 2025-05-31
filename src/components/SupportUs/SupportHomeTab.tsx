@@ -20,6 +20,21 @@ import {
   FiSun,
   FiMoon,
   FiWind,
+  FiFrown,
+  FiAward as FiTrophy,
+  FiCreditCard,
+  FiSmartphone,
+  FiHeadphones,
+  FiBook,
+  FiGlobe,
+  FiLock,
+  FiRefreshCw,
+  FiCalendar,
+  FiClock as FiTime,
+  FiGift as FiBonus,
+  FiTrendingUp as FiTrend,
+  FiUsers as FiTeam,
+  FiAward as FiMedal,
 } from "react-icons/fi";
 import "./SupportHomeTab.scss";
 
@@ -69,6 +84,78 @@ const SupportHomeTab: React.FC = () => (
     <div className="support-home-card send-message-card">
       <span>Send us a message</span>
       <FiArrowRight className="arrow-icon" />
+    </div>
+
+    <div className="promo-banners">
+      <div className="support-home-card promo-banner-card">
+        <img
+          src="https://img.b112j.com/upload/announcement/image_230631.jpg"
+          alt="Welcome Banner"
+        />
+        <div className="banner-overlay">
+          <div>
+            <h3>Welcome to GamingStar</h3>
+            <p>
+              Start your gaming journey with our exclusive welcome bonus. Get
+              ready for an amazing experience with premium features and exciting
+              rewards!
+            </p>
+          </div>
+          <button className="banner-cta">Get Started</button>
+        </div>
+      </div>
+
+      <div className="support-home-card promo-banner-card">
+        <img
+          src="https://img.b112j.com/upload/announcement/image_230632.jpg"
+          alt="VIP Banner"
+        />
+        <div className="banner-overlay">
+          <div>
+            <h3>Join VIP Club</h3>
+            <p>
+              Experience luxury gaming with exclusive VIP benefits, personalized
+              support, and special rewards. Elevate your gaming experience
+              today!
+            </p>
+          </div>
+          <button className="banner-cta">Join Now</button>
+        </div>
+      </div>
+
+      <div className="support-home-card promo-banner-card">
+        <img
+          src="https://img.b112j.com/upload/announcement/image_230633.jpg"
+          alt="Tournament Banner"
+        />
+        <div className="banner-overlay">
+          <div>
+            <h3>Weekly Tournaments</h3>
+            <p>
+              Compete with the best players and win amazing prizes. Join our
+              weekly tournaments and showcase your skills!
+            </p>
+          </div>
+          <button className="banner-cta">View Tournaments</button>
+        </div>
+      </div>
+
+      <div className="support-home-card promo-banner-card">
+        <img
+          src="https://img.b112j.com/upload/announcement/image_230634.jpg"
+          alt="Live Streaming Banner"
+        />
+        <div className="banner-overlay">
+          <div>
+            <h3>Live Streaming</h3>
+            <p>
+              Watch all matches live in HD quality. Never miss a moment of the
+              action with our premium streaming service!
+            </p>
+          </div>
+          <button className="banner-cta">Watch Now</button>
+        </div>
+      </div>
     </div>
 
     <div className="promo-section">
@@ -271,17 +358,171 @@ const SupportHomeTab: React.FC = () => (
             <span className="promo-tag">Quick</span>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div className="support-home-card promo-banner-card">
-      <img
-        src="https://img.b112j.com/upload/announcement/image_230631.jpg"
-        alt="Promo Banner"
-      />
-      <div className="banner-overlay">
-        <h3>Welcome to GamingStar</h3>
-        <p>Deposit, Play, & Win Big!</p>
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiFrown />
+          </div>
+          <div className="promo-content">
+            <h4>Royal Bonus</h4>
+            <p>৳1000 for royal flush</p>
+            <span className="promo-tag">Royal</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTrophy />
+          </div>
+          <div className="promo-content">
+            <h4>Tournament Prize</h4>
+            <p>৳50,000 tournament prize pool</p>
+            <span className="promo-tag">Tournament</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiCreditCard />
+          </div>
+          <div className="promo-content">
+            <h4>Card Bonus</h4>
+            <p>5% extra on card deposits</p>
+            <span className="promo-tag">Card</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiSmartphone />
+          </div>
+          <div className="promo-content">
+            <h4>Mobile Bonus</h4>
+            <p>৳50 bonus on mobile app</p>
+            <span className="promo-tag">Mobile</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiHeadphones />
+          </div>
+          <div className="promo-content">
+            <h4>Live Support</h4>
+            <p>24/7 live chat support</p>
+            <span className="promo-tag">Support</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiBook />
+          </div>
+          <div className="promo-content">
+            <h4>Guide Bonus</h4>
+            <p>৳100 for reading guides</p>
+            <span className="promo-tag">Learn</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiGlobe />
+          </div>
+          <div className="promo-content">
+            <h4>Global Tournaments</h4>
+            <p>Compete with players worldwide</p>
+            <span className="promo-tag">Global</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiLock />
+          </div>
+          <div className="promo-content">
+            <h4>Security Bonus</h4>
+            <p>৳200 for enabling 2FA</p>
+            <span className="promo-tag">Secure</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiRefreshCw />
+          </div>
+          <div className="promo-content">
+            <h4>Auto Refresh</h4>
+            <p>Daily auto-refresh bonus</p>
+            <span className="promo-tag">Auto</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiCalendar />
+          </div>
+          <div className="promo-content">
+            <h4>Monthly Bonus</h4>
+            <p>৳500 monthly loyalty bonus</p>
+            <span className="promo-tag">Monthly</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTime />
+          </div>
+          <div className="promo-content">
+            <h4>Time Bonus</h4>
+            <p>Extra bonus for playing longer</p>
+            <span className="promo-tag">Time</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiBonus />
+          </div>
+          <div className="promo-content">
+            <h4>Birthday Bonus</h4>
+            <p>৳1000 on your birthday</p>
+            <span className="promo-tag">Birthday</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTrend />
+          </div>
+          <div className="promo-content">
+            <h4>Trending Bonus</h4>
+            <p>Extra bonus on trending games</p>
+            <span className="promo-tag">Trend</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTeam />
+          </div>
+          <div className="promo-content">
+            <h4>Team Bonus</h4>
+            <p>৳2000 for team tournaments</p>
+            <span className="promo-tag">Team</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiMedal />
+          </div>
+          <div className="promo-content">
+            <h4>Achievement Bonus</h4>
+            <p>৳300 for completing achievements</p>
+            <span className="promo-tag">Achieve</span>
+          </div>
+        </div>
       </div>
     </div>
 
