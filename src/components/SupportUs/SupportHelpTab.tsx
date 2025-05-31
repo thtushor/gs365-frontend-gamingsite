@@ -51,6 +51,7 @@ const SupportHelpTab: React.FC = () => {
   };
 
   const handleDragStop = (e: DraggableEvent, data: DraggableData) => {
+    console.log({ e });
     setIsDragging(false);
     setPosition({ x: data.x, y: data.y });
   };
