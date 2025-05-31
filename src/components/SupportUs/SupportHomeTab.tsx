@@ -88,10 +88,12 @@ const SupportHomeTab: React.FC = () => (
 
     <div className="promo-banners">
       <div className="support-home-card promo-banner-card">
-        <img
-          src="https://img.b112j.com/upload/announcement/image_230631.jpg"
-          alt="Welcome Banner"
-        />
+        <div className="banner-image">
+          <img
+            src="https://img.b112j.com/upload/announcement/image_230631.jpg"
+            alt="Welcome Banner"
+          />
+        </div>
         <div className="banner-overlay">
           <div>
             <h3>Welcome to GamingStar</h3>
@@ -106,10 +108,12 @@ const SupportHomeTab: React.FC = () => (
       </div>
 
       <div className="support-home-card promo-banner-card">
-        <img
-          src="https://img.b112j.com/upload/announcement/image_230632.jpg"
-          alt="VIP Banner"
-        />
+        <div className="banner-image">
+          <img
+            src="https://img.b112j.com/upload/announcement/image_230632.jpg"
+            alt="VIP Banner"
+          />
+        </div>
         <div className="banner-overlay">
           <div>
             <h3>Join VIP Club</h3>
@@ -124,10 +128,12 @@ const SupportHomeTab: React.FC = () => (
       </div>
 
       <div className="support-home-card promo-banner-card">
-        <img
-          src="https://img.b112j.com/upload/announcement/image_230633.jpg"
-          alt="Tournament Banner"
-        />
+        <div className="banner-image">
+          <img
+            src="https://img.b112j.com/upload/announcement/image_230633.jpg"
+            alt="Tournament Banner"
+          />
+        </div>
         <div className="banner-overlay">
           <div>
             <h3>Weekly Tournaments</h3>
@@ -141,10 +147,12 @@ const SupportHomeTab: React.FC = () => (
       </div>
 
       <div className="support-home-card promo-banner-card">
-        <img
-          src="https://img.b112j.com/upload/announcement/image_230634.jpg"
-          alt="Live Streaming Banner"
-        />
+        <div className="banner-image">
+          <img
+            src="https://img.b112j.com/upload/announcement/image_230634.jpg"
+            alt="Live Streaming Banner"
+          />
+        </div>
         <div className="banner-overlay">
           <div>
             <h3>Live Streaming</h3>
