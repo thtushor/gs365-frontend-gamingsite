@@ -4,6 +4,7 @@ import SupportTabBar from "./SupportTabBar";
 import SupportHomeTab from "./SupportHomeTab";
 import SupportMessagesTab from "./SupportMessagesTab";
 import SupportHelpTab from "./SupportHelpTab";
+import { XIcon } from "lucide-react";
 
 interface SupportPanelProps {
   open: boolean;
@@ -16,9 +17,14 @@ const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
   return (
     <div className="support-panel-overlay" onClick={onClose}>
       <div className="support-panel-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="support-panel-close" onClick={onClose}>
-          &times;
-        </button>
+        <div className="flex justify-end ">
+          <button
+            className="text-[10px] bg-transparent focus:outline-0 focus-visible:outline-0"
+            onClick={onClose}
+          >
+            <XIcon className="text-[10px]" />
+          </button>
+        </div>
         <div className="support-panel-content">
           {activeTab === "home" && <SupportHomeTab />}
           {activeTab === "messages" && <SupportMessagesTab />}

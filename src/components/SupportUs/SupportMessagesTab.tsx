@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./SupportMessagesTab.scss";
+import { ArrowLeftIcon, SendIcon } from "lucide-react";
 
 const messages = [
   {
     id: 1,
     avatar:
       "https://static.intercomassets.com/avatars/7986453/square_128/Screenshot_2025-01-07_164341-1736248445.png",
-    sender: "Baji Customer Service",
+    sender: "GS365 Customer Service",
     text: "প্রিয় গ্রাহক , কিভাবে আপনাকে সহায়তা করতে পারি...",
     time: "1h ago",
     preview: true,
@@ -18,7 +19,7 @@ const messages = [
       },
       {
         from: "support",
-        text: "Hi, welcome to Baji! Please select a language to continue. পরবর্তী ধাপে যেতে একটি ভাষা সিলেক্ট করুন।",
+        text: "Hi, welcome to GS365! Please select a language to continue. পরবর্তী ধাপে যেতে একটি ভাষা সিলেক্ট করুন।",
         time: "1h ago",
       },
       {
@@ -50,12 +51,14 @@ const SupportMessagesTab: React.FC = () => {
       <div className="support-messages-tab chat-view">
         <div className="chat-header">
           <button className="back-btn" onClick={handleBack}>
-            &larr;
+            <ArrowLeftIcon />
           </button>
-          <img className="avatar" src={msg?.avatar} alt="avatar" />
-          <div className="sender-info">
-            <div className="sender">{msg?.sender}</div>
-            <div className="meta">Online</div>
+          <div className="header-content">
+            <img className="avatar" src={msg?.avatar} alt="avatar" />
+            <div className="sender-info">
+              <div className="sender">{msg?.sender}</div>
+              <div className="meta">Online</div>
+            </div>
           </div>
         </div>
         <div className="chat-body">
@@ -80,7 +83,7 @@ const SupportMessagesTab: React.FC = () => {
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button className="send-btn" onClick={handleSend}>
-            &#9658;
+            <SendIcon className="" />
           </button>
         </div>
       </div>
