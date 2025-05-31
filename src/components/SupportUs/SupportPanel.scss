@@ -4,7 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 30, 30, 0.55);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -12,9 +13,9 @@
 }
 
 .support-panel-modal {
-  background: #fff;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 1.25rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   width: 400px;
   max-width: 95vw;
   max-height: 90vh;
@@ -23,18 +24,33 @@
   padding: 2rem 1.5rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .support-panel-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: none;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  font-size: 16px;
-  color: #888;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
   cursor: pointer;
+  transition: all 0.3s ease;
   z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
 }
 
 .support-panel-header {
@@ -48,14 +64,29 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
+  background: linear-gradient(45deg, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .support-panel-search {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.75rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 1rem;
   outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .support-panel-collections {
@@ -151,6 +182,27 @@
 .support-panel-send-message:hover {
   background: #f0f0f0;
   color: #18181b;
+}
+
+.support-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
 }
 
 @media (max-width: 600px) {

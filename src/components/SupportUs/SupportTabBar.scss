@@ -2,17 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // position: fixed;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #fff;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
   padding: 0.75rem 1.5rem;
   z-index: 1000;
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
-  box-shadow: none;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .support-tab-bar-btn {
@@ -24,11 +23,11 @@
   border: none;
   outline: none;
   padding: 0.5rem 0.5rem 0.25rem 0.5rem;
-  color: #888;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: color 0.18s;
+  transition: all 0.3s ease;
   position: relative;
   margin: 0 0.5rem;
   border-radius: 0.75rem;
@@ -51,33 +50,46 @@
   .icon {
     font-size: 1.5rem;
     margin-bottom: 0.15rem;
-    color: #888;
-    transition: color 0.18s;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
   }
 
   .label {
     font-size: 0.95rem;
     font-weight: 500;
-    color: #888;
-    transition: color 0.18s, font-weight 0.18s;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
   }
 
   &.active {
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     .icon {
-      color: #18181b;
+      color: #ffd93d;
+      transform: translateY(-2px);
     }
     .label {
-      color: #18181b;
-      font-weight: 700;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: #ffd93d;
+      border-radius: 50%;
     }
   }
 
   &:hover:not(.active) {
-    color: #18181b;
+    background: rgba(255, 255, 255, 0.05);
     .icon,
     .label {
-      color: #18181b;
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 
@@ -94,8 +106,6 @@
 @media (max-width: 600px) {
   .support-tab-bar {
     padding: 0.5rem 1rem;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
   }
 
   .support-tab-bar-btn {
