@@ -27,8 +27,10 @@ const SupportTabBar: React.FC<SupportTabBarProps> = ({
         onClick={() => onTabChange(tab.key)}
         aria-label={tab.label}
       >
-        <span className="icon">{tab.icon}</span>
-        <span className="label">{tab.label}</span>
+        <div className="tab-content">
+          <span className="icon">{tab.icon}</span>
+          <span className="label">{tab.label}</span>
+        </div>
       </button>
     ))}
   </div>
