@@ -5,13 +5,28 @@ import {
   FiGift,
   FiStar,
   FiUsers,
+  FiAward,
+  FiDollarSign,
+  FiPercent,
+  FiTrendingUp,
+  FiClock,
+  FiHeart,
+  FiShield,
+  FiZap,
+  FiTarget,
+  FiAperture,
+  FiCoffee,
+  FiDroplet,
+  FiSun,
+  FiMoon,
+  FiWind,
 } from "react-icons/fi";
 import "./SupportHomeTab.scss";
 
 const SupportHomeTab: React.FC = () => (
   <div className="support-home-tab">
     <div className="support-home-header">
-      <div className="logo">baji</div>
+      <div className="logo">GS365</div>
       <div className="avatar-group">
         <img
           className="avatar"
@@ -32,9 +47,9 @@ const SupportHomeTab: React.FC = () => (
     </div>
     <div className="support-home-greeting">
       <h2>
-        Hi Dear,
+        Welcome to GamingStar,
         <br />
-        How may I assist you?
+        How can we help you today?
       </h2>
     </div>
     <div className="support-home-card recent-message-card">
@@ -46,10 +61,8 @@ const SupportHomeTab: React.FC = () => (
           alt="avatar"
         />
         <div className="recent-message-info">
-          <div className="recent-message-title">বাংলা</div>
-          <div className="recent-message-meta">
-            Baji Customer Service • 1d ago
-          </div>
+          <div className="recent-message-title">Gaming Support</div>
+          <div className="recent-message-meta">GamingStar Support • 1d ago</div>
         </div>
       </div>
     </div>
@@ -59,37 +72,204 @@ const SupportHomeTab: React.FC = () => (
     </div>
 
     <div className="promo-section">
-      <h3 className="section-title">Special Offers</h3>
-      <div className="support-home-card promo-card">
-        <div className="promo-icon">
-          <FiGift />
+      <h3 className="section-title">Gaming Offers</h3>
+      <div className="promo-grid">
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiGift />
+          </div>
+          <div className="promo-content">
+            <h4>Welcome Bonus</h4>
+            <p>Get ৳10,000 on your first deposit</p>
+            <span className="promo-tag">Limited Time</span>
+          </div>
         </div>
-        <div className="promo-content">
-          <h4>T20 ব্লাস্ট ওয়েলকাম অফার</h4>
-          <p>৳১০,০০০ প্রথম সপ্তাহের রিফান্ড বোনাস</p>
-          <span className="promo-tag">Limited Time</span>
-        </div>
-      </div>
 
-      <div className="support-home-card promo-card">
-        <div className="promo-icon">
-          <FiStar />
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiStar />
+          </div>
+          <div className="promo-content">
+            <h4>VIP Program</h4>
+            <p>Exclusive rewards for VIP members</p>
+            <span className="promo-tag">VIP Only</span>
+          </div>
         </div>
-        <div className="promo-content">
-          <h4>ভিআইপি ইনস্ট্যান্ট রিবেট</h4>
-          <p>প্রতিটি ভিআইপি পয়েন্ট দিয়ে আরও বেশি উপার্জন করুন</p>
-          <span className="promo-tag">VIP Only</span>
-        </div>
-      </div>
 
-      <div className="support-home-card promo-card">
-        <div className="promo-icon">
-          <FiUsers />
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiUsers />
+          </div>
+          <div className="promo-content">
+            <h4>Refer & Earn</h4>
+            <p>৳300 bonus + unlimited commission</p>
+            <span className="promo-tag">New</span>
+          </div>
         </div>
-        <div className="promo-content">
-          <h4>রেফার এ ফ্রেন্ড</h4>
-          <p>৳৩০০ বোনাস + আনলিমিটেড কমিশন</p>
-          <span className="promo-tag">New</span>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiAward />
+          </div>
+          <div className="promo-content">
+            <h4>Champion Bonus</h4>
+            <p>৳500 bonus for each match win</p>
+            <span className="promo-tag">Hot</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiDollarSign />
+          </div>
+          <div className="promo-content">
+            <h4>Cashback Offer</h4>
+            <p>10% cashback on every bet</p>
+            <span className="promo-tag">Popular</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiPercent />
+          </div>
+          <div className="promo-content">
+            <h4>Mega Weekend</h4>
+            <p>50% weekly bonus</p>
+            <span className="promo-tag">Weekend</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTrendingUp />
+          </div>
+          <div className="promo-content">
+            <h4>Live Streaming</h4>
+            <p>Watch all matches live</p>
+            <span className="promo-tag">Live</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiClock />
+          </div>
+          <div className="promo-content">
+            <h4>24/7 Support</h4>
+            <p>Always here to help</p>
+            <span className="promo-tag">Support</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiHeart />
+          </div>
+          <div className="promo-content">
+            <h4>Loyalty Program</h4>
+            <p>Special benefits for loyal players</p>
+            <span className="promo-tag">Loyal</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiShield />
+          </div>
+          <div className="promo-content">
+            <h4>Secure Payment</h4>
+            <p>100% secure transactions</p>
+            <span className="promo-tag">Secure</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiZap />
+          </div>
+          <div className="promo-content">
+            <h4>Fast Withdraw</h4>
+            <p>Instant money withdrawal</p>
+            <span className="promo-tag">Fast</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiTarget />
+          </div>
+          <div className="promo-content">
+            <h4>Target Bonus</h4>
+            <p>Bonus for reaching targets</p>
+            <span className="promo-tag">Target</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiAperture />
+          </div>
+          <div className="promo-content">
+            <h4>Multi-Game Bonus</h4>
+            <p>Special offers on all games</p>
+            <span className="promo-tag">Multi</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiCoffee />
+          </div>
+          <div className="promo-content">
+            <h4>Morning Special</h4>
+            <p>20% bonus on morning bets</p>
+            <span className="promo-tag">Morning</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiDroplet />
+          </div>
+          <div className="promo-content">
+            <h4>Refresh Bonus</h4>
+            <p>৳100 daily refresh bonus</p>
+            <span className="promo-tag">Daily</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiSun />
+          </div>
+          <div className="promo-content">
+            <h4>Sunrise Offer</h4>
+            <p>30% bonus 6-9 AM</p>
+            <span className="promo-tag">Sunrise</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiMoon />
+          </div>
+          <div className="promo-content">
+            <h4>Night Special</h4>
+            <p>25% bonus on night bets</p>
+            <span className="promo-tag">Night</span>
+          </div>
+        </div>
+
+        <div className="support-home-card promo-card">
+          <div className="promo-icon">
+            <FiWind />
+          </div>
+          <div className="promo-content">
+            <h4>Quick Win</h4>
+            <p>৳200 bonus for quick wins</p>
+            <span className="promo-tag">Quick</span>
+          </div>
         </div>
       </div>
     </div>
@@ -100,17 +280,17 @@ const SupportHomeTab: React.FC = () => (
         alt="Promo Banner"
       />
       <div className="banner-overlay">
-        <h3>T20 ব্লাস্ট ওয়েলকাম অফার</h3>
-        <p>ডিপোজিট করুন, বেট রাখুন, & আধিপত্য বিস্তার করুন!</p>
+        <h3>Welcome to GamingStar</h3>
+        <p>Deposit, Play, & Win Big!</p>
       </div>
     </div>
 
     <div className="support-home-card promo-link-card">
-      <span>বিকল্প সাইট 1</span>
+      <span>Alternative Site 1</span>
       <FiExternalLink className="external-link-icon" />
     </div>
     <div className="support-home-card promo-link-card">
-      <span>বিকল্প সাইট 2</span>
+      <span>Alternative Site 2</span>
       <FiExternalLink className="external-link-icon" />
     </div>
   </div>
