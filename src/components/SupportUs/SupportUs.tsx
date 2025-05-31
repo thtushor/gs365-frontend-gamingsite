@@ -1,96 +1,26 @@
-import React, { useRef, useState, useEffect } from "react";
-
+import React, { useState } from "react";
 import "./SupportUs.scss";
 import { Logo } from "../Logo/Logo";
 import SupportPanel from "./SupportPanel";
-// import SupportPanel from "./SupportPanel";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 
 const BUTTON_SIZE = 64;
 
 const SupportUs: React.FC = () => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [buttonPos, setButtonPos] = useState({
+  const [position, setPosition] = useState({
     x: window.innerWidth - BUTTON_SIZE - 30,
     y: window.innerHeight - BUTTON_SIZE - 100,
   });
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    // Ensure button stays in viewport on resize
-    const handleResize = () => {
-      setButtonPos((pos) => ({
-        x: Math.min(pos.x, window.innerWidth - BUTTON_SIZE),
-        y: Math.min(pos.y, window.innerHeight - BUTTON_SIZE),
-      }));
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleDragStart = () => {
     setIsDragging(true);
-    const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect) {
-      setDragOffset({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    }
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging) return;
-    setButtonPos({
-      x: Math.min(
-        Math.max(0, e.clientX - dragOffset.x),
-        window.innerWidth - BUTTON_SIZE
-      ),
-      y: Math.min(
-        Math.max(0, e.clientY - dragOffset.y),
-        window.innerHeight - BUTTON_SIZE
-      ),
-    });
-  };
-
-  const handleMouseUp = () => {
+  const handleDragStop = (e: DraggableEvent, data: DraggableData) => {
     setIsDragging(false);
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", handleMouseUp);
-  };
-
-  // Touch events for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect && e.touches[0]) {
-      setDragOffset({
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      });
-    }
-    document.addEventListener("touchmove", handleTouchMove);
-    document.addEventListener("touchend", handleTouchEnd);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!isDragging || !e.touches[0]) return;
-    setButtonPos({
-      x: Math.min(
-        Math.max(0, e.touches[0].clientX - dragOffset.x),
-        window.innerWidth - BUTTON_SIZE
-      ),
-      y: Math.min(
-        Math.max(0, e.touches[0].clientY - dragOffset.y),
-        window.innerHeight - BUTTON_SIZE
-      ),
-    });
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    document.removeEventListener("touchmove", handleTouchMove);
-    document.removeEventListener("touchend", handleTouchEnd);
+    setPosition({ x: data.x, y: data.y });
   };
 
   const handleClick = () => {
@@ -104,28 +34,43 @@ const SupportUs: React.FC = () => {
   return (
     <>
       {open && <SupportPanel open={open} onClose={handleClose} />}
-      <button
-        ref={buttonRef}
-        className="support-us-floating-button"
+      <div
         style={{
           position: "fixed",
-          left: buttonPos.x,
-          top: buttonPos.y,
-          width: BUTTON_SIZE,
-          height: BUTTON_SIZE,
-          zIndex: 1000,
-          cursor: isDragging ? "grabbing" : "grab",
-          userSelect: "none",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          pointerEvents: "none",
         }}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        onClick={handleClick}
-        aria-label="Support Us"
       >
-        <div className="icon-container">
-          <Logo />
-        </div>
-      </button>
+        <Draggable
+          handle=".support-us-floating-button"
+          bounds="parent"
+          position={position}
+          onStart={handleDragStart}
+          onStop={handleDragStop}
+          defaultPosition={{ x: position.x, y: position.y }}
+        >
+          <div style={{ position: "absolute", pointerEvents: "auto" }}>
+            <button
+              className="support-us-floating-button"
+              style={{
+                width: BUTTON_SIZE,
+                height: BUTTON_SIZE,
+                cursor: isDragging ? "grabbing" : "grab",
+                userSelect: "none",
+              }}
+              onClick={handleClick}
+              aria-label="Support Us"
+            >
+              <div className="icon-container">
+                <Logo />
+              </div>
+            </button>
+          </div>
+        </Draggable>
+      </div>
     </>
   );
 };
