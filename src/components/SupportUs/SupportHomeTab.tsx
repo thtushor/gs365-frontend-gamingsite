@@ -87,7 +87,7 @@ const SupportHomeTab: React.FC = () => (
     </div>
 
     <div className="promo-banners">
-      <div className="support-home-card promo-banner-card">
+      <div className="promo-banner-card">
         <div className="banner-image">
           <img
             src="https://img.b112j.com/upload/announcement/image_230631.jpg"
@@ -107,10 +107,10 @@ const SupportHomeTab: React.FC = () => (
         </div>
       </div>
 
-      <div className="support-home-card promo-banner-card">
+      <div className="promo-banner-card">
         <div className="banner-image">
           <img
-            src="https://img.b112j.com/upload/announcement/image_230632.jpg"
+            src="https://img.b112j.com/upload/announcement/image_230631.jpg"
             alt="VIP Banner"
           />
         </div>
@@ -127,10 +127,10 @@ const SupportHomeTab: React.FC = () => (
         </div>
       </div>
 
-      <div className="support-home-card promo-banner-card">
+      <div className="promo-banner-card">
         <div className="banner-image">
           <img
-            src="https://img.b112j.com/upload/announcement/image_230633.jpg"
+            src="https://img.b112j.com/upload/announcement/image_230631.jpg"
             alt="Tournament Banner"
           />
         </div>
@@ -146,7 +146,7 @@ const SupportHomeTab: React.FC = () => (
         </div>
       </div>
 
-      <div className="support-home-card promo-banner-card">
+      <div className="promo-banner-card">
         <div className="banner-image">
           <img
             src="https://img.b112j.com/upload/announcement/image_230634.jpg"
