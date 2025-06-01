@@ -1,0 +1,17 @@
+.draggable-container {
+  transition: transform 0.1s ease-out;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  z-index: 1000;
+
+  &.dragging {
+    transition: none;
+    z-index: 1001;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}

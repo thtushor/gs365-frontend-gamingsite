@@ -1,0 +1,115 @@
+import React, { useState, useRef, useEffect } from "react";
+import "./DraggableContainer.scss";
+
+interface DraggableContainerProps {
+  children: React.ReactNode;
+  initialPosition?: { x: number; y: number };
+  className?: string;
+}
+
+const DraggableContainer: React.FC<DraggableContainerProps> = ({
+  children,
+  initialPosition = { x: 30, y: 100 },
+  className = "",
+}) => {
+  const [position, setPosition] = useState(initialPosition);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleDragStart = (clientX: number, clientY: number) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+      });
+      setIsDragging(true);
+    }
+  };
+
+  const handleDragMove = (clientX: number, clientY: number) => {
+    if (isDragging) {
+      const newX = clientX - dragOffset.x;
+      const newY = clientY - dragOffset.y;
+
+      // Get window dimensions
+      const maxX = window.innerWidth - (containerRef.current?.offsetWidth || 0);
+      const maxY =
+        window.innerHeight - (containerRef.current?.offsetHeight || 0);
+
+      // Constrain position within window bounds
+      const constrainedX = Math.max(0, Math.min(newX, maxX));
+      const constrainedY = Math.max(0, Math.min(newY, maxY));
+
+      setPosition({ x: constrainedX, y: constrainedY });
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Mouse event handlers
+  const onMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleDragStart(e.clientX, e.clientY);
+  };
+
+  const onMouseMove = (e: MouseEvent) => {
+    handleDragMove(e.clientX, e.clientY);
+  };
+
+  const onMouseUp = () => {
+    handleDragEnd();
+  };
+
+  // Touch event handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    handleDragStart(touch.clientX, touch.clientY);
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    const touch = e.touches[0];
+    handleDragMove(touch.clientX, touch.clientY);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("touchmove", onTouchMove);
+      window.addEventListener("touchend", handleDragEnd);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", handleDragEnd);
+    };
+  }, [isDragging]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={`draggable-container ${className} ${
+        isDragging ? "dragging" : ""
+      }`}
+      style={{
+        position: "fixed",
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        cursor: isDragging ? "grabbing" : "grab",
+        touchAction: "none",
+      }}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+    >
+      {children}
+    </div>
+  );
+};
+
+export default DraggableContainer;
