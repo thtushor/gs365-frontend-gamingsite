@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import "./SupportHelpTab.scss";
-import {
-  SearchIcon,
-  ChevronRightIcon,
-  BookOpenIcon,
-  GripVerticalIcon,
-} from "lucide-react";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import { SearchIcon, ChevronRightIcon, BookOpenIcon } from "lucide-react";
 
 const collections = [
   {
@@ -43,75 +37,51 @@ const collections = [
 
 const SupportHelpTab: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleDragStart = () => {
-    setIsDragging(true);
-  };
-
-  const handleDragStop = (e: DraggableEvent, data: DraggableData) => {
-    console.log({ e });
-    setIsDragging(false);
-    setPosition({ x: data.x, y: data.y });
-  };
 
   return (
-    <Draggable
-      handle=".drag-handle"
-      bounds="parent"
-      position={position}
-      onStart={handleDragStart}
-      onStop={handleDragStop}
-      defaultPosition={{ x: 0, y: 0 }}
-    >
-      <div className={`support-help-tab ${isDragging ? "dragging" : ""}`}>
-        <div className="drag-handle">
-          <GripVerticalIcon />
-        </div>
-        <div className="help-header">
-          <h2>Help Center</h2>
-          <p className="subtitle">Find answers to your questions</p>
-        </div>
-
-        <div className="search-container">
-          <SearchIcon className="search-icon" />
-          <input
-            className="support-help-search"
-            placeholder="Search for help..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="collections-list">
-          <div className="collections-header">
-            <BookOpenIcon className="collections-icon" />
-            <h3>Knowledge Base</h3>
-            <span className="collection-count">
-              {collections.length} collections
-            </span>
-          </div>
-
-          <ul>
-            {collections.map((col, i) => (
-              <li
-                key={i}
-                className="collection-item"
-                style={{ "--accent-color": col.color } as React.CSSProperties}
-              >
-                <div className="collection-icon">{col.icon}</div>
-                <div className="collection-content">
-                  <div className="title">{col.title}</div>
-                  <div className="articles">{col.articles} articles</div>
-                </div>
-                <ChevronRightIcon className="chevron-icon" />
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="support-help-tab">
+      <div className="help-header">
+        <h2>Help Center</h2>
+        <p className="subtitle">Find answers to your questions</p>
       </div>
-    </Draggable>
+
+      <div className="search-container">
+        <SearchIcon className="search-icon" />
+        <input
+          className="support-help-search"
+          placeholder="Search for help..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      <div className="collections-list">
+        <div className="collections-header">
+          <BookOpenIcon className="collections-icon" />
+          <h3>Knowledge Base</h3>
+          <span className="collection-count">
+            {collections.length} collections
+          </span>
+        </div>
+
+        <ul>
+          {collections.map((col, i) => (
+            <li
+              key={i}
+              className="collection-item"
+              style={{ "--accent-color": col.color } as React.CSSProperties}
+            >
+              <div className="collection-icon">{col.icon}</div>
+              <div className="collection-content">
+                <div className="title">{col.title}</div>
+                <div className="articles">{col.articles} articles</div>
+              </div>
+              <ChevronRightIcon className="chevron-icon" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 
