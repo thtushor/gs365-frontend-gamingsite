@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./SupportUs.scss";
 import { Logo } from "../Logo/Logo";
 import SupportPanel from "./SupportPanel";
-import DraggableContainer from "../DraggableContainer/DraggableContainer";
 
 const BUTTON_SIZE = 64;
 
@@ -20,23 +19,21 @@ const SupportUs: React.FC = () => {
   return (
     <>
       {open && <SupportPanel open={open} onClose={handleClose} />}
-      <DraggableContainer initialPosition={{ x: 30, y: 100 }}>
-        <button
-          className="support-us-floating-button"
-          style={{
-            width: BUTTON_SIZE,
-            height: BUTTON_SIZE,
-            cursor: "pointer",
-            userSelect: "none",
-          }}
-          onClick={handleClick}
-          aria-label="Support Us"
-        >
-          <div className="icon-container">
-            <Logo />
-          </div>
-        </button>
-      </DraggableContainer>
+      <button
+        className="support-us-floating-button"
+        style={{
+          width: BUTTON_SIZE,
+          height: BUTTON_SIZE,
+          cursor: "pointer",
+          userSelect: "none",
+        }}
+        onClick={handleClick}
+        aria-label="Support Us"
+      >
+        <div className="icon-container">
+          <Logo />
+        </div>
+      </button>
     </>
   );
 };

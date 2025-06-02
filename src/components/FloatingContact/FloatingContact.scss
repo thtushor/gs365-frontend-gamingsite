@@ -1,8 +1,8 @@
 // Floating Contact Button Styles (Refined)
 .floating-contact-button {
-  position: fixed;
-  right: 30px;
-  bottom: 30px;
+  // position: fixed;
+  // right: 30px;
+  // bottom: 30px;
   z-index: 1000;
   background: linear-gradient(
     90deg,
@@ -23,7 +23,7 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 8px 16px rgba(255, 215, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  // transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: scale(1.1) rotate(5deg);
@@ -80,8 +80,8 @@
   .floating-contact-button {
     width: 50px; // Smaller size
     height: 50px;
-    right: 20px; // Adjusted position
-    bottom: 20px; // Adjusted position
+    // right: 20px; // Adjusted position
+    // bottom: 20px; // Adjusted position
     font-size: 24px; // Adjust icon size
 
     .icon-container {
@@ -155,8 +155,8 @@
   .floating-contact-button {
     width: 45px; // Even smaller size
     height: 45px;
-    right: 15px; // Adjusted position
-    bottom: 15px; // Adjusted position
+    // right: 15px; // Adjusted position
+    // bottom: 15px; // Adjusted position
     font-size: 20px; // Adjust icon size
 
     .icon-container {

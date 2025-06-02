@@ -295,9 +295,9 @@
 
 // Floating Contact Button Styles (Refined)
 .floating-contact-button {
-  position: fixed;
-  right: 20px; // Position from the right edge
-  bottom: 20px; // Position from the bottom edge (Adjusted based on typical floating button placement, can be changed back to top/transform if needed)
+  // position: fixed;
+  // right: 20px; // Position from the right edge
+  // bottom: 20px; // Position from the bottom edge (Adjusted based on typical floating button placement, can be changed back to top/transform if needed)
   z-index: 1000; // Ensure it's above other content
   background-color: #2e8b57; // Green background from image
   color: white;

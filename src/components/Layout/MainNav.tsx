@@ -7,7 +7,6 @@ import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
-import FloatingContact from "../FloatingContact/FloatingContact";
 
 // interface SubNavItem {
 //   name: string;
@@ -533,7 +532,6 @@ const MainNav: React.FC = () => {
       </div>
 
       {/* Floating Contact Button and Submenu - Now a separate component */}
-      <FloatingContact />
     </div>
   );
 };

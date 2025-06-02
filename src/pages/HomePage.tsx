@@ -22,6 +22,9 @@ import FilterContainer from "../components/UI/FilterContainer";
 import GameGrid from "../components/GameGrid";
 import Sponsors from "../components/Sponsors";
 import SeoSection from "../components/Layout/SeoSection";
+import DraggableContainer from "../components/DraggableContainer/DraggableContainer";
+import SupportUs from "../components/SupportUs/SupportUs";
+import FloatingContact from "../components/FloatingContact/FloatingContact";
 // import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
 
 const HomePage: React.FC = () => {
@@ -60,6 +63,23 @@ const HomePage: React.FC = () => {
       <GameGrid />
       <SeoSection title={seoTitle} content={seoContent} />
       <Sponsors />
+
+      <DraggableContainer
+        initialPosition={{
+          x: window.innerWidth - 94,
+          y: window.innerHeight - 200,
+        }}
+      >
+        <FloatingContact />
+      </DraggableContainer>
+      <DraggableContainer
+        initialPosition={{
+          x: window.innerWidth - 94,
+          y: window.innerHeight - 120,
+        }}
+      >
+        <SupportUs />
+      </DraggableContainer>
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
       <GameSlider title="LIVE CASINO" games={liveGames} />

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./DraggableContainer.scss";
+import { GripVertical } from "lucide-react";
 
 interface DraggableContainerProps {
   children: React.ReactNode;
@@ -16,6 +17,34 @@ const DraggableContainer: React.FC<DraggableContainerProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const initialPositionRef = useRef(initialPosition);
+
+  // Update position when initialPosition prop changes
+  useEffect(() => {
+    initialPositionRef.current = initialPosition;
+    setPosition(initialPosition);
+  }, [initialPosition]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (!isDragging) {
+        const maxX =
+          window.innerWidth - (containerRef.current?.offsetWidth || 0);
+        const maxY =
+          window.innerHeight - (containerRef.current?.offsetHeight || 0);
+
+        // Keep the element within bounds
+        const newX = Math.min(position.x, maxX);
+        const newY = Math.min(position.y, maxY);
+
+        setPosition({ x: newX, y: newY });
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isDragging, position]);
 
   const handleDragStart = (clientX: number, clientY: number) => {
     if (containerRef.current) {
@@ -103,10 +132,16 @@ const DraggableContainer: React.FC<DraggableContainerProps> = ({
         top: `${position.y}px`,
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "none",
+        zIndex: isDragging ? 1001 : 1000,
       }}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
     >
+      {isDragging && (
+        <div className="drag-handle">
+          <GripVertical size={20} />
+        </div>
+      )}
       {children}
     </div>
   );
