@@ -139,6 +139,8 @@
       // padding: 15px; // Adjusted padding
       // margin: 0 15px 15px; // Adjusted margin
       // height: 0px !important;
+      padding: 0px; // Adjusted padding
+      margin: 0 0px 0px;
 
       .qr-code-image {
         width: 150px; // Smaller QR code size
@@ -146,8 +148,8 @@
       // Adjust expanded max-height for this screen size
       &.expanded {
         max-height: 250px; // Reduced max-height for tablets and smaller
-        padding: 15px; // Adjusted padding
-        margin: 0 15px 15px;
+        // padding: 15px; // Adjusted padding
+        // margin: 0 15px 15px;
       }
     }
   }
@@ -356,11 +358,11 @@
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    padding: 0 20px;
+    // padding: 0 20px;
     transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
       padding 0.5s ease-out;
     background-color: #ffffff;
-    margin: 0 20px;
+    // margin: 0 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     // Remove bottom margin from initial state

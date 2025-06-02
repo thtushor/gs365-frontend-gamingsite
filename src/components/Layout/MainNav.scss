@@ -451,9 +451,9 @@
   .qr-code-area {
     display: flex;
     justify-content: center;
-    padding: 10px; // Padding around the QR code
+    // padding: 10px; // Padding around the QR code
     background-color: #ffffff; // White background for QR code area
-    margin: 0 10px 10px; // Margin to match padding of list
+    // margin: 0 10px 10px; // Margin to match padding of list
     border-radius: 5px; // Small border radius for the QR area
 
     .qr-code-image {
