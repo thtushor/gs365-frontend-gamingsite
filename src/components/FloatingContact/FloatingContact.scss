@@ -16,8 +16,8 @@
   color: #333;
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  // width: 60px;
+  // height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,8 +78,8 @@
 @media (max-width: 768px) {
   // Adjust for tablets and smaller
   .floating-contact-button {
-    width: 50px; // Smaller size
-    height: 50px;
+    // width: 50px; // Smaller size
+    // height: 50px;
     // right: 20px; // Adjusted position
     // bottom: 20px; // Adjusted position
     font-size: 24px; // Adjust icon size
@@ -158,8 +158,8 @@
 @media (max-width: 480px) {
   // Adjust for mobile phones
   .floating-contact-button {
-    width: 45px; // Even smaller size
-    height: 45px;
+    // width: 45px; // Even smaller size
+    // height: 45px;
     // right: 15px; // Adjusted position
     // bottom: 15px; // Adjusted position
     font-size: 20px; // Adjust icon size

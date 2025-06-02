@@ -53,12 +53,13 @@ const FloatingContact: React.FC = () => {
       {/* Floating Contact Button */}
 
       <button
+        // className=""
         className="floating-contact-button"
         onClick={handleContactButtonClick}
         aria-label="Open contact options"
       >
         <div className="icon-container">
-          <PhoneIcon className="w-8 h-8" />
+          <PhoneIcon className="w-6 h-6" />
           {/* <span className="twenty-four">24</span> */}
         </div>
       </button>
