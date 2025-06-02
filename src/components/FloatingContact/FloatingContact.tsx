@@ -58,8 +58,8 @@ const FloatingContact: React.FC = () => {
         aria-label="Open contact options"
       >
         <div className="icon-container">
-          <PhoneIcon className="text-lg" />
-          <span className="twenty-four">24</span>
+          <PhoneIcon className="w-8 h-8" />
+          {/* <span className="twenty-four">24</span> */}
         </div>
       </button>
 

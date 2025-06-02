@@ -136,8 +136,9 @@
     }
 
     .qr-code-area {
-      padding: 15px; // Adjusted padding
-      margin: 0 15px 15px; // Adjusted margin
+      // padding: 15px; // Adjusted padding
+      // margin: 0 15px 15px; // Adjusted margin
+      // height: 0px !important;
 
       .qr-code-image {
         width: 150px; // Smaller QR code size
@@ -145,6 +146,8 @@
       // Adjust expanded max-height for this screen size
       &.expanded {
         max-height: 250px; // Reduced max-height for tablets and smaller
+        padding: 15px; // Adjusted padding
+        margin: 0 15px 15px;
       }
     }
   }
