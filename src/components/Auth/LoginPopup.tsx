@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./LoginPopup.scss";
+import { useLogin } from "../../lib/api/hooks";
+import { showToaster } from "../../lib/utils/toast";
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -14,8 +16,32 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 }) => {
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
+  const [formData, setFormData] = useState({
+    userNameOrEmailorPhone: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // React Query hook for login
+  const loginMutation = useLogin();
 
   if (!isOpen) return null;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
 
   const handleForgetPasswordClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,17 +63,81 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
     setForgetPasswordTab(tab);
   };
 
-  // Placeholder function for form submission
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  // Login form submission
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login form submitted");
-    // Add actual login logic here
+
+    // Basic validation
+    const newErrors: Record<string, string> = {};
+    if (!formData.userNameOrEmailorPhone.trim()) {
+      newErrors.userNameOrEmailorPhone =
+        "Username, email, or phone is required";
+    }
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+
+    try {
+      // Call login API
+      await loginMutation.mutateAsync({
+        userNameOrEmailorPhone: formData.userNameOrEmailorPhone,
+        password: formData.password,
+      });
+
+      // Success
+      showToaster("Login successful! Welcome back!", "success");
+      setFormData({
+        userNameOrEmailorPhone: "",
+        password: "",
+      });
+      onClose(); // Close popup after successful login
+
+      // Optionally redirect or update app state
+      // window.location.href = "/";
+    } catch (error: unknown) {
+      console.error("Login failed:", error);
+
+      // Handle API errors
+      if (error && typeof error === "object" && "errors" in error) {
+        // Server validation errors
+        const serverErrors: Record<string, string> = {};
+        Object.entries(
+          (error as { errors: Record<string, string[]> }).errors
+        ).forEach(([field, messages]) => {
+          if (Array.isArray(messages) && messages.length > 0) {
+            serverErrors[field] = messages[0];
+          }
+        });
+        setErrors(serverErrors);
+      } else {
+        // General error
+        const errorMessage =
+          typeof error === "object" &&
+          error !== null &&
+          "message" in error &&
+          typeof (error as { message: string }).message === "string"
+            ? (error as { message: string }).message
+            : "Login failed. Please check your credentials and try again.";
+        showToaster(errorMessage, "error");
+      }
+    }
   };
 
   const handleForgotPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Forgot password form submitted");
     // Add actual forgot password logic here
+  };
+
+  const getFieldError = (fieldName: string): string => {
+    return errors[fieldName] || "";
   };
 
   return (
@@ -84,11 +174,18 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                         <input
                           type="text"
                           id="loginUsername"
-                          name="loginUsername"
+                          name="userNameOrEmailorPhone"
                           placeholder="ব্যবহারকারীর নাম"
+                          value={formData.userNameOrEmailorPhone}
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
+                      {getFieldError("userNameOrEmailorPhone") && (
+                        <div className="error-message">
+                          {getFieldError("userNameOrEmailorPhone")}
+                        </div>
+                      )}
                     </li>
                     <li>
                       <label>পাসওয়ার্ড</label>
@@ -99,14 +196,21 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                         <div className="eyes"></div>
                         <input
                           id="loginPassword"
-                          name="loginPassword"
+                          name="password"
                           type="password"
                           minLength={6}
                           maxLength={20}
                           placeholder="পাসওয়ার্ড"
+                          value={formData.password}
+                          onChange={handleInputChange}
                           required
                         />
                       </div>
+                      {getFieldError("password") && (
+                        <div className="error-message">
+                          {getFieldError("password")}
+                        </div>
+                      )}
                     </li>
                   </ul>
 
@@ -123,8 +227,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                     id="loginButton"
                     className="btn-default-xs"
                     type="submit"
+                    disabled={loginMutation.isPending}
                   >
-                    এখনি লগইন করুন
+                    {loginMutation.isPending
+                      ? "লগইন হচ্ছে..."
+                      : "এখনি লগইন করুন"}
                   </button>
 
                   <p>
@@ -202,7 +309,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                         </li>
                         <li>
                           <label htmlFor="email_reset">
-                            দয়াকরে ইমেল ইনপুট করুন
+                            দয়াকরে ইমেল ইনপুট করুন
                           </label>
                           <div className="input-icon-type">
                             {/* Placeholder for mail icon */}
@@ -211,7 +318,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                               type="email"
                               id="email_reset"
                               name="email_reset"
-                              placeholder="দয়াকরে ইমেল ইনপুট করুন"
+                              placeholder="দয়াকরে ইমেল ইনপুট করুন"
                               required
                             />
                           </div>

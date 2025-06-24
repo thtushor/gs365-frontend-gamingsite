@@ -36,12 +36,20 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
-    onSuccess: (
-      response: ApiResponse<{ access_token: string; refresh_token: string }>
-    ) => {
+    onSuccess: (response) => {
       // Store tokens
-      localStorage.setItem("access_token", response.data.data.access_token);
-      localStorage.setItem("refresh_token", response.data.data.refresh_token);
+      console.log({ response, data: response.data }, response);
+      localStorage.setItem(
+        "access_token",
+        (response as unknown as { accessToken: string }).accessToken
+      );
+
+      localStorage.setItem(
+        "refresh_token",
+        (response as unknown as { accessToken: string }).accessToken
+      );
+
+      localStorage.setItem("user", JSON.stringify(response.data));
 
       // Invalidate and refetch user profile
       queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });

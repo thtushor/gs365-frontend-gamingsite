@@ -14,14 +14,14 @@ export interface RegisterRequest {
 }
 
 export interface LoginRequest {
-  username: string;
+  userNameOrEmailorPhone: string;
   password: string;
 }
 
 export interface LoginResponse {
   access_token: string;
   refresh_token: string;
-  user: {
+  data: {
     id: string;
     username: string;
     email: string;
