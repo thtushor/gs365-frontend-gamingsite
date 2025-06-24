@@ -1,4 +1,4 @@
-import axiosInstance, { ApiResponse, PaginatedResponse } from "./axios";
+import axiosInstance, { ApiResponse } from "./axios";
 import { API_ENDPOINTS } from "./config";
 
 // Types for API requests and responses
@@ -146,12 +146,22 @@ export interface CreateTicketRequest {
   priority: string;
 }
 
+interface RegisterResponseData {
+  fieldCount: number;
+  affectedRows: number;
+  insertId: number;
+  info: string;
+  serverStatus: number;
+  warningStatus: number;
+  changedRows: number;
+}
+
 // Auth Services
 export const authService = {
   // Register new user
   register: async (
     data: RegisterRequest
-  ): Promise<ApiResponse<LoginResponse>> => {
+  ): Promise<ApiResponse<RegisterResponseData>> => {
     const response = await axiosInstance.post(
       API_ENDPOINTS.AUTH.REGISTER,
       data
@@ -168,7 +178,7 @@ export const authService = {
   // Logout user
   logout: async (): Promise<ApiResponse<void>> => {
     const response = await axiosInstance.post(API_ENDPOINTS.AUTH.LOGOUT);
-    return response.data;
+    return response;
   },
 
   // Refresh token
@@ -281,191 +291,8 @@ export const userService = {
   },
 };
 
-// Game Services
-export const gameService = {
-  // Get games list with pagination
-  getGames: async (params?: {
-    page?: number;
-    limit?: number;
-    category?: string;
-    provider?: string;
-    search?: string;
-  }): Promise<PaginatedResponse<Game>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.LIST, {
-      params,
-    });
-    return response.data;
-  },
-
-  // Get game details
-  getGameDetails: async (id: string): Promise<ApiResponse<Game>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.DETAILS(id));
-    return response.data;
-  },
-
-  // Get game providers
-  getProviders: async (): Promise<ApiResponse<GameProvider[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.PROVIDERS);
-    return response.data;
-  },
-
-  // Get game categories
-  getCategories: async (): Promise<ApiResponse<GameCategory[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.CATEGORIES);
-    return response.data;
-  },
-
-  // Get featured games
-  getFeaturedGames: async (): Promise<ApiResponse<Game[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.FEATURED);
-    return response.data;
-  },
-
-  // Get popular games
-  getPopularGames: async (): Promise<ApiResponse<Game[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.GAMES.POPULAR);
-    return response.data;
-  },
-};
-
-// Payment Services
-export const paymentService = {
-  // Get payment methods
-  getMethods: async (): Promise<ApiResponse<PaymentMethod[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.PAYMENTS.METHODS);
-    return response.data;
-  },
-
-  // Get payment history
-  getHistory: async (params?: {
-    page?: number;
-    limit?: number;
-    type?: "deposit" | "withdraw";
-    status?: string;
-  }): Promise<PaginatedResponse<PaymentTransaction>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.PAYMENTS.HISTORY, {
-      params,
-    });
-    return response.data;
-  },
-
-  // Create deposit
-  createDeposit: async (
-    data: DepositRequest
-  ): Promise<ApiResponse<PaymentTransaction>> => {
-    const response = await axiosInstance.post(
-      API_ENDPOINTS.PAYMENTS.DEPOSIT,
-      data
-    );
-    return response.data;
-  },
-
-  // Create withdrawal
-  createWithdrawal: async (
-    data: WithdrawalRequest
-  ): Promise<ApiResponse<PaymentTransaction>> => {
-    const response = await axiosInstance.post(
-      API_ENDPOINTS.PAYMENTS.WITHDRAW,
-      data
-    );
-    return response.data;
-  },
-
-  // Verify payment
-  verifyPayment: async (
-    data: PaymentVerification
-  ): Promise<ApiResponse<PaymentTransaction>> => {
-    const response = await axiosInstance.post(
-      API_ENDPOINTS.PAYMENTS.VERIFY,
-      data
-    );
-    return response.data;
-  },
-};
-
-// Promotion Services
-export const promotionService = {
-  // Get promotions list
-  getPromotions: async (params?: {
-    page?: number;
-    limit?: number;
-    type?: string;
-  }): Promise<PaginatedResponse<Promotion>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.PROMOTIONS.LIST, {
-      params,
-    });
-    return response.data;
-  },
-
-  // Get promotion details
-  getPromotionDetails: async (id: string): Promise<ApiResponse<Promotion>> => {
-    const response = await axiosInstance.get(
-      API_ENDPOINTS.PROMOTIONS.DETAILS(id)
-    );
-    return response.data;
-  },
-
-  // Get active promotions
-  getActivePromotions: async (): Promise<ApiResponse<Promotion[]>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.PROMOTIONS.ACTIVE);
-    return response.data;
-  },
-};
-
-// Support Services
-export const supportService = {
-  // Get support tickets
-  getTickets: async (params?: {
-    page?: number;
-    limit?: number;
-    status?: string;
-  }): Promise<PaginatedResponse<SupportTicket>> => {
-    const response = await axiosInstance.get(API_ENDPOINTS.SUPPORT.TICKETS, {
-      params,
-    });
-    return response.data;
-  },
-
-  // Create support ticket
-  createTicket: async (
-    data: CreateTicketRequest
-  ): Promise<ApiResponse<SupportTicket>> => {
-    const response = await axiosInstance.post(
-      API_ENDPOINTS.SUPPORT.CREATE_TICKET,
-      data
-    );
-    return response.data;
-  },
-
-  // Get ticket messages
-  getTicketMessages: async (
-    ticketId: string
-  ): Promise<ApiResponse<TicketMessage[]>> => {
-    const response = await axiosInstance.get(
-      API_ENDPOINTS.SUPPORT.MESSAGES(ticketId)
-    );
-    return response.data;
-  },
-
-  // Send message to ticket
-  sendMessage: async (
-    ticketId: string,
-    data: { message: string }
-  ): Promise<ApiResponse<TicketMessage>> => {
-    const response = await axiosInstance.post(
-      API_ENDPOINTS.SUPPORT.SEND_MESSAGE(ticketId),
-      data
-    );
-    return response.data;
-  },
-};
-
 // Export all services
 export const apiService = {
   auth: authService,
   user: userService,
-  game: gameService,
-  payment: paymentService,
-  promotion: promotionService,
-  support: supportService,
 };

@@ -18,10 +18,12 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 // Types for API responses
 export interface ApiResponse<T = unknown> {
-  success: boolean;
-  data: T;
-  message?: string;
-  errors?: Record<string, string[]>;
+  data: {
+    status: boolean;
+    message?: string;
+    errors?: Record<string, string[]>;
+    data: T;
+  };
 }
 
 export interface PaginatedResponse<T = unknown> extends ApiResponse<T[]> {

@@ -35,41 +35,6 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: "/api/users/change-password",
     UPLOAD_AVATAR: "/api/users/avatar",
   },
-
-  // Game endpoints
-  GAMES: {
-    LIST: "/api/games",
-    DETAILS: (id: string) => `/api/games/${id}`,
-    PROVIDERS: "/api/games/providers",
-    CATEGORIES: "/api/games/categories",
-    FEATURED: "/api/games/featured",
-    POPULAR: "/api/games/popular",
-  },
-
-  // Payment endpoints
-  PAYMENTS: {
-    DEPOSIT: "/api/payments/deposit",
-    WITHDRAW: "/api/payments/withdraw",
-    HISTORY: "/api/payments/history",
-    METHODS: "/api/payments/methods",
-    VERIFY: "/api/payments/verify",
-  },
-
-  // Promotions endpoints
-  PROMOTIONS: {
-    LIST: "/api/promotions",
-    DETAILS: (id: string) => `/api/promotions/${id}`,
-    ACTIVE: "/api/promotions/active",
-  },
-
-  // Support endpoints
-  SUPPORT: {
-    TICKETS: "/api/support/tickets",
-    CREATE_TICKET: "/api/support/tickets",
-    MESSAGES: (ticketId: string) => `/api/support/tickets/${ticketId}/messages`,
-    SEND_MESSAGE: (ticketId: string) =>
-      `/api/support/tickets/${ticketId}/messages`,
-  },
 } as const;
 
 // Helper function to build full API URLs

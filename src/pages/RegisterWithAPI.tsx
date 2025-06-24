@@ -8,6 +8,9 @@ import {
   transformRegistrationData,
 } from "../lib/utils/validation";
 import "./Register.scss";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { showToaster } from "../lib/utils/toast";
 
 const Register: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -162,13 +165,16 @@ const Register: React.FC = () => {
       const response = await registerMutation.mutateAsync(apiData);
 
       // Success - user will be automatically logged in and redirected
-      console.log("Registration successful:", response);
+      console.log("Registration successful:", response.data);
 
-      // You can add success notification here
-      alert("Registration successful! Welcome to GameStar365!");
+      // Show beautiful toast notification
+      showToaster(
+        "Registration successful! Welcome to GameStar365!",
+        "success"
+      );
 
       // Redirect to home page or dashboard
-      window.location.href = "/";
+      // window.location.href = "/";
     } catch (error: unknown) {
       console.error("Registration failed:", error);
 
@@ -612,6 +618,7 @@ const Register: React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
