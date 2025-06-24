@@ -97,6 +97,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         userNameOrEmailorPhone: "",
         password: "",
       });
+
+      // Dispatch custom event to notify other components about login
+      window.dispatchEvent(new Event("userLogin"));
+
       onClose(); // Close popup after successful login
 
       // Optionally redirect or update app state
