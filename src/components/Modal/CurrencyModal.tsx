@@ -108,7 +108,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-[3px]">
       {/* Animated background particles */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute w-72 h-72 bg-green-400/20 rounded-full blur-3xl top-0 left-0 animate-float" />

@@ -1,11 +1,6 @@
 .register-page {
   min-height: calc(100vh - 120px);
-  background: linear-gradient(
-    169.06deg,
-    #074ce3 0%,
-    #074ce3 23.13%,
-    #042a7d 73.67%
-  );
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 20px;
   color: #ffffff;
 
@@ -113,6 +108,19 @@
 
               &::placeholder {
                 color: rgba(255, 255, 255, 0.5);
+              }
+            }
+
+            select {
+              option {
+                background-color: #2d2d2d;
+                color: #ffffff;
+                padding: 8px;
+
+                &:hover {
+                  background-color: #ffd700;
+                  color: #000000;
+                }
               }
             }
 
