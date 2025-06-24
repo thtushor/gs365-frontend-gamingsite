@@ -21,10 +21,11 @@ import Layout from "./components/Layout/Layout";
 import "./components/Layout/Layout.scss";
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./components/Loader/LoadingScreen";
-import Register from "./pages/Register";
+// import Register from "./pages/Register";
 import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
 import Reference from "./pages/Reference";
+import Register from "./pages/RegisterWithAPI";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 

@@ -4,15 +4,13 @@ import { API_ENDPOINTS } from "./config";
 // Types for API requests and responses
 export interface RegisterRequest {
   username: string;
-  password: string;
-  confirmPassword: string;
-  currencyType: string;
-  friendReferCode?: string;
-  realName: string;
-  callingCode: string;
-  phoneNumber: string;
+  fullname: string;
+  phone: string;
   email: string;
-  ageCheck: boolean;
+  password: string;
+  currency_id: number;
+  refer_code?: string;
+  isAgreeWithTerms: boolean;
 }
 
 export interface LoginRequest {

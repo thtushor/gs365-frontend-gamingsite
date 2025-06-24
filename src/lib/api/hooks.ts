@@ -3,7 +3,6 @@ import {
   useMutation,
   useQueryClient,
   UseQueryOptions,
-  UseMutationOptions,
 } from "@tanstack/react-query";
 import { apiService } from "./services";
 import type {
@@ -21,6 +20,7 @@ import type {
   Promotion,
   SupportTicket,
   CreateTicketRequest,
+  TicketMessage,
 } from "./services";
 
 // Query Keys
@@ -416,7 +416,7 @@ export const useCreateTicket = () => {
 
 export const useTicketMessages = (
   ticketId: string,
-  options?: UseQueryOptions<{ data: Record<string, unknown>[] }>
+  options?: UseQueryOptions<{ data: TicketMessage[] }>
 ) => {
   return useQuery({
     queryKey: queryKeys.support.messages(ticketId),
