@@ -175,7 +175,7 @@ const Register: React.FC = () => {
       );
 
       // Redirect to home page or dashboard
-      // window.location.href = "/";
+      window.location.href = "/";
     } catch (error: unknown) {
       console.error("Registration failed:", error);
       const errorMessage =
