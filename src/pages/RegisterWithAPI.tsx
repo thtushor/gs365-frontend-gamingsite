@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -177,6 +178,14 @@ const Register: React.FC = () => {
       // window.location.href = "/";
     } catch (error: unknown) {
       console.error("Registration failed:", error);
+      const errorMessage =
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as any).message === "string"
+          ? (error as any).message
+          : "Registration failed. Please try again.";
+      showToaster(errorMessage, "error");
 
       // Handle API errors
       if (error && typeof error === "object" && "errors" in error) {
