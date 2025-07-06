@@ -1,0 +1,570 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useRegister } from "../lib/api/hooks";
+import {
+  validateRegistrationForm,
+  transformAffiliateRegistrationData,
+} from "../lib/utils/validation";
+import "./Register.scss";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { showToaster } from "../lib/utils/toast";
+import axios from "axios";
+import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
+
+const Register: React.FC = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    currencyType: "8", // Default to BDT
+    friendReferCode: "",
+    realName: "",
+    callingCode: "880", // Default to +880
+    phoneNumber: "",
+    email: "",
+    captchaInput: "",
+    ageCheck: true,
+    role: "superAffiliate",
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // React Query hook for registration
+  const registerMutation = useRegister();
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+  };
+
+  const bannerImages = [
+    {
+      id: 1,
+      image:
+        "https://www.shutterstock.com/image-vector/this-image-features-colorful-online-600nw-2467530093.jpg",
+      title: "Welcome to GameStar365",
+      description: "Join our gaming community today!",
+    },
+    {
+      id: 2,
+      image:
+        "https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
+      title: "Exclusive Bonuses",
+      description: "Get amazing welcome bonuses on registration",
+    },
+    {
+      id: 3,
+      image:
+        "https://c8.alamy.com/comp/2EM4KEP/poker-cards-casino-gambling-games-vector-design-playing-cards-and-casino-chips-with-golden-ribbon-banner-sparkles-and-poker-hand-four-rockets-with-2EM4KEP.jpg",
+      title: "24/7 Support",
+      description: "Our customer service team is always ready to help",
+    },
+  ];
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const target = e.target;
+    const value =
+      target.type === "checkbox"
+        ? (target as HTMLInputElement).checked
+        : target.value;
+    const name = target.name;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const validateStep = (step: number): boolean => {
+    const validation = validateRegistrationForm(formData);
+    const stepErrors: Record<string, string> = {};
+
+    if (step === 1) {
+      // Validate step 1 fields
+      validation.errors.forEach((error) => {
+        if (
+          [
+            "username",
+            "password",
+            "confirmPassword",
+            "currencyType",
+            "realName",
+            "phoneNumber",
+            "email",
+          ].includes(error.field)
+        ) {
+          stepErrors[error.field] = error.message;
+        }
+      });
+    } else if (step === 2) {
+      // Validate step 2 fields
+      validation.errors.forEach((error) => {
+        if (["realName", "phoneNumber", "email"].includes(error.field)) {
+          stepErrors[error.field] = error.message;
+        }
+      });
+    }
+
+    setErrors(stepErrors);
+    return Object.keys(stepErrors).length === 0;
+  };
+
+  console.log(errors);
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateStep(1)) {
+      return;
+    }
+
+    // Validate entire form
+    const validation = validateRegistrationForm(formData);
+    if (!validation.isValid) {
+      const errorMap: Record<string, string> = {};
+      validation.errors.forEach((error) => {
+        errorMap[error.field] = error.message;
+      });
+      setErrors(errorMap);
+      return;
+    }
+
+    setErrors({});
+
+    try {
+      console.log(formData);
+      // Transform form data to API format
+      const apiData = transformAffiliateRegistrationData(formData);
+
+      // Call registration API
+      // const response = await registerMutation.mutateAsync(apiData);
+      console.log(apiData);
+      // return;
+      const response = await axios.post(
+        API_CONFIG.BASE_URL + API_ENDPOINTS.AUTH.AFFILIATE_REGISTER,
+        apiData
+      );
+      // `/api/admin/create-admin`,
+
+      // Success - user will be automatically logged in and redirected
+      console.log("Registration successful:", response.data);
+
+      // Show beautiful toast notification
+      showToaster(
+        "Registration successful! Welcome to GameStar365!",
+        "success"
+      );
+
+      // Redirect to home page or dashboard
+      window.location.href = "/";
+    } catch (error: unknown) {
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as any).message === "string"
+      ) {
+        errorMessage = (error as any).message;
+      }
+
+      showToaster(errorMessage, "error");
+    }
+  };
+
+  const getFieldError = (fieldName: string): string => {
+    return errors[fieldName] || "";
+  };
+
+  const isFieldValid = (fieldName: string): boolean => {
+    return !errors[fieldName];
+  };
+
+  return (
+    <div className="register-page">
+      <div className="register-wrap">
+        <div className="register-notice">
+          আপনার যদি সমস্যা হয় তবে যোগাযোগ করুন
+          <a
+            style={{ color: "red" }}
+            className="intercom_custom_launcher"
+            onClick={() => void 0}
+          >
+            অনলাইন কাস্টমার সার্ভিস
+          </a>
+        </div>
+
+        {/* General Error Display */}
+        {errors.general && (
+          <div
+            className="error-message"
+            style={{
+              background: "rgba(255, 0, 0, 0.1)",
+              border: "1px solid #ff0000",
+              color: "#ff0000",
+              padding: "10px",
+              borderRadius: "4px",
+              marginBottom: "20px",
+              textAlign: "center",
+            }}
+          >
+            {errors.general}
+          </div>
+        )}
+
+        <div className="register-content">
+          <div className="left-register-info">
+            <ul className="register-tab register-tab-one">
+              <li className="active">
+                <a href="javascript:void(0);">সাইন আপ</a>
+              </li>
+            </ul>
+            <div className="general-register step-register">
+              <form onSubmit={handleFormSubmit}>
+                {currentStep === 1 && (
+                  <div id="register-form-step1" className="form-inner v2_step1">
+                    <ul>
+                      <li>
+                        <label htmlFor="realName">Full Name</label>
+                        <input
+                          id="realName"
+                          type="text"
+                          name="realName"
+                          placeholder="Enter your full name"
+                          maxLength={100}
+                          style={{
+                            borderColor: isFieldValid("realName")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                          required
+                          value={formData.realName}
+                          onChange={handleInputChange}
+                        />
+                        {getFieldError("realName") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("realName")}
+                          </div>
+                        )}
+                        <div className="password-condition">
+                          <p>
+                            Please enter your full and accurate name for
+                            identity verification during withdrawal.
+                          </p>
+                        </div>
+                      </li>
+                      <li className="">
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <div className="phone-info ">
+                          <div className="phone-area-code">
+                            <div className="lang-select">
+                              <button
+                                type="button"
+                                className="btn-select"
+                                value="en"
+                              >
+                                <li className="flex items-center !mb-0">
+                                  <img
+                                    src="https://img.b112j.com/images/web/flag/BD.png"
+                                    alt=""
+                                  />
+                                  <span>+{formData.callingCode}</span>
+                                </li>
+                              </button>
+                            </div>
+                          </div>
+                          <input
+                            id="callingCode"
+                            name="callingCode"
+                            type="hidden"
+                            value={formData.callingCode}
+                            onChange={handleInputChange}
+                          />
+                          <input
+                            id="phoneNumber"
+                            type="text"
+                            name="phoneNumber"
+                            placeholder="Enter your phone number"
+                            style={{
+                              borderColor: isFieldValid("phoneNumber")
+                                ? undefined
+                                : "#ff0000",
+                            }}
+                            required
+                            value={formData.phoneNumber}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        {getFieldError("phoneNumber") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("phoneNumber")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="email">Email Address</label>
+                        <input
+                          id="email"
+                          type="email"
+                          name="email"
+                          placeholder="Enter your valid email address"
+                          style={{
+                            borderColor: isFieldValid("email")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                          required
+                          value={formData.email}
+                          onChange={handleInputChange}
+                        />
+                        {getFieldError("email") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("email")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="username">Username</label>
+                        <input
+                          id="username"
+                          type="text"
+                          name="username"
+                          placeholder="Enter 4-15 characters (numbers allowed)"
+                          style={{
+                            textTransform: "lowercase",
+                            borderColor: isFieldValid("username")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                          required
+                          value={formData.username}
+                          onChange={handleInputChange}
+                        />
+                        {getFieldError("username") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("username")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="password">Password</label>
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          minLength={6}
+                          maxLength={20}
+                          placeholder="Enter 6-20 characters (numbers allowed)"
+                          style={{
+                            borderColor: isFieldValid("password")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                          required
+                          value={formData.password}
+                          onChange={handleInputChange}
+                        />
+                        {getFieldError("password") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("password")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="confirmPassword">
+                          Confirm Password
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          type="password"
+                          minLength={6}
+                          maxLength={20}
+                          placeholder="Confirm password"
+                          style={{
+                            borderColor: isFieldValid("confirmPassword")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                          required
+                          value={formData.confirmPassword}
+                          onChange={handleInputChange}
+                        />
+                        {getFieldError("confirmPassword") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("confirmPassword")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="currencyType">
+                          Select Your Currency
+                        </label>
+                        <select
+                          id="currencyType"
+                          name="currencyType"
+                          value={formData.currencyType}
+                          onChange={handleInputChange}
+                          style={{
+                            borderColor: isFieldValid("currencyType")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                        >
+                          <option value="1">BDT</option>
+                          <option value="7">INR</option>
+                          <option value="24">NPR</option>
+                          <option value="17">PKR</option>
+                        </select>
+                        {getFieldError("currencyType") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("currencyType")}
+                          </div>
+                        )}
+                      </li>
+                      <li>
+                        <label htmlFor="friendReferCode">Refer Code</label>
+                        <input
+                          type="text"
+                          id="friendReferCode"
+                          name="friendReferCode"
+                          value={formData.friendReferCode}
+                          onChange={handleInputChange}
+                          minLength={6}
+                          maxLength={20}
+                          placeholder="Enter your referral code if available"
+                          style={{
+                            borderColor: isFieldValid("friendReferCode")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                        />
+                        {getFieldError("friendReferCode") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("friendReferCode")}
+                          </div>
+                        )}
+                      </li>
+                    </ul>
+                  </div>
+                )}
+
+                <div id="register-form-step2" className="form-inner v2_step2">
+                  <div className="form-btn-box">
+                    <button
+                      type="submit"
+                      id="registerButton"
+                      className="btn-register-submit"
+                      disabled={registerMutation.isPending}
+                    >
+                      {registerMutation.isPending
+                        ? "Submitting..."
+                        : "Signup now"}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div className="right-register-banner">
+            <Slider {...sliderSettings}>
+              {bannerImages.map((banner) => (
+                <div key={banner.id} className="banner-slide">
+                  <img src={banner.image} alt={banner.title} />
+                  <div className="banner-content">
+                    <h3>{banner.title}</h3>
+                    <p>{banner.description}</p>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </div>
+      </div>
+      <ToastContainer />
+    </div>
+  );
+};
+
+export default Register;

@@ -26,6 +26,7 @@ import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
 import Reference from "./pages/Reference";
 import Register from "./pages/RegisterWithAPI";
+import AffiliateRegister from "./pages/AffiliateRegister";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,6 +50,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/affiliate-signup" element={<AffiliateRegister />} />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
           <Route path="/promotions/:id" element={<PromotionPage />} />

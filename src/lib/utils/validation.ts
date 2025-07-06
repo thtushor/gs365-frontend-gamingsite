@@ -155,6 +155,44 @@ export const transformRegistrationData = (formData: {
   };
 };
 
+// Transform form data to API format
+export const transformAffiliateRegistrationData = (formData: {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  currencyType: string;
+  friendReferCode?: string;
+  realName: string;
+  callingCode: string;
+  phoneNumber: string;
+  email: string;
+  ageCheck: boolean;
+}) => {
+  // Combine calling code and phone number
+  const fullPhone = `${formData.callingCode}${formData.phoneNumber}`;
+
+  // Map currency type to currency_id
+  // const currencyIdMap: Record<string, number> = {
+  //   "8": 1, // BDT
+  //   "7": 2, // INR
+  //   "24": 3, // NPR
+  //   "17": 4, // PKR
+  // };
+
+  return {
+    username: formData.username.trim().toLowerCase(),
+    fullname: formData.realName.trim(),
+    phone: fullPhone,
+    email: formData.email.trim().toLowerCase(),
+    password: formData.password,
+    // currency: currencyIdMap[formData.currencyType] || 1,
+    currency: 1,
+    refCode: formData.friendReferCode?.trim() || undefined,
+    status: "inactive",
+    role: "superAffiliate",
+  };
+};
+
 // Phone number formatting
 export const formatPhoneNumber = (phone: string): string => {
   // Remove all non-digit characters

@@ -89,8 +89,12 @@ const Header: React.FC = () => {
     setIsLoginPopupOpen(true);
   };
 
-  const handleRegisterClick = () => {
-    navigate("/register");
+  const handleRegisterClick = (affiliate: boolean = false) => {
+    if (affiliate) {
+      navigate("/affiliate-signup");
+    } else {
+      navigate("/register");
+    }
   };
 
   const handleLogout = async () => {
@@ -137,6 +141,12 @@ const Header: React.FC = () => {
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
+            <button
+              className="signup-btn"
+              onClick={() => handleRegisterClick(true)}
+            >
+              Affiliate Signup
+            </button>
             {user ? (
               // User is logged in - show user info and logout
               <div className="user-section">
@@ -158,7 +168,10 @@ const Header: React.FC = () => {
                 <button className="login-btn" onClick={handleLoginClick}>
                   লগইন
                 </button>
-                <button className="signup-btn" onClick={handleRegisterClick}>
+                <button
+                  className="signup-btn"
+                  onClick={() => handleRegisterClick()}
+                >
                   সাইন আপ
                 </button>
               </>

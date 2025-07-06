@@ -2,7 +2,8 @@
 export const API_CONFIG = {
   // Base URLs for different environments
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  BASE_URL: "https://gs-server-svmt.onrender.com",
+  BASE_URL: "http://localhost:3000",
+  // BASE_URL: "https://gs-server-svmt.onrender.com",
 
   // API Version
   API_VERSION: "v1",
@@ -20,6 +21,7 @@ export const API_ENDPOINTS = {
   // Auth endpoints
   AUTH: {
     REGISTER: "/api/users/register",
+    AFFILIATE_REGISTER: "/api/admin/registration",
     LOGIN: "/api/users/login",
     LOGOUT: "/api/users/logout",
     REFRESH_TOKEN: "/api/users/refresh-token",
