@@ -32,6 +32,8 @@ const Register: React.FC = () => {
     role: "superAffiliate",
   });
 
+  console.log({ setCurrentStep });
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // React Query hook for registration
