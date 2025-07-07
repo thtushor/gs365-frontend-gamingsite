@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useRegister } from "../lib/api/hooks";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
@@ -17,8 +16,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
 import axios from "axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -40,9 +42,6 @@ const Register: React.FC = () => {
   console.log({ setCurrentStep });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // React Query hook for registration
-  const registerMutation = useRegister();
 
   const sliderSettings = {
     dots: true,
@@ -158,6 +157,7 @@ const Register: React.FC = () => {
     setErrors({});
 
     try {
+      setLoading(true);
       console.log(formData);
       // Transform form data to API format
       const apiData = transformAffiliateRegistrationData(formData);
@@ -174,6 +174,7 @@ const Register: React.FC = () => {
 
       // Success - user will be automatically logged in and redirected
       console.log("Registration successful:", response.data);
+      setLoading(false);
 
       // Show beautiful toast notification
       showToaster(
@@ -182,8 +183,9 @@ const Register: React.FC = () => {
       );
 
       // Redirect to home page or dashboard
-      window.location.href = "/";
+      navigate("/");
     } catch (error: unknown) {
+      setLoading(false);
       let errorMessage = "Registration failed. Please try again.";
 
       if (axios.isAxiosError(error)) {
@@ -592,11 +594,9 @@ const Register: React.FC = () => {
                       type="submit"
                       id="registerButton"
                       className="btn-register-submit"
-                      disabled={registerMutation.isPending}
+                      disabled={loading}
                     >
-                      {registerMutation.isPending
-                        ? "Submitting..."
-                        : "Signup now"}
+                      {loading ? "Submitting..." : "Signup now"}
                     </button>
                   </div>
                 </div>
