@@ -202,18 +202,18 @@ const SubnavCard = memo<{
       className="relative flex flex-col items-center rounded-xl mx-2 px-3 py-3 transition-all duration-300 group subnav-galaxy-card"
       style={{
         width: 200,
-        height: 280,
+        height: 200,
         flexShrink: 0,
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <div
-        className="relative w-32 h-32 mx-auto"
+        className="relative w-[100px] h-[100px] mx-auto"
         style={{ perspective: 1000, zIndex: 20 }}
       >
         <div
-          className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-full transition-all duration-300"
+          className="absolute left-1/2 top-1/2 w-[100px] h-[100px] object-contain rounded-full transition-all duration-300"
           style={{
             zIndex: 10,
             transform: `translate(-50%, -50%) rotateY(${
@@ -239,7 +239,7 @@ const SubnavCard = memo<{
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-xl transition-all duration-600"
+              className="absolute left-1/2 top-1/2 w-[100px] h-[100px] object-contain rounded-xl transition-all duration-600"
               style={{
                 zIndex: 10 + i,
                 transform: `

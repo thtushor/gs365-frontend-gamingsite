@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRegister } from "../lib/api/hooks";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
 import {
   validateRegistrationForm,
   transformAffiliateRegistrationData,
@@ -16,6 +19,8 @@ import axios from "axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
 
 const Register: React.FC = () => {
+  const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
@@ -206,6 +211,13 @@ const Register: React.FC = () => {
     return !errors[fieldName];
   };
 
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: phoneValue || "",
+    }));
+  }, [phoneValue]);
+
   return (
     <div className="register-page">
       <div className="register-wrap">
@@ -276,7 +288,7 @@ const Register: React.FC = () => {
                           </p>
                         </div>
                       </li>
-                      <li className="">
+                      {/* <li className="">
                         <label htmlFor="phoneNumber">Phone Number</label>
                         <div className="phone-info ">
                           <div className="phone-area-code">
@@ -316,6 +328,59 @@ const Register: React.FC = () => {
                             required
                             value={formData.phoneNumber}
                             onChange={handleInputChange}
+                          />
+                        </div>
+                        {getFieldError("phoneNumber") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("phoneNumber")}
+                          </div>
+                        )}
+                      </li> */}
+
+                      <li className="">
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <div className="phone-info">
+                          <div className="phone-area-code">
+                            <div className="lang-select">
+                              <li className="flex items-center !mb-0">
+                                <img
+                                  src="https://img.b112j.com/images/web/flag/BD.png"
+                                  alt=""
+                                />
+                                <span>{phoneValue?.slice(0, 4) || "+880"}</span>
+                              </li>
+                            </div>
+                          </div>
+                          <PhoneInput
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            international
+                            defaultCountry="BD"
+                            value={phoneValue}
+                            onChange={(value) => {
+                              setPhoneValue(value);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phoneNumber: value || "",
+                              }));
+
+                              // Clear error on change
+                              if (errors["phoneNumber"]) {
+                                setErrors((prev) => ({
+                                  ...prev,
+                                  phoneNumber: "",
+                                }));
+                              }
+                            }}
+                            className="custom-phone-input"
+                            placeholder="Enter phone number"
                           />
                         </div>
                         {getFieldError("phoneNumber") && (
