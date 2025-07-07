@@ -6,7 +6,7 @@ interface Promotion {
   image: string;
   title: string;
   description: string;
-  tag: string;
+  tag: string[];
   time: string;
   signupLink: string;
   detailsLink: string;
@@ -43,34 +43,48 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-yellow-400 text-xl"
+              className="absolute top-3 right-3 text-gray-900 bg-yellow-400 hover:bg-yellow-600 text-xl"
               onClick={onClose}
               aria-label="Close"
             >
               <FaTimes />
             </button>
-            <div className="w-full h-56 rounded-xl overflow-hidden mb-4">
+            <div className="w-full overflow-hidden">
               <img
                 src={promotion.image}
                 alt={promotion.title}
-                className="object-cover w-full h-full"
+                className="object-cover h-[200px] w-full transition-transform duration-500 group-hover:scale-110 rounded-t-2xl"
               />
             </div>
-            <span className="inline-block bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-gray-900 text-xs font-bold px-4 py-1 rounded-full shadow mb-3">
-              {promotion.tag}
-            </span>
-            <h3 className="text-2xl font-extrabold text-yellow-300 mb-2 leading-tight">
-              {promotion.title}
-            </h3>
-            <p className="text-gray-100 mb-3 text-base leading-relaxed">
-              {promotion.description}
-            </p>
-            <div className="flex items-center mb-4">
+            {promotion.tag?.length > 0 && (
+              <div className="flex items-center flex-wrap gap-2 mb-3 mt-4">
+                {promotion.tag.map((t, idx) => (
+                  <p
+                    key={idx}
+                    className="text-gray-400 rounded-[4px] px-2 text-[12px] border-gray-400 border"
+                  >
+                    {t}
+                  </p>
+                ))}
+              </div>
+            )}
+            <div className="flex items-center mb-3">
               <span className="flex items-center bg-gray-700 text-yellow-200 text-xs font-semibold px-3 py-1 rounded-full">
                 <FaRegClock className="mr-1 text-yellow-400" /> {promotion.time}
               </span>
             </div>
-            <div className="flex flex-col md:flex-row gap-2 mt-2">
+            <h3 className="text-[18px] text-left mb-4 font-extrabold text-white mb-2 leading-tight drop-shadow-sm">
+              {promotion.title}
+            </h3>
+            {/* <p className="text-gray-100 mb-3 text-base leading-relaxed">
+              {promotion.description}
+            </p> */}
+            {/* <div className="flex items-center mb-4">
+              <span className="flex items-center bg-gray-700 text-yellow-200 text-xs font-semibold px-3 py-1 rounded-full">
+                <FaRegClock className="mr-1 text-yellow-400" /> {promotion.time}
+              </span>
+            </div> */}
+            {/* <div className="flex flex-col md:flex-row gap-2 mt-2">
               <a
                 href={promotion.signupLink}
                 className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-lg transition text-base shadow-md text-center"
@@ -86,6 +100,20 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                 rel="noopener noreferrer"
               >
                 বিস্তারিত
+              </a>
+            </div> */}
+            <div className="flex flex-col md:flex-row gap-2 mt-2">
+              <a
+                href={promotion?.signupLink}
+                className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-600 text-gray-900 font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center hover:text-gray-900"
+              >
+                Signup
+              </a>
+              <a
+                href={promotion?.detailsLink}
+                className="w-full md:w-auto border-yellow-400 hover:border-white text-yellow-400 hover:text-white font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center border"
+              >
+                Read more
               </a>
             </div>
           </motion.div>
