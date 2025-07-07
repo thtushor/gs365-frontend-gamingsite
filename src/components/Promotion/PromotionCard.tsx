@@ -20,6 +20,7 @@ const PromotionCard: React.FC<PromotionCardProps> = ({
   signupLink,
   detailsLink,
 }) => {
+  console.log(description);
   return (
     <div className="bg-gray-800 text-left rounded-2xl shadow-2xl overflow-hidden flex flex-col h-full border border-gray-700 hover:shadow-yellow-400/40 transition-shadow duration-300 group promotion-fade-in-up">
       {/*

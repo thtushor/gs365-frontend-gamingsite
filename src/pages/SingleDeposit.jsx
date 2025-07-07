@@ -4,7 +4,10 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BaseModal from "../components/Promotion/BaseModal";
 import { LuGift } from "react-icons/lu";
 import DepositPromotionSelect from "../components/InnerComponent/DepositPromotionSelect";
-import bankCard from "../assets/bank-card.png";
+
+import { MdOutlineRadioButtonChecked } from "react-icons/md";
+import LocalBankInfo from "../components/InnerComponent/LocalBankInfo";
+import DepositTransfer from "../components/InnerComponent/DepositTransfer";
 
 const fakePromotions = {
   valid: [
@@ -84,15 +87,35 @@ const fakePromotions = {
   invalid: [],
 };
 
+const stepDetails = {
+  LOCAL_BANK: "local-bank",
+  E_WALLET: "e-wallet",
+  CRYPTO: "crypto",
+  INTERNATIONAL: "international",
+  LOCAL_BANK_TRANSFER: "local-bank-transfer",
+  E_WALLET_TRANSFER: "e-wallet-transfer",
+  CRYPTO_TRANSFER: "crypto-transfer",
+  INTERNATIONAL_TRANSFER: "international-transfer",
+};
+
 const SingleDeposit = () => {
+  const { depositId } = useParams();
+  const [step, setStep] = useState(
+    depositId === "local-bank" ? stepDetails?.LOCAL_BANK : 1
+  );
   const [selectedPromotion, setSelectedPromotion] = useState({
     id: 2,
     title: "৮০% রিলোড বোনাস",
     type: "এক্সক্লুসিভ অফার",
     time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
   });
+  const [depositOptions, setDepositOptions] = useState({
+    payment_type: "",
+    payment_channel: "",
+    deposit_channel: "",
+    transfer_type: "",
+  });
   const [modalOpen, setModalOpen] = useState(false);
-  const { depositId } = useParams();
   const navigate = useNavigate();
 
   const formatDepositId = (id) => {
@@ -111,6 +134,11 @@ const SingleDeposit = () => {
   };
   const handleCloseModal = () => setModalOpen(false);
 
+  // step logic
+  const handleSetStep = (crStep) => {
+    setStep(crStep);
+  };
+
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
       <h2 className="text-[22px] flex items-center font-bold ">
@@ -120,44 +148,29 @@ const SingleDeposit = () => {
         >
           <IoIosArrowBack />
         </button>
-        {formattedTitle}
+        {String(step).toLowerCase().includes("transfer")
+          ? "Enter the amount"
+          : formattedTitle}
       </h2>
 
-      <div
-        className="mt-5
-      "
-      >
-        <p htmlFor="" className="text-base text-left mb-2">
-          Select Promotion
-        </p>
-        <div
-          className="second-bg border border-[#1a1a1a] hover:border-yellow-400 hover:text-yellow-400 cursor-pointer transition px-5 py-4 pr-3 rounded-md text-[18px] font-semibold flex items-center w-full gap-2 justify-between"
-          onClick={handleOpenModal}
-        >
-          <span className="flex items-center gap-2">
-            <LuGift size={22} />
-            Promotions
-          </span>
-          <span className="flex items-center gap-3 text-[24px]">
-            <small className="text-yellow-400 text-[14px] font-medium">
-              {selectedPromotion?.title}
-            </small>
-            <IoIosArrowForward />
-          </span>
-        </div>
-        <div>
-          <p htmlFor="" className="text-base text-left mb-2 mt-4">
-            Select Payment
-          </p>
-          <div className="border border-yellow-400 overflow-hidden flex items-center justify-center flex-col rounded-md max-w-[200px] p-3 pt-4 relative">
-            <span className="absolute top-0 right-0 bg-yellow-400 rounded-bl-md px-2 text-black text-[14px] font-semibold">
-              100%
-            </span>
-            <img className="w-[30px]" src={bankCard} />
-            <p>Local Bank</p>
-          </div>
-        </div>
-      </div>
+      {step === stepDetails?.LOCAL_BANK ? (
+        <LocalBankInfo
+          handleOpenModal={handleOpenModal}
+          selectedPromotion={selectedPromotion}
+          stepDetails={stepDetails}
+          handleSetStep={handleSetStep}
+          setDepositOptions={setDepositOptions}
+          depositOptions={depositOptions}
+        />
+      ) : step === stepDetails?.LOCAL_BANK_TRANSFER ? (
+        <DepositTransfer
+          stepDetails={stepDetails}
+          setStep={setStep}
+          depositOptions={depositOptions}
+        />
+      ) : (
+        ""
+      )}
 
       <BaseModal
         open={modalOpen}
