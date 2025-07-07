@@ -4,8 +4,10 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BaseModal from "../components/Promotion/BaseModal";
 import { LuGift } from "react-icons/lu";
 import DepositPromotionSelect from "../components/InnerComponent/DepositPromotionSelect";
-import bankCard from "../assets/bank-card.png";
+
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
+import LocalBankInfo from "../components/InnerComponent/LocalBankInfo";
+import DepositTransfer from "../components/InnerComponent/DepositTransfer";
 
 const fakePromotions = {
   valid: [
@@ -85,15 +87,35 @@ const fakePromotions = {
   invalid: [],
 };
 
+const stepDetails = {
+  LOCAL_BANK: "local-bank",
+  E_WALLET: "e-wallet",
+  CRYPTO: "crypto",
+  INTERNATIONAL: "international",
+  LOCAL_BANK_TRANSFER: "local-bank-transfer",
+  E_WALLET_TRANSFER: "e-wallet-transfer",
+  CRYPTO_TRANSFER: "crypto-transfer",
+  INTERNATIONAL_TRANSFER: "international-transfer",
+};
+
 const SingleDeposit = () => {
+  const { depositId } = useParams();
+  const [step, setStep] = useState(
+    depositId === "local-bank" ? stepDetails?.LOCAL_BANK : 1
+  );
   const [selectedPromotion, setSelectedPromotion] = useState({
     id: 2,
     title: "৮০% রিলোড বোনাস",
     type: "এক্সক্লুসিভ অফার",
     time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
   });
+  const [depositOptions, setDepositOptions] = useState({
+    payment_type: "",
+    payment_channel: "",
+    deposit_channel: "",
+    transfer_type: "",
+  });
   const [modalOpen, setModalOpen] = useState(false);
-  const { depositId } = useParams();
   const navigate = useNavigate();
 
   const formatDepositId = (id) => {
@@ -112,6 +134,11 @@ const SingleDeposit = () => {
   };
   const handleCloseModal = () => setModalOpen(false);
 
+  // step logic
+  const handleSetStep = (crStep) => {
+    setStep(crStep);
+  };
+
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
       <h2 className="text-[22px] flex items-center font-bold ">
@@ -121,74 +148,29 @@ const SingleDeposit = () => {
         >
           <IoIosArrowBack />
         </button>
-        {formattedTitle}
+        {String(step).toLowerCase().includes("transfer")
+          ? "Enter the amount"
+          : formattedTitle}
       </h2>
 
-      <div
-        className="mt-5
-      "
-      >
-        <p htmlFor="" className="text-base text-left mb-2">
-          Select Promotion
-        </p>
-        <div
-          className="second-bg border border-[#1a1a1a] hover:border-yellow-400 hover:text-yellow-400 cursor-pointer transition px-5 py-4 pr-3 rounded-md text-[18px] font-semibold flex items-center w-full gap-2 justify-between"
-          onClick={handleOpenModal}
-        >
-          <span className="flex items-center gap-2">
-            <LuGift size={22} />
-            Promotions
-          </span>
-          <span className="flex items-center gap-3 text-[24px]">
-            <small className="text-yellow-400 text-[14px] font-medium">
-              {selectedPromotion?.title}
-            </small>
-            <IoIosArrowForward />
-          </span>
-        </div>
-        <div>
-          <p htmlFor="" className="text-base text-left mb-2 mt-4">
-            Select Payment
-          </p>
-          <div className="border group border-yellow-400 cursor-pointer overflow-hidden flex items-center justify-center flex-col rounded-md max-w-[200px] p-3 pt-4 relative">
-            <span className="absolute top-0 right-0 bg-yellow-400 rounded-bl-md px-2 text-black text-[14px] font-semibold">
-              100%
-            </span>
-            <img className="w-[30px]" src={bankCard} />
-            <p className="group-hover:text-yellow-400 font-medium">
-              Local Bank
-            </p>
-          </div>
-        </div>
-        <div>
-          <p htmlFor="" className="text-base text-left mb-2 mt-4">
-            Select Type
-          </p>
-          <div className="second-bg border border-yellow-400 hover:text-yellow-400 cursor-pointer transition px-5 py-4 pr-3 rounded-md text-[18px] font-semibold flex items-center w-full gap-2 justify-between">
-            <span className="flex items-center gap-2">Bank Transfer</span>
-            <span className="flex items-center gap-3 text-[24px] text-yellow-400">
-              <MdOutlineRadioButtonChecked />
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <p htmlFor="" className="text-base text-left mb-2 mt-4">
-            Deposit Channel
-          </p>
-          <select
-            className="border border-yellow-400 rounded px-3 py-2 second-bg font-medium outline-none"
-            name="status"
-            required
-          >
-            <option value="City Bank">City Bank</option>
-            <option value="Islami Bank">Islami Bank</option>
-          </select>
-        </div>
-
-        <div className="header-auth mt-5">
-          <button className="signup-btn w-full h-[45px]">Continue</button>
-        </div>
-      </div>
+      {step === stepDetails?.LOCAL_BANK ? (
+        <LocalBankInfo
+          handleOpenModal={handleOpenModal}
+          selectedPromotion={selectedPromotion}
+          stepDetails={stepDetails}
+          handleSetStep={handleSetStep}
+          setDepositOptions={setDepositOptions}
+          depositOptions={depositOptions}
+        />
+      ) : step === stepDetails?.LOCAL_BANK_TRANSFER ? (
+        <DepositTransfer
+          stepDetails={stepDetails}
+          setStep={setStep}
+          depositOptions={depositOptions}
+        />
+      ) : (
+        ""
+      )}
 
       <BaseModal
         open={modalOpen}
