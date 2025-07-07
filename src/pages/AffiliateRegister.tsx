@@ -209,17 +209,6 @@ const Register: React.FC = () => {
   return (
     <div className="register-page">
       <div className="register-wrap">
-        <div className="register-notice">
-          আপনার যদি সমস্যা হয় তবে যোগাযোগ করুন
-          <a
-            style={{ color: "red" }}
-            className="intercom_custom_launcher"
-            onClick={() => void 0}
-          >
-            অনলাইন কাস্টমার সার্ভিস
-          </a>
-        </div>
-
         {/* General Error Display */}
         {errors.general && (
           <div
@@ -240,12 +229,13 @@ const Register: React.FC = () => {
 
         <div className="register-content">
           <div className="left-register-info">
-            <ul className="register-tab register-tab-one">
-              <li className="active">
-                <a href="javascript:void(0);">সাইন আপ</a>
-              </li>
-            </ul>
-            <div className="general-register step-register">
+            <div className="header-auth  mb-5">
+              <p className="signup-btn w-full !py-2 pointer-events-none select-none !text-base !font-semibold !capitalize">
+                Register as an affiliate with just one click and connect with
+                us.
+              </p>
+            </div>
+            <div className="general-register step-register text-left">
               <form onSubmit={handleFormSubmit}>
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
