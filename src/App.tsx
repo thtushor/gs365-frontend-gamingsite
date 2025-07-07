@@ -24,9 +24,12 @@ import LoadingScreen from "./components/Loader/LoadingScreen";
 // import Register from "./pages/Register";
 import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
+import PromotionDetails from "./pages/PromotionDetails";
 import Reference from "./pages/Reference";
 import Register from "./pages/RegisterWithAPI";
 import AffiliateRegister from "./pages/AffiliateRegister";
+import DepositPage from "./pages/DepositPage";
+import SingleDeposit from "./pages/SingleDeposit";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,12 +51,14 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/deposit" element={<DepositPage />} />
+          <Route path="/demo-deposit" element={<Deposit />} />
+          <Route path="/deposit/:depositId" element={<SingleDeposit />} />
           <Route path="/register" element={<Register />} />
           <Route path="/affiliate-signup" element={<AffiliateRegister />} />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
-          <Route path="/promotions/:id" element={<PromotionPage />} />
+          <Route path="/promotions/:id" element={<PromotionDetails />} />
           <Route path="/referral" element={<Reference />} />
           <Route path="*" element={<HomePage />} />
         </Routes>

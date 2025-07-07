@@ -7,7 +7,7 @@ interface Promotion {
   image: string;
   title: string;
   description: string;
-  tag: string;
+  tag: string[];
   time: string;
   signupLink: string;
   detailsLink: string;
@@ -34,7 +34,7 @@ const PromotionList: React.FC<PromotionListProps> = ({ promotions }) => {
   return (
     <>
       <AnimatePresence>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {promotions.slice(0, visibleCount).map((promo, idx) => (
             <motion.div
               key={idx}
