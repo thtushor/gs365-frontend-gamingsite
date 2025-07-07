@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface BannerItem {
   id: string;
@@ -111,7 +112,7 @@ const BonusRow: React.FC<{ name: string; bonus: string; date: string }> = ({
   );
 };
 
-const Reference: React.FC = () => {
+const ReferralInfo: React.FC = () => {
   const bannerItems: BannerItem[] = [
     {
       id: "message-message-125716",
@@ -121,6 +122,10 @@ const Reference: React.FC = () => {
   ];
 
   const [activeTab, setActiveTab] = React.useState(0);
+
+  // states
+  const [pageActiveTab, setPageActiveTab] = useState("info");
+  const navigate = useNavigate();
 
   return (
     <div className="reference-page bg-[#181818] min-h-screen py-6">
@@ -132,6 +137,39 @@ const Reference: React.FC = () => {
             style={{ backgroundImage: `url(${bannerItems[0].imageUrl})` }}
           />
         </a>
+      </div>
+
+      <div className="referral-container max-w-6xl mx-auto">
+        <div className="border-b second-border mb-5">
+          <div className=" max-w-[320px]  flex">
+            <div
+              onClick={() => {
+                navigate("/profile/referral-info");
+                setPageActiveTab("info");
+              }}
+              className={`border-b-[3px] border-transparent ${
+                pageActiveTab === "info"
+                  ? "border-yellow-400 text-yellow-400"
+                  : ""
+              } hover:border-yellow-200 w-full cursor-pointer`}
+            >
+              <p className="font-semibold text-[18px]">Info</p>
+            </div>
+            <div
+              onClick={() => {
+                navigate("/profile/referral-details");
+                setPageActiveTab("details");
+              }}
+              className={`border-b-[3px] border-transparent ${
+                pageActiveTab === "details"
+                  ? "border-yellow-400 text-yellow-400"
+                  : ""
+              } hover:border-yellow-200 w-full cursor-pointer`}
+            >
+              <p className="font-semibold text-[18px]">Details</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Referral Program Section */}
@@ -313,4 +351,4 @@ const Reference: React.FC = () => {
   );
 };
 
-export default Reference;
+export default ReferralInfo;

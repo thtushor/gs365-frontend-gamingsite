@@ -25,11 +25,12 @@ import LoadingScreen from "./components/Loader/LoadingScreen";
 import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
 import PromotionDetails from "./pages/PromotionDetails";
-import Reference from "./pages/Reference";
 import Register from "./pages/RegisterWithAPI";
 import AffiliateRegister from "./pages/AffiliateRegister";
 import DepositPage from "./pages/DepositPage";
 import SingleDeposit from "./pages/SingleDeposit";
+import ReferralInfo from "./pages/ReferralInfo";
+import ReferralDetails from "./pages/ReferralDetails";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,7 +60,13 @@ const App: React.FC = () => {
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
           <Route path="/promotions/:id" element={<PromotionDetails />} />
-          <Route path="/referral" element={<Reference />} />
+          {/* profile */}
+          <Route path="/profile" element={<ReferralInfo />} />
+          <Route path="/profile/referral-info" element={<ReferralInfo />} />
+          <Route
+            path="/profile/referral-details"
+            element={<ReferralDetails />}
+          />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
