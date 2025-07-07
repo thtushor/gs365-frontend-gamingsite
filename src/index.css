@@ -53,6 +53,9 @@ button {
 .second-bg {
   background-color: #1a1a1a;
 }
+.second-border {
+  border-color: #222222;
+}
 button:hover {
   border-color: #646cff;
 }

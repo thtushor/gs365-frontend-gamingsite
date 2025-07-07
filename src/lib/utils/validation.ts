@@ -1,3 +1,5 @@
+import { isValidPhoneNumber } from "react-phone-number-input";
+
 // Validation types
 export interface ValidationError {
   field: string;
@@ -23,7 +25,7 @@ export const validateRegistrationForm = (data: {
   ageCheck: boolean;
 }): ValidationResult => {
   const errors: ValidationError[] = [];
-
+  console.log(data.phoneNumber);
   // Username validation
   if (!data.username.trim()) {
     errors.push({ field: "username", message: "ব্যবহারকারীর নাম প্রয়োজন" });
@@ -86,7 +88,7 @@ export const validateRegistrationForm = (data: {
   // Phone number validation
   if (!data.phoneNumber.trim()) {
     errors.push({ field: "phoneNumber", message: "ফোন নম্বর প্রয়োজন" });
-  } else if (!/^\d{10,11}$/.test(data.phoneNumber.replace(/\s/g, ""))) {
+  } else if (!isValidPhoneNumber(data.phoneNumber)) {
     errors.push({ field: "phoneNumber", message: "সঠিক ফোন নম্বর লিখুন" });
   }
 
@@ -168,9 +170,6 @@ export const transformAffiliateRegistrationData = (formData: {
   email: string;
   ageCheck: boolean;
 }) => {
-  // Combine calling code and phone number
-  const fullPhone = `${formData.callingCode}${formData.phoneNumber}`;
-
   // Map currency type to currency_id
   // const currencyIdMap: Record<string, number> = {
   //   "8": 1, // BDT
@@ -182,7 +181,7 @@ export const transformAffiliateRegistrationData = (formData: {
   return {
     username: formData.username.trim().toLowerCase(),
     fullname: formData.realName.trim(),
-    phone: fullPhone,
+    phone: formData.phoneNumber,
     email: formData.email.trim().toLowerCase(),
     password: formData.password,
     // currency: currencyIdMap[formData.currencyType] || 1,

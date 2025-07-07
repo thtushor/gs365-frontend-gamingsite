@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useRegister } from "../lib/api/hooks";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
 import {
   validateRegistrationForm,
   transformAffiliateRegistrationData,
@@ -14,8 +16,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
 import axios from "axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
@@ -35,9 +42,6 @@ const Register: React.FC = () => {
   console.log({ setCurrentStep });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // React Query hook for registration
-  const registerMutation = useRegister();
 
   const sliderSettings = {
     dots: true,
@@ -153,6 +157,7 @@ const Register: React.FC = () => {
     setErrors({});
 
     try {
+      setLoading(true);
       console.log(formData);
       // Transform form data to API format
       const apiData = transformAffiliateRegistrationData(formData);
@@ -169,6 +174,7 @@ const Register: React.FC = () => {
 
       // Success - user will be automatically logged in and redirected
       console.log("Registration successful:", response.data);
+      setLoading(false);
 
       // Show beautiful toast notification
       showToaster(
@@ -177,8 +183,9 @@ const Register: React.FC = () => {
       );
 
       // Redirect to home page or dashboard
-      window.location.href = "/";
+      navigate("/");
     } catch (error: unknown) {
+      setLoading(false);
       let errorMessage = "Registration failed. Please try again.";
 
       if (axios.isAxiosError(error)) {
@@ -206,20 +213,16 @@ const Register: React.FC = () => {
     return !errors[fieldName];
   };
 
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: phoneValue || "",
+    }));
+  }, [phoneValue]);
+
   return (
     <div className="register-page">
       <div className="register-wrap">
-        <div className="register-notice">
-          আপনার যদি সমস্যা হয় তবে যোগাযোগ করুন
-          <a
-            style={{ color: "red" }}
-            className="intercom_custom_launcher"
-            onClick={() => void 0}
-          >
-            অনলাইন কাস্টমার সার্ভিস
-          </a>
-        </div>
-
         {/* General Error Display */}
         {errors.general && (
           <div
@@ -240,12 +243,13 @@ const Register: React.FC = () => {
 
         <div className="register-content">
           <div className="left-register-info">
-            <ul className="register-tab register-tab-one">
-              <li className="active">
-                <a href="javascript:void(0);">সাইন আপ</a>
-              </li>
-            </ul>
-            <div className="general-register step-register">
+            <div className="header-auth  mb-5">
+              <p className="signup-btn w-full !py-2 pointer-events-none select-none !text-base !font-semibold !capitalize">
+                Register as an affiliate with just one click and connect with
+                us.
+              </p>
+            </div>
+            <div className="general-register step-register text-left">
               <form onSubmit={handleFormSubmit}>
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
@@ -286,7 +290,7 @@ const Register: React.FC = () => {
                           </p>
                         </div>
                       </li>
-                      <li className="">
+                      {/* <li className="">
                         <label htmlFor="phoneNumber">Phone Number</label>
                         <div className="phone-info ">
                           <div className="phone-area-code">
@@ -326,6 +330,59 @@ const Register: React.FC = () => {
                             required
                             value={formData.phoneNumber}
                             onChange={handleInputChange}
+                          />
+                        </div>
+                        {getFieldError("phoneNumber") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("phoneNumber")}
+                          </div>
+                        )}
+                      </li> */}
+
+                      <li className="">
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <div className="phone-info">
+                          <div className="phone-area-code">
+                            <div className="lang-select">
+                              <li className="flex items-center !mb-0">
+                                <img
+                                  src="https://img.b112j.com/images/web/flag/BD.png"
+                                  alt=""
+                                />
+                                <span>{phoneValue?.slice(0, 4) || "+880"}</span>
+                              </li>
+                            </div>
+                          </div>
+                          <PhoneInput
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            international
+                            defaultCountry="BD"
+                            value={phoneValue}
+                            onChange={(value) => {
+                              setPhoneValue(value);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phoneNumber: value || "",
+                              }));
+
+                              // Clear error on change
+                              if (errors["phoneNumber"]) {
+                                setErrors((prev) => ({
+                                  ...prev,
+                                  phoneNumber: "",
+                                }));
+                              }
+                            }}
+                            className="custom-phone-input"
+                            placeholder="Enter phone number"
                           />
                         </div>
                         {getFieldError("phoneNumber") && (
@@ -537,11 +594,9 @@ const Register: React.FC = () => {
                       type="submit"
                       id="registerButton"
                       className="btn-register-submit"
-                      disabled={registerMutation.isPending}
+                      disabled={loading}
                     >
-                      {registerMutation.isPending
-                        ? "Submitting..."
-                        : "Signup now"}
+                      {loading ? "Submitting..." : "Signup now"}
                     </button>
                   </div>
                 </div>

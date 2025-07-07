@@ -5,7 +5,7 @@ import DepositSubmit from "./DepositSubmit";
 import { toast } from "react-toastify";
 
 const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
-  console.log(depositOptions);
+  console.log(depositOptions, stepDetails);
   const [transferInfoValid, setTransferInfoValid] = useState(false);
   const availableBalance = { min: 30000, max: 50000 };
   const [amount, setAmount] = useState("");
@@ -28,10 +28,16 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
     }
   };
 
+  const isNextDisabled =
+    !amount ||
+    Number(amount) < availableBalance.min ||
+    Number(amount) > availableBalance.max;
+
   return (
     <div className="mt-5">
       {!transferInfoValid ? (
         <>
+          {/* Balance Info */}
           <p className="text-base text-left mb-2 font-medium">
             Available Balance{" "}
             <span className="text-yellow-400">
@@ -39,6 +45,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
             </span>
           </p>
 
+          {/* Amount Input */}
           <div
             className={`second-bg relative border ${
               error ? "border-red-500" : "border-yellow-400"
@@ -51,14 +58,14 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               onChange={handleChange}
               placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
             />
-
             {error && (
               <p className="text-white px-2 rounded-full pb-1 bg-red-500 absolute top-[-5px] left-[15px] text-xs font-medium">
-                {error || "Something wen't wrong"}
+                {error || "Something went wrong"}
               </p>
             )}
           </div>
 
+          {/* Payment Method */}
           <div>
             <p className="text-base text-left mb-2 mt-4 font-medium">
               Payment Method
@@ -78,7 +85,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                     {depositOptions?.payment_type?.title}
                   </h4>
                   <p className="text-gray-400 text-[14px] capitalize">
-                    {depositOptions?.transfer_type}
+                    {depositOptions?.transfer_type?.title}
                   </p>
                   <p className="text-gray-400 text-[14px] capitalize">
                     {depositOptions?.deposit_channel?.name}
@@ -86,7 +93,9 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                 </div>
               </div>
               <div className="flex gap-1">
-                <p className="text-yellow-400 font-medium">3%</p>
+                <p className="text-yellow-400 font-medium">
+                  {depositOptions?.payment_type?.bonus || "0%"}
+                </p>
                 <span className="text-[24px]">
                   <MdOutlineModeEdit />
                 </span>
@@ -116,17 +125,23 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               4. Attach the successful Slip.
               <br />
               5. Please make sure your bank account holder name should match
-              your registered name on your account to prevent from withdrawal
+              your registered name on your account to prevent withdrawal
               rejection.
             </p>
           </div>
 
+          {/* Next Button */}
           <div className="header-auth mt-5">
             <button
-              className="signup-btn w-full h-[45px]"
+              className={`w-full h-[45px] transition duration-300
+              ${
+                isNextDisabled
+                  ? "bg-gray-600 text-gray-300 pointer-events-none"
+                  : "bg-yellow-400 hover:bg-yellow-500 text-black"
+              }`}
+              disabled={isNextDisabled}
               onClick={() => {
                 const amountValue = Number(amount);
-
                 const isAmountValid =
                   amountValue >= availableBalance.min &&
                   amountValue <= availableBalance.max;
@@ -139,7 +154,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                 if (isAmountValid && hasValidOptions) {
                   setTransferInfoValid(true);
                 } else {
-                  setError("Something is wrong, check your payment details");
+                  toast.error("Something is wrong, check your payment details");
                 }
               }}
             >
@@ -148,7 +163,11 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           </div>
         </>
       ) : (
-        <DepositSubmit />
+        <DepositSubmit
+          depositOptions={depositOptions}
+          stepDetails={stepDetails}
+          setStep={setStep}
+        />
       )}
     </div>
   );

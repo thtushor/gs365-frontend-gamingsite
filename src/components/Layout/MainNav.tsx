@@ -7,6 +7,7 @@ import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
+import { useLocation } from "react-router-dom";
 
 // interface SubNavItem {
 //   name: string;
@@ -201,18 +202,18 @@ const SubnavCard = memo<{
       className="relative flex flex-col items-center rounded-xl mx-2 px-3 py-3 transition-all duration-300 group subnav-galaxy-card"
       style={{
         width: 200,
-        height: 280,
+        height: 200,
         flexShrink: 0,
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <div
-        className="relative w-32 h-32 mx-auto"
+        className="relative w-[100px] h-[100px] mx-auto"
         style={{ perspective: 1000, zIndex: 20 }}
       >
         <div
-          className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-full transition-all duration-300"
+          className="absolute left-1/2 top-1/2 w-[100px] h-[100px] object-contain rounded-full transition-all duration-300"
           style={{
             zIndex: 10,
             transform: `translate(-50%, -50%) rotateY(${
@@ -238,7 +239,7 @@ const SubnavCard = memo<{
               key={img}
               src={img}
               alt={title}
-              className="absolute left-1/2 top-1/2 w-32 h-32 object-contain rounded-xl transition-all duration-600"
+              className="absolute left-1/2 top-1/2 w-[100px] h-[100px] object-contain rounded-xl transition-all duration-600"
               style={{
                 zIndex: 10 + i,
                 transform: `
@@ -390,6 +391,7 @@ const SubnavSlider = memo(() => {
 });
 
 const MainNav: React.FC = () => {
+  const [activePage, setActivePage] = useState("/");
   const [openSubNav, setOpenSubNav] = useState<number | null>(null);
   const [subMenuAnimationState, setSubMenuAnimationState] = useState<
     "closed" | "opening" | "open" | "closing"
@@ -397,6 +399,7 @@ const MainNav: React.FC = () => {
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<number | null>(null);
   const openTimerRef = useRef<number | null>(null);
+  const location = useLocation();
 
   // Handle submenu state transitions
   useEffect(() => {
@@ -441,20 +444,36 @@ const MainNav: React.FC = () => {
     setOpenSubNav((prev) => (prev === index ? null : index));
   }, []);
 
+  useEffect(() => {
+    setActivePage(location?.pathname);
+  }, []);
+
+  console.log(activePage);
+
   return (
     <div className="main-nav relative" ref={navRef}>
       <ul className="nav-inner">
-        <li className="nav-item active">
+        <li className={`nav-item ${activePage === "/" ? "active" : ""}`}>
           <a href="/">
             <FaHome className="nav-icon" />
           </a>
         </li>
-        <li className="nav-item">
+
+        <li
+          className={`nav-item ${
+            activePage === "/page/guest/appDownload.jsp" ? "active" : ""
+          }`}
+        >
           <a href="/page/guest/appDownload.jsp" target="_blank">
             <FaMobileAlt className="nav-icon" />
           </a>
         </li>
-        <li className={`nav-item ${openSubNav === 0 ? "active" : ""}`}>
+
+        <li
+          className={`nav-item ${
+            openSubNav === 0 || activePage === "/sports" ? "active" : ""
+          }`}
+        >
           <a
             href="/sports"
             onClick={(e) => {
@@ -468,55 +487,72 @@ const MainNav: React.FC = () => {
             <FaChevronDown className="nav-dropdown-icon" />
           </a>
         </li>
-        <li className="nav-item">
+
+        <li
+          className={`nav-item ${
+            activePage === "/live-casino" ? "active" : ""
+          }`}
+        >
           <a href="/live-casino">
             <MdCasino className="nav-icon" />
             লাইভ ক্যাসিনো
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/casino" ? "active" : ""}`}>
           <a href="/casino">
             <MdCasino className="nav-icon" />
             ক্যাসিনো
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/slots" ? "active" : ""}`}>
           <a href="/slots">
             <RiGamepadFill className="nav-icon" />
             স্লট
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/games" ? "active" : ""}`}>
           <a href="/games">
             <RiGamepadFill className="nav-icon" />
             গেমস
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/poker" ? "active" : ""}`}>
           <a href="/poker">
             <GiPokerHand className="nav-icon" />
             পোকার
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/lottery" ? "active" : ""}`}>
           <a href="/lottery">
             <BsFillTrophyFill className="nav-icon" />
             লটারি
           </a>
         </li>
-        <li className="nav-item">
+
+        <li className={`nav-item ${activePage === "/vip" ? "active" : ""}`}>
           <a href="/vip">
             <RiVipDiamondFill className="nav-icon" />
             VIP
           </a>
         </li>
-        <li className="nav-item">
+
+        <li
+          className={`nav-item ${activePage === "/promotions" ? "active" : ""}`}
+        >
           <a href="/promotions">
             <MdLiveTv className="nav-icon" />
             প্রমোশন
           </a>
         </li>
-        <li className="nav-item">
+
+        <li
+          className={`nav-item ${activePage === "/referral/" ? "active" : ""}`}
+        >
           <a href="/referral/">রেফারেল</a>
         </li>
       </ul>

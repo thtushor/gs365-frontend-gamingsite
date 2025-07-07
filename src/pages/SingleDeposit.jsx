@@ -8,6 +8,10 @@ import DepositPromotionSelect from "../components/InnerComponent/DepositPromotio
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import LocalBankInfo from "../components/InnerComponent/LocalBankInfo";
 import DepositTransfer from "../components/InnerComponent/DepositTransfer";
+import bankCard from "../assets/bank-card.png";
+import bkash from "../assets/payment-type/bkash.png";
+import nagad from "../assets/payment-type/nagad.png";
+import rocket from "../assets/payment-type/rocket.png";
 
 const fakePromotions = {
   valid: [
@@ -98,6 +102,135 @@ const stepDetails = {
   INTERNATIONAL_TRANSFER: "international-transfer",
 };
 
+const localBankDetails = {
+  payment_types: [
+    {
+      bonus: "100%",
+      icon: bankCard,
+      title: "Local Bank",
+      transfer_type: [{ id: 1, title: "Bank Transfer" }],
+      deposit_channel: [
+        {
+          id: 1,
+          name: "City Bank PLC",
+        },
+        {
+          id: 2,
+          name: "Islami Bank PLC",
+        },
+        {
+          id: 3,
+          name: "Dutch Bangla Bank",
+        },
+      ],
+    },
+  ],
+};
+
+const eWalletDetails = {
+  payment_types: [
+    {
+      bonus: "3%",
+      icon: bkash,
+      title: "bKash",
+      transfer_type: [{ id: 1, title: "bKash Transfer" }],
+      deposit_channel: [
+        {
+          id: 1,
+          name: "SG Cashout",
+        },
+        {
+          id: 2,
+          name: "BK Cashout",
+        },
+        {
+          id: 3,
+          name: "Make Payment",
+        },
+        {
+          id: 4,
+          name: "Send Money",
+        },
+      ],
+    },
+    {
+      bonus: "3%",
+      icon: nagad,
+      title: "Nagad",
+      transfer_type: [{ id: 1, title: "Nagad Transfer" }],
+      deposit_channel: [
+        {
+          id: 1,
+          name: "SG Cashout",
+        },
+      ],
+    },
+    {
+      bonus: "3%",
+      icon: rocket,
+      title: "Rocket",
+      transfer_type: [{ id: 1, title: "Rocket Transfer" }],
+      deposit_channel: [
+        {
+          id: 1,
+          name: "BK Cashout",
+        },
+      ],
+    },
+  ],
+};
+
+const cryptoDetails = {
+  payment_types: [
+    {
+      bonus: "3%",
+      icon: bkash,
+      title: "USD TRC20",
+      deposit_channel: [
+        {
+          id: 1,
+          name: "SG Cashout",
+        },
+        {
+          id: 2,
+          name: "BK Cashout",
+        },
+        {
+          id: 3,
+          name: "Make Payment",
+        },
+        {
+          id: 4,
+          name: "Send Money",
+        },
+      ],
+      transfer_type: [{ id: 1, title: "TRC20" }],
+    },
+    {
+      bonus: "3%",
+      icon: nagad,
+      title: "Nagad",
+      deposit_channel: [
+        {
+          id: 1,
+          name: "SG Cashout",
+        },
+      ],
+    },
+    {
+      bonus: "3%",
+      icon: rocket,
+      title: "Rocket",
+      deposit_channel: [
+        {
+          id: 1,
+          name: "BK Cashout",
+        },
+      ],
+    },
+  ],
+};
+
 const SingleDeposit = () => {
   const { depositId } = useParams();
   const [step, setStep] = useState(
@@ -153,7 +286,13 @@ const SingleDeposit = () => {
           : formattedTitle}
       </h2>
 
-      {step === stepDetails?.LOCAL_BANK ? (
+      {step === stepDetails?.LOCAL_BANK_TRANSFER ? (
+        <DepositTransfer
+          stepDetails={stepDetails}
+          setStep={setStep}
+          depositOptions={depositOptions}
+        />
+      ) : (
         <LocalBankInfo
           handleOpenModal={handleOpenModal}
           selectedPromotion={selectedPromotion}
@@ -161,15 +300,14 @@ const SingleDeposit = () => {
           handleSetStep={handleSetStep}
           setDepositOptions={setDepositOptions}
           depositOptions={depositOptions}
+          gatewayInfo={
+            depositId === "local-bank"
+              ? localBankDetails
+              : depositId === "e-wallet"
+              ? eWalletDetails
+              : ""
+          }
         />
-      ) : step === stepDetails?.LOCAL_BANK_TRANSFER ? (
-        <DepositTransfer
-          stepDetails={stepDetails}
-          setStep={setStep}
-          depositOptions={depositOptions}
-        />
-      ) : (
-        ""
       )}
 
       <BaseModal
