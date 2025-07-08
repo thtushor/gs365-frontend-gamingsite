@@ -34,6 +34,7 @@ import ReferralDetails from "./pages/ReferralDetails";
 import CashRewardHistory from "./pages/CashRewardHistory";
 import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
+import PasswordChangePage from "./pages/PasswordChangePage";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,6 +71,10 @@ const App: React.FC = () => {
             element={<PersonalInformation />}
           />
           <Route path="/profile/login-security" element={<LoginSecurity />} />
+          <Route
+            path="/profile/login-security/change-password"
+            element={<PasswordChangePage />}
+          />
           <Route path="/profile/referral-info" element={<ReferralInfo />} />
           <Route
             path="/profile/referral-details"

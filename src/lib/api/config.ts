@@ -2,8 +2,8 @@
 export const API_CONFIG = {
   // Base URLs for different environments
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  // BASE_URL: "http://localhost:3000",
-  BASE_URL: "https://gs-server-svmt.onrender.com",
+  BASE_URL: "http://localhost:3000",
+  // BASE_URL: "https://gs-server-svmt.onrender.com",
 
   // API Version
   API_VERSION: "v1",

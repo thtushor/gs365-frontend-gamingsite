@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LuCopy } from "react-icons/lu";
 import formatDate from "../lib/utils/formatDate";
+import { LuBadgeCheck } from "react-icons/lu";
+import { CgCloseO } from "react-icons/cg";
+import handleCopy from "../lib/utils/handleCopy";
+import { IoIosArrowBack } from "react-icons/io";
 
 const PersonalInformation = () => {
   const [user, setUser] = useState(null);
@@ -73,14 +77,17 @@ const PersonalInformation = () => {
         </div>
 
         {/* Personal Info */}
-        <div className="col-span-full md:col-span-2 lg:col-span-4 text-left border light-border rounded-md p-5">
-          <h3 className="text-white text-[20px] font-semibold mb-5">
+        <div className="col-span-full md:col-span-2 lg:col-span-4 text-left border light-border rounded-md">
+          <h3 className="text-white text-[20px] font-bold p-4">
             Personal info
           </h3>
 
-          <div className="space-y-6">
+          <div className="">
             {/* Username */}
-            <div className="flex justify-between items-center">
+            <div
+              onClick={() => handleCopy(user?.username)}
+              className="flex justify-between items-center hover:bg-[#1a1a1a] cursor-pointer p-4"
+            >
               <p className="text-white text-[16px] font-medium">Username</p>
               <div className="text-right text-gray-300 flex items-center gap-2">
                 {user?.username || "Not Available"}
@@ -89,7 +96,10 @@ const PersonalInformation = () => {
             </div>
 
             {/* Full name */}
-            <div className="flex justify-between items-center">
+            <div
+              onClick={() => handleCopy(user?.fullname)}
+              className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4"
+            >
               <p className="text-white text-[16px] font-medium">
                 Full legal name
               </p>
@@ -100,23 +110,46 @@ const PersonalInformation = () => {
             </div>
 
             {/* Phone */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4">
               <p className="text-white text-[16px] font-medium">Phone</p>
-              <p className="text-right text-gray-300">
+              <p className="text-right text-gray-300 flex items-center gap-1">
                 {user?.phone || "Not Available"}
+                {user?.isVerified ? (
+                  <span className="text-green-500 text-[22px]">
+                    <LuBadgeCheck />
+                  </span>
+                ) : (
+                  <span className="text-red-500 text-[22px]">
+                    <CgCloseO />
+                  </span>
+                )}
+
+                {/* <span className="rotate-180 text-[25px] mr-[-6px] block">
+                  <IoIosArrowBack />
+                </span> */}
               </p>
             </div>
 
             {/* Email */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4">
               <p className="text-white text-[16px] font-medium">Email</p>
-              <p className="text-right text-gray-300">
+              <p className="text-right text-gray-300 flex items-center gap-1">
                 {user?.email || "Not Available"}
+
+                {user?.isVerified ? (
+                  <span className="text-green-500 text-[22px]">
+                    <LuBadgeCheck />
+                  </span>
+                ) : (
+                  <span className="text-red-500 text-[22px]">
+                    <CgCloseO />
+                  </span>
+                )}
               </p>
             </div>
 
             {/* Sign up date */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center p-4">
               <p className="text-white text-[16px] font-medium">Sign up date</p>
               <p className="text-right text-gray-300">
                 {user?.created_at
