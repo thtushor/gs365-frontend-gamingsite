@@ -32,6 +32,8 @@ import SingleDeposit from "./pages/SingleDeposit";
 import ReferralInfo from "./pages/ReferralInfo";
 import ReferralDetails from "./pages/ReferralDetails";
 import CashRewardHistory from "./pages/CashRewardHistory";
+import PersonalInformation from "./pages/PersonalInformation";
+import LoginSecurity from "./pages/LoginSecurity";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,8 +63,13 @@ const App: React.FC = () => {
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
           <Route path="/promotions/:id" element={<PromotionDetails />} />
+
           {/* profile */}
-          <Route path="/profile" element={<ReferralInfo />} />
+          <Route
+            path="/profile/personal-information"
+            element={<PersonalInformation />}
+          />
+          <Route path="/profile/login-security" element={<LoginSecurity />} />
           <Route path="/profile/referral-info" element={<ReferralInfo />} />
           <Route
             path="/profile/referral-details"
