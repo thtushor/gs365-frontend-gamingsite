@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BaseModal from "../components/Promotion/BaseModal";
+import ReferRules from "../components/InnerComponent/ReferRules";
 
 interface BannerItem {
   id: string;
@@ -32,38 +34,44 @@ const leaderboard = [
 ];
 
 const bonusList = [
-  { name: "**radul67**", bonus: "16.51", date: "2025/05/23 23:32:17" },
-  { name: "**hi4**", bonus: "29.27", date: "2025/05/23 23:34:08" },
-  { name: "*opal*", bonus: "21.43", date: "2025/05/23 23:34:11" },
-  { name: "**sel198**", bonus: "123.49", date: "2025/05/23 23:35:54" },
-  { name: "*ued*", bonus: "12.74", date: "2025/05/23 23:34:53" },
-  { name: "**lure**", bonus: "87.99", date: "2025/05/23 23:32:51" },
-  { name: "**mun1110**", bonus: "85.47", date: "2025/05/23 23:36:28" },
+  { name: "radul67", bonus: "16.51", date: "2025/05/23 23:32:17" },
+  { name: "hi4", bonus: "29.27", date: "2025/05/23 23:34:08" },
+  { name: "opal", bonus: "21.43", date: "2025/05/23 23:34:11" },
+  { name: "sel198", bonus: "123.49", date: "2025/05/23 23:35:54" },
+  { name: "ued", bonus: "12.74", date: "2025/05/23 23:34:53" },
+  { name: "lure", bonus: "87.99", date: "2025/05/23 23:32:51" },
+  { name: "mun1110", bonus: "85.47", date: "2025/05/23 23:36:28" },
 ];
 
 const commissionTabs = [
   {
-    label: "tab1",
+    label: "range1",
+    title: "Range 1",
+    turnover_range: "more than 100",
     levels: [
-      { level: "লেভেল ১", value: "0.1%" },
-      { level: "লেভেল ২", value: "0.05%" },
-      { level: "লেভেল ৩", value: "0.01%" },
+      { level: "Tier1", value: "0.1%" },
+      { level: "Tier2", value: "0.05%" },
+      { level: "Tier3", value: "0.01%" },
     ],
   },
   {
-    label: "tab2",
+    label: "range2",
+    title: "Range 2",
+    turnover_range: "more than 200,000",
     levels: [
-      { level: "লেভেল ১", value: "0.15%" },
-      { level: "লেভেল ২", value: "0.06%" },
-      { level: "লেভেল ৩", value: "0.02%" },
+      { level: "Tier1", value: "0.15%" },
+      { level: "Tier2", value: "0.06%" },
+      { level: "Tier3", value: "0.02%" },
     ],
   },
   {
-    label: "tab3",
+    label: "range3",
+    title: "Range 3",
+    turnover_range: "more than 500,000",
     levels: [
-      { level: "লেভেল ১", value: "0.2%" },
-      { level: "লেভেল ২", value: "0.07%" },
-      { level: "লেভেল ৩", value: "0.03%" },
+      { level: "Tier1", value: "0.2%" },
+      { level: "Tier2", value: "0.07%" },
+      { level: "Tier3", value: "0.03%" },
     ],
   },
 ];
@@ -125,10 +133,26 @@ const ReferralInfo: React.FC = () => {
 
   // states
   const [pageActiveTab, setPageActiveTab] = useState("info");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Baji Live",
+          text: "Check out this link!",
+          url: "https://bajilive.online/?refcode=ARURyR",
+        })
+        .then(() => console.log("Link shared successfully"))
+        .catch((error) => console.error("Error sharing", error));
+    } else {
+      alert("Share not supported on this browser.");
+    }
+  };
+
   return (
-    <div className="reference-page bg-[#181818] min-h-screen py-6">
+    <div className="reference-page bg-[#181818] rounded-md min-h-screen py-6">
       {/* Banner */}
       <div className="w-full mx-auto mb-6">
         <a href="#">
@@ -139,7 +163,7 @@ const ReferralInfo: React.FC = () => {
         </a>
       </div>
 
-      <div className="referral-container max-w-6xl mx-auto">
+      <div className="referral-container max-w-6xl mx-auto  px-5">
         <div className="border-b second-border mb-5">
           <div className=" max-w-[320px]  flex">
             <div
@@ -173,84 +197,36 @@ const ReferralInfo: React.FC = () => {
       </div>
 
       {/* Referral Program Section */}
-      <div className="referral-container max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#232323] p-6 rounded-lg">
+      <div className="referral-container max-w-6xl mx-auto grid grid-cols-1 pt-0 p-5 md:grid-cols-3 gap-6 rounded-lg">
         {/* Left: Steps & Info */}
-        <div className="md:col-span-2 flex flex-col gap-6">
-          {/* Steps */}
-          <div className="bg-[#232323] rounded-lg p-4">
-            <div className="text-white text-xl font-bold mb-4">
-              কিভাবে আরো প্রাইজ পাবেন?
+        <div className="col-span-full flex flex-col gap-6 ">
+          {/* Program Info */}
+          <div className="bg-[#232323] rounded-lg p-4 text-left p-5">
+            <div className="text-white text-xl font-bold mb-2">
+              How does our Referral Program work?
             </div>
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Step 1 */}
-              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
-                <img
-                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-1.png"
-                  alt="step1"
-                  className="w-16 h-16 mb-2"
-                />
-                <div className="text-yellow-400 text-2xl font-bold">১</div>
-                <div className="text-white font-semibold mt-2">
-                  ইনভিটেশন পাঠান
-                </div>
-                <div className="text-gray-300 text-sm">
-                  আপনার রেফারেল জার্নি শুরু করতে
-                </div>
-              </div>
-              {/* Step 2 */}
-              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
-                <img
-                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-2.png"
-                  alt="step2"
-                  className="w-16 h-16 mb-2"
-                />
-                <div className="text-yellow-400 text-2xl font-bold">২</div>
-                <div className="text-white font-semibold mt-2">
-                  ফ্রেন্ড রেজিস্ট্রেশন
-                </div>
-                <div className="text-gray-300 text-sm">বেট ধরার সাথে</div>
-              </div>
-              {/* Step 3 */}
-              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
-                <img
-                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-3.png"
-                  alt="step3"
-                  className="w-16 h-16 mb-2"
-                />
-                <div className="text-yellow-400 text-2xl font-bold">৩</div>
-                <div className="text-white font-semibold mt-2">
-                  প্রতিদিন আনলিমিটেড ক্যাশ উপার্জন শুরু করুন
-                </div>
-                <div className="text-gray-300 text-sm">কিছু না করেই।</div>
-              </div>
+            <div className="text-gray-300 mb-2">
+              You can earn cash rewards up to three referral tiers when you
+              refer your friends.
+              <br />
+              Invite your friends to join together and be entitled for lifetime
+              cash rewards each time your friends place a bet.
             </div>
-            <button className="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded transition">
-              এখনই রেকমেন্ড করুন
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="text-yellow-400 border-yellow-400"
+            >
+              Rules
             </button>
           </div>
 
-          {/* Program Info */}
-          <div className="bg-[#232323] rounded-lg p-4">
-            <div className="text-white text-xl font-bold mb-2">
-              রেফারেল প্রোগ্রাম কি?
-            </div>
-            <div className="text-gray-300 mb-2">
-              আপনার বন্ধুকে রেফার করে মোট তিনটি ধাপে ক্যাশ প্রাইজ উপভোগ করতে
-              পারেন, আপনার বন্ধুকে একসাথে খেলতে এখনই আমন্ত্রণ জানান!!!
-              <br />
-              এটি হবে আপনার দীর্ঘমেয়াদী ইনকাম, এবং যতবার তারা বেট ধরবে, ততবারই
-              আপনি আলাদা কমিশন এর পার্সেন্টেজ পাবেন।
-            </div>
-            <button className="text-yellow-400 underline">নিয়মাবলী</button>
-          </div>
-
           {/* Commission Rules */}
-          <div className="bg-[#232323] rounded-lg p-4">
+          <div className="bg-[#232323] rounded-lg p-5 text-left">
             <div className="text-white text-xl font-bold mb-2">
-              কমিশনের নিয়ম
+              Cash reward ratio
             </div>
             <div className="text-gray-300 mb-2">
-              Turnover Range : More Than 100
+              Turnover Range : {commissionTabs[activeTab]?.turnover_range || 0}
             </div>
             <div className="flex gap-2 mb-4">
               {commissionTabs.map((tab, idx) => (
@@ -263,7 +239,7 @@ const ReferralInfo: React.FC = () => {
                   }`}
                   onClick={() => setActiveTab(idx)}
                 >
-                  {tab.label}
+                  {tab.title}
                 </button>
               ))}
             </div>
@@ -277,18 +253,73 @@ const ReferralInfo: React.FC = () => {
                   <div className="text-yellow-400 text-2xl font-bold">
                     {level.value}
                   </div>
-                  <div className="text-gray-400 text-xs">(পর্যন্ত)</div>
                 </div>
               ))}
             </div>
           </div>
+          {/* Steps */}
+          <div className="bg-[#232323] rounded-lg p-5">
+            <div className="text-white text-xl font-bold mb-4">
+              How to earn more rewards?
+            </div>
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
+                <img
+                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-1.png"
+                  alt="step1"
+                  className="w-16 h-16 mb-2"
+                />
+                <div className="text-yellow-400 text-2xl font-bold">1</div>
+                <div className="text-white font-semibold mt-2">
+                  Send an invitation
+                </div>
+                <div className="text-gray-300 text-sm">
+                  to start your referral journey
+                </div>
+              </div>
+              {/* Step 2 */}
+              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
+                <img
+                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-2.png"
+                  alt="step2"
+                  className="w-16 h-16 mb-2"
+                />
+                <div className="text-yellow-400 text-2xl font-bold">2</div>
+                <div className="text-white font-semibold mt-2">
+                  Friend registration
+                </div>
+                <div className="text-gray-300 text-sm">with bets placed</div>
+              </div>
+              {/* Step 3 */}
+              <div className="flex flex-col items-center bg-[#181818] rounded-lg p-4 flex-1">
+                <img
+                  src="https://img.b112j.com/images/web/referral-program/referral-program-flowch-3.png"
+                  alt="step3"
+                  className="w-16 h-16 mb-2"
+                />
+                <div className="text-yellow-400 text-2xl font-bold">3</div>
+                <div className="text-white font-semibold mt-2">
+                  Start earning unlimited cash daily
+                </div>
+                <div className="text-gray-300 text-sm">
+                  without doing a thing.
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={handleShare}
+              className="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded transition"
+            >
+              Refer a friend now
+            </button>
+          </div>
         </div>
-
         {/* Right: Leaderboard */}
-        <div className="bg-[#232323] rounded-lg p-4 flex flex-col gap-4">
+        <div className="bg-[#232323] rounded-lg p-5 pb-6 flex flex-col md:flex-row gap-4 col-span-full">
           <div>
-            <div className="text-white text-xl font-bold mb-2">
-              বোনাস র‍্যাঙ্কিং
+            <div className="text-white text-xl text-left font-bold mb-10">
+              Referral leaderboard
             </div>
             <div className="flex justify-center gap-2 mb-4">
               {leaderboard.map((user, idx) => (
@@ -317,17 +348,17 @@ const ReferralInfo: React.FC = () => {
                     </div>
                   </div>
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded-full shadow">
-                    টপ {user.rank}
+                    TOP {user.rank}
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div>
-            <div className="text-white text-lg font-bold mb-2">
-              কে বোনাস পেয়েছে?
+          <div className=" w-full ">
+            <div className="text-white text-lg text-left font-bold mb-5">
+              Who received the bonus?
             </div>
-            <div className="w-full max-h-64 overflow-y-auto rounded shadow-inner">
+            <div className="w-full  max-h-64 overflow-y-auto lg:max-w-full md:max-w-[320px] rounded shadow-inner border border-gray-600">
               <div className="w-full min-w-[400px]">
                 <div className="flex font-semibold text-yellow-400 border-b border-gray-700 px-2 py-1">
                   <span className="w-1/3">নাম</span>
@@ -347,6 +378,11 @@ const ReferralInfo: React.FC = () => {
           </div>
         </div>
       </div>
+      <BaseModal
+        onClose={() => setIsModalOpen(false)}
+        open={isModalOpen}
+        children={<ReferRules />}
+      />
     </div>
   );
 };

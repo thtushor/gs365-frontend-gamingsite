@@ -31,6 +31,7 @@ import DepositPage from "./pages/DepositPage";
 import SingleDeposit from "./pages/SingleDeposit";
 import ReferralInfo from "./pages/ReferralInfo";
 import ReferralDetails from "./pages/ReferralDetails";
+import CashRewardHistory from "./pages/CashRewardHistory";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -67,6 +68,11 @@ const App: React.FC = () => {
             path="/profile/referral-details"
             element={<ReferralDetails />}
           />
+          <Route
+            path="/profile/referral-details/cash-reward-history"
+            element={<CashRewardHistory />}
+          />
+
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
