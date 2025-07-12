@@ -6,8 +6,11 @@ import { LuBadgeCheck } from "react-icons/lu";
 import { CgCloseO } from "react-icons/cg";
 import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
+import { useAuth } from "../contexts/AuthContext";
 
 const PersonalInformation = () => {
+  const { logout: handleContextLogout } = useAuth();
+
   const [user, setUser] = useState(null);
   console.log(user);
   const navigate = useNavigate();
@@ -46,6 +49,7 @@ const PersonalInformation = () => {
       } catch (error) {
         console.error("Error parsing user data:", error);
         // Clear invalid data
+        handleContextLogout();
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");

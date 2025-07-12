@@ -20,6 +20,7 @@ import { LuCopy } from "react-icons/lu";
 import { toast } from "react-toastify";
 import formatDate from "../../lib/utils/formatDate";
 import { IoIosArrowBack } from "react-icons/io";
+import { useAuth } from "../../contexts/AuthContext";
 // import SeoSection from "./SeoSection";
 
 const sponsorImages = [
@@ -41,13 +42,8 @@ const sliderSettings = {
 };
 
 const Header: React.FC = () => {
+  const { logout: handleContextLogout, user, setUser } = useAuth();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [user, setUser] = useState<{
-    username: string;
-    id: string;
-    fullname: string;
-    created_at: string;
-  } | null>(null);
   console.log(user);
   const navigate = useNavigate();
 
@@ -63,6 +59,8 @@ const Header: React.FC = () => {
       } catch (error) {
         console.error("Error parsing user data:", error);
         // Clear invalid data
+        handleContextLogout();
+        setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
@@ -114,12 +112,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     // Clear localStorage data
-    localStorage.removeItem("user");
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-
-    // Update component state
-    setUser(null);
+    handleContextLogout();
 
     // Show success message
     showToaster("Logged out successfully", "success");
