@@ -7,7 +7,7 @@ import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
 import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 // interface SubNavItem {
 //   name: string;
@@ -446,7 +446,7 @@ const MainNav: React.FC = () => {
 
   useEffect(() => {
     setActivePage(location?.pathname);
-  }, []);
+  }, [location]);
 
   console.log(activePage);
 
@@ -454,9 +454,9 @@ const MainNav: React.FC = () => {
     <div className="main-nav relative" ref={navRef}>
       <ul className="nav-inner">
         <li className={`nav-item ${activePage === "/" ? "active" : ""}`}>
-          <a href="/">
+          <Link to="/">
             <FaHome className="nav-icon" />
-          </a>
+          </Link>
         </li>
 
         <li
@@ -474,8 +474,8 @@ const MainNav: React.FC = () => {
             openSubNav === 0 || activePage === "/sports" ? "active" : ""
           }`}
         >
-          <a
-            href="/sports"
+          <Link
+            to="/sports"
             onClick={(e) => {
               e.preventDefault();
               handleNavToggle(0);
@@ -485,7 +485,7 @@ const MainNav: React.FC = () => {
             <MdSportsSoccer className="nav-icon" />
             স্পোর্ট
             <FaChevronDown className="nav-dropdown-icon" />
-          </a>
+          </Link>
         </li>
 
         <li
@@ -493,67 +493,67 @@ const MainNav: React.FC = () => {
             activePage === "/live-casino" ? "active" : ""
           }`}
         >
-          <a href="/live-casino">
+          <Link to="/live-casino">
             <MdCasino className="nav-icon" />
             লাইভ ক্যাসিনো
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/casino" ? "active" : ""}`}>
-          <a href="/casino">
+          <Link to="/casino">
             <MdCasino className="nav-icon" />
             ক্যাসিনো
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/slots" ? "active" : ""}`}>
-          <a href="/slots">
+          <Link to="/slots">
             <RiGamepadFill className="nav-icon" />
             স্লট
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/games" ? "active" : ""}`}>
-          <a href="/games">
+          <Link to="/games">
             <RiGamepadFill className="nav-icon" />
             গেমস
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/poker" ? "active" : ""}`}>
-          <a href="/poker">
+          <Link to="/poker">
             <GiPokerHand className="nav-icon" />
             পোকার
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/lottery" ? "active" : ""}`}>
-          <a href="/lottery">
+          <Link to="/lottery">
             <BsFillTrophyFill className="nav-icon" />
             লটারি
-          </a>
+          </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/vip" ? "active" : ""}`}>
-          <a href="/vip">
+          <Link to="/vip">
             <RiVipDiamondFill className="nav-icon" />
             VIP
-          </a>
+          </Link>
         </li>
 
         <li
           className={`nav-item ${activePage === "/promotions" ? "active" : ""}`}
         >
-          <a href="/promotions">
+          <Link to="/promotions">
             <MdLiveTv className="nav-icon" />
             প্রমোশন
-          </a>
+          </Link>
         </li>
 
         <li
-          className={`nav-item ${activePage === "/referral/" ? "active" : ""}`}
+          className={`nav-item ${activePage === "/referral-details" ? "active" : ""}`}
         >
-          <a href="/referral/">রেফারেল</a>
+          <Link to="/referral-details">রেফারেল</Link>
         </li>
       </ul>
 
