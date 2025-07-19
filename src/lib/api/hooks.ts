@@ -7,6 +7,29 @@ import {
 import { apiService } from "./services";
 import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
 import type { ApiResponse } from "./axios";
+import { useEffect, useState, useCallback } from "react";
+import { useAuth } from "./auth-context";
+
+/**
+ * Authentication Hooks
+ * 
+ * Usage:
+ * 
+ * // Wrap your app with AuthProvider
+ * <AuthProvider>
+ *   <App />
+ * </AuthProvider>
+ * 
+ * // In your component
+ * const { isAuthenticated, isLoading, user, login, logout } = useAuth();
+ * const { user: profileUser, isLoading: profileLoading } = useUserProfile();
+ * 
+ * // The useUserProfile hook will automatically:
+ * // - Only run when user is authenticated
+ * // - Log out user if profile fetch fails with 401/403
+ * // - Handle retries intelligently
+ * // - Provide user data in a clean format
+ */
 
 // Query Keys
 export const queryKeys = {
@@ -38,7 +61,7 @@ export const useLogin = () => {
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
     onSuccess: (response) => {
       // Store tokens
-      console.log({ response, data: response.data }, response);
+      
       localStorage.setItem(
         "access_token",
         (response as unknown as { accessToken: string }).accessToken
@@ -104,17 +127,54 @@ export const useResetPassword = () => {
   });
 };
 
-// User Hooks
+// Enhanced User Profile Hook with Authentication
 export const useUserProfile = (
   options?: UseQueryOptions<ApiResponse<UserProfile>>
 ) => {
-  return useQuery({
+  const { isAuthenticated, token, clearAuth, isInitialized } = useAuth();
+  const [hasAttemptedProfile, setHasAttemptedProfile] = useState(false);
+
+  const query = useQuery({
     queryKey: queryKeys.user.profile,
     queryFn: () => apiService.user.getProfile(),
-    enabled: !!localStorage.getItem("access_token"),
+    enabled: isAuthenticated && !!token && isInitialized,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: (failureCount, error: any) => {
+      // Don't retry if it's a 401/403 error (unauthorized/forbidden)
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+        return false;
+      }
+      return failureCount < 2;
+    },
     ...options,
   });
+
+  // Handle authentication errors
+  useEffect(() => {
+    if (query.isError && isAuthenticated && hasAttemptedProfile) {
+      const error = query.error as any;
+      
+      // Check if it's an authentication error
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+        console.warn("User profile not found or unauthorized, logging out...");
+        clearAuth();
+      }
+    }
+  }, [query.isError, query.error, isAuthenticated, hasAttemptedProfile, clearAuth]);
+
+  // Track if we've attempted to fetch profile
+  useEffect(() => {
+    if (query.isSuccess || query.isError) {
+      setHasAttemptedProfile(true);
+    }
+  }, [query.isSuccess, query.isError]);
+
+  return {
+    ...query,
+    user: query.data?.data || null,
+    isAuthenticated,
+    isInitialized,
+  };
 };
 
 export const useUpdateProfile = () => {
