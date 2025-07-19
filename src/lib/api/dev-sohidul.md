@@ -4,9 +4,9 @@
     - Transaction list. (Pending due to deposit and withdraw flow) - 2 days
 
 5. Payment method flow
-    - Method type - 2hrs
-    - Type - agent / personal - 1 hrs
-    - Add Payment provider - 2 hrs
+    - Method type - 1 days
+    - Type - agent / personal - 1 days
+    - Add Payment provider - 2 days
 
 2. Deposit
     - Manual deposit - 3-4 days
