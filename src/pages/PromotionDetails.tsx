@@ -1,7 +1,8 @@
 import { FaRegClock } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/auth-context";
+
 
 const PromotionDetails = () => {
   const { id: promotionId } = useParams();

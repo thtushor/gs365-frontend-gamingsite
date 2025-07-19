@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { apiService } from "./services";
-import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
+import { apiService } from "../lib/api/services";
+import type { RegisterRequest, LoginRequest, UserProfile } from "../lib/api/services";
+import { useLogin, useUserProfile } from "../lib/api/hooks";
 
 /**
  * Authentication Context Provider
@@ -35,6 +36,7 @@ interface AuthState {
 // Auth Context interface
 interface AuthContextType extends AuthState {
   isInitialized: boolean;
+  isPendingLogin:boolean;
   login: (data: LoginRequest) => Promise<any>;
   logout: () => Promise<void>;
   register: (data: RegisterRequest) => Promise<any>;
@@ -52,14 +54,27 @@ interface AuthProviderProps {
 
 // Auth Provider Component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: true,
     user: null,
     token: null,
   });
+
+  const {user,isLoading: isLoadingUserProfile}  = useUserProfile();
+
+  const loginMutation = useLogin();
+
   const [isInitialized, setIsInitialized] = useState(false);
+
   const queryClient = useQueryClient();
+
+
+
+  useEffect(()=>{
+    console.log({user})
+  },[user])
 
   // Get token from localStorage
   const getToken = useCallback(() => {
@@ -107,7 +122,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Login function
   const login = useCallback(async (data: LoginRequest) => {
     try {
-      const response = await apiService.auth.login(data);
+      const response =  await loginMutation.mutateAsync(data);
+      console.log({response})
       const accessToken = (response as unknown as { accessToken: string }).accessToken;
       
       setToken(accessToken);
@@ -119,8 +135,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }));
 
       // Store user data if available - handle the response structure properly
-      if (response.data) {
-        const userData = response.data as any;
+      if (response) {
+        const userData = response as any;
         // Check if the response has a nested data structure
         const actualUserData = userData.data || userData;
         
@@ -163,9 +179,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
+
+
   const contextValue: AuthContextType = {
     ...authState,
+    isLoading: isLoadingUserProfile||authState.isLoading,
     isInitialized,
+    isPendingLogin: loginMutation?.isPending,
     login,
     logout,
     register,

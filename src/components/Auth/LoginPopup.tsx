@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./LoginPopup.scss";
 import { useLogin } from "../../lib/api/hooks";
 import { showToaster } from "../../lib/utils/toast";
+import { useAuth } from "../../contexts/auth-context";
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // React Query hook for login
-  const loginMutation = useLogin();
+  const {login,isPendingLogin} = useAuth()
 
   if (!isOpen) return null;
 
@@ -86,7 +87,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
     try {
       // Call login API
-      await loginMutation.mutateAsync({
+      await login({
         userNameOrEmailorPhone: formData.userNameOrEmailorPhone,
         password: formData.password,
       });
@@ -231,9 +232,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                     id="loginButton"
                     className="btn-default-xs"
                     type="submit"
-                    disabled={loginMutation.isPending}
+                    disabled={isPendingLogin}
                   >
-                    {loginMutation.isPending
+                    {isPendingLogin
                       ? "লগইন হচ্ছে..."
                       : "এখনি লগইন করুন"}
                   </button>

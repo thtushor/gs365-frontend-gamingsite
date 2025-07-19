@@ -8,7 +8,7 @@ import { apiService } from "./services";
 import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
 import type { ApiResponse } from "./axios";
 import { useEffect, useState, useCallback } from "react";
-import { useAuth } from "./auth-context";
+import { useAuth } from "../../contexts/auth-context";
 
 /**
  * Authentication Hooks
@@ -56,7 +56,9 @@ interface RegisterResponseData {
 // Auth Hooks
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const { setUser } = useAuth();
+
+  // const { setUser } = useAuth();
+
 
   return useMutation({
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
@@ -74,8 +76,8 @@ export const useLogin = () => {
       );
 
       localStorage.setItem("user", JSON.stringify(response.data));
-      setUser(response?.data || null); // set user data in context api for handling the private route
 
+      // setUser(response.data)
       // Invalidate and refetch user profile
       queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });
     },
@@ -135,13 +137,12 @@ export const useResetPassword = () => {
 export const useUserProfile = (
   options?: UseQueryOptions<ApiResponse<UserProfile>>
 ) => {
-  const { isAuthenticated, token, clearAuth, isInitialized } = useAuth();
+
   const [hasAttemptedProfile, setHasAttemptedProfile] = useState(false);
 
   const query = useQuery({
     queryKey: queryKeys.user.profile,
     queryFn: () => apiService.user.getProfile(),
-    enabled: isAuthenticated && !!token && isInitialized,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: (failureCount, error: any) => {
       // Don't retry if it's a 401/403 error (unauthorized/forbidden)
@@ -153,31 +154,13 @@ export const useUserProfile = (
     ...options,
   });
 
-  // Handle authentication errors
-  useEffect(() => {
-    if (query.isError && isAuthenticated && hasAttemptedProfile) {
-      const error = query.error as any;
-      
-      // Check if it's an authentication error
-      if (error?.response?.status === 401 || error?.response?.status === 403) {
-        console.warn("User profile not found or unauthorized, logging out...");
-        clearAuth();
-      }
-    }
-  }, [query.isError, query.error, isAuthenticated, hasAttemptedProfile, clearAuth]);
 
-  // Track if we've attempted to fetch profile
-  useEffect(() => {
-    if (query.isSuccess || query.isError) {
-      setHasAttemptedProfile(true);
-    }
-  }, [query.isSuccess, query.isError]);
+  
 
+  
   return {
     ...query,
-    user: query.data?.data || null,
-    isAuthenticated,
-    isInitialized,
+    user: query.data?.data || null,  
   };
 };
 

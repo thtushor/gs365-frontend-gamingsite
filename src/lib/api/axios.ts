@@ -6,7 +6,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_CONFIG } from "./config";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/auth-context";
+
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {

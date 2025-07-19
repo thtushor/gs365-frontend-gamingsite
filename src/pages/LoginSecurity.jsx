@@ -6,7 +6,8 @@ import { LuBadgeCheck } from "react-icons/lu";
 import { CgCloseO } from "react-icons/cg";
 import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/auth-context";
+
 
 const LoginSecurity = () => {
   const { logout: handleContextLogout } = useAuth();

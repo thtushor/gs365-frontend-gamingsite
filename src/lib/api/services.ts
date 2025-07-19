@@ -32,16 +32,31 @@ export interface LoginResponse {
 }
 
 export interface UserProfile {
-  id: string;
+  id: number;
   username: string;
+  fullname: string;
+  phone: string;
   email: string;
-  realName: string;
-  phoneNumber: string;
-  currencyType: string;
-  avatar?: string;
-  balance: number;
-  createdAt: string;
-  updatedAt: string;
+  password: string;
+  currency_id: number;
+  refer_code: string;
+  created_by: number;
+  status: "active" | "inactive";
+  isAgreeWithTerms: boolean;
+  isLoggedIn: boolean;
+  isVerified: boolean;
+  lastIp: string;
+  lastLogin: string | null; // datetime as ISO string or null
+  device_type: string;
+  device_name: string;
+  os_version: string;
+  browser: string;
+  browser_version: string;
+  ip_address: string;
+  device_token: string;
+  referred_by: number | null;
+  referred_by_admin_user: number | null;
+  created_at: string; // datetime as ISO string
 }
 
 export interface Game {

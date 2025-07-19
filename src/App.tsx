@@ -36,6 +36,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import PrivateRoute from "./routes/PrivateRoute";
+import { AuthProvider } from "./contexts/auth-context";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,6 +49,7 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
+    
       <Layout>
         <Routes>
           {/* --------------------- */}
@@ -143,6 +145,7 @@ const App: React.FC = () => {
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
+      
     </BrowserRouter>
   );
 };

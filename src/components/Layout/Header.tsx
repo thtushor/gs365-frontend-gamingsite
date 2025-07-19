@@ -20,7 +20,8 @@ import { LuCopy } from "react-icons/lu";
 import { toast } from "react-toastify";
 import formatDate from "../../lib/utils/formatDate";
 import { IoIosArrowBack } from "react-icons/io";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/auth-context";
+
 // import SeoSection from "./SeoSection";
 
 const sponsorImages = [
@@ -42,61 +43,14 @@ const sliderSettings = {
 };
 
 const Header: React.FC = () => {
-  const { logout: handleContextLogout, user, setUser } = useAuth();
+  const { logout: handleContextLogout, user } = useAuth();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   console.log(user);
   const navigate = useNavigate();
 
-  // Check for user data in localStorage on component mount
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const accessToken = localStorage.getItem("access_token");
 
-    if (userData && accessToken) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
-        // Clear invalid data
-        handleContextLogout();
-        setUser(null);
-        localStorage.removeItem("user");
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-      }
-    }
-  }, []);
 
-  // Listen for storage changes (when user logs in/out in other components)
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const userData = localStorage.getItem("user");
-      const accessToken = localStorage.getItem("access_token");
 
-      if (userData && accessToken) {
-        try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-        } catch {
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    // Also listen for custom events
-    window.addEventListener("userLogin", handleStorageChange);
-    window.addEventListener("userLogout", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("userLogin", handleStorageChange);
-      window.removeEventListener("userLogout", handleStorageChange);
-    };
-  }, []);
 
   const handleLoginClick = () => {
     setIsLoginPopupOpen(true);
