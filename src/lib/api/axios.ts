@@ -6,6 +6,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_CONFIG } from "./config";
+import { useAuth } from "../../contexts/AuthContext";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -111,6 +112,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (error: AxiosError<ApiError>) => {
+    const { logout: handleContextLogout } = useAuth();
     const originalRequest = error.config as ExtendedAxiosRequestConfig & {
       _retry?: boolean;
     };
@@ -156,6 +158,7 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
         }
       } catch (refreshError) {
+        handleContextLogout();
         // Refresh token failed, redirect to login
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
