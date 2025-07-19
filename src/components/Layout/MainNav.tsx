@@ -549,11 +549,11 @@ const MainNav: React.FC = () => {
           </Link>
         </li>
 
-        <li
-          className={`nav-item ${activePage === "/referral-details" ? "active" : ""}`}
+        {/* <li
+          className={`nav-item ${activePage === "/profile/referral-details" ? "active" : ""}`}
         >
-          <Link to="/referral-details">রেফারেল</Link>
-        </li>
+          <Link to="/profile/referral-details">রেফারেল</Link>
+        </li> */}
       </ul>
 
       {/* Subnav with animation states */}
