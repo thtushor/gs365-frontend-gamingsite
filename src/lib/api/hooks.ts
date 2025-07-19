@@ -56,6 +56,7 @@ interface RegisterResponseData {
 // Auth Hooks
 export const useLogin = () => {
   const queryClient = useQueryClient();
+  const { setUser } = useAuth();
 
   return useMutation({
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
@@ -73,6 +74,7 @@ export const useLogin = () => {
       );
 
       localStorage.setItem("user", JSON.stringify(response.data));
+      setUser(response?.data || null); // set user data in context api for handling the private route
 
       // Invalidate and refetch user profile
       queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });
@@ -96,11 +98,13 @@ export const useRegister = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
+  const { logout: handleContextLogout } = useAuth();
 
   return useMutation({
     mutationFn: () => apiService.auth.logout(),
     onSuccess: () => {
       // Clear tokens
+      handleContextLogout();
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
 

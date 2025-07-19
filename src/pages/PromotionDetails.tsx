@@ -1,8 +1,11 @@
 import { FaRegClock } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const PromotionDetails = () => {
+  const { id: promotionId } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const promotionDetails = {
     id: "promo_003",
@@ -105,12 +108,21 @@ const PromotionDetails = () => {
       ></div>
 
       <div className="header-auth">
-        <button
-          className="signup-btn w-full h-[45px]"
-          onClick={() => handleRegisterClick()}
-        >
-          Signup
-        </button>
+        {user?.id ? (
+          <button
+            className="signup-btn w-full h-[45px]"
+            onClick={() => navigate(`/deposit?promotionId=${promotionId}`)}
+          >
+            Deposit now
+          </button>
+        ) : (
+          <button
+            className="signup-btn w-full h-[45px]"
+            onClick={() => handleRegisterClick()}
+          >
+            Signup
+          </button>
+        )}
       </div>
     </div>
   );

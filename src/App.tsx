@@ -35,56 +35,111 @@ import CashRewardHistory from "./pages/CashRewardHistory";
 import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
+import PrivateRoute from "./routes/PrivateRoute";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time for resources
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000); // Show loader for 2 seconds
-
+    const timer = setTimeout(() => setIsLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
+          {/* --------------------- */}
+          {/* Public Pages--------------------- */}
+          {/* --------------------- */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/deposit" element={<DepositPage />} />
           <Route path="/demo-deposit" element={<Deposit />} />
-          <Route path="/deposit/:depositId" element={<SingleDeposit />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/affiliate-signup" element={<AffiliateRegister />} />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
           <Route path="/promotions/:id" element={<PromotionDetails />} />
 
-          {/* profile */}
+          {/* --------------------- */}
+          {/* Private Pages--------------------- */}
+          {/* --------------------- */}
+          <Route
+            path="/register"
+            element={
+              <PrivateRoute>
+                <Register />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/deposit"
+            element={
+              <PrivateRoute>
+                <DepositPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/deposit/:depositId"
+            element={
+              <PrivateRoute>
+                <SingleDeposit />
+              </PrivateRoute>
+            }
+          />
+          {/* pages under user profile */}
           <Route
             path="/profile/personal-information"
-            element={<PersonalInformation />}
+            element={
+              <PrivateRoute>
+                <PersonalInformation />
+              </PrivateRoute>
+            }
           />
-          <Route path="/profile/login-security" element={<LoginSecurity />} />
+          <Route
+            path="/profile/login-security"
+            element={
+              <PrivateRoute>
+                <LoginSecurity />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/profile/login-security/change-password"
-            element={<PasswordChangePage />}
+            element={
+              <PrivateRoute>
+                <PasswordChangePage />
+              </PrivateRoute>
+            }
           />
-          <Route path="/profile/referral-info" element={<ReferralInfo />} />
+          <Route
+            path="/profile/referral-info"
+            element={
+              <PrivateRoute>
+                <ReferralInfo />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/profile/referral-details"
-            element={<ReferralDetails />}
+            element={
+              <PrivateRoute>
+                <ReferralDetails />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/profile/referral-details/cash-reward-history"
-            element={<CashRewardHistory />}
+            element={
+              <PrivateRoute>
+                <CashRewardHistory />
+              </PrivateRoute>
+            }
           />
 
+          {/* --------------------- */}
+          {/* Extra Pages--------------------- */}
+          {/* --------------------- */}
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
