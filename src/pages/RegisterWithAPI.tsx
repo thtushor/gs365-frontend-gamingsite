@@ -12,8 +12,12 @@ import "./Register.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
+import { useSearchParams } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const refCodeParam = searchParams.get("refcode") || "";
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
@@ -27,6 +31,7 @@ const Register: React.FC = () => {
     email: "",
     captchaInput: "",
     ageCheck: false,
+    refCode: refCodeParam,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -160,7 +165,10 @@ const Register: React.FC = () => {
 
     try {
       // Transform form data to API format
-      const apiData = transformRegistrationData(formData);
+      const apiData = {
+        ...transformRegistrationData(formData),
+        refCode: formData.refCode,
+      };
 
       // Call registration API
       const response = await registerMutation.mutateAsync(apiData);
@@ -262,6 +270,35 @@ const Register: React.FC = () => {
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
                     <ul>
+                      <li>
+                        <label htmlFor="refCode">Referral Code</label>
+                        <input
+                          id="refCode"
+                          name="refCode"
+                          type="text"
+                          value={formData.refCode}
+                          onChange={handleInputChange}
+                          placeholder="Referral code"
+                          readOnly={!!refCodeParam}
+                          style={{
+                            borderColor: isFieldValid("refCode")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                        />
+                        {getFieldError("refCode") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("refCode")}
+                          </div>
+                        )}
+                      </li>
                       <li>
                         <label htmlFor="username">ব্যবহারকারীর নাম</label>
                         <input
@@ -389,36 +426,7 @@ const Register: React.FC = () => {
                           </div>
                         )}
                       </li>
-                      <li>
-                        <label htmlFor="friendReferCode">Refer Code</label>
-                        <input
-                          type="text"
-                          id="friendReferCode"
-                          name="friendReferCode"
-                          value={formData.friendReferCode}
-                          onChange={handleInputChange}
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="আপনার যদি থাকে তবে প্রবেশ করুন"
-                          style={{
-                            borderColor: isFieldValid("friendReferCode")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                        />
-                        {getFieldError("friendReferCode") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
-                            {getFieldError("friendReferCode")}
-                          </div>
-                        )}
-                      </li>
+                   
                     </ul>
                     <div className="form-btn-box">
                       <button

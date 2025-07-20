@@ -26,7 +26,7 @@ const ReferralDetails = () => {
 
   // Get current URL and user's referral code
   const currentUrl = window.location.origin;
-  const userReferCode = user?.refer_code || "ARURyR"; // fallback to default if no user data
+  const userReferCode = user?.refer_code || "N/A"; // fallback to default if no user data
   const referralLink = `${currentUrl}/register?refcode=${userReferCode}`;
 
   // functionality

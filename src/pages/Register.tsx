@@ -3,8 +3,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Register.scss";
+import { useSearchParams } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const refCodeParam = searchParams.get("refcode") || "";
+
+  console.log({refCodeParam})
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
@@ -18,6 +24,7 @@ const Register: React.FC = () => {
     email: "",
     captchaInput: "",
     ageCheck: false,
+    refCode: refCodeParam,
   });
 
   const sliderSettings = {
@@ -73,7 +80,12 @@ const Register: React.FC = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    // Pass refCode as part of the API body
+    const apiBody = {
+      ...formData,
+      refCode: formData.refCode,
+    };
+    console.log("Form submitted:", apiBody);
   };
 
   const nextStep = () => {
@@ -110,6 +122,18 @@ const Register: React.FC = () => {
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
                     <ul>
+                      <li>
+                        <label htmlFor="refCode">Referral Code</label>
+                        <input
+                          id="refCode"
+                          name="refCode"
+                          type="text"
+                          value={formData?.refCode}
+                          onChange={handleInputChange}
+                          placeholder="Referral code"
+                          readOnly={!!refCodeParam}
+                        />
+                      </li>
                       <li>
                         <label htmlFor="username">ব্যবহারকারীর নাম</label>
                         <input
@@ -168,19 +192,6 @@ const Register: React.FC = () => {
                           <option value="24">NPR</option>
                           <option value="17">PKR</option>
                         </select>
-                      </li>
-                      <li>
-                        <label htmlFor="friendReferCode">Refer Code</label>
-                        <input
-                          type="text"
-                          id="friendReferCode"
-                          name="friendReferCode"
-                          value={formData.friendReferCode}
-                          onChange={handleInputChange}
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="আপনার যদি থাকে তবে প্রবেশ করুন"
-                        />
                       </li>
                     </ul>
                     <div className="form-btn-box">
