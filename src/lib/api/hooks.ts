@@ -138,19 +138,22 @@ export const  useUserProfile = (
   options?: UseQueryOptions<ApiResponse<UserProfile>>
 ) => {
 
-  const [hasAttemptedProfile, setHasAttemptedProfile] = useState(false);
+  const getToken = useCallback(() => {
+    return localStorage.getItem("access_token");
+  }, []);
 
   const query = useQuery({
     queryKey: queryKeys.user.profile,
     queryFn: () => apiService.user.getProfile(),
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: (failureCount, error: any) => {
-      // Don't retry if it's a 401/403 error (unauthorized/forbidden)
-      if (error?.response?.status === 401 || error?.response?.status === 403) {
-        return false;
-      }
-      return failureCount < 2;
-    },
+    enabled: Boolean(getToken()),
+    // retry: (failureCount, error: any) => {
+    //   // Don't retry if it's a 401/403 error (unauthorized/forbidden)
+    //   if (error?.response?.status === 401 || error?.response?.status === 403) {
+    //     return false;
+    //   }
+    //   return failureCount < 2;
+    // },
     ...options,
   });
 

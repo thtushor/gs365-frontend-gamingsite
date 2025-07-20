@@ -16,10 +16,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
 import axios from "axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const refCodeParam = searchParams.get("refCode");
   const [loading, setLoading] = useState(false);
   const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
 
@@ -37,9 +39,10 @@ const Register: React.FC = () => {
     captchaInput: "",
     ageCheck: true,
     role: "superAffiliate",
+    refCode: refCodeParam,
   });
 
-  console.log({ setCurrentStep });
+  console.log({ refCodeParam });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -160,7 +163,10 @@ const Register: React.FC = () => {
       setLoading(true);
       console.log(formData);
       // Transform form data to API format
-      const apiData = transformAffiliateRegistrationData(formData);
+      const apiData = {
+        ...transformAffiliateRegistrationData(formData),
+        refer_code: formData.refCode,
+      };
 
       // Call registration API
       // const response = await registerMutation.mutateAsync(apiData);
@@ -254,6 +260,35 @@ const Register: React.FC = () => {
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
                     <ul>
+                      <li>
+                        <label htmlFor="refCode">Referral Code</label>
+                        <input
+                          id="refCode"
+                          name="refCode"
+                          type="text"
+                          value={formData.refCode||""}
+                          onChange={handleInputChange}
+                          placeholder="Referral code"
+                          readOnly={!!refCodeParam}
+                          style={{
+                            borderColor: isFieldValid("refCode")
+                              ? undefined
+                              : "#ff0000",
+                          }}
+                        />
+                        {getFieldError("refCode") && (
+                          <div
+                            className="field-error"
+                            style={{
+                              color: "#ff0000",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {getFieldError("refCode")}
+                          </div>
+                        )}
+                      </li>
                       <li>
                         <label htmlFor="realName">Full Name</label>
                         <input
@@ -554,36 +589,7 @@ const Register: React.FC = () => {
                           </div>
                         )}
                       </li>
-                      <li>
-                        <label htmlFor="friendReferCode">Refer Code</label>
-                        <input
-                          type="text"
-                          id="friendReferCode"
-                          name="friendReferCode"
-                          value={formData.friendReferCode}
-                          onChange={handleInputChange}
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="Enter your referral code if available"
-                          style={{
-                            borderColor: isFieldValid("friendReferCode")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                        />
-                        {getFieldError("friendReferCode") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
-                            {getFieldError("friendReferCode")}
-                          </div>
-                        )}
-                      </li>
+                   
                     </ul>
                   </div>
                 )}

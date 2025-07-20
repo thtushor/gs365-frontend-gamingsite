@@ -48,8 +48,7 @@ const Register: React.FC = () => {
     },
     {
       id: 2,
-      image:
-        "https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
+      image:"https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
       title: "Exclusive Bonuses",
       description: "Get amazing welcome bonuses on registration",
     },
@@ -83,9 +82,9 @@ const Register: React.FC = () => {
     // Pass refCode as part of the API body
     const apiBody = {
       ...formData,
-      refCode: formData.refCode,
+      refer_code: formData.refCode,
     };
-    console.log("Form submitted:", apiBody);
+    
   };
 
   const nextStep = () => {

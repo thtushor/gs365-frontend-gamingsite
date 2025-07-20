@@ -68,10 +68,8 @@ const App: React.FC = () => {
           <Route
             path="/register"
             element={
-              <PrivateRoute>
                 <Register />
-              </PrivateRoute>
-            }
+                     }
           />
           <Route
             path="/deposit"

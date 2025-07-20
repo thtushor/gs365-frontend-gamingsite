@@ -167,7 +167,7 @@ const Register: React.FC = () => {
       // Transform form data to API format
       const apiData = {
         ...transformRegistrationData(formData),
-        refCode: formData.refCode,
+        refer_code: formData.refCode,
       };
 
       // Call registration API
