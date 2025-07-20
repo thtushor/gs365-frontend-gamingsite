@@ -134,7 +134,7 @@ export const useResetPassword = () => {
 };
 
 // Enhanced User Profile Hook with Authentication
-export const useUserProfile = (
+export const  useUserProfile = (
   options?: UseQueryOptions<ApiResponse<UserProfile>>
 ) => {
 
@@ -160,7 +160,7 @@ export const useUserProfile = (
   
   return {
     ...query,
-    user: query.data?.data || null,  
+    user: (query?.data?.data as unknown) as UserProfile 
   };
 };
 

@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     token: null,
   });
 
-  const {user,isLoading: isLoadingUserProfile}  = useUserProfile();
+  const {user,isLoading: isLoadingUserProfile,isSuccess,error}  = useUserProfile();
 
   const loginMutation = useLogin();
 
@@ -70,11 +70,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const queryClient = useQueryClient();
 
-
-
   useEffect(()=>{
-    console.log({user})
-  },[user])
+
+    if(error){
+      clearAuth()
+      return;
+    }
+        if(user?.id){
+      setAuthState((prev)=>({
+        ...prev,
+        user: user
+      }))
+    }
+    
+  },[user,error])
 
   // Get token from localStorage
   const getToken = useCallback(() => {
@@ -123,7 +132,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = useCallback(async (data: LoginRequest) => {
     try {
       const response =  await loginMutation.mutateAsync(data);
-      console.log({response})
+      
       const accessToken = (response as unknown as { accessToken: string }).accessToken;
       
       setToken(accessToken);

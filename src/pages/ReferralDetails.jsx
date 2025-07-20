@@ -6,8 +6,11 @@ import { toast } from "react-toastify";
 import { BsInfoCircle } from "react-icons/bs";
 import BaseModal from "../components/Promotion/BaseModal";
 import ActiveDownlines from "../components/InnerComponent/ActiveDownlines";
+import { useAuth } from "../contexts/auth-context";
+
 
 const ReferralDetails = () => {
+  const { user } = useAuth();
   const bannerItems = [
     {
       id: "message-message-125716",
@@ -21,18 +24,24 @@ const ReferralDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Get current URL and user's referral code
+  const currentUrl = window.location.origin;
+  const userReferCode = user?.refer_code || "ARURyR"; // fallback to default if no user data
+  const referralLink = `${currentUrl}/register?refcode=${userReferCode}`;
+
   // functionality
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
     toast.success("Referral Code is Copied!");
   };
+  
   const handleShare = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: "Baji Live",
+          title: "Gamestar 365",
           text: "Check out this link!",
-          url: "https://bajilive.online/?refcode=ARURyR",
+          url: referralLink,
         })
         .then(() => console.log("Link shared successfully"))
         .catch((error) => console.error("Error sharing", error));
@@ -94,7 +103,7 @@ const ReferralDetails = () => {
               <QRCode
                 size={300}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={"hel"}
+                value={referralLink}
                 viewBox={`0 0 300 300`}
               />
             </div>
@@ -104,10 +113,10 @@ const ReferralDetails = () => {
               </p>
               <div
                 className="flex items-end text-yellow-400 gap-2 cursor-pointer"
-                onClick={() => handleCopy("ARURyR")}
+                onClick={() => handleCopy(userReferCode)}
               >
                 <p className="text-[22px]  font-bold clear-start mb-[-3px]">
-                  ARURyR
+                  {userReferCode}
                 </p>
                 <LuCopy size={22} />
               </div>
@@ -115,11 +124,7 @@ const ReferralDetails = () => {
           </div>
           <div className="flex items-center justify-between gap-4 w-full max-w-[700px]">
             <button
-              onClick={() =>
-                handleCopy(
-                  `${import.meta.env.VITE_WEB_URL}/register/?refcode=ARURyR`
-                )
-              }
+              onClick={() => handleCopy(referralLink)}
               className="border border-yellow-400 w-full py-4 text-xl font-medium"
             >
               Copy Link
