@@ -15,6 +15,7 @@ export const API_LIST = {
   GET_RESPONSIBLE_GAMINGS: "/api/public/responsible-gamings",
   GET_ACTIVE_UTILS: "/api/public/active-utils",
   GET_ACTIVE_POPUP: "/api/public/popup",
+  GET_ACTIVE_ADVERTISEMENT: "/api/public/advertisement",
 };
 
 // --- Reusable POST Request Hook ---
