@@ -25,7 +25,7 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -266,7 +266,7 @@ const Register: React.FC = () => {
                           id="refCode"
                           name="refCode"
                           type="text"
-                          value={formData.refCode||""}
+                          value={formData.refCode || ""}
                           onChange={handleInputChange}
                           placeholder="Referral code"
                           readOnly={!!refCodeParam}
@@ -589,7 +589,6 @@ const Register: React.FC = () => {
                           </div>
                         )}
                       </li>
-                   
                     </ul>
                   </div>
                 )}
