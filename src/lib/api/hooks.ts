@@ -12,18 +12,18 @@ import { useAuth } from "../../contexts/auth-context";
 
 /**
  * Authentication Hooks
- * 
+ *
  * Usage:
- * 
+ *
  * // Wrap your app with AuthProvider
  * <AuthProvider>
  *   <App />
  * </AuthProvider>
- * 
+ *
  * // In your component
  * const { isAuthenticated, isLoading, user, login, logout } = useAuth();
  * const { user: profileUser, isLoading: profileLoading } = useUserProfile();
- * 
+ *
  * // The useUserProfile hook will automatically:
  * // - Only run when user is authenticated
  * // - Log out user if profile fetch fails with 401/403
@@ -59,12 +59,11 @@ export const useLogin = () => {
 
   // const { setUser } = useAuth();
 
-
   return useMutation({
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
     onSuccess: (response) => {
       // Store tokens
-      
+
       localStorage.setItem(
         "access_token",
         (response as unknown as { accessToken: string }).accessToken
@@ -137,7 +136,6 @@ export const useResetPassword = () => {
 export const useUserProfile = (
   options?: UseQueryOptions<ApiResponse<UserProfile>>
 ) => {
-
   const [hasAttemptedProfile, setHasAttemptedProfile] = useState(false);
 
   const query = useQuery({
@@ -154,13 +152,9 @@ export const useUserProfile = (
     ...options,
   });
 
-
-  
-
-  
   return {
     ...query,
-    user: query.data?.data || null,  
+    user: query.data?.data || null,
   };
 };
 

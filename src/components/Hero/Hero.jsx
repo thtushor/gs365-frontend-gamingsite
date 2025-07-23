@@ -16,6 +16,8 @@ import banner1 from "../../assets/Banner/b-1.png";
 import banner2 from "../../assets/Banner/b-2.png";
 import banner3 from "../../assets/Banner/b-3.png";
 import banner4 from "../../assets/Banner/b-4.png";
+import { useQuery } from "@tanstack/react-query";
+import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 
 const heroSlides = [
   {
@@ -36,7 +38,19 @@ const heroSlides = [
   },
 ];
 
-export const Hero: React.FC = () => {
+export const Hero = () => {
+  const getRequest = useGetRequest();
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["advertisements"],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_HERO_BANNERS,
+        errorMessage: "Failed to fetch advertisement list",
+      }),
+    keepPreviousData: true,
+  });
+
+  console.log(data);
   return (
     <div className="hero-section !mt-[70px] lg:!mt-[100px]">
       <Swiper

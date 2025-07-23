@@ -1,8 +1,8 @@
 import React from "react";
 import GameGrid from "../components/GameGrid";
 import Header from "../components/Layout/Header";
-import Sponsors from "../components/Sponsors";
 import "./GameDemo.scss";
+import Sponsors from "../components/Sponsors";
 
 const GameDemo: React.FC = () => {
   return (

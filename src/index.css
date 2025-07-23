@@ -77,6 +77,15 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+.slide-item {
+  width: 100%;
+  height: 400px !important;
+  overflow: hidden;
+}
+.slide-item img {
+  width: 100%;
+  height: 400px !important;
+}
 
 /* @media (prefers-color-scheme: light) {
   :root {
@@ -90,3 +99,61 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+body {
+  background: #000;
+}
+.shimmer_title {
+  width: 40%;
+}
+.shimmer_link {
+  width: 60%;
+}
+.shimmer_description {
+  width: 70%;
+}
+.shimmer {
+  padding: 10px 10px;
+  width: 100%;
+  border-radius: 5px;
+  background: #141414;
+  padding-top: 1px;
+}
+.shimmer .shimmer_image-card {
+  height: 37px;
+  width: 37px;
+  float: left;
+  border-radius: 5px;
+  margin-top: 7px;
+}
+.shimmer_stroke {
+  height: 6px;
+  background: #323232;
+  margin-top: 8px;
+  border-radius: 10px;
+  float: right;
+}
+
+.shimmer_wrapper {
+  width: 0px;
+  animation: fullView 0.5s forwards linear;
+}
+
+@keyframes fullView {
+  100% {
+    width: 100%;
+  }
+}
+.shimmer_animate {
+  animation: shimmer 3s;
+  animation-iteration-count: infinite;
+  background: linear-gradient(to right, #595959 5%, #ccccccbf 25%, #595959 35%);
+  background-size: 1000px 100%;
+}
+@keyframes shimmer {
+  from {
+    background-position: -1000px 0;
+  }
+  to {
+    background-position: 1000px 0;
+  }
+}

@@ -1,31 +1,29 @@
 import React, { useState } from "react";
 // import { GameSlider } from "../components/GameSlider/GameSlider";
 // import { FilterableGames } from "../components/FilterableGames/FilterableGames";
-import { NoticeBoard } from "../components/Notice/NoticeBoard";
 // import { FAQ } from "../components/FAQ/FAQ";
 import {
   // crashGames,
   // gamesData,
   // liveGames,
   // newGames,
-  notices,
   seoContent,
   seoTitle,
   // popularGames,
   // slotGames,
 } from "../lib/mock";
-import { HeroV2 } from "../components/Hero/HeroV2";
 // import { ProviderGames } from "../components/ProviderGames/ProviderGames";
 // import { providerGames } from "../lib/mockProviderGames";
 import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
 import GameGrid from "../components/GameGrid";
-import Sponsors from "../components/Sponsors";
 import SeoSection from "../components/Layout/SeoSection";
 import DraggableContainer from "../components/DraggableContainer/DraggableContainer";
 import SupportUs from "../components/SupportUs/SupportUs";
 import FloatingContact from "../components/FloatingContact/FloatingContact";
-// import { NoticeBoardCard } from "../components/Notice/NoticeBoardCard";
+import { HeroV2 } from "../components/Hero/HeroV2";
+import { NoticeBoard } from "../components/Notice/NoticeBoard";
+import Sponsors from "../components/Sponsors";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -50,12 +48,11 @@ const HomePage: React.FC = () => {
       <HeroV2 />
 
       <div className="notice-section">
-        <NoticeBoard notices={notices} />
+        <NoticeBoard />
       </div>
 
       <FilterContainer onFilter={handleFilterChange} onSearch={handleSearch} />
 
-      {/* <NoticeBoardCard players={players} /> */}
       {/* <FilterableGames games={gamesData} /> */}
       <GameTypes />
       {/* <ProviderGames games={providerGames} /> */}

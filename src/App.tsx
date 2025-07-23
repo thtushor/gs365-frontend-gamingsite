@@ -17,7 +17,6 @@ import { Deposit } from "./pages/Deposit";
 import HomePage from "./pages/HomePage";
 // import { TopBar } from "./components/Navbar/Topbar";
 // import { Navbar } from "./components/Navbar/Navbar";
-import Layout from "./components/Layout/Layout";
 import "./components/Layout/Layout.scss";
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./components/Loader/LoadingScreen";
@@ -36,7 +35,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import PrivateRoute from "./routes/PrivateRoute";
-import { AuthProvider } from "./contexts/auth-context";
+import Layout from "./components/Layout/Layout";
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +48,6 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-    
       <Layout>
         <Routes>
           {/* --------------------- */}
@@ -145,7 +143,6 @@ const App: React.FC = () => {
           <Route path="*" element={<HomePage />} />
         </Routes>
       </Layout>
-      
     </BrowserRouter>
   );
 };
