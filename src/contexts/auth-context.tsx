@@ -1,16 +1,29 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiService } from "../lib/api/services";
-import type { RegisterRequest, LoginRequest, UserProfile } from "../lib/api/services";
+import type {
+  RegisterRequest,
+  LoginRequest,
+  UserProfile,
+} from "../lib/api/services";
 import { useLogin, useUserProfile } from "../lib/api/hooks";
 
 /**
  * Authentication Context Provider
- * 
+ *
  * Usage in your App.tsx or main component:
- * 
+ *
  * import { AuthProvider } from './lib/api/auth-context';
- * 
+ *
  * function App() {
  *   return (
  *     <QueryClientProvider client={queryClient}>
@@ -20,7 +33,7 @@ import { useLogin, useUserProfile } from "../lib/api/hooks";
  *     </QueryClientProvider>
  *   );
  * }
- * 
+ *
  * Then in any component:
  * const { isAuthenticated, user, login, logout } = useAuth();
  */
@@ -36,7 +49,7 @@ interface AuthState {
 // Auth Context interface
 interface AuthContextType extends AuthState {
   isInitialized: boolean;
-  isPendingLogin:boolean;
+  isPendingLogin: boolean;
   login: (data: LoginRequest) => Promise<any>;
   logout: () => Promise<void>;
   register: (data: RegisterRequest) => Promise<any>;
@@ -54,7 +67,6 @@ interface AuthProviderProps {
 
 // Auth Provider Component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: true,
@@ -62,7 +74,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     token: null,
   });
 
-  const {user,isLoading: isLoadingUserProfile,isSuccess,error}  = useUserProfile();
+  const { user, isLoading: isLoadingUserProfile, error } = useUserProfile();
 
   const loginMutation = useLogin();
 
@@ -70,20 +82,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const queryClient = useQueryClient();
 
-  useEffect(()=>{
-
-    if(error){
-      clearAuth()
+  useEffect(() => {
+    if (error) {
+      clearAuth();
       return;
     }
-        if(user?.id){
-      setAuthState((prev)=>({
+    if (user?.id) {
+      setAuthState((prev) => ({
         ...prev,
-        user: user
-      }))
+        user: user,
+      }));
     }
-    
-  },[user,error])
+  }, [user, error]);
 
   // Get token from localStorage
   const getToken = useCallback(() => {
@@ -113,14 +123,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      setAuthState(prev => ({
+      setAuthState((prev) => ({
         ...prev,
         isAuthenticated: true,
         token,
         isLoading: false,
       }));
     } else {
-      setAuthState(prev => ({
+      setAuthState((prev) => ({
         ...prev,
         isLoading: false,
       }));
@@ -129,39 +139,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [getToken]);
 
   // Login function
-  const login = useCallback(async (data: LoginRequest) => {
-    try {
-      const response =  await loginMutation.mutateAsync(data);
-      
-      const accessToken = (response as unknown as { accessToken: string }).accessToken;
-      
-      setToken(accessToken);
-      setAuthState(prev => ({
-        ...prev,
-        isAuthenticated: true,
-        token: accessToken,
-        isLoading: false,
-      }));
+  const login = useCallback(
+    async (data: LoginRequest) => {
+      try {
+        const response = await loginMutation.mutateAsync(data);
 
-      // Store user data if available - handle the response structure properly
-      if (response) {
-        const userData = response as any;
-        // Check if the response has a nested data structure
-        const actualUserData = userData.data || userData;
-        
-        localStorage.setItem("user", JSON.stringify(actualUserData));
-        setAuthState(prev => ({
+        const accessToken = (response as unknown as { accessToken: string })
+          .accessToken;
+
+        setToken(accessToken);
+        setAuthState((prev) => ({
           ...prev,
-          user: actualUserData as UserProfile,
+          isAuthenticated: true,
+          token: accessToken,
+          isLoading: false,
         }));
-      }
 
-      return response;
-    } catch (error) {
-      clearAuth();
-      throw error;
-    }
-  }, [setToken, clearAuth]);
+        // Store user data if available - handle the response structure properly
+        if (response) {
+          const userData = response as any;
+          // Check if the response has a nested data structure
+          const actualUserData = userData.data || userData;
+
+          localStorage.setItem("user", JSON.stringify(actualUserData));
+          setAuthState((prev) => ({
+            ...prev,
+            user: actualUserData as UserProfile,
+          }));
+        }
+
+        return response;
+      } catch (error) {
+        clearAuth();
+        throw error;
+      }
+    },
+    [setToken, clearAuth]
+  );
 
   // Logout function
   const logout = useCallback(async () => {
@@ -179,20 +193,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [getToken, clearAuth]);
 
   // Register function
-  const register = useCallback(async (data: RegisterRequest) => {
-    try {
-      const response = await apiService.auth.register(data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }, []);
-
-
+  const { mutateAsync: register } = useMutation({
+    mutationFn: (data: any) => apiService.auth.register(data),
+  });
 
   const contextValue: AuthContextType = {
     ...authState,
-    isLoading: isLoadingUserProfile||authState.isLoading,
+    isLoading: isLoadingUserProfile || authState.isLoading,
     isInitialized,
     isPendingLogin: loginMutation?.isPending,
     login,
@@ -203,9 +210,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
@@ -216,4 +221,4 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}; 
+};

@@ -448,7 +448,6 @@ const MainNav: React.FC = () => {
     setActivePage(location?.pathname);
   }, [location]);
 
-  
   return (
     <div className="main-nav relative" ref={navRef}>
       <ul className="nav-inner">

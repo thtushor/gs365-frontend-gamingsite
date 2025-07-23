@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./LoginPopup.scss";
-import { useLogin } from "../../lib/api/hooks";
+
 import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 
@@ -24,7 +24,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // React Query hook for login
-  const {login,isPendingLogin} = useAuth()
+  const { login, isPendingLogin } = useAuth();
 
   if (!isOpen) return null;
 
@@ -234,9 +234,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                     type="submit"
                     disabled={isPendingLogin}
                   >
-                    {isPendingLogin
-                      ? "লগইন হচ্ছে..."
-                      : "এখনি লগইন করুন"}
+                    {isPendingLogin ? "লগইন হচ্ছে..." : "এখনি লগইন করুন"}
                   </button>
 
                   <p>
