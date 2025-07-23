@@ -27,8 +27,8 @@ import PromotionPage from "./pages/PromotionPage";
 import PromotionDetails from "./pages/PromotionDetails";
 import Register from "./pages/RegisterWithAPI";
 import AffiliateRegister from "./pages/AffiliateRegister";
-import DepositPage from "./pages/DepositPage";
-import SingleDeposit from "./pages/SingleDeposit";
+import DepositAndWithdrawPage from "./pages/DepositPage";
+import SingleDepositAndWithdrawPage from "./pages/SingleDeposit";
 import ReferralInfo from "./pages/ReferralInfo";
 import ReferralDetails from "./pages/ReferralDetails";
 import CashRewardHistory from "./pages/CashRewardHistory";
@@ -69,7 +69,15 @@ const App: React.FC = () => {
             path="/deposit"
             element={
               <PrivateRoute>
-                <DepositPage />
+                <DepositAndWithdrawPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/withdraw"
+            element={
+              <PrivateRoute>
+                <DepositAndWithdrawPage />
               </PrivateRoute>
             }
           />
@@ -77,7 +85,15 @@ const App: React.FC = () => {
             path="/deposit/:depositId"
             element={
               <PrivateRoute>
-                <SingleDeposit />
+                <SingleDepositAndWithdrawPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/withdraw/:withdrawId"
+            element={
+              <PrivateRoute>
+                <SingleDepositAndWithdrawPage />
               </PrivateRoute>
             }
           />

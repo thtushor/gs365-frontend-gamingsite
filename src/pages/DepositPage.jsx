@@ -6,10 +6,13 @@ import { TbReceiptBitcoin } from "react-icons/tb";
 import { PiWalletBold } from "react-icons/pi";
 import { AiOutlineGlobal } from "react-icons/ai";
 
-const DepositPage = () => {
+const DepositAndWithdrawPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const currentQuery = location.search; // e.g., ?promotionId=promo_002
+  const isDeposit = location?.pathname?.includes("deposit");
+  const isWithdraw = location?.pathname?.includes("withdraw");
 
   const depositOptions = [
     {
@@ -43,7 +46,7 @@ const DepositPage = () => {
         >
           <IoIosArrowBack />
         </button>
-        Deposit
+        {isDeposit ? "Deposit" : isWithdraw ? "Withdraw" : "N/A"}
       </h1>
 
       <div className="flex flex-col gap-2 mt-8">
@@ -70,4 +73,4 @@ const DepositPage = () => {
   );
 };
 
-export default DepositPage;
+export default DepositAndWithdrawPage;

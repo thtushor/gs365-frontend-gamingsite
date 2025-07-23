@@ -231,7 +231,7 @@ const cryptoDetails = {
   ],
 };
 
-const SingleDeposit = () => {
+const SingleDepositAndWithdrawPage = () => {
   const { depositId } = useParams();
   const [step, setStep] = useState(
     depositId === "local-bank" ? stepDetails?.LOCAL_BANK : 1
@@ -326,4 +326,4 @@ const SingleDeposit = () => {
   );
 };
 
-export default SingleDeposit;
+export default SingleDepositAndWithdrawPage;

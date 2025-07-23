@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import formatDate from "../../lib/utils/formatDate";
 import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
+import { CircleDollarSignIcon } from "lucide-react";
 
 // import SeoSection from "./SeoSection";
 
@@ -132,12 +133,31 @@ const Header: React.FC = () => {
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
-            <button
-              className="signup-btn "
-              onClick={() => handleRegisterClick(true)}
-            >
-              Affiliate Signup
-            </button>
+            {user ? (
+              <>
+                <button
+                  className="signup-btn flex items-center gap-2"
+                  onClick={() => navigate("/deposit")}
+                >
+                  <CircleDollarSignIcon className="w-4 h-4" />
+                  Deposit
+                </button>
+                <button
+                  className="signup-btn flex items-center gap-2"
+                  onClick={() => navigate("/withdraw")}
+                >
+                  <CircleDollarSignIcon className="w-4 h-4" />
+                  Withdraw
+                </button>
+              </>
+            ) : (
+              <button
+                className="signup-btn "
+                onClick={() => handleRegisterClick(true)}
+              >
+                Affiliate Signup
+              </button>
+            )}
             {user ? (
               // User is logged in - show user info and logout
               <UserProfileDropdown

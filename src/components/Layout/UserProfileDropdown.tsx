@@ -32,7 +32,7 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   return (
     <div className="user-section relative group">
       <UserProfileButton
-        className="user-profile-btn signup-btn !light-bg !px-2 !pr-3"
+        className="user-profile-btn signup-btn gap-2 !light-bg !px-2 !pr-3"
         title="View Profile"
       >
         <span className="user-avatar">👤</span>
