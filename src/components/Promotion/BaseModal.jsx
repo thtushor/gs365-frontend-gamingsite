@@ -2,7 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 
-const BaseModal = ({ open, onClose, children }) => {
+const BaseModal = ({ open, onClose, showClose = true, children }) => {
   return (
     <AnimatePresence>
       {open && (
@@ -21,13 +21,15 @@ const BaseModal = ({ open, onClose, children }) => {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              className="absolute top-3 right-3 text-gray-900 bg-yellow-400 hover:bg-yellow-600 text-xl p-1 rounded"
-              onClick={onClose}
-              aria-label="Close"
-            >
-              <FaTimes />
-            </button>
+            {showClose && (
+              <button
+                className="absolute top-3 right-3 text-gray-900 bg-yellow-400 hover:bg-yellow-600 text-xl p-1 rounded"
+                onClick={onClose}
+                aria-label="Close"
+              >
+                <FaTimes />
+              </button>
+            )}
             {children}
           </motion.div>
         </motion.div>

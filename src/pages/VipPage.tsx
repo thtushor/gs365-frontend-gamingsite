@@ -1,9 +1,9 @@
 import React from "react";
 import SeoSection from "../components/Layout/SeoSection";
-import Sponsors from "../components/Sponsors";
 import { seoContent, seoTitle } from "../lib/mock";
 import { HiUserGroup, HiGift, HiCurrencyDollar } from "react-icons/hi";
 import { MdPayment } from "react-icons/md";
+import Sponsors from "../components/Sponsors";
 // import VipFilterBar from "../components/UI/VipFilterBar";
 
 // const filterOptions = [

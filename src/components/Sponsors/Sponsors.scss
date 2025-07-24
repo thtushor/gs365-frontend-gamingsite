@@ -5,20 +5,20 @@
   margin: 20px 0;
 }
 
-.ambassador-lists {
-  margin-bottom: 25px;
+.ambassador-lists { 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 10px;
 
   &:last-child {
     margin-bottom: 0;
   }
 
   &__title {
-    color: #12b886;
+    color: #ffbd05;
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   &__wrap {
@@ -38,7 +38,7 @@
       transform: translateY(-2px);
 
       .txt {
-        color: #12b886;
+        color: #ffbd05;
       }
     }
   }
@@ -112,7 +112,7 @@
 
 // Brand Ambassadors specific styling
 .brand-ambassadors {
-  margin-top: 20px;
+  margin-top: 10px;
 
   .item__icon {
     flex-direction: row;

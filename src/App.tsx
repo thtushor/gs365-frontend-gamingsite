@@ -17,7 +17,6 @@ import { Deposit } from "./pages/Deposit";
 import HomePage from "./pages/HomePage";
 // import { TopBar } from "./components/Navbar/Topbar";
 // import { Navbar } from "./components/Navbar/Navbar";
-import Layout from "./components/Layout/Layout";
 import "./components/Layout/Layout.scss";
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./components/Loader/LoadingScreen";
