@@ -69,7 +69,7 @@ export const HeroV2 = () => {
         style={{ width: "100%", height: "400px", overflow: "hidden" }}
       >
         <img
-          src={banners[0].original || "/src/assets/banner-placeholder.png"}
+          src={banners?.[0]?.original || "/src/assets/banner-placeholder.png"}
           style={{
             width: "100%",
             height: "100%",

@@ -35,6 +35,7 @@ import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import PrivateRoute from "./routes/PrivateRoute";
+import Layout from "./components/Layout/Layout";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
