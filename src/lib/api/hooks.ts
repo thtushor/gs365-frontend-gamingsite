@@ -7,7 +7,7 @@ import {
 import { apiService } from "./services";
 import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
 import type { ApiResponse } from "./axios";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback } from "react";
 import { useAuth } from "../../contexts/auth-context";
 
 /**

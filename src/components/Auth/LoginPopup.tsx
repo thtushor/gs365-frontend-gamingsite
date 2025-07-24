@@ -3,6 +3,59 @@ import "./LoginPopup.scss";
 
 import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
+import { EyeShowIcon } from "../Icon/EyeShowIcon";
+import { EyeHideIcon } from "../Icon/EyeHideIcon";
+
+// Reusable PasswordInput component
+interface PasswordInputProps {
+  id: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  minLength?: number;
+  maxLength?: number;
+  error?: string;
+  required?: boolean;
+}
+
+const PasswordInput: React.FC<PasswordInputProps> = ({
+  id,
+  name,
+  value,
+  onChange,
+  placeholder = "Password",
+  minLength = 6,
+  maxLength = 20,
+  error,
+  required = false,
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="input-icon-type">
+      <i className="icon-password"></i>
+      <div
+        className="eyes"
+        onClick={() => setShowPassword((prev) => !prev)}
+        style={{ cursor: "pointer" }}
+      >
+        {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
+      </div>
+      <input
+        id={id}
+        name={name}
+        type={showPassword ? "text" : "password"}
+        minLength={minLength}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
+      {error && <div className="error-message">{error}</div>}
+    </div>
+  );
+};
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -194,28 +247,17 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                     </li>
                     <li>
                       <label>পাসওয়ার্ড</label>
-                      <div className="input-icon-type">
-                        {/* Placeholder for password icon */}
-                        <i className="icon-password"></i>
-                        {/* Placeholder for eye icon */}
-                        <div className="eyes"></div>
-                        <input
-                          id="loginPassword"
-                          name="password"
-                          type="password"
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="পাসওয়ার্ড"
-                          value={formData.password}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                      {getFieldError("password") && (
-                        <div className="error-message">
-                          {getFieldError("password")}
-                        </div>
-                      )}
+                      <PasswordInput
+                        id="loginPassword"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="পাসওয়ার্ড"
+                        minLength={6}
+                        maxLength={20}
+                        error={getFieldError("password")}
+                        required
+                      />
                     </li>
                   </ul>
 

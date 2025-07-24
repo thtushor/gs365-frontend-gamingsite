@@ -9,7 +9,7 @@ const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
   const refCodeParam = searchParams.get("refcode") || "";
 
-  console.log({refCodeParam})
+  console.log({ refCodeParam });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -48,7 +48,8 @@ const Register: React.FC = () => {
     },
     {
       id: 2,
-      image:"https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
+      image:
+        "https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
       title: "Exclusive Bonuses",
       description: "Get amazing welcome bonuses on registration",
     },
@@ -84,7 +85,7 @@ const Register: React.FC = () => {
       ...formData,
       refer_code: formData.refCode,
     };
-    
+    console.log({ apiBody });
   };
 
   const nextStep = () => {
