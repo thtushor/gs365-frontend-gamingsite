@@ -142,7 +142,7 @@ export const useGetRequest = () => {
 };
 
 export const useUpdateRequest = () => {
-  const { logout } = useAuth();
+  const { logout, token } = useAuth();
 
   /**
    * Generic update API request function.
@@ -165,7 +165,7 @@ export const useUpdateRequest = () => {
     refetch = false,
   }) => {
     try {
-      const token = localStorage.getItem("token");
+
 
       const options = {
         method,
@@ -175,11 +175,11 @@ export const useUpdateRequest = () => {
         },
         ...(body
           ? {
-              body:
-                contentType === "application/json"
-                  ? JSON.stringify(body)
-                  : body,
-            }
+            body:
+              contentType === "application/json"
+                ? JSON.stringify(body)
+                : body,
+          }
           : {}),
       };
 

@@ -31,6 +31,10 @@ export const API_ENDPOINTS = {
     VERIFY_PHONE: "/api/users/verify-phone",
   },
 
+  PAYMENT: {
+    GET_METHODS: "/api/payment-method",
+  },
+
   // User endpoints
   USER: {
     PROFILE: "/api/users/profile",
