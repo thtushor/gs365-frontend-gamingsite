@@ -12,4 +12,5 @@
     - Manual deposit - 3-4 days
 3. Withdraw
     - Manual withdraw - 3-4 days
+5. Turnover set
 4. Simple game for testing - 3-4 days
