@@ -19,6 +19,8 @@ export const API_LIST = {
 
   
   
+  GET_PROMOTIONS: "/api/public/promotions",
+  GET_PROMOTION_DETAILS: "/api/public/promotions",
 };
 
 // --- Reusable POST Request Hook ---

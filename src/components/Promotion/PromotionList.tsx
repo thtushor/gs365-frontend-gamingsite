@@ -3,11 +3,20 @@ import PromotionCard from "./PromotionCard";
 import PromotionModal from "./PromotionModal";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface Tag {
+  id: number;
+  title: string;
+  dropdown_id: number;
+  status: string;
+  created_by: string;
+  created_at: string;
+}
+
 interface Promotion {
   image: string;
   title: string;
   description: string;
-  tag: string[];
+  tag: Tag[];
   time: string;
   signupLink: string;
   detailsLink: string;
