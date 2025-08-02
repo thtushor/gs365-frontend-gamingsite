@@ -23,7 +23,6 @@ import LoadingScreen from "./components/Loader/LoadingScreen";
 // import Register from "./pages/Register";
 import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
-import PromotionDetails from "./pages/PromotionDetails";
 import Register from "./pages/RegisterWithAPI";
 import AffiliateRegister from "./pages/AffiliateRegister";
 import DepositAndWithdrawPage from "./pages/DepositPage";
@@ -36,6 +35,7 @@ import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
 import PrivateRoute from "./routes/PrivateRoute";
 import Layout from "./components/Layout/Layout";
+import PromotionDetails from "./pages/PromotionDetails";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
