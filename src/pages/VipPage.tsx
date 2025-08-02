@@ -2,7 +2,7 @@ import React from "react";
 import SeoSection from "../components/Layout/SeoSection";
 import { seoContent, seoTitle } from "../lib/mock";
 import { HiUserGroup, HiGift, HiCurrencyDollar } from "react-icons/hi";
-import { MdPayment } from "react-icons/md";
+import { MdPayment } from "react-icons/md"; 
 import Sponsors from "../components/Sponsors";
 // import VipFilterBar from "../components/UI/VipFilterBar";
 

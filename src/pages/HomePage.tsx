@@ -22,9 +22,9 @@ import DraggableContainer from "../components/DraggableContainer/DraggableContai
 import SupportUs from "../components/SupportUs/SupportUs";
 import FloatingContact from "../components/FloatingContact/FloatingContact";
 import { HeroV2 } from "../components/Hero/HeroV2";
-import { NoticeBoard } from "../components/Notice/NoticeBoard";
-import Sponsors from "../components/Sponsors";
+import { NoticeBoard } from "../components/Notice/NoticeBoard"; 
 import Advertisement from "../components/Advertisement/Advertisement";
+import Sponsors from "../components/Sponsors";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);

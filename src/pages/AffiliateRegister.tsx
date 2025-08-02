@@ -21,7 +21,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const refCodeParam = searchParams.get("refCode");
+  const refCodeParam = searchParams.get("refCode")||searchParams.get("refcode");
   const [loading, setLoading] = useState(false);
   const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
 

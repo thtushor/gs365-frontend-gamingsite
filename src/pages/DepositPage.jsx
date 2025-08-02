@@ -8,6 +8,7 @@ import { AiOutlineGlobal } from "react-icons/ai";
 import { useQuery } from "@tanstack/react-query";
 import { API_ENDPOINTS } from "../lib/api/config";
 import axiosInstance from "../lib/api/axios";
+import { CircleDollarSign, DollarSign } from "lucide-react";
 
 const depositIconMap = {
   1: <BsBank size={20} />,
@@ -81,7 +82,7 @@ const DepositAndWithdrawPage = () => {
             className="second-bg border border-[#1a1a1a] hover:border-yellow-400 hover:text-yellow-400 cursor-pointer transition px-5 py-4 pr-3 text-white rounded-md text-[18px] font-semibold flex items-center w-full justify-between"
           >
             <span className="flex items-center gap-2">
-              {depositIconMap[item?.id]}
+              {depositIconMap[item?.id] || <CircleDollarSign size={20} />}
               {item.name}
             </span>
             <span className="flex items-center gap-3 text-[24px]">

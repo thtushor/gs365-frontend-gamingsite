@@ -13,12 +13,28 @@ const LocalBankInfo = ({
   gatewayInfo,
 }) => {
   console.log(gatewayInfo);
+  
+  // Transform the new data structure to match the expected format
+  const transformedPaymentTypes = gatewayInfo?.paymentGateways?.map(gateway => ({
+    bonus: "100%", // Static bonus as requested
+    icon: gateway.iconUrl,
+    title: gateway.name,
+    transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
+    deposit_channel: [
+      {
+        id: gateway.id,
+        name: gateway.name,
+      }
+    ],
+    gateway: gateway // Keep original gateway data for reference
+  })) || [];
+
   const [selectedPaymentTypes, setSelectedPaymentTypes] = useState(
-    gatewayInfo?.payment_types?.[0] || null
+    transformedPaymentTypes[0] || null
   );
 
   const [selectedDepositChannel, setSelectedDepositChannel] = useState(
-    gatewayInfo?.payment_types?.[0]?.deposit_channel?.[0] || null
+    transformedPaymentTypes[0]?.deposit_channel?.[0] || null
   );
 
   // Update payment type
@@ -72,7 +88,7 @@ const LocalBankInfo = ({
       <div>
         <p className="text-base text-left mb-2 mt-4">Select Payment</p>
         <div className="flex flex-wrap gap-3">
-          {gatewayInfo?.payment_types?.map((info, idx) => (
+          {transformedPaymentTypes?.map((info, idx) => (
             <div
               key={idx}
               className={`border group cursor-pointer overflow-hidden flex items-center justify-center flex-col rounded-md max-w-[200px] p-3 pt-4 relative ${

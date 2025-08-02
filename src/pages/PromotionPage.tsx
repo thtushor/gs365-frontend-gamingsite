@@ -4,7 +4,7 @@ import { seoContent, seoTitle, filterOptions } from "../lib/mock";
 
 import VipFilterBar from "../components/UI/VipFilterBar";
 import PromotionList from "../components/Promotion/PromotionList";
-import { HeroV2 } from "../components/Hero/HeroV2";
+import { HeroV2 } from "../components/Hero/HeroV2"; 
 import Sponsors from "../components/Sponsors";
 
 const promotions = [

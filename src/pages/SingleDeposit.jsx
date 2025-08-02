@@ -12,6 +12,10 @@ import bankCard from "../assets/bank-card.png";
 import bkash from "../assets/payment-type/bkash.png";
 import nagad from "../assets/payment-type/nagad.png";
 import rocket from "../assets/payment-type/rocket.png";
+import { useQuery } from "@tanstack/react-query";
+import { API_LIST } from "../lib/api/apiClient";
+import axiosInstance from "../lib/api/axios";
+import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
 
 const fakePromotions = {
   valid: [
@@ -233,22 +237,48 @@ const cryptoDetails = {
 
 const SingleDepositAndWithdrawPage = () => {
   const { depositId } = useParams();
+
   const [step, setStep] = useState(
-    depositId === "local-bank" ? stepDetails?.LOCAL_BANK : 1
+    depositId === "Local Bank" ? stepDetails?.LOCAL_BANK : 1
   );
+
+
+const {data:paymentMethods} = useQuery({
+  queryKey:[API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS],
+  queryFn:async()=>{
+    const response = await axiosInstance.get(`${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId}`,{
+      params: {
+        status:"active"
+      }
+    })
+    return response?.data
+  }
+})
+
+
+
+
+
+const paymentMethodData = paymentMethods?.[0]
+
+console.log({paymentMethodData})
+
   const [selectedPromotion, setSelectedPromotion] = useState({
     id: 2,
     title: "৮০% রিলোড বোনাস",
     type: "এক্সক্লুসিভ অফার",
     time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
   });
+
   const [depositOptions, setDepositOptions] = useState({
     payment_type: "",
     payment_channel: "",
     deposit_channel: "",
     transfer_type: "",
   });
+
   const [modalOpen, setModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const formatDepositId = (id) => {
@@ -265,6 +295,7 @@ const SingleDepositAndWithdrawPage = () => {
   const handleOpenModal = () => {
     setModalOpen(true);
   };
+
   const handleCloseModal = () => setModalOpen(false);
 
   // step logic

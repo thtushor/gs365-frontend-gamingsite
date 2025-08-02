@@ -7,6 +7,7 @@ import axios, {
 } from "axios";
 import { API_CONFIG } from "./config";
 import { useAuth } from "../../contexts/auth-context";
+import { BASE_URL } from "./apiClient";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -46,7 +47,7 @@ export interface ApiError {
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_CONFIG.BASE_URL,
-  timeout: API_CONFIG.TIMEOUT,
+  // timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
