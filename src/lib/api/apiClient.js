@@ -16,6 +16,8 @@ export const API_LIST = {
   GET_ACTIVE_UTILS: "/api/public/active-utils",
   GET_ACTIVE_POPUP: "/api/public/popup",
   GET_ACTIVE_ADVERTISEMENT: "/api/public/advertisement",
+  GET_PROMOTIONS: "/api/public/promotions",
+  GET_PROMOTION_DETAILS: "/api/public/promotions",
 };
 
 // --- Reusable POST Request Hook ---
