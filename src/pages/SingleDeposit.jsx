@@ -244,7 +244,9 @@ const SingleDepositAndWithdrawPage = () => {
 
 
 const {data:paymentMethods} = useQuery({
-  queryKey:[API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS],
+  queryKey:[API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,{
+    name: depositId
+  }],
   queryFn:async()=>{
     const response = await axiosInstance.get(`${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId}`,{
       params: {
@@ -331,13 +333,7 @@ console.log({paymentMethodData})
           handleSetStep={handleSetStep}
           setDepositOptions={setDepositOptions}
           depositOptions={depositOptions}
-          gatewayInfo={
-            depositId === "local-bank"
-              ? localBankDetails
-              : depositId === "e-wallet"
-              ? eWalletDetails
-              : ""
-          }
+          gatewayInfo={paymentMethodData || ""}
         />
       )}
 
