@@ -5,11 +5,20 @@ import DepositSubmit from "./DepositSubmit";
 import { toast } from "react-toastify";
 
 const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
-  console.log(depositOptions, stepDetails);
   const [transferInfoValid, setTransferInfoValid] = useState(false);
-  const availableBalance = { min: 30000, max: 50000 };
+  const [selectedGateway, setSelectedGateway] = useState(null);
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+
+  // Get the first payment gateway as default, or use the first one from the array
+  const defaultGateway = depositOptions?.paymentGateways?.[0] || null;
+  const currentGateway = selectedGateway || defaultGateway;
+  
+  // Use the selected gateway's limits, or fallback to default values
+  const availableBalance = {
+    min: currentGateway?.minDeposit || 200,
+    max: currentGateway?.maxDeposit || 20000
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -65,42 +74,63 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
             )}
           </div>
 
-          {/* Payment Method */}
+          {/* Payment Method Selection */}
           <div>
             <p className="text-base text-left mb-2 mt-4 font-medium">
               Payment Method
             </p>
-            <div
-              className="flex hover:bg-gray-900 cursor-pointer items-center justify-between second-bg px-5 border-yellow-400 border py-4 rounded-md"
-              onClick={() => setStep(stepDetails?.LOCAL_BANK)}
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src={depositOptions?.payment_type?.icon}
-                  className="w-[30px]"
-                  alt=""
-                />
-                <div className="text-left">
-                  <h4 className="text-[16px] font-medium">
-                    {depositOptions?.payment_type?.title}
-                  </h4>
-                  <p className="text-gray-400 text-[14px] capitalize">
-                    {depositOptions?.transfer_type?.title}
-                  </p>
-                  <p className="text-gray-400 text-[14px] capitalize">
-                    {depositOptions?.deposit_channel?.name}
-                  </p>
+            
+            {/* Payment Gateway Selection */}
+            {depositOptions?.paymentGateways?.map((gateway, index) => (
+              <div
+                key={gateway.id}
+                className={`flex hover:bg-gray-900 cursor-pointer items-center justify-between second-bg px-5 border py-4 rounded-md mb-2 ${
+                  selectedGateway?.id === gateway.id || (!selectedGateway && index === 0)
+                    ? "border-yellow-400"
+                    : "border-gray-600"
+                }`}
+                onClick={() => {
+                  setSelectedGateway(gateway);
+                  // Reset amount when changing gateway to ensure it's within new limits
+                  if (amount) {
+                    const num = Number(amount);
+                    if (num < gateway.minDeposit || num > gateway.maxDeposit) {
+                      setAmount("");
+                      setError("");
+                    }
+                  }
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <img
+                    src={gateway.iconUrl}
+                    className="w-[30px] h-[30px] object-contain"
+                    alt={gateway.name}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                  <div className="text-left">
+                    <h4 className="text-[16px] font-medium text-white">
+                      {gateway.name}
+                    </h4>
+                    <p className="text-gray-400 text-[14px]">
+                      Min: ৳{gateway.minDeposit} | Max: ৳{gateway.maxDeposit}
+                    </p>
+                    {gateway.providers?.length > 0 && (
+                      <p className="text-gray-400 text-[14px]">
+                        Provider: {gateway.providers[0]?.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-1">
+                  <span className="text-[24px] text-yellow-400">
+                    <MdOutlineModeEdit />
+                  </span>
                 </div>
               </div>
-              <div className="flex gap-1">
-                <p className="text-yellow-400 font-medium">
-                  {depositOptions?.payment_type?.bonus || "0%"}
-                </p>
-                <span className="text-[24px]">
-                  <MdOutlineModeEdit />
-                </span>
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Reminder Section */}
@@ -146,10 +176,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   amountValue >= availableBalance.min &&
                   amountValue <= availableBalance.max;
 
-                const hasValidOptions =
-                  depositOptions?.payment_type &&
-                  depositOptions?.transfer_type &&
-                  depositOptions?.deposit_channel;
+                const hasValidOptions = currentGateway && amount;
 
                 if (isAmountValid && hasValidOptions) {
                   setTransferInfoValid(true);
@@ -164,7 +191,11 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
         </>
       ) : (
         <DepositSubmit
-          depositOptions={depositOptions}
+          depositOptions={{
+            ...depositOptions,
+            selectedGateway: currentGateway,
+            amount: amount
+          }}
           stepDetails={stepDetails}
           setStep={setStep}
         />
