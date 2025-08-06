@@ -5,6 +5,8 @@ import DepositSubmit from "./DepositSubmit";
 import { toast } from "react-toastify";
 
 const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
+  console.log("DepositTransfer received data:", depositOptions);
+
   const [transferInfoValid, setTransferInfoValid] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState(null);
   const [amount, setAmount] = useState("");
@@ -13,11 +15,11 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
   // Get the first payment gateway as default, or use the first one from the array
   const defaultGateway = depositOptions?.paymentGateways?.[0] || null;
   const currentGateway = selectedGateway || defaultGateway;
-  
+
   // Use the selected gateway's limits, or fallback to default values
   const availableBalance = {
     min: currentGateway?.minDeposit || 200,
-    max: currentGateway?.maxDeposit || 20000
+    max: currentGateway?.maxDeposit || 20000,
   };
 
   const handleChange = (e) => {
@@ -41,6 +43,21 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
     !amount ||
     Number(amount) < availableBalance.min ||
     Number(amount) > availableBalance.max;
+
+  // Show loading state if no data is available yet
+  if (!depositOptions) {
+    return (
+      <div className="mt-5">
+        <div className="second-bg px-5 py-8 rounded-md">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-600 rounded mb-4"></div>
+            <div className="h-12 bg-gray-600 rounded mb-4"></div>
+            <div className="h-20 bg-gray-600 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-5">
@@ -79,58 +96,70 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
             <p className="text-base text-left mb-2 mt-4 font-medium">
               Payment Method
             </p>
-            
+
             {/* Payment Gateway Selection */}
-            {depositOptions?.paymentGateways?.map((gateway, index) => (
-              <div
-                key={gateway.id}
-                className={`flex hover:bg-gray-900 cursor-pointer items-center justify-between second-bg px-5 border py-4 rounded-md mb-2 ${
-                  selectedGateway?.id === gateway.id || (!selectedGateway && index === 0)
-                    ? "border-yellow-400"
-                    : "border-gray-600"
-                }`}
-                onClick={() => {
-                  setSelectedGateway(gateway);
-                  // Reset amount when changing gateway to ensure it's within new limits
-                  if (amount) {
-                    const num = Number(amount);
-                    if (num < gateway.minDeposit || num > gateway.maxDeposit) {
-                      setAmount("");
-                      setError("");
+            {depositOptions?.paymentGateways?.length > 0 ? (
+              depositOptions.paymentGateways.map((gateway, index) => (
+                <div
+                  key={gateway.id}
+                  className={`flex hover:bg-gray-900 cursor-pointer items-center justify-between second-bg px-5 border py-4 rounded-md mb-2 ${
+                    selectedGateway?.id === gateway.id ||
+                    (!selectedGateway && index === 0)
+                      ? "border-yellow-400"
+                      : "border-gray-600"
+                  }`}
+                  onClick={() => {
+                    setSelectedGateway(gateway);
+                    // Reset amount when changing gateway to ensure it's within new limits
+                    if (amount) {
+                      const num = Number(amount);
+                      if (
+                        num < gateway.minDeposit ||
+                        num > gateway.maxDeposit
+                      ) {
+                        setAmount("");
+                        setError("");
+                      }
                     }
-                  }
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <img
-                    src={gateway.iconUrl}
-                    className="w-[30px] h-[30px] object-contain"
-                    alt={gateway.name}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                  <div className="text-left">
-                    <h4 className="text-[16px] font-medium text-white">
-                      {gateway.name}
-                    </h4>
-                    <p className="text-gray-400 text-[14px]">
-                      Min: ৳{gateway.minDeposit} | Max: ৳{gateway.maxDeposit}
-                    </p>
-                    {gateway.providers?.length > 0 && (
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={gateway.iconUrl}
+                      className="w-[30px] h-[30px] object-contain"
+                      alt={gateway.name}
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                      }}
+                    />
+                    <div className="text-left">
+                      <h4 className="text-[16px] font-medium text-white">
+                        {gateway.name}
+                      </h4>
                       <p className="text-gray-400 text-[14px]">
-                        Provider: {gateway.providers[0]?.name}
+                        Min: ৳{gateway.minDeposit} | Max: ৳{gateway.maxDeposit}
                       </p>
-                    )}
+                      {gateway.providers?.length > 0 && (
+                        <p className="text-gray-400 text-[14px]">
+                          Provider: {gateway.providers[0]?.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    <span className="text-[24px] text-yellow-400">
+                      <MdOutlineModeEdit />
+                    </span>
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  <span className="text-[24px] text-yellow-400">
-                    <MdOutlineModeEdit />
-                  </span>
-                </div>
+              ))
+            ) : (
+              <div className="second-bg px-5 border border-gray-600 py-4 rounded-md">
+                <p className="text-gray-400 text-center">
+                  No payment methods available
+                </p>
               </div>
-            ))}
+            )}
           </div>
 
           {/* Reminder Section */}
@@ -181,7 +210,15 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                 if (isAmountValid && hasValidOptions) {
                   setTransferInfoValid(true);
                 } else {
-                  toast.error("Something is wrong, check your payment details");
+                  if (!currentGateway) {
+                    toast.error("Please select a payment method");
+                  } else if (!amount) {
+                    toast.error("Please enter an amount");
+                  } else {
+                    toast.error(
+                      `Amount must be between ৳${availableBalance.min} and ৳${availableBalance.max}`
+                    );
+                  }
                 }
               }}
             >
@@ -194,7 +231,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           depositOptions={{
             ...depositOptions,
             selectedGateway: currentGateway,
-            amount: amount
+            amount: amount,
           }}
           stepDetails={stepDetails}
           setStep={setStep}

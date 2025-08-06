@@ -242,28 +242,29 @@ const SingleDepositAndWithdrawPage = () => {
     depositId === "Local Bank" ? stepDetails?.LOCAL_BANK : 1
   );
 
+  const { data: paymentMethods } = useQuery({
+    queryKey: [
+      API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,
+      {
+        name: depositId,
+      },
+    ],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        `${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId}`,
+        {
+          params: {
+            status: "active",
+          },
+        }
+      );
+      return response?.data;
+    },
+  });
 
-const {data:paymentMethods} = useQuery({
-  queryKey:[API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,{
-    name: depositId
-  }],
-  queryFn:async()=>{
-    const response = await axiosInstance.get(`${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId}`,{
-      params: {
-        status:"active"
-      }
-    })
-    return response?.data
-  }
-})
+  const paymentMethodData = paymentMethods?.[0];
 
-
-
-
-
-const paymentMethodData = paymentMethods?.[0]
-
-console.log({paymentMethodData})
+  console.log({ paymentMethodData });
 
   const [selectedPromotion, setSelectedPromotion] = useState({
     id: 2,
@@ -323,7 +324,7 @@ console.log({paymentMethodData})
         <DepositTransfer
           stepDetails={stepDetails}
           setStep={setStep}
-          depositOptions={depositOptions}
+          depositOptions={paymentMethodData || depositOptions}
         />
       ) : (
         <LocalBankInfo
