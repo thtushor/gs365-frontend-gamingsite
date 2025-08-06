@@ -7,7 +7,6 @@ import axios, {
 } from "axios";
 import { API_CONFIG } from "./config";
 import { useAuth } from "../../contexts/auth-context";
-import { BASE_URL } from "./apiClient";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
