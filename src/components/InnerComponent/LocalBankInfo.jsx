@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuGift } from "react-icons/lu";
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
+import CustomSelect from "../UI/CustomSelect";
 
 const LocalBankInfo = ({
   selectedPromotion,
@@ -30,10 +31,15 @@ const LocalBankInfo = ({
   useEffect(() => {
     if (transformedPaymentTypes.length > 0 && !selectedPaymentTypes) {
       const firstPaymentType = transformedPaymentTypes[0];
-      const firstDepositChannel = firstPaymentType?.deposit_channel?.[0];
+      // Select recommended channel or first one if no recommended
+      const recommendedChannel = firstPaymentType?.deposit_channel?.find(
+        (channel) => channel.isRecomended
+      );
+      const defaultChannel =
+        recommendedChannel || firstPaymentType?.deposit_channel?.[0];
 
       setSelectedPaymentTypes(firstPaymentType);
-      setSelectedDepositChannel(firstDepositChannel);
+      setSelectedDepositChannel(defaultChannel);
     }
   }, [transformedPaymentTypes, selectedPaymentTypes]);
 
@@ -98,7 +104,13 @@ const LocalBankInfo = ({
               }`}
               onClick={() => {
                 setSelectedPaymentTypes(info);
-                setSelectedDepositChannel(info.deposit_channel[0]); // reset deposit channel on type change
+                // Select recommended channel or first one if no recommended
+                const recommendedChannel = info.deposit_channel.find(
+                  (channel) => channel.isRecomended
+                );
+                const defaultChannel =
+                  recommendedChannel || info.deposit_channel[0];
+                setSelectedDepositChannel(defaultChannel);
               }}
             >
               <span className="absolute top-0 right-0 bg-yellow-400 rounded-bl-md px-2 text-black text-[14px] font-semibold">
@@ -146,23 +158,14 @@ const LocalBankInfo = ({
       {/* Deposit Channel Dropdown */}
       <div className="flex flex-col">
         <p className="text-base text-left mb-2 mt-4">Deposit Channel</p>
-        <select
-          className="border border-yellow-400 rounded px-3 py-2 second-bg font-medium outline-none text-white"
-          name="deposit_channel"
+        <CustomSelect
+          options={selectedPaymentTypes?.deposit_channel || []}
           value={selectedDepositChannel?.name}
-          onChange={(e) => {
-            const selected = selectedPaymentTypes?.deposit_channel.find(
-              (item) => item.name === e.target.value
-            );
-            setSelectedDepositChannel(selected);
-          }}
-        >
-          {selectedPaymentTypes?.deposit_channel.map((channel) => (
-            <option key={channel.id} value={channel.name}>
-              {channel.name}
-            </option>
-          ))}
-        </select>
+          onChange={(selected) => setSelectedDepositChannel(selected)}
+          placeholder="Select deposit channel"
+          showRecommended={true}
+          disabled={!selectedPaymentTypes}
+        />
       </div>
 
       {/* Continue Button */}
