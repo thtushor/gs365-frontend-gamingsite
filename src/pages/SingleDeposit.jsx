@@ -328,11 +328,6 @@ const SingleDepositAndWithdrawPage = () => {
 
   const handleCloseModal = () => setModalOpen(false);
 
-  // step logic
-  const handleSetStep = (crStep) => {
-    setStep(crStep);
-  };
-
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
       <h2 className="text-[22px] flex items-center font-bold ">
