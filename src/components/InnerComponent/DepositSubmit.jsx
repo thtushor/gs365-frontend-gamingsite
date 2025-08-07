@@ -7,20 +7,44 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [referenceId, setReferenceId] = useState("");
   const [receiptFile, setReceiptFile] = useState(null);
 
-  // Static transfer details (You can replace this later with dynamic data)
-  const transferDetails = {
-    amount: "30,000",
-    bankName: "Real Bank",
-    accountNumber: "1116205019670001",
-    accountName: "Care Point",
-    branch: "Chawkbazar Branch",
-  };
+  console.log("depositOptions", { depositOptions });
+
+  // Extract data from depositOptions
+  const selectedGateway = depositOptions?.selectedGateway;
+  const selectedProvider = depositOptions?.selectedProvider;
+  const amount = depositOptions?.amount;
+
+  // Get account information from the selected provider
+  const accountInfo = selectedProvider?.gatewayProvider?.account?.[0] || null;
+
+  // Transfer details from the account information
+  const transferDetails = accountInfo
+    ? {
+        amount: amount || "0",
+        bankName: accountInfo.bankName || "Bank",
+        accountNumber: accountInfo.accountNumber || "N/A",
+        accountName: accountInfo.holderName || "N/A",
+        branch: accountInfo.branchName || "N/A",
+        swiftCode: accountInfo.swiftCode || "N/A",
+        iban: accountInfo.iban || "N/A",
+        walletAddress: accountInfo.walletAddress || "N/A",
+        network: accountInfo.network || "N/A",
+      }
+    : {
+        amount: amount || "0",
+        bankName: "Bank",
+        accountNumber: "N/A",
+        accountName: "N/A",
+        branch: "N/A",
+        swiftCode: "N/A",
+        iban: "N/A",
+        walletAddress: "N/A",
+        network: "N/A",
+      };
 
   // Extract from depositOptions
-  const selectedTransferType =
-    depositOptions?.transfer_type?.title || "Transfer";
-  const selectedDepositChannel =
-    depositOptions?.deposit_channel?.name || "Deposit Channel";
+  const selectedTransferType = depositOptions?.name || "Transfer";
+  const selectedDepositChannel = selectedGateway?.name || "Deposit Channel";
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -54,6 +78,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       bankDetails: transferDetails,
       depositChannel: selectedDepositChannel,
       transferType: selectedTransferType,
+      gateway: selectedGateway,
+      provider: selectedProvider,
     };
 
     console.log("Submitted Data:", formData);
@@ -64,10 +90,22 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     <div className="text-white">
       {/* Payment Type Info */}
       <div className="flex flex-col items-center second-bg justify-center p-5 rounded-md">
-        <img src={depositOptions?.payment_type?.icon} alt="" className="h-10" />
+        <img
+          src={selectedGateway?.iconUrl}
+          alt={selectedGateway?.name}
+          className="h-10 object-contain"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
         <h4 className="text-[18px] font-bold mt-2">
-          {depositOptions?.payment_type?.title}
+          {selectedGateway?.name || "Payment Method"}
         </h4>
+        {selectedProvider && (
+          <p className="text-[14px] text-gray-400 mt-1">
+            Provider: {selectedProvider.name}
+          </p>
+        )}
       </div>
 
       {/* Transfer Info */}
@@ -89,6 +127,14 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
             {selectedDepositChannel}
           </span>
         </p>
+        {selectedProvider && (
+          <p>
+            Provider:{" "}
+            <span className="font-medium text-white">
+              {selectedProvider.name}
+            </span>
+          </p>
+        )}
       </div>
 
       {/* Transfer Details */}
@@ -108,28 +154,154 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           </button>
         </div>
 
-        {[
-          { label: "Bank name", value: transferDetails.bankName },
-          { label: "Account number", value: transferDetails.accountNumber },
-          { label: "Bank account name", value: transferDetails.accountName },
-          { label: "Bank branch", value: transferDetails.branch },
-        ].map((item, idx) => (
-          <div
-            key={idx}
-            className="flex justify-between items-center text-left"
-          >
-            <div>
-              <p className="text-sm text-gray-400">{item.label}</p>
-              <p className="text-lg font-semibold text-[20px]">{item.value}</p>
-            </div>
-            <button
-              onClick={() => handleCopy(item.value)}
-              className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-            >
-              Copy
-            </button>
+        {/* Dynamic account details based on available information */}
+        {accountInfo ? (
+          <>
+            {transferDetails.bankName && transferDetails.bankName !== "N/A" && (
+              <div className="flex justify-between items-center text-left">
+                <div>
+                  <p className="text-sm text-gray-400">Bank name</p>
+                  <p className="text-lg font-semibold text-[20px]">
+                    {transferDetails.bankName}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleCopy(transferDetails.bankName)}
+                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                >
+                  Copy
+                </button>
+              </div>
+            )}
+
+            {transferDetails.accountNumber &&
+              transferDetails.accountNumber !== "N/A" && (
+                <div className="flex justify-between items-center text-left">
+                  <div>
+                    <p className="text-sm text-gray-400">Account number</p>
+                    <p className="text-lg font-semibold text-[20px]">
+                      {transferDetails.accountNumber}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(transferDetails.accountNumber)}
+                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )}
+
+            {transferDetails.accountName &&
+              transferDetails.accountName !== "N/A" && (
+                <div className="flex justify-between items-center text-left">
+                  <div>
+                    <p className="text-sm text-gray-400">Bank account name</p>
+                    <p className="text-lg font-semibold text-[20px]">
+                      {transferDetails.accountName}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(transferDetails.accountName)}
+                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )}
+
+            {transferDetails.branch && transferDetails.branch !== "N/A" && (
+              <div className="flex justify-between items-center text-left">
+                <div>
+                  <p className="text-sm text-gray-400">Bank branch</p>
+                  <p className="text-lg font-semibold text-[20px]">
+                    {transferDetails.branch}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleCopy(transferDetails.branch)}
+                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                >
+                  Copy
+                </button>
+              </div>
+            )}
+
+            {transferDetails.swiftCode &&
+              transferDetails.swiftCode !== "N/A" && (
+                <div className="flex justify-between items-center text-left">
+                  <div>
+                    <p className="text-sm text-gray-400">Swift Code</p>
+                    <p className="text-lg font-semibold text-[20px]">
+                      {transferDetails.swiftCode}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(transferDetails.swiftCode)}
+                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )}
+
+            {transferDetails.iban && transferDetails.iban !== "N/A" && (
+              <div className="flex justify-between items-center text-left">
+                <div>
+                  <p className="text-sm text-gray-400">IBAN</p>
+                  <p className="text-lg font-semibold text-[20px]">
+                    {transferDetails.iban}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleCopy(transferDetails.iban)}
+                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                >
+                  Copy
+                </button>
+              </div>
+            )}
+
+            {transferDetails.walletAddress &&
+              transferDetails.walletAddress !== "N/A" && (
+                <div className="flex justify-between items-center text-left">
+                  <div>
+                    <p className="text-sm text-gray-400">Wallet Address</p>
+                    <p className="text-lg font-semibold text-[20px]">
+                      {transferDetails.walletAddress}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(transferDetails.walletAddress)}
+                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )}
+
+            {transferDetails.network && transferDetails.network !== "N/A" && (
+              <div className="flex justify-between items-center text-left">
+                <div>
+                  <p className="text-sm text-gray-400">Network</p>
+                  <p className="text-lg font-semibold text-[20px]">
+                    {transferDetails.network}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleCopy(transferDetails.network)}
+                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+                >
+                  Copy
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-gray-400">No account information available</p>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Reminder Section */}

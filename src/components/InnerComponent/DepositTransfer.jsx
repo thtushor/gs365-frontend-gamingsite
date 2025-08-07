@@ -9,12 +9,17 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
   const [transferInfoValid, setTransferInfoValid] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState(null);
+  const [selectedProvider, setSelectedProvider] = useState(null);
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
   // Get the first payment gateway as default, or use the first one from the array
   const defaultGateway = depositOptions?.paymentGateways?.[0] || null;
   const currentGateway = selectedGateway || defaultGateway;
+
+  // Get the first provider as default for the selected gateway
+  const defaultProvider = currentGateway?.providers?.[0] || null;
+  const currentProvider = selectedProvider || defaultProvider;
 
   // Use the selected gateway's limits, or fallback to default values
   const availableBalance = {
@@ -42,7 +47,9 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
   const isNextDisabled =
     !amount ||
     Number(amount) < availableBalance.min ||
-    Number(amount) > availableBalance.max;
+    Number(amount) > availableBalance.max ||
+    !currentGateway ||
+    !currentProvider;
 
   // Show loading state if no data is available yet
   if (!depositOptions) {
@@ -110,6 +117,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   }`}
                   onClick={() => {
                     setSelectedGateway(gateway);
+                    setSelectedProvider(gateway.providers?.[0] || null);
                     // Reset amount when changing gateway to ensure it's within new limits
                     if (amount) {
                       const num = Number(amount);
@@ -141,7 +149,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                       </p>
                       {gateway.providers?.length > 0 && (
                         <p className="text-gray-400 text-[14px]">
-                          Provider: {gateway.providers[0]?.name}
+                          Providers: {gateway.providers.length}
                         </p>
                       )}
                     </div>
@@ -158,6 +166,48 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                 <p className="text-gray-400 text-center">
                   No payment methods available
                 </p>
+              </div>
+            )}
+
+            {/* Provider Selection */}
+            {currentGateway && currentGateway.providers?.length > 0 && (
+              <div className="mt-4">
+                <p className="text-base text-left mb-2 font-medium">
+                  Select Provider
+                </p>
+                {currentGateway.providers.map((provider, index) => (
+                  <div
+                    key={provider.id}
+                    className={`flex hover:bg-gray-900 cursor-pointer items-center justify-between second-bg px-5 border py-4 rounded-md mb-2 ${
+                      selectedProvider?.id === provider.id ||
+                      (!selectedProvider && index === 0)
+                        ? "border-yellow-400"
+                        : "border-gray-600"
+                    }`}
+                    onClick={() => setSelectedProvider(provider)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="text-left">
+                        <h4 className="text-[16px] font-medium text-white">
+                          {provider.name}
+                        </h4>
+                        <p className="text-gray-400 text-[14px]">
+                          Commission: {provider.commission}%
+                        </p>
+                        {provider.isRecomended && (
+                          <p className="text-yellow-400 text-[12px]">
+                            Recommended
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-1">
+                      <span className="text-[24px] text-yellow-400">
+                        <MdOutlineModeEdit />
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -205,13 +255,16 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   amountValue >= availableBalance.min &&
                   amountValue <= availableBalance.max;
 
-                const hasValidOptions = currentGateway && amount;
+                const hasValidOptions =
+                  currentGateway && currentProvider && amount;
 
                 if (isAmountValid && hasValidOptions) {
                   setTransferInfoValid(true);
                 } else {
                   if (!currentGateway) {
                     toast.error("Please select a payment method");
+                  } else if (!currentProvider) {
+                    toast.error("Please select a provider");
                   } else if (!amount) {
                     toast.error("Please enter an amount");
                   } else {
@@ -231,6 +284,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           depositOptions={{
             ...depositOptions,
             selectedGateway: currentGateway,
+            selectedProvider: currentProvider,
             amount: amount,
           }}
           stepDetails={stepDetails}
