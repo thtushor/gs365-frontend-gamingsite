@@ -12,24 +12,30 @@ const LocalBankInfo = ({
   depositOptions,
   gatewayInfo,
 }) => {
-   
   // Transform the new data structure to match the expected format
-  const transformedPaymentTypes = gatewayInfo?.paymentGateways?.map(gateway => ({
-    bonus: "3%", // Static bonus as requested
-    icon: gateway.iconUrl,
-    title: gateway.name,
-    transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
-    deposit_channel: gateway.providers,
-    gateway: gateway // Keep original gateway data for reference
-  })) || [];
+  const transformedPaymentTypes =
+    gatewayInfo?.paymentGateways?.map((gateway) => ({
+      bonus: "3%", // Static bonus as requested
+      icon: gateway.iconUrl,
+      title: gateway.name,
+      transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
+      deposit_channel: gateway.providers,
+      gateway: gateway, // Keep original gateway data for reference
+    })) || [];
 
-  const [selectedPaymentTypes, setSelectedPaymentTypes] = useState(
-    transformedPaymentTypes[0] || null
-  );
+  const [selectedPaymentTypes, setSelectedPaymentTypes] = useState(null);
+  const [selectedDepositChannel, setSelectedDepositChannel] = useState(null);
 
-  const [selectedDepositChannel, setSelectedDepositChannel] = useState(
-    transformedPaymentTypes[0]?.deposit_channel?.[0] || null
-  );
+  // Set default selections when data is loaded
+  useEffect(() => {
+    if (transformedPaymentTypes.length > 0 && !selectedPaymentTypes) {
+      const firstPaymentType = transformedPaymentTypes[0];
+      const firstDepositChannel = firstPaymentType?.deposit_channel?.[0];
+
+      setSelectedPaymentTypes(firstPaymentType);
+      setSelectedDepositChannel(firstDepositChannel);
+    }
+  }, [transformedPaymentTypes, selectedPaymentTypes]);
 
   // Update payment type
   useEffect(() => {

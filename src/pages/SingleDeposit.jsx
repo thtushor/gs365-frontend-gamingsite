@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BaseModal from "../components/Promotion/BaseModal";
@@ -279,6 +279,33 @@ const SingleDepositAndWithdrawPage = () => {
     deposit_channel: "",
     transfer_type: "",
   });
+
+  // Set default deposit options when payment method data is loaded
+  useEffect(() => {
+    if (paymentMethodData?.paymentGateways?.length > 0) {
+      const firstGateway = paymentMethodData.paymentGateways[0];
+      const firstProvider = firstGateway?.providers?.[0];
+
+      setDepositOptions({
+        payment_type: {
+          bonus: "3%",
+          icon: firstGateway.iconUrl,
+          title: firstGateway.name,
+          transfer_type: [
+            { id: firstGateway.id, title: `${firstGateway.name} Transfer` },
+          ],
+          deposit_channel: firstGateway.providers,
+          gateway: firstGateway,
+        },
+        payment_channel: "",
+        deposit_channel: firstProvider,
+        transfer_type: {
+          id: firstGateway.id,
+          title: `${firstGateway.name} Transfer`,
+        },
+      });
+    }
+  }, [paymentMethodData]);
 
   const [modalOpen, setModalOpen] = useState(false);
 
