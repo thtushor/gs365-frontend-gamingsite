@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./GameGrid.scss";
 import { Logo } from "../Logo/Logo";
+import demoImage from '../../assets/demogameimage.jpg'
 
 interface GameItem {
   id: string;
@@ -11,11 +12,18 @@ interface GameItem {
 }
 
 // Existing image URLs for reuse
+// const gameImages = [
+//   "https://img.b112j.com/upload/game/EVO/BDT/crazytime@CrazyTime0000001.png?v=1746102378802",
+//   "https://img.b112j.com/upload/game/AWCV2_SEXYBCRT/BDT/MX-LIVE-001_SEXY_1.png?v=1746048010403",
+//   "https://img.b112j.com/upload/game/AWCV2_SEXYBCRT/BDT/MX-LIVE-016.png?v=1746048172274",
+//   "https://img.b112j.com/upload/game/AWCV2_JILI/BDT/JILI-TABLE-017.png?v=1745811155061",
+// ];
+
 const gameImages = [
-  "https://img.b112j.com/upload/game/EVO/BDT/crazytime@CrazyTime0000001.png?v=1746102378802",
-  "https://img.b112j.com/upload/game/AWCV2_SEXYBCRT/BDT/MX-LIVE-001_SEXY_1.png?v=1746048010403",
-  "https://img.b112j.com/upload/game/AWCV2_SEXYBCRT/BDT/MX-LIVE-016.png?v=1746048172274",
-  "https://img.b112j.com/upload/game/AWCV2_JILI/BDT/JILI-TABLE-017.png?v=1745811155061",
+  demoImage,
+  demoImage,
+  demoImage,
+  demoImage,
 ];
 
 // Providers list

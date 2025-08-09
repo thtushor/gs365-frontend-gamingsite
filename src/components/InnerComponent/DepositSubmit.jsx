@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { SINGLE_IMAGE_UPLOAD_URL } from "../../lib/api/config";
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
   const [referenceId, setReferenceId] = useState("");
   const [receiptFile, setReceiptFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [uploadRes, setUploadRes] = useState(null);
 
   console.log("depositOptions", { depositOptions });
 
@@ -56,11 +61,34 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     if (file && ["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
       if (file.size <= 3 * 1024 * 1024) {
         setReceiptFile(file);
+        setUploadRes(null);
+        uploadSingleImage(file);
       } else {
         toast.error("File must be under 3MB");
       }
     } else {
       toast.error("Only JPG, JPEG or PNG files are allowed");
+    }
+  };
+
+  const uploadSingleImage = async (file) => {
+    setLoading(true);
+    setErrorMsg("");
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await axios.post(SINGLE_IMAGE_UPLOAD_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setUploadRes(res.data);
+      toast.success("Receipt uploaded successfully");
+    } catch (err) {
+      const message = err?.response?.data?.message || err.message || "Upload failed";
+      setUploadRes({ status: false, message });
+      setErrorMsg(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,6 +102,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       accountName,
       referenceId,
       receiptFile,
+      receiptUploadResponse: uploadRes,
       depositAmount: transferDetails.amount,
       bankDetails: transferDetails,
       depositChannel: selectedDepositChannel,
@@ -375,15 +404,24 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
             {receiptFile && (
               <p className="text-sm text-green-400 mt-1">{receiptFile.name}</p>
             )}
+            {loading && (
+              <p className="text-sm text-yellow-400 mt-1">Uploading...</p>
+            )}
+            {!loading && uploadRes?.status && (
+              <p className="text-sm text-green-400 mt-1">Upload successful</p>
+            )}
+            {!loading && errorMsg && (
+              <p className="text-sm text-red-400 mt-1">{errorMsg}</p>
+            )}
           </div>
         </div>
 
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          disabled={!accountName || !referenceId || !receiptFile}
+          disabled={!accountName || !referenceId || !receiptFile || loading}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
-            !accountName || !referenceId || !receiptFile
+            !accountName || !referenceId || !receiptFile || loading
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
               : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}
