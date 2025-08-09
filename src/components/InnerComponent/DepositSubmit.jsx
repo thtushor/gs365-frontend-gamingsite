@@ -4,6 +4,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axiosInstance from "../../lib/api/axios";
 import { SINGLE_IMAGE_UPLOAD_URL, API_ENDPOINTS } from "../../lib/api/config";
+import { useAuth } from "../../contexts/auth-context";
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
@@ -13,6 +14,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadRes, setUploadRes] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
   console.log("depositOptions", { depositOptions });
 
@@ -104,17 +106,15 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       return;
     }
 
+    // Only required fields for API
     const formData = {
-      accountName,
-      referenceId,
-      receiptFile,
-      receiptUploadResponse: uploadRes,
-      depositAmount: transferDetails.amount,
-      bankDetails: transferDetails,
-      depositChannel: selectedDepositChannel,
-      transferType: selectedTransferType,
-      gateway: selectedGateway,
-      provider: selectedProvider,
+      userId: user?.id,
+      amount: Number(transferDetails.amount),
+      currencyId: selectedGateway?.currencyId||1,
+      promotionId: depositOptions?.promotionId || null,
+      paymentGatewayProviderAccountId: accountInfo?.id,
+      notes: referenceId,
+      attachment: uploadRes?.data?.url || uploadRes?.url,
     };
 
     try {
@@ -124,17 +124,19 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         formData
       );
 
-      // Best-effort success handling based on common shapes
       const success = res?.status >= 200 && res?.status < 300;
       const apiStatus = res?.data?.status;
-      const message = res?.data?.message ||
-        (success ? "Deposit information submitted successfully!" : "Failed to submit deposit information");
+      const message =
+        res?.data?.message ||
+        (success
+          ? "Deposit information submitted successfully!"
+          : "Failed to submit deposit information");
 
       if (apiStatus === false) {
         toast.error(message);
       } else {
         toast.success(message);
-        console.log("Submitted Data:", formData);
+        setStep(stepDetails?.nextStep || 0);
       }
     } catch (error) {
       const message = error?.message || "Failed to submit deposit information";
