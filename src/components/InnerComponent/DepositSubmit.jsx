@@ -114,7 +114,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       promotionId: depositOptions?.promotionId || null,
       paymentGatewayProviderAccountId: accountInfo?.id,
       notes: referenceId,
-      attachment: uploadRes?.data?.url || uploadRes?.url,
+      attachment: uploadRes?.data?.original || uploadRes?.original,
     };
 
     try {
