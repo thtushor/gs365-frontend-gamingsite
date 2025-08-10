@@ -35,6 +35,8 @@ export const API_ENDPOINTS = {
   PAYMENT: {
     GET_METHODS: "/api/payment-method",      // PAy
     GET_PAYMENT_METHODS_BY_NAME: "/api/payment-method/name",
+    DEPOSIT_TRANSACTION: "/api/transactions/deposit",
+    WITHDRAW_TRANSACTION: "/api/transactions/withdraw",
   },
 
   // User endpoints

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { SINGLE_IMAGE_UPLOAD_URL } from "../../lib/api/config";
+import axiosInstance from "../../lib/api/axios";
+import { SINGLE_IMAGE_UPLOAD_URL, API_ENDPOINTS } from "../../lib/api/config";
+import { useAuth } from "../../contexts/auth-context";
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
@@ -11,6 +13,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadRes, setUploadRes] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
   console.log("depositOptions", { depositOptions });
 
@@ -92,27 +96,54 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!accountName || !referenceId || !receiptFile) {
       toast.error("Please fill all the fields and upload the receipt.");
       return;
     }
+    if (loading) {
+      toast.info("Please wait until the receipt upload completes.");
+      return;
+    }
 
+    // Only required fields for API
     const formData = {
-      accountName,
-      referenceId,
-      receiptFile,
-      receiptUploadResponse: uploadRes,
-      depositAmount: transferDetails.amount,
-      bankDetails: transferDetails,
-      depositChannel: selectedDepositChannel,
-      transferType: selectedTransferType,
-      gateway: selectedGateway,
-      provider: selectedProvider,
+      userId: user?.id,
+      amount: Number(transferDetails.amount),
+      currencyId: selectedGateway?.currencyId||1,
+      promotionId: depositOptions?.promotionId || null,
+      paymentGatewayProviderAccountId: accountInfo?.id,
+      notes: referenceId,
+      attachment: uploadRes?.data?.original || uploadRes?.original,
     };
 
-    console.log("Submitted Data:", formData);
-    toast.success("Deposit information submitted successfully!");
+    try {
+      setIsSubmitting(true);
+      const res = await axiosInstance.post(
+        API_ENDPOINTS.PAYMENT.DEPOSIT_TRANSACTION,
+        formData
+      );
+
+      const success = res?.status >= 200 && res?.status < 300;
+      const apiStatus = res?.data?.status;
+      const message =
+        res?.data?.message ||
+        (success
+          ? "Deposit information submitted successfully!"
+          : "Failed to submit deposit information");
+
+      if (apiStatus === false) {
+        toast.error(message);
+      } else {
+        toast.success(message);
+        setStep(stepDetails?.nextStep || 0);
+      }
+    } catch (error) {
+      const message = error?.message || "Failed to submit deposit information";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -419,14 +450,14 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          disabled={!accountName || !referenceId || !receiptFile || loading}
+          disabled={!accountName || !referenceId || !receiptFile || loading || isSubmitting}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
-            !accountName || !referenceId || !receiptFile || loading
+            !accountName || !referenceId || !receiptFile || loading || isSubmitting
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
               : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}
         >
-          Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </div>
     </div>
