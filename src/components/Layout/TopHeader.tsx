@@ -8,6 +8,8 @@ import {
   FaTelegram,
 } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
+import { DownloadIcon } from "lucide-react";
+import { PiDownloadSimpleBold } from "react-icons/pi";
 
 const TopHeader: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>("");
@@ -63,6 +65,13 @@ const TopHeader: React.FC = () => {
                 <span>৳&nbsp;BDT</span>&nbsp;বাংলা
               </p>
             </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="flex flex-col text-yellow-400 sm:hidden">
+            <PiDownloadSimpleBold size={20} />
+            <span className="text-[10px] mt-[-3px]">App</span>
           </div>
         </div>
 
