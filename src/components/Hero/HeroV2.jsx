@@ -49,7 +49,13 @@ export const HeroV2 = () => {
   });
 
   if (isLoading) {
-    return <div className="hero-section">Loading banners...</div>;
+    return (
+      <div className="hero-section">
+        <div className="game-grid-container loading">
+          <div className="loading-spinner"></div>
+        </div>
+      </div>
+    );
   }
 
   if (isError) {

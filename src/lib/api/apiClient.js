@@ -5,7 +5,8 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://gs-server-svmt.onrender.com";
+// export const BASE_URL = "https://gs-server-svmt.onrender.com";
+export const BASE_URL = "https://gs-backend-73tu.onrender.com";
 // export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_HERO_BANNERS: "/api/public/banners-list",
@@ -168,8 +169,6 @@ export const useUpdateRequest = () => {
     refetch = false,
   }) => {
     try {
-
-
       const options = {
         method,
         headers: {
@@ -178,11 +177,11 @@ export const useUpdateRequest = () => {
         },
         ...(body
           ? {
-            body:
-              contentType === "application/json"
-                ? JSON.stringify(body)
-                : body,
-          }
+              body:
+                contentType === "application/json"
+                  ? JSON.stringify(body)
+                  : body,
+            }
           : {}),
       };
 

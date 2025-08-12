@@ -21,6 +21,7 @@ import formatDate from "../../lib/utils/formatDate";
 import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { CircleDollarSignIcon } from "lucide-react";
+import { CurrencyModal } from "../Modal/CurrencyModal";
 
 // import SeoSection from "./SeoSection";
 
@@ -107,6 +108,13 @@ const Header: React.FC = () => {
       });
   };
 
+  // currency modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currencyLang, setCurrencyLang] = useState({
+    currency: "BDT",
+    language: "bn",
+  });
+
   return (
     <>
       <TopHeader />
@@ -117,7 +125,7 @@ const Header: React.FC = () => {
             <div onClick={() => navigate("/")}>
               <Logo />
             </div>
-            <div className="sponsor-slider-wrapper">
+            {/* <div className="sponsor-slider-wrapper">
               <Slider {...sliderSettings}>
                 {sponsorImages.map((img, idx) => (
                   <div key={idx} className="sponsor-slide-item">
@@ -129,7 +137,7 @@ const Header: React.FC = () => {
                   </div>
                 ))}
               </Slider>
-            </div>
+            </div> */}
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
@@ -172,7 +180,7 @@ const Header: React.FC = () => {
             ) : (
               // User is not logged in - show login/signup buttons
               <>
-                <button className="login-btn" onClick={handleLoginClick}>
+                <button className="signup-btn-green" onClick={handleLoginClick}>
                   লগইন
                 </button>
                 <button
@@ -183,7 +191,10 @@ const Header: React.FC = () => {
                 </button>
               </>
             )}
-            <div className="country-flag-container">
+            <div
+              className="country-flag-container cursor-pointer border-2 border-yellow-300"
+              onClick={() => setModalOpen(true)}
+            >
               <img
                 src="https://img.b112j.com/bj/h5/assets/v3/images/icon-set/flag-type/BD.png"
                 alt="Bangladesh Flag"
@@ -199,6 +210,13 @@ const Header: React.FC = () => {
         isOpen={isLoginPopupOpen}
         onClose={() => setIsLoginPopupOpen(false)}
         onSignUpClick={handleRegisterClick}
+      />
+
+      <CurrencyModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onChange={setCurrencyLang}
+        value={currencyLang}
       />
     </>
   );

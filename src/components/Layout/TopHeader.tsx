@@ -45,23 +45,28 @@ const TopHeader: React.FC = () => {
   return (
     <div className="top-header">
       <div className="top-header-inner">
-        <span className="top-header-time" title={currentDate}>
-          {currentTime}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="top-header-time" title={currentDate}>
+            {currentTime}
+          </span>
 
-        <div className="language-wrap">
-          <div
-            className="language cursor-pointer"
-            onClick={() => setModalOpen(true)}
-          >
-            <img src="https://img.b112j.com/images/web/flag/BD.png" alt="bn" />
-            <p>
-              <span>৳&nbsp;BDT</span>&nbsp;বাংলা
-            </p>
+          <div className="language-wrap">
+            <div
+              className="language cursor-pointer"
+              onClick={() => setModalOpen(true)}
+            >
+              <img
+                src="https://img.b112j.com/images/web/flag/BD.png"
+                alt="bn"
+              />
+              <p>
+                <span>৳&nbsp;BDT</span>&nbsp;বাংলা
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="header-online-service">
+        {/* <div className="header-online-service">
           <ul className="online-service-inner">
             <li>
               <a href="#" className="service-link whatsapp-link">
@@ -103,7 +108,7 @@ const TopHeader: React.FC = () => {
               </a>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
       <CurrencyModal
         isOpen={modalOpen}

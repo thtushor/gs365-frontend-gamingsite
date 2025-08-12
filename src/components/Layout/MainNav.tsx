@@ -9,64 +9,6 @@ import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
 import { useLocation, Link } from "react-router-dom";
 
-// interface SubNavItem {
-//   name: string;
-//   image1: string;
-//   image2: string;
-//   image3: string;
-// }
-
-// const sports: SubNavItem[] = [
-//   {
-//     name: "ক্রিকেট",
-//     image1: "/assets/sports/cricket1.png",
-//     image2: "/assets/sports/cricket2.png",
-//     image3: "/assets/sports/cricket3.png",
-//   },
-//   {
-//     name: "ফুটবল",
-//     image1: "/assets/sports/football1.png",
-//     image2: "/assets/sports/football2.png",
-//     image3: "/assets/sports/football3.png",
-//   },
-//   {
-//     name: "টেনিস",
-//     image1: "/assets/sports/tennis1.png",
-//     image2: "/assets/sports/tennis2.png",
-//     image3: "/assets/sports/tennis3.png",
-//   },
-//   {
-//     name: "বাস্কেটবল",
-//     image1: "/assets/sports/basketball1.png",
-//     image2: "/assets/sports/basketball2.png",
-//     image3: "/assets/sports/basketball3.png",
-//   },
-//   {
-//     name: "ভলিবল",
-//     image1: "/assets/sports/volleyball1.png",
-//     image2: "/assets/sports/volleyball2.png",
-//     image3: "/assets/sports/volleyball3.png",
-//   },
-//   {
-//     name: "টেবল টেনিস",
-//     image1: "/assets/sports/tabletennis1.png",
-//     image2: "/assets/sports/tabletennis2.png",
-//     image3: "/assets/sports/tabletennis3.png",
-//   },
-//   {
-//     name: "বোলিং",
-//     image1: "/assets/sports/bowling1.png",
-//     image2: "/assets/sports/bowling2.png",
-//     image3: "/assets/sports/bowling3.png",
-//   },
-//   {
-//     name: "বেসবল",
-//     image1: "/assets/sports/baseball1.png",
-//     image2: "/assets/sports/baseball2.png",
-//     image3: "/assets/sports/baseball3.png",
-//   },
-// ];
-
 const subnavOptions = [
   {
     title: "I-Sports",
@@ -449,7 +391,15 @@ const MainNav: React.FC = () => {
   }, [location]);
 
   return (
-    <div className="main-nav relative" ref={navRef}>
+    <div
+      className="main-nav relative"
+      ref={navRef}
+      onMouseLeave={() => {
+        if (subMenuAnimationState === "open") {
+          setOpenSubNav(null);
+        }
+      }}
+    >
       <ul className="nav-inner">
         <li className={`nav-item ${activePage === "/" ? "active" : ""}`}>
           <Link to="/">

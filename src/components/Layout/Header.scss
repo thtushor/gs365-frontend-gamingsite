@@ -111,6 +111,65 @@
         inset 0 0 8px rgba(255, 215, 0, 0.4);
     }
   }
+
+
+  .signup-btn-green {
+    background: linear-gradient(
+      90deg,
+      #00ff99,  // Bright gold
+      #00ce7c,  // Amber
+      #00dc84,  // Strong gold
+      #00ff99   // Bright gold
+    );
+    background-size: 300% 100%;
+    color: #000;
+    border: 2px solid #00ff99;
+    border-radius: 4px;
+    padding: 4px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 2px 8px #00ff998e,
+      inset 0 0 10px #00ff9985;
+    animation: gradientMove 3s linear infinite;
+
+    // Wave animation
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      animation: wave 3s infinite linear;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 4px 12px #00ff99,
+        inset 0 0 15px #00ff99a7;
+      border-color: #00ff99;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 
+        0 2px 4px #00ff99a7,
+        inset 0 0 8px #00ff99;
+    }
+  }
 }
 
 @keyframes gradientMove {
@@ -141,6 +200,9 @@
   perspective: 1000px;
   will-change: transform, box-shadow;
 }
+
+
+
 
 .header-mainbar {
   display: flex;
@@ -259,6 +321,65 @@
         inset 0 0 8px rgba(255, 215, 0, 0.4);
     }
   }
+
+  .signup-btn-green {
+    background: linear-gradient(
+      90deg,
+      #00ff99,  // Bright gold
+      #00ce7c,  // Amber
+      #00dc84,  // Strong gold
+      #00ff99   // Bright gold
+    );
+    background-size: 300% 100%;
+    color: #000;
+    border: 2px solid #00ff99;
+    border-radius: 4px;
+    padding: 4px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 2px 8px #00ff998e,
+      inset 0 0 10px #00ff9985;
+    animation: gradientMove 3s linear infinite;
+
+    // Wave animation
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      animation: wave 3s infinite linear;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 4px 12px #00ff99,
+        inset 0 0 15px #00ff99a7;
+      border-color: #00ff99;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 
+        0 2px 4px #00ff99a7,
+        inset 0 0 8px #00ff99;
+    }
+  }
+
 }
 
 .login-btn {
@@ -277,8 +398,8 @@
 }
 
 .country-flag-container {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;

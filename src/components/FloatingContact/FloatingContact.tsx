@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import "./FloatingContact.scss";
 // Import social icons
-import { FaWhatsapp, FaFacebookF } from "react-icons/fa";
+import { FaWhatsapp, FaFacebookF, FaTelegram } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
 import qrCode from "../../assets/qrcode.jpg";
@@ -86,6 +86,35 @@ const FloatingContact: React.FC = () => {
 
           {/* Contact Options */}
           <div className="contact-options-list">
+            {/* Facebook Option */}
+            <div
+              className={`contact-option ${
+                expandedContact === "Facebook" ? "expanded" : ""
+              }`}
+              onClick={() => handleContactClick("Facebook")}
+            >
+              <div className="contact-info">
+                <span className="contact-icon">
+                  <FaFacebookF />
+                </span>
+                <span>Facebook</span>
+              </div>
+              <span className="expand-icon">
+                {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
+              </span>
+            </div>
+            <div
+              className={`qr-code-area ${
+                expandedContact === "Facebook" ? "expanded" : ""
+              }`}
+            >
+              <img
+                src={qrCode}
+                alt="Facebook QR Code"
+                className="qr-code-image"
+              />
+            </div>
+
             {/* Whatsapp Option */}
             <div
               className={`contact-option ${
@@ -115,6 +144,35 @@ const FloatingContact: React.FC = () => {
               />
             </div>
 
+            {/* Telegram Option */}
+            <div
+              className={`contact-option ${
+                expandedContact === "Telegram" ? "expanded" : ""
+              }`}
+              onClick={() => handleContactClick("Telegram")}
+            >
+              <div className="contact-info">
+                <span className="contact-icon">
+                  <FaTelegram />
+                </span>
+                <span>Telegram</span>
+              </div>
+              <span className="expand-icon">
+                {expandedContact === "Telegram" ? <FaMinus /> : <FaPlus />}
+              </span>
+            </div>
+            <div
+              className={`qr-code-area ${
+                expandedContact === "Telegram" ? "expanded" : ""
+              }`}
+            >
+              <img
+                src={qrCode}
+                alt="Telegram QR Code"
+                className="qr-code-image"
+              />
+            </div>
+
             {/* Email Option */}
             <div
               className={`contact-option ${
@@ -138,35 +196,6 @@ const FloatingContact: React.FC = () => {
               }`}
             >
               <img src={qrCode} alt="Email QR Code" className="qr-code-image" />
-            </div>
-
-            {/* Facebook Option */}
-            <div
-              className={`contact-option ${
-                expandedContact === "Facebook" ? "expanded" : ""
-              }`}
-              onClick={() => handleContactClick("Facebook")}
-            >
-              <div className="contact-info">
-                <span className="contact-icon">
-                  <FaFacebookF />
-                </span>
-                <span>Facebook</span>
-              </div>
-              <span className="expand-icon">
-                {expandedContact === "Facebook" ? <FaMinus /> : <FaPlus />}
-              </span>
-            </div>
-            <div
-              className={`qr-code-area ${
-                expandedContact === "Facebook" ? "expanded" : ""
-              }`}
-            >
-              <img
-                src={qrCode}
-                alt="Facebook QR Code"
-                className="qr-code-image"
-              />
             </div>
           </div>
         </div>
