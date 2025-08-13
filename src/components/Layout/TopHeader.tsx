@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TopHeader.scss";
-import {
-  FaWhatsapp,
-  FaEnvelope,
-  FaFacebookF,
-  // FaComments,
-  FaTelegram,
-} from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
-import { DownloadIcon } from "lucide-react";
 import { PiDownloadSimpleBold } from "react-icons/pi";
 
 const TopHeader: React.FC = () => {

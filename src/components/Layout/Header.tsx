@@ -8,7 +8,6 @@ import { MdOutlineLockPerson } from "react-icons/md";
 
 import "./Header.scss";
 import { Logo } from "../Logo/Logo";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopHeader from "./TopHeader";
@@ -25,23 +24,23 @@ import { CurrencyModal } from "../Modal/CurrencyModal";
 
 // import SeoSection from "./SeoSection";
 
-const sponsorImages = [
-  "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/biratnagar-kings.png",
-  "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/afc-bournemouth.png",
-  "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/bologna-fc-1909.png",
-  "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/quetta-gladiators.png",
-];
+// const sponsorImages = [
+//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/biratnagar-kings.png",
+//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/afc-bournemouth.png",
+//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/bologna-fc-1909.png",
+//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/quetta-gladiators.png",
+// ];
 
-const sliderSettings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 3000,
-  arrows: false,
-};
+// const sliderSettings = {
+//   dots: false,
+//   infinite: true,
+//   speed: 500,
+//   slidesToShow: 1,
+//   slidesToScroll: 1,
+//   autoplay: true,
+//   autoplaySpeed: 3000,
+//   arrows: false,
+// };
 
 const Header: React.FC = () => {
   const { logout: handleContextLogout, user } = useAuth();
