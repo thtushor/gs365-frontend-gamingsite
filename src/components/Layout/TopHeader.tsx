@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./TopHeader.scss";
+import { FaStar } from "react-icons/fa";
+import { CurrencyModal } from "../Modal/CurrencyModal";
+import { Logo } from "../Logo/Logo";
+import { BiCloudDownload } from "react-icons/bi";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import { PiDownloadSimpleBold } from "react-icons/pi";
 
@@ -36,10 +40,14 @@ const TopHeader: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleDownloadApp = () => {
+    console.log("Downloaded!");
+  };
+
   return (
     <div className="top-header">
       <div className="top-header-inner">
-        <div className="flex items-center gap-4">
+        <div className="items-center gap-4 md:flex hidden">
           <span className="top-header-time" title={currentDate}>
             {currentTime}
           </span>
@@ -60,11 +68,29 @@ const TopHeader: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <div className="flex flex-col text-yellow-400 sm:hidden">
-            <PiDownloadSimpleBold size={20} />
-            <span className="text-[10px] mt-[-3px]">App</span>
+        <div className="flex items-center md:hidden">
+          <Logo />
+          <div className="flex items-start flex-col">
+            <p className="text-[10px] font-semibold text-yellow-300">
+              GS360 APP
+            </p>
+            <div className="flex text-yellow-300 gap-[3px]">
+              <FaStar />
+              <FaStar />
+              <FaStar />
+              <FaStar />
+              <FaStar />
+            </div>
           </div>
+        </div>
+
+        <div className="header-auth md:hidden">
+          <button
+            className="signup-btn download-btn flex gap-[2px]"
+            onClick={() => handleDownloadApp()}
+          >
+            Download <BiCloudDownload size={18} />
+          </button>
         </div>
 
         {/* <div className="header-online-service">

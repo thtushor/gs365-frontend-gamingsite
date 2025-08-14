@@ -852,66 +852,66 @@ export const filterOptions = [
 ];
 
 export const seoTitle =
-  "GameStar365 বাংলাদেশ - বাংলাদেশে শীর্ষ ক্র্যাশ গেম প্রদানকারীরা: উত্তেজনাপূর্ণ গেমপ্লেতে আপনার প্রবেশদ্বার";
+  "GameStar365 – Top Crash Game Providers in Bangladesh: Your Gateway to Exciting Gameplay";
 export const seoContent = `
-<p>ক্র্যাশ গেমগুলি অনলাইন গেমিং উত্সাহীদের মধ্যে দ্রুত জনপ্রিয় হয়ে উঠছে এবং বাংলাদেশে এই উত্তেজনাপূর্ণ গেমগুলির জনপ্রিয়তা ক্রমশ বাড়ছে। আপনি যদি এমন একটি উচ্চ-অকটেন গেমিং অভিজ্ঞতা খুঁজছেন যা সরলতার সাথে উত্তেজনার মিশ্রণ করে, তবে আপনি সঠিক জায়গায় রয়েছেন। আমাদের প্ল্যাটফর্মটি শীর্ষ গেম প্রদানকারীদের কাছ থেকে ক্র্যাশ গেমগুলির একটি বৈচিত্র্যময় নির্বাচন অফার করে, যা নিশ্চিত করে যে প্রতিটি খেলোয়াড় তাদের পরবর্তী প্রিয় গেমটি খুঁজে পেতে পারে। ক্র্যাশ গেমের জগতে প্রবেশ করুন এবং বিনোদনের নতুন স্তর আবিষ্কার করুন!</p>
+<p>Crash games are rapidly gaining popularity among online gaming enthusiasts, and in Bangladesh, their appeal is growing day by day. If you’re looking for a high-octane gaming experience that blends simplicity with excitement, you’ve come to the right place. Our platform offers a diverse selection of crash games from top providers, ensuring that every player can find their next favorite. Step into the world of crash games and discover a whole new level of entertainment!</p>
 
 <p>&nbsp;</p>
 
-<p><strong>ক্র্যাশ গেমগুলি কী?</strong></p>
+<p><strong>What Are Crash Games?</strong></p>
 
-<p>ক্র্যাশ গেমগুলি একটি অনলাইন গেমের ধরন যেখানে খেলোয়াড়রা বাজি ধরে যে একটি মাল্টিপ্লায়ার ক্র্যাশ হওয়ার আগে কতক্ষণ বাড়তে থাকবে। লক্ষ্য হল ক্র্যাশ হওয়ার আগে ক্যাশ আউট করা যাতে আপনার বাজির বহুগুণিত পরিমাণ জিততে পারেন। এই দ্রুতগতির, উচ্চ-স্টেকের গেমপ্লে ক্র্যাশ গেমগুলিকে তাদের জন্য একটি জনপ্রিয় পছন্দ করে তোলে যারা ভাগ্য এবং কৌশলের মিশ্রণ উপভোগ করেন।</p>
-
-<p>&nbsp;</p>
-
-<p><strong>শীর্ষ ক্র্যাশ গেম প্রদানকারীদের আবিষ্কার করুন</strong></p>
-
-<p>আমাদের প্ল্যাটফর্মে শিল্পের শীর্ষস্থানীয় প্রদানকারীদের কাছ থেকে ক্র্যাশ গেমগুলির একটি বিস্তৃত সংগ্রহ রয়েছে, প্রতিটি তাদের অনন্য ফ্লেয়ার নিয়ে এসেছে:</p>
+<p>Crash games are a type of online game where players bet on how long a multiplier will continue to rise before it crashes. The goal is to cash out before the crash happens so that you can win a multiplied amount of your wager. This fast-paced, high-stakes gameplay makes crash games a popular choice for those who enjoy a mix of luck and strategy.</p>
 
 <p>&nbsp;</p>
 
-<p>● Microgaming: তাদের বিস্তৃত পোর্টফোলিও এবং উচ্চ-মানের গেমগুলির জন্য পরিচিত, Microgaming উদ্ভাবনী ক্র্যাশ গেম অফার করে যা উভয়ই দৃষ্টিনন্দন এবং আকর্ষণীয়। তাদের গেমগুলি একটি নির্বিঘ্ন অভিজ্ঞতা প্রদান করার জন্য ডিজাইন করা হয়েছে এবং খেলোয়াড়দের আসনের প্রান্তে রাখতে।<br>
-● SABA Sports: SABA Sports ক্র্যাশ গেমের উত্তেজনার সাথে খেলাধুলার উত্তেজনাকে একত্রিত করে, ঐতিহ্যবাহী গেমপ্লেতে একটি অনন্য মোড় সরবরাহ করে। তাদের ক্র্যাশ গেমগুলি উচ্চ শক্তি এবং প্রতিযোগিতামূলক মজার অভিজ্ঞতা দিতে তৈরি করা হয়েছে।<br>
-● JDB এবং CQ9: এই প্রদানকারীরা তাদের সৃজনশীল গেম ডিজাইনের জন্য সুপরিচিত। তাদের ক্র্যাশ গেমগুলি অত্যাশ্চর্য গ্রাফিক্স এবং মসিস অ্যানিমেশনগুলির বৈশিষ্ট্যযুক্ত, যা একটি নিমগ্ন এবং বিনোদনমূলক অভিজ্ঞতা নিশ্চিত করে।<br>
-● Pocket Games এবং Evo: আধুনিক স্পর্শ সহ গেম অফার করে, Pocket Games এবং Evo ক্র্যাশ গেমগুলি তৈরিতে দক্ষ যা উদ্ভাবনী এবং ব্যবহারকারী-বান্ধব উভয়ই। তাদের গেমগুলি বিভিন্ন পছন্দ সহ বিস্তৃত খেলোয়াড়দের আকর্ষণ করার জন্য ডিজাইন করা হয়েছে।<br>
-● Big Gaming এবং SBO Sports: Big Gaming এবং SBO Sports উত্তেজনাপূর্ণ বৈশিষ্ট্য এবং উচ্চ-মানের ভিজ্যুয়ালগুলির সাথে ক্র্যাশ গেমগুলি প্রদান করে। এই গেমগুলি সেই খেলোয়াড়দের জন্য উপযুক্ত যারা দ্রুতগতির অ্যাকশন এবং গতিশীল গেমপ্লে উপভোগ করেন।</p>
+<p><strong>Discover Top Crash Game Providers</strong></p>
+
+<p>Our platform features a wide collection of crash games from the industry’s leading providers, each bringing their own unique flair:</p>
 
 <p>&nbsp;</p>
 
-<p><strong>এক্সক্লুসিভ শিরোনাম এবং উদ্ভাবনী বৈশিষ্ট্য</strong></p>
-
-<p>আমাদের প্ল্যাটফর্মে BPOKER, LUDO, KA, এবং WM-এর মতো প্রদানকারীদের কাছ থেকে এক্সক্লুসিভ ক্র্যাশ গেমগুলি রয়েছে। এই শিরোনামগুলি অনন্য বৈশিষ্ট্য এবং গেম মেকানিক্স অফার করে যা প্রতিযোগীদের থেকে আলাদা করে। আপনি ক্লাসিক ক্র্যাশ গেমপ্লেতে আকৃষ্ট হন বা কিছু নতুন এবং ভিন্ন কিছু খুঁজছেন, আমাদের এক্সক্লুসিভ গেমগুলি একটি অনন্য গেমিং অভিজ্ঞতা প্রদান করে।</p>
-
-<p>&nbsp;</p>
-
-<p>Sexy, RT, SG, এবং KM আমাদের সংগ্রহেও বিশিষ্ট, আকর্ষণীয় থিম এবং আকর্ষক গেমপ্লে সহ গেম অফার করে। তাদের ক্র্যাশ গেমগুলি একটি অ্যাড্রেনালিন-পাম্পিং অভিজ্ঞতা প্রদান করার জন্য ডিজাইন করা হয়েছে যা খেলোয়াড়দের বারবার ফিরে আসতে বাধ্য করে।</p>
+<p>● <strong>Microgaming:</strong> Known for their extensive portfolio and high-quality games, Microgaming offers innovative crash games that are both visually stunning and engaging. Their games are designed to deliver a seamless experience and keep players on the edge of their seats.<br>
+● <strong>SABA Sports:</strong> SABA Sports combines the thrill of crash games with the excitement of sports, providing a unique twist on traditional gameplay. Their crash games are designed to deliver high energy and competitive fun.<br>
+● <strong>JDB and CQ9:</strong> These providers are well-known for their creative game designs. Their crash games feature stunning graphics and smooth animations, ensuring an immersive and entertaining experience.<br>
+● <strong>Pocket Games and Evo:</strong> Offering games with a modern touch, Pocket Games and Evo excel at creating crash games that are both innovative and user-friendly. Their games are designed to appeal to a wide range of players with varying preferences.<br>
+● <strong>Big Gaming and SBO Sports:</strong> Big Gaming and SBO Sports deliver crash games with exciting features and high-quality visuals. These games are perfect for players who enjoy fast-paced action and dynamic gameplay.</p>
 
 <p>&nbsp;</p>
 
-<p><strong>আমাদের ক্র্যাশ গেম প্ল্যাটফর্মটি কেন বেছে নেবেন?</strong></p>
+<p><strong>Exclusive Titles and Innovative Features</strong></p>
 
-<p>আমাদের প্ল্যাটফর্মটি বাংলাদেশের উত্সাহীদের জন্য একটি প্রথম-শ্রেণীর গেমিং অভিজ্ঞতা প্রদান করতে নিবেদিত। এখানে কেন আপনার ক্র্যাশ গেমের প্রয়োজনের জন্য আমাদের বেছে নেওয়া উচিত:</p>
-
-<p>&nbsp;</p>
-
-<p>● বৈচিত্র্যময় নির্বাচন: আমরা শীর্ষস্থানীয় প্রদানকারীদের কাছ থেকে বিস্তৃত ক্র্যাশ গেম অফার করি, যা নিশ্চিত করে যে সবার জন্য কিছু না কিছু আছে। ঐতিহ্যবাহী ক্র্যাশ গেম থেকে শুরু করে উদ্ভাবনী নতুন শিরোনাম পর্যন্ত, আপনি এখানে সবকিছু পাবেন।<br>
-● উচ্চ-মানের গেমিং: আমাদের সমস্ত গেম শীর্ষ প্রদানকারীদের দ্বারা বিকশিত হয়েছে যেমন JILI, P8, FC, PP, PT, এবং WorldMatch, যেগুলি মান এবং শ্রেষ্ঠত্বের জন্য তাদের প্রতিশ্রুতির জন্য পরিচিত। আপনি মসৃণ গেমপ্লে, অত্যাধুনিক গ্রাফিক্স এবং উত্তেজনাপূর্ণ বৈশিষ্ট্যগুলি আশা করতে পারেন।<br>
-● ব্যবহারকারী-বান্ধব ইন্টারফেস: আমাদের প্ল্যাটফর্মটি স্বজ্ঞাত এবং নেভিগেট করতে সহজ করার জন্য ডিজাইন করা হয়েছে, আপনাকে দ্রুত আপনার প্রিয় ক্র্যাশ গেমগুলি খুঁজে পেতে এবং খেলতে দেয়।<br>
-● নিরাপদ এবং ন্যায্য গেমিং: আমরা আপনার নিরাপত্তা এবং আমাদের সমস্ত গেমে ন্যায্যতার অগ্রাধিকার দিই। আমাদের প্ল্যাটফর্মটি সম্পূর্ণভাবে লাইসেন্সপ্রাপ্ত এবং নিয়ন্ত্রিত, আপনার গেমিং ক্রিয়াকলাপের জন্য একটি নিরাপদ পরিবেশ নিশ্চিত করে।</p>
+<p>Our platform also features exclusive crash games from providers such as BPOKER, LUDO, KA, and WM. These titles offer unique features and game mechanics that set them apart from the competition. Whether you’re drawn to classic crash gameplay or looking for something new and different, our exclusive games provide a one-of-a-kind gaming experience.</p>
 
 <p>&nbsp;</p>
 
-<p><strong>আমাদের সাথে যোগদান করুন এবং এক্সক্লুসিভ সুবিধা উপভোগ করুন</strong></p>
-
-<p>আমাদের প্ল্যাটফর্মে যোগদান করে, আপনি শুধুমাত্র ক্র্যাশ গেমগুলির একটি দুর্দান্ত নির্বাচনের অ্যাক্সেসই পান না বরং একটি প্রাণবন্ত গেমিং সম্প্রদায়ের অংশ হয়ে ওঠেন। আমরা একটি রেফারেল প্রোগ্রাম অফার করি যা আপনাকে আমাদের প্ল্যাটফর্মে বন্ধুদের আমন্ত্রণ জানানোর জন্য পুরস্কৃত করে। প্রতিটি বন্ধু সাইন আপ করে এবং খেলে, আপনি একটি রেফারেল বোনাস পাবেন, উত্তেজনা ভাগাভাগি করা এবং পুরস্কার অর্জন করা সহজ করে তোলে।</p>
+<p>Sexy, RT, SG, and KM are also featured in our collection, offering games with captivating themes and engaging gameplay. Their crash games are designed to deliver an adrenaline-pumping experience that keeps players coming back for more.</p>
 
 <p>&nbsp;</p>
 
-<p>আমরা আমাদের সদস্যদের জন্য এক্সক্লুসিভ প্রচার এবং বোনাসও প্রদান করি। স্বাগত অফার থেকে শুরু করে চলমান প্রচার পর্যন্ত, আমরা অতিরিক্ত পুরস্কার এবং সুযোগগুলি দিয়ে আপনার গেমিং অভিজ্ঞতা বাড়ানোর জন্য প্রতিশ্রুতিবদ্ধ।</p>
+<p><strong>Why Choose Our Crash Game Platform?</strong></p>
+
+<p>Our platform is dedicated to providing a first-class gaming experience for enthusiasts in Bangladesh. Here’s why you should choose us for your crash game needs:</p>
 
 <p>&nbsp;</p>
 
-<p><strong>উপসংহার</strong></p>
+<p>● <strong>Diverse Selection:</strong> We offer a wide range of crash games from top-tier providers, ensuring there’s something for everyone. From traditional crash games to innovative new titles, you’ll find it all here.<br>
+● <strong>High-Quality Gaming:</strong> All our games are developed by top providers such as JILI, P8, FC, PP, PT, and WorldMatch, known for their commitment to quality and excellence. You can expect smooth gameplay, cutting-edge graphics, and exciting features.<br>
+● <strong>User-Friendly Interface:</strong> Our platform is designed to be intuitive and easy to navigate, allowing you to quickly find and play your favorite crash games.<br>
+● <strong>Safe and Fair Gaming:</strong> We prioritize your safety and fairness in all our games. Our platform is fully licensed and regulated, ensuring a secure environment for your gaming activities.</p>
 
-<p>বাংলাদেশে সেরা ক্র্যাশ গেমিং অভিজ্ঞতার জন্য, আমাদের প্ল্যাটফর্মের চেয়ে ভালো আর কিছুই নেই। Microgaming, SABA Sports, JDB, CQ9, Pocket Games এবং আরও অনেক শীর্ষ প্রদানকারীদের কাছ থেকে গেমের বিস্তৃত নির্বাচন সহ, আপনি উত্তেজনাপূর্ণ এবং ফলপ্রসূ গেমিং অভিজ্ঞতা পেতে নিশ্চিত। আজই সাইন আপ করুন, আমাদের বৈচিত্র্যময় ক্র্যাশ গেমগুলির পরিসীমা অন্বেষণ করুন এবং আমাদের রেফারেল প্রোগ্রামের সুবিধা নিন যাতে আপনি খেলতে খেলতে পুরস্কার অর্জন করতে পারেন। ক্র্যাশ গেমের জগতে ডুব দিন এবং কখনও আগে অনুভব না করা উচ্চ-স্টেক গেমিংয়ের রোমাঞ্চ অনুভব করুন!</p>
+<p>&nbsp;</p>
+
+<p><strong>Join Us and Enjoy Exclusive Benefits</strong></p>
+
+<p>By joining our platform, you not only gain access to an amazing selection of crash games but also become part of a vibrant gaming community. We offer a referral program that rewards you for inviting friends to our platform. For every friend who signs up and plays, you’ll receive a referral bonus, making it easy to share the excitement and earn rewards.</p>
+
+<p>&nbsp;</p>
+
+<p>We also provide exclusive promotions and bonuses for our members. From welcome offers to ongoing promotions, we are committed to enhancing your gaming experience with extra rewards and opportunities.</p>
+
+<p>&nbsp;</p>
+
+<p><strong>Conclusion</strong></p>
+
+<p>For the best crash gaming experience in Bangladesh, look no further than our platform. With a wide selection of games from top providers like Microgaming, SABA Sports, JDB, CQ9, Pocket Games, and more, you’re guaranteed an exciting and rewarding gaming experience. Sign up today, explore our diverse range of crash games, and take advantage of our referral program to earn rewards while you play. Dive into the world of crash games and experience the thrill of high-stakes gaming like never before!</p>
 `;

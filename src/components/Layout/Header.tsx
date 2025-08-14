@@ -21,27 +21,10 @@ import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { CircleDollarSignIcon } from "lucide-react";
 import { CurrencyModal } from "../Modal/CurrencyModal";
+import { HiMenuAlt1 } from "react-icons/hi";
+import MobileSideBar from "./MobileSideBar";
 
 // import SeoSection from "./SeoSection";
-
-// const sponsorImages = [
-//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/biratnagar-kings.png",
-//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/afc-bournemouth.png",
-//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/bologna-fc-1909.png",
-//   "https://img.b112j.com/bj/h5/assets/v3/images/sponsor/quetta-gladiators.png",
-// ];
-
-// const sliderSettings = {
-//   dots: false,
-//   infinite: true,
-//   speed: 500,
-//   slidesToShow: 1,
-//   slidesToScroll: 1,
-//   autoplay: true,
-//   autoplaySpeed: 3000,
-//   arrows: false,
-// };
-
 const Header: React.FC = () => {
   const { logout: handleContextLogout, user } = useAuth();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
@@ -114,29 +97,62 @@ const Header: React.FC = () => {
     language: "bn",
   });
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleOpenSidebar = () => {
+    setSidebarOpen(true);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <>
       <TopHeader />
 
-      <header className="custom-header">
+      <header className="custom-header py-[10px]">
         <div className="header-inner">
           <div className="header-left">
-            <div onClick={() => navigate("/")}>
+            <div
+              onClick={() => navigate("/")}
+              className="hidden sm:flex items-center"
+            >
               <Logo />
+              <h1 className="text-[23px] font-semibold text-yellow-300">
+                GS360
+              </h1>
             </div>
-            {/* <div className="sponsor-slider-wrapper">
-              <Slider {...sliderSettings}>
-                {sponsorImages.map((img, idx) => (
-                  <div key={idx} className="sponsor-slide-item">
-                    <img
-                      src={img}
-                      alt={`sponsor-${idx}`}
-                      className="sponsor-img"
-                    />
-                  </div>
-                ))}
-              </Slider>
-            </div> */}
+
+            {/* open menu after click this */}
+            <div
+              onClick={handleOpenSidebar}
+              className="text-yellow-300 cursor-pointer sm:hidden flex gap-[2px] items-center"
+            >
+              <HiMenuAlt1 size={25} />
+            </div>
+
+            {sidebarOpen && (
+              <div
+                className="fixed inset-0 bg-black bg-opacity-50 z-[999999]"
+                onClick={handleCloseSidebar}
+              />
+            )}
+
+            {/* Sidebar content */}
+            <div
+              className={`fixed top-0 overflow-y-auto left-0 h-full w-56 bg-[#111] text-white z-[99999999] transform ${
+                sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              } transition-transform duration-300 ease-in-out`}
+            >
+              {/* <div className="p-4 flex justify-between items-center border-b border-gray-700">
+                <h2 className="text-lg font-bold">Menu</h2>
+                <button onClick={handleCloseSidebar}>✖</button>
+              </div> */}
+              <nav className="p-4">
+                <MobileSideBar />
+              </nav>
+            </div>
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
@@ -159,10 +175,11 @@ const Header: React.FC = () => {
               </>
             ) : (
               <button
-                className="signup-btn "
+                className="signup-btn max-h-[27px] sm:max-h-full"
                 onClick={() => handleRegisterClick(true)}
               >
-                Affiliate Signup
+                Affiliate{" "}
+                <span className="sm:flex hidden ml-[5px]">Signup</span>
               </button>
             )}
             {user ? (
@@ -179,14 +196,17 @@ const Header: React.FC = () => {
             ) : (
               // User is not logged in - show login/signup buttons
               <>
-                <button className="signup-btn-green" onClick={handleLoginClick}>
-                  লগইন
+                <button
+                  className="signup-btn-green max-h-[27px] sm:max-h-full"
+                  onClick={handleLoginClick}
+                >
+                  Login
                 </button>
                 <button
-                  className="signup-btn"
+                  className="signup-btn max-h-[27px] sm:max-h-full"
                   onClick={() => handleRegisterClick()}
                 >
-                  সাইন আপ
+                  Signup
                 </button>
               </>
             )}

@@ -13,6 +13,7 @@ import { Logo } from "../Logo/Logo"; // Import the Logo component
 // import SupportUs from "../SupportUs/SupportUs"; // Adjust the path as needed
 // import DraggableContainer from "../DraggableContainer/DraggableContainer";
 import { PhoneIcon } from "lucide-react";
+import { LuPhoneCall } from "react-icons/lu";
 
 const FloatingContact: React.FC = () => {
   const [showFloatingContactSubMenu, setShowFloatingContactSubMenu] =
@@ -54,14 +55,11 @@ const FloatingContact: React.FC = () => {
 
       <button
         // className=""
-        className="floating-contact-button"
+        className="floating-contact-button fixed right-5 bottom-[83px] w-[40px] h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
         onClick={handleContactButtonClick}
         aria-label="Open contact options"
       >
-        <div className="icon-container">
-          <PhoneIcon className="w-6 h-6" />
-          {/* <span className="twenty-four">24</span> */}
-        </div>
+        <LuPhoneCall />
       </button>
 
       {showFloatingContactSubMenu && (

@@ -11,6 +11,7 @@ import {
   FaHeadset,
 } from "react-icons/fa";
 import "./Footer.scss";
+import { IoIosArrowUp } from "react-icons/io";
 
 // Import your actual logo path - update this to your actual logo location
 // import { Logo } from "../Logo/Logo";
@@ -58,17 +59,13 @@ const CollapseItem: React.FC<CollapseItemProps> = ({
                   }`}
                 >
                   {icon && <span className="footer-icon">{icon}</span>}
-                  {title}
+                  <p className="text-[14px] font-medium md:font-semibold md:text-[16px]">
+                    {title}
+                  </p>
                 </div>
-                <div
-                  className="collapse-beta-head__arrow"
-                  style={{
-                    maskImage:
-                      "url(https://img.b112j.com/bj/h5/assets/v3/images/icon-set/utility-type/arrow-up.svg)",
-                    WebkitMaskImage:
-                      "url(https://img.b112j.com/bj/h5/assets/v3/images/icon-set/utility-type/arrow-up.svg)",
-                  }}
-                ></div>
+                <div className="text-yellow-300 font-extrabold rotate-180 pl-3 text-[16px] md:text-[20px] md:mt-[-14px]">
+                  <IoIosArrowUp />
+                </div>
               </div>
             </div>
           </div>
@@ -91,79 +88,79 @@ export const Footer: React.FC = () => {
       <div className="footer-container">
         <div className="footer-collapses">
           <ul className="footer-collapses__ul">
-            <CollapseItem title="গেমিং" icon={<FaGamepad />}>
+            <CollapseItem title="Gaming" icon={<FaGamepad />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">ক্যাসিনো গেমস</a>
+                  <a href="#">Casino Games</a>
                 </li>
                 <li>
-                  <a href="#">স্লট গেমস</a>
+                  <a href="#">Slot Games</a>
                 </li>
                 <li>
-                  <a href="#">লাইভ ক্যাসিনো</a>
+                  <a href="#">Live Casino</a>
                 </li>
                 <li>
-                  <a href="#">স্পোর্টস বেটিং</a>
+                  <a href="#">Sports Betting</a>
                 </li>
                 <li>
-                  <a href="#">লটারি</a>
+                  <a href="#">Lottery</a>
                 </li>
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="সম্পর্কে GameStar365" icon={<FaStar />}>
+            <CollapseItem title="About GameStar365" icon={<FaStar />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">আমাদের সম্পর্কে</a>
+                  <a href="#">About Us</a>
                 </li>
                 <li>
-                  <a href="#">প্রাইভেসি পলিসি</a>
+                  <a href="#">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="#">টার্মস এন্ড কন্ডিশন</a>
+                  <a href="#">Terms & Conditions</a>
                 </li>
                 <li>
-                  <a href="#">রেসপন্সিবল গেমিং</a>
+                  <a href="#">Responsible Gaming</a>
                 </li>
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="ফিচারসমূহ" icon={<FaTrophy />}>
+            <CollapseItem title="Features" icon={<FaTrophy />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">মোবাইল অ্যাপ</a>
+                  <a href="#">Mobile App</a>
                 </li>
                 <li>
-                  <a href="#">লাইভ বেটিং</a>
+                  <a href="#">Live Betting</a>
                 </li>
                 <li>
-                  <a href="#">প্রমোশন</a>
+                  <a href="#">Promotions</a>
                 </li>
                 <li>
-                  <a href="#">রেফারেল প্রোগ্রাম</a>
+                  <a href="#">Referral Program</a>
                 </li>
                 <li>
-                  <a href="#">ক্যাশআউট</a>
+                  <a href="#">Cashout</a>
                 </li>
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="হেল্প" icon={<FaHeadset />}>
+            <CollapseItem title="Help" icon={<FaHeadset />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">সাপোর্ট সেন্টার</a>
+                  <a href="#">Support Center</a>
                 </li>
                 <li>
-                  <a href="#">পেমেন্ট মেথডস</a>
+                  <a href="#">Payment Methods</a>
                 </li>
                 <li>
-                  <a href="#">ডিপোজিট টিপস</a>
+                  <a href="#">Deposit Tips</a>
                 </li>
                 <li>
-                  <a href="#">সাধারণ প্রশ্ন</a>
+                  <a href="#">FAQ</a>
                 </li>
                 <li>
-                  <a href="#">যোগাযোগ করুন</a>
+                  <a href="#">Contact Us</a>
                 </li>
               </ul>
             </CollapseItem>

@@ -284,13 +284,13 @@
   }
 
   .footer-bottom {
-    margin-top: 32px;
-    padding-top: 24px;
+    padding-top: 30px;
+    padding-bottom: 30px;
     border-top: none;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 10px;
     position: relative;
 
     &::before {
@@ -321,7 +321,7 @@
         justify-content: center;
       }
       img {
-        height: 32px;
+        height: 25px;
         filter: grayscale(1) brightness(1.5);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border-radius: 6px;

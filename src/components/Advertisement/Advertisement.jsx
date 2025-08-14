@@ -58,7 +58,7 @@ const Advertisement = () => {
           )}
         </div>
         <div>
-          <h1 className="text-[23px] mb-3 font-semibold md:font-bold text-yellow-300 md:text-[28px]">
+          <h1 className="text-[16px] mb-3 font-semibold md:font-bold text-yellow-300 md:text-[28px]">
             {ad.title}
           </h1>
           <div

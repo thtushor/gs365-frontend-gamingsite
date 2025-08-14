@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SupportUs.scss";
-import { Logo } from "../Logo/Logo";
+import logo from "../../assets/brand-logo.png";
 import SupportPanel from "./SupportPanel";
 
 const BUTTON_SIZE = 64;
@@ -20,7 +20,7 @@ const SupportUs: React.FC = () => {
     <>
       {open && <SupportPanel open={open} onClose={handleClose} />}
       <button
-        className="support-us-floating-button"
+        className="support-us-floating-button fixed right-5 bottom-10 !w-[40px] !h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
         style={{
           width: BUTTON_SIZE,
           height: BUTTON_SIZE,
@@ -30,9 +30,7 @@ const SupportUs: React.FC = () => {
         onClick={handleClick}
         aria-label="Support Us"
       >
-        <div className="icon-container">
-          <Logo />
-        </div>
+        <img src={logo} className="h-[30px] md:h-[40px]" />
       </button>
     </>
   );

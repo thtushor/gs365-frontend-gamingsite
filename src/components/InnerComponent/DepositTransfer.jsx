@@ -195,7 +195,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                           Commission: {provider.commission}%
                         </p>
                         {provider.isRecomended && (
-                          <p className="text-yellow-400 text-[12px]">
+                          <p className="text-yellow-400 text-[10px]">
                             Recommended
                           </p>
                         )}

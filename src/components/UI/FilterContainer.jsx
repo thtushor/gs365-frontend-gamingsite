@@ -108,7 +108,7 @@ const FilterContainer = ({ onFilter, onSearch }) => {
 
           {/* Quick filter section */}
           <div className="quick-filter-section">
-            <div className="filter-bar-title">
+            <div className="filter-bar-items">
               <span>ফিল্টার:</span>
             </div>
             <div className="filter-bar-items-container">
