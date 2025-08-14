@@ -50,20 +50,16 @@ export const HeroV2 = () => {
 
   if (isLoading) {
     return (
-      <div className="hero-section">
-        <div className="game-grid-container loading">
-          <div className="loading-spinner"></div>
+      <div className="hero-section !h-[120px] md:!h-[400px]">
+        <div className="game-grid-container loading !p-0 !min-h-[120px] md:!min-h-[300px]">
+          <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
         </div>
       </div>
     );
   }
 
   if (isError) {
-    return (
-      <div className="hero-section text-red-600">
-        Error loading banners: {error?.message}
-      </div>
-    );
+    return;
   }
 
   const banners = data?.data || [];
@@ -71,7 +67,7 @@ export const HeroV2 = () => {
   if (banners?.length <= 1) {
     return (
       <div
-        className="slide-item"
+        className="slide-item !h-[120px] md:!h-[400px]"
         style={{ width: "100%", height: "400px", overflow: "hidden" }}
       >
         <img
@@ -92,7 +88,7 @@ export const HeroV2 = () => {
         {banners.map((banner, index) => (
           <div
             key={index}
-            className="slide-item"
+            className="slide-item !h-[120px] md:!h-[400px]"
             style={{ width: "100%", height: "400px", overflow: "hidden" }}
           >
             <img

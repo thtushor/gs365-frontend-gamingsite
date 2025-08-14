@@ -54,7 +54,7 @@ const FloatingContact: React.FC = () => {
 
       <button
         // className=""
-        className="floating-contact-button fixed right-5 bottom-[83px] w-[40px] h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
+        className="floating-contact-button fixed right-5 bottom-[103px] w-[40px] h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
         onClick={handleContactButtonClick}
         aria-label="Open contact options"
       >

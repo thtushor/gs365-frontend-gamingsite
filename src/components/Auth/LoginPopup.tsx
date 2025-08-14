@@ -208,24 +208,24 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
           showForgetPassword ? "forget-password-active" : ""
         }`}
       >
-        <div className="pop-title">
-          <h3>GameStar365 এ আপনাকে স্বাগতম</h3> {/* Replaced Baji */}
-          <button className="btn-close" onClick={onClose}></button>
+        <div className="pop-title px-[10px] md:px-[20px] py-[8px] md:py-[20px]">
+          <h3 className="text-[16px] md:text-[20px]">Welcome To GameStar365</h3>{" "}
+          {/* Replaced Baji */}
+          <div className="btn-close" onClick={onClose}></div>
         </div>
-        <div className="pop-inner">
-          <div
-            className="input-slides"
-            style={{ height: showForgetPassword ? "auto" : "301px" }}
-          >
+        <div className="pop-inner py-3 px-4 md:p-6">
+          <div className="input-slides">
             {/* Login Form Section */}
             {!showForgetPassword && (
               <div className="input-login">
                 <form onSubmit={handleLoginSubmit}>
                   {/* Error section - can be controlled by state later */}
                   {/* <div className="error"><i className="icon-error"></i></div> */}
-                  <ul className="input-group">
-                    <li>
-                      <label>ব্যবহারকারীর নাম</label>
+                  <ul className="input-group md:mb-[24px] mb-2">
+                    <li className="md:mb-5 mb-2">
+                      <label className="md:mb-2 text-left md:text-center">
+                        Username
+                      </label>
                       <div className="input-icon-type">
                         {/* Placeholder for user icon */}
                         <i className="icon-user"></i>
@@ -233,7 +233,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                           type="text"
                           id="loginUsername"
                           name="userNameOrEmailorPhone"
-                          placeholder="ব্যবহারকারীর নাম"
+                          placeholder="Username or email address"
                           value={formData.userNameOrEmailorPhone}
                           onChange={handleInputChange}
                           required
@@ -246,13 +246,15 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                       )}
                     </li>
                     <li>
-                      <label>পাসওয়ার্ড</label>
+                      <label className="md:mb-2 text-left md:text-center">
+                        Password
+                      </label>
                       <PasswordInput
                         id="loginPassword"
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-                        placeholder="পাসওয়ার্ড"
+                        placeholder="Password"
                         minLength={6}
                         maxLength={20}
                         error={getFieldError("password")}
@@ -263,30 +265,30 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
                   <a
                     id="link_forget"
-                    className="link forget"
+                    className="link forget md:mb-6"
                     href="#"
                     onClick={handleForgetPasswordClick}
                   >
-                    পাসওয়ার্ড ভুলে গেছেন?
+                    Forget password?
                   </a>
 
                   <button
                     id="loginButton"
-                    className="btn-default-xs"
+                    className="btn-default-xs md:my-6 my-4 text-[14px] md:text-[16px] py-[10px] md:p-[14px]"
                     type="submit"
                     disabled={isPendingLogin}
                   >
-                    {isPendingLogin ? "লগইন হচ্ছে..." : "এখনি লগইন করুন"}
+                    {isPendingLogin ? "Signing..." : "Login"}
                   </button>
 
-                  <p>
-                    একাউন্ট নেই?
+                  <p className="md:my-4">
+                    Not registered?
                     <a
                       className="link"
                       href="#"
                       onClick={handleSignUpLinkClick}
                     >
-                      এখন সাইন আপ করুন!
+                      Click to signup now!
                     </a>
                   </p>
                 </form>
