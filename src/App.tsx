@@ -150,7 +150,7 @@ const App: React.FC = () => {
           {/* --------------------- */}
           {/* Extra Pages--------------------- */}
           {/* --------------------- */}
-          <Route path="*" element={<HomePage />} />
+          {/* <Route path="*" element={<HomePage />} /> */}
         </Routes>
       </Layout>
     </BrowserRouter>

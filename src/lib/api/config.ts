@@ -59,6 +59,6 @@ export const buildVersionedApiUrl = (endpoint: string): string => {
 };
 
 // Image Upload Server configuration
-export const Image_BASE_URL = "https://gs-image-server.onrender.com";
+export const Image_BASE_URL = "https://glorypos.com/image-upload";
 export const SINGLE_IMAGE_UPLOAD_URL = `${Image_BASE_URL}/upload`;
 export const MULTIPLE_IMAGE_UPLOAD_URL = `${Image_BASE_URL}/uploads`;

@@ -4,6 +4,8 @@ import { FaStar } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import { Logo } from "../Logo/Logo";
 import { BiCloudDownload } from "react-icons/bi";
+import { CurrencyModal } from "../Modal/CurrencyModal";
+import { PiDownloadSimpleBold } from "react-icons/pi";
 
 const TopHeader: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>("");
