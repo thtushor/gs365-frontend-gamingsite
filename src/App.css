@@ -98,3 +98,9 @@ body {
   background-color: #ff4d4d;
   border-radius: 50%;
 }
+
+.footer-menu-mobile {
+  background: linear-gradient(180deg, #00623b, #004127 50%, #00341f);
+  border: 2px solid #004127;
+  box-shadow: 0 0 10px 4px #00341f72;
+}

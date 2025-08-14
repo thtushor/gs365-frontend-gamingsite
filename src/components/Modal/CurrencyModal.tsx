@@ -116,7 +116,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
       </div>
       <div className="relative w-full max-w-lg mx-4 rounded-3xl shadow-2xl border border-green-200 bg-white/70 backdrop-blur-2xl animate-currencyModalIn overflow-hidden">
         {/* Header with animated shine */}
-        <div className="relative flex items-center justify-between px-8 py-5 bg-gradient-to-r from-green-600 via-green-500 to-green-400 rounded-t-3xl shadow">
+        <div className="relative flex items-center justify-between px-4 md:px-8 py-2 md:py-5 bg-gradient-to-r from-green-600 via-green-500 to-green-400 rounded-t-3xl shadow">
           <div className="flex items-center gap-2">
             <svg
               className="w-7 h-7 text-white opacity-80"
@@ -132,31 +132,31 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
                 strokeLinejoin="round"
               />
             </svg>
-            <h3 className="text-white font-bold text-xl tracking-wide drop-shadow">
-              কারেন্সি এবং ভাষা
+            <h3 className="text-white font-semibold md:font-bold text-[18px] md:text-xl tracking-wide drop-shadow">
+              Currency
             </h3>
           </div>
-          <button
+          <div
             onClick={onClose}
-            className="text-white text-2xl font-bold rounded-full bg-white/10 hover:bg-green-800/80 hover:scale-110 transition p-1 shadow-lg backdrop-blur-md border border-white/30"
+            className="text-white !w-[30px] !h-[30px] md:w-[50px] md:h-[50px] text-2xl font-bold rounded-full bg-white/10 hover:bg-green-800/80 hover:scale-110 transition flex items-center justify-center shadow-lg backdrop-blur-md border border-white/30"
             aria-label="Close"
           >
             <span className="inline-block transition-transform hover:rotate-90 duration-300">
               &times;
             </span>
-          </button>
+          </div>
           {/* Shine effect */}
           <div className="absolute left-0 top-0 w-full h-full pointer-events-none overflow-hidden">
             <div className="absolute left-[-40%] top-0 w-1/2 h-full bg-gradient-to-r from-white/30 via-white/10 to-transparent rotate-12 animate-shine" />
           </div>
         </div>
         {/* List */}
-        <div className="p-6 max-h-[70vh] overflow-y-auto">
-          <ul className="space-y-5">
+        <div className="p-4 md:p-6 max-h-[70vh] overflow-y-auto">
+          <ul className="space-y-2 md:space-y-5">
             {currencyLanguages.map((item) => (
               <li
                 key={item.code}
-                className="flex items-center justify-between bg-white/80 rounded-2xl shadow-md border border-gray-100 px-4 py-3 group transition-all hover:shadow-2xl hover:-translate-y-1 hover:bg-gradient-to-r hover:from-green-50/80 hover:to-green-100/80"
+                className="flex items-center justify-between bg-white/80 rounded-2xl shadow-md border border-gray-100 px-3 pr-4 py-3 md:px-4 md:py-3 group transition-all hover:shadow-2xl hover:-translate-y-1 hover:bg-gradient-to-r hover:from-green-50/80 hover:to-green-100/80"
               >
                 <div className="flex items-center gap-3 min-w-[110px]">
                   <img
@@ -164,12 +164,14 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
                     alt={item.code}
                     className="w-10 h-10 rounded-full shadow border-2 border-green-100 group-hover:border-green-400 transition"
                   />
-                  <div className="font-bold flex flex-col text-base">
-                    <span className="text-lg">{item.symbol}</span>
+                  <div className="font-bold flex flex-col text-[12px] md:text-base items-start">
+                    <span className="text-[14px] text-gray-900">
+                      {item.symbol}
+                    </span>
                     <span className="text-gray-700">{item.code}</span>
                   </div>
                 </div>
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap justify-end">
                   {item.languages.map((lang) => {
                     const selected =
                       value.currency === item.code &&
@@ -192,7 +194,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
                           className="hidden"
                         />
                         <span
-                          className={`relative px-4 py-1.5 rounded-full text-sm font-semibold shadow transition-all border-2 flex items-center gap-1
+                          className={`relative px-[10px] md:px-4 py-0.5 md:py-1.5 rounded-full text-[12px] md:text-sm font-semibold shadow transition-all border-2 flex items-center gap-1
                             ${
                               selected
                                 ? "bg-gradient-to-r from-green-400 to-green-600 text-white border-green-500 scale-110 ring-2 ring-green-300 animate-pulse"

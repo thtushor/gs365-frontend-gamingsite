@@ -27,10 +27,10 @@ import MobileSideBar from "./MobileSideBar";
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
   const { logout: handleContextLogout, user } = useAuth();
-  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   console.log(user);
   const navigate = useNavigate();
 
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const handleLoginClick = () => {
     setIsLoginPopupOpen(true);
   };

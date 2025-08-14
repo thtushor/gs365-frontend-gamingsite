@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import BaseModal from "../Promotion/BaseModal";
 import PopupContent from "../PopupContent";
+import MobileNav from "./MobileNav";
 
 const Layout = ({ children }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,6 +51,7 @@ const Layout = ({ children }) => {
       <main className="main-content">{children}</main>
       <Footer />
 
+      <MobileNav />
       <BaseModal open={modalOpen} showClose={false}>
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
       </BaseModal>
