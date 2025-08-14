@@ -49,7 +49,7 @@
         }
 
         .nav-dropdown-icon {
-          font-size: 12px;
+          font-size: 10px;
           margin-left: 5px;
           transition: transform 0.3s ease;
         }
@@ -140,7 +140,7 @@
         padding: 0 10px;
 
         a {
-          font-size: 12px;
+          font-size: 10px;
 
           .nav-icon {
             font-size: 16px;
@@ -302,9 +302,7 @@
   background-color: #2e8b57; // Green background from image
   color: white;
   border: none;
-  border-radius: 50%; // Circular shape
-  width: 50px; // Button size
-  height: 50px; // Button size
+  border-radius: 50%; // Circular shaped 
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -397,7 +395,7 @@
       font-size: 20px; // Headset icon size
 
       span {
-        font-size: 12px;
+        font-size: 10px;
         margin-left: 5px;
         font-weight: bold;
       }

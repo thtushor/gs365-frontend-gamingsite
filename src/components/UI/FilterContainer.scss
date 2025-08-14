@@ -165,7 +165,7 @@
 
   @media (max-width: 480px) {
     padding-right: 10px;
-    font-size: 12px;
+    font-size: 10px;
     background: linear-gradient(
       90deg,
       rgba(0, 78, 51, 0.95) 80%,
@@ -357,7 +357,7 @@
 
     @media (max-width: 480px) {
       padding: 6px 12px;
-      font-size: 12px;
+      font-size: 10px;
     }
   }
 }
@@ -386,7 +386,7 @@
 
   @media (max-width: 480px) {
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: 10px;
     min-height: 32px;
     border-radius: 16px;
   }
@@ -594,7 +594,7 @@
   }
 
   .arrow-icon {
-    font-size: 12px;
+    font-size: 10px;
     transition: transform 0.3s ease;
     color: rgba(255, 255, 255, 0.7);
 
@@ -856,7 +856,7 @@
   transition: opacity 0.3s ease;
 
   @media (max-width: 480px) {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 

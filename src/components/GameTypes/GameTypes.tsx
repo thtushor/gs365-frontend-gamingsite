@@ -20,7 +20,7 @@ const gameCategories = [
   { id: 6, name: "Lottery", image: Lottery },
   { id: 7, name: "Fishing", image: Fishing },
   { id: 8, name: "Arcade", image: Arcade },
-  { id: 9, name: "Cock Fighting", image: CockFighting },
+  { id: 9, name: "Cock", image: CockFighting },
 ];
 
 // Define the game data structure

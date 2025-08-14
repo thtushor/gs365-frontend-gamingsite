@@ -31,6 +31,7 @@ export const NoticeBoard = () => {
             scrollamount="4"
             onMouseOver={(e) => e.currentTarget.stop()}
             onMouseOut={(e) => e.currentTarget.start()}
+            className="text-[12px] md:text-base font-normal md:font-medium mt-[6px]"
           >
             {isLoading
               ? "Loading announcement..."

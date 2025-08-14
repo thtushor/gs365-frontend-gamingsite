@@ -10,11 +10,8 @@
 
     .title {
       margin-bottom: 20px;
-      text-align: center;
 
       .title-text {
-        font-size: 24px;
-        font-weight: bold;
         color: #ffd700; /* Golden color for title */
         text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
       }
@@ -71,7 +68,6 @@
     .show-more-btn {
       display: block;
       margin: 20px auto 0;
-      padding: 10px 20px;
       background: linear-gradient(
         45deg,
         #ffd700,
@@ -81,8 +77,6 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
       transition: all 0.3s ease;
       box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
 

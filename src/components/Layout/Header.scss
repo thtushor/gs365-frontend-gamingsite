@@ -79,6 +79,11 @@
       inset 0 0 10px rgba(255, 215, 0, 0.4);
     animation: gradientMove 3s linear infinite;
 
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
     // Wave animation
     &::before {
       content: '';
@@ -137,7 +142,7 @@
       0 2px 8px #00ff998e,
       inset 0 0 10px #00ff9985;
     animation: gradientMove 3s linear infinite;
-
+    
     // Wave animation
     &::before {
       content: '';
@@ -199,6 +204,12 @@
   backface-visibility: hidden;
   perspective: 1000px;
   will-change: transform, box-shadow;
+  
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
 }
 
 
@@ -246,7 +257,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 8px;
 }
 
 .header-left {
@@ -276,19 +287,24 @@
     color: #000;
     border: 2px solid #ffd700;
     border-radius: 4px;
-    padding: 4px 20px;
+    padding: 4px 10px;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    font-weight: 700;
+    font-weight: 600;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
     box-shadow: 
       0 2px 8px rgba(255, 215, 0, 0.6),
       inset 0 0 10px rgba(255, 215, 0, 0.4);
     animation: gradientMove 3s linear infinite;
 
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
     // Wave animation
     &::before {
       content: '';
@@ -340,13 +356,18 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    font-weight: 700;
+    font-weight: 600;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
     box-shadow: 
       0 2px 8px #00ff998e,
       inset 0 0 10px #00ff9985;
     animation: gradientMove 3s linear infinite;
-
+    
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
     // Wave animation
     &::before {
       content: '';
@@ -419,6 +440,12 @@
   .signup-btn {
     padding: 6px 15px;
     font-size: 13px;
+    
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
   }
 
   .country-flag-container {
@@ -511,10 +538,15 @@
 
       .login-btn,
       .signup-btn {
-        font-size: 12px;
-        padding: 4px 10px;
-        height: 30px;
+        font-size: 10px;
+        padding: 4px 10px; 
         min-width: 60px;
+        
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
       }
 
       .country-select {
@@ -536,10 +568,15 @@
       .login-btn,
       .signup-btn {
         font-size: 0.8rem;
-        padding: 4px 8px;
-        min-height: 28px;
+        padding: 4px 8px; 
         min-width: 50px;
         border-radius: 5px;
+        
+    padding-top: 2px;
+ height: 30px !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
       }
 
       .country-select {

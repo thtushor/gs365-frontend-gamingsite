@@ -69,7 +69,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                 {promotion.tag.map((t, idx) => (
                   <p
                     key={idx}
-                    className="text-gray-400 rounded-[4px] px-2 text-[12px] border-gray-400 border"
+                    className="text-gray-400 rounded-[4px] px-2 text-[10px] border-gray-400 border"
                   >
                     {t?.title}
                   </p>
