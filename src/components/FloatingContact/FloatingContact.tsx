@@ -12,7 +12,6 @@ import { FiHeadphones } from "react-icons/fi";
 import { Logo } from "../Logo/Logo"; // Import the Logo component
 // import SupportUs from "../SupportUs/SupportUs"; // Adjust the path as needed
 // import DraggableContainer from "../DraggableContainer/DraggableContainer";
-import { PhoneIcon } from "lucide-react";
 import { LuPhoneCall } from "react-icons/lu";
 
 const FloatingContact: React.FC = () => {
