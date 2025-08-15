@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import formatDate from "../../lib/utils/formatDate";
 import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
-import { CircleDollarSignIcon } from "lucide-react";
+import { CircleDollarSignIcon, TargetIcon } from "lucide-react";
 
 // import SeoSection from "./SeoSection";
 
@@ -88,6 +88,11 @@ const Header: React.FC = () => {
       name: "Transaction Records",
       icon: <TbFileDollar />,
       url: "/profile/transaction-records",
+    },
+    {
+      name: "Turnover",
+      icon: <TargetIcon className="w-4 h-4" />,
+      url: "/profile/turnover",
     },
     {
       name: "My Referral",
