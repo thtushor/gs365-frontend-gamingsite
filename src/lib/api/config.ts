@@ -1,9 +1,9 @@
 // API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://glorypos.com/gs-server",
+  // BASE_URL: "https://glorypos.com/gs-server",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  // BASE_URL: "http://localhost:3000",
+  BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
 
   // API Version
@@ -43,6 +43,7 @@ export const API_ENDPOINTS = {
   // User endpoints
   USER: {
     PROFILE: "/api/users/profile",
+    USER_BALANCE: "/api/balance/player",
     UPDATE_PROFILE: "/api/users/profile",
     CHANGE_PASSWORD: "/api/users/change-password",
     UPLOAD_AVATAR: "/api/users/avatar",

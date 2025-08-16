@@ -161,8 +161,18 @@ const Header: React.FC = () => {
           </div>
           <div className="header-center">{/* Empty center section */}</div>
           <div className="header-right">
+
             {user ? (
               <>
+              {/* user balance will place here show hide option needed. there are two currency will show on is bdt another one is dollar as secondary currency. */}
+              <button>
+                <div className="flex items-center gap-2">
+                  <CircleDollarSignIcon className="w-4 h-4" />
+                  <span className="text-sm font-semibold">
+                    {"0.00"} BDT
+                  </span>
+                </div>
+              </button>
                 <button
                   className="signup-btn flex items-center gap-2"
                   onClick={() => navigate("/deposit")}
