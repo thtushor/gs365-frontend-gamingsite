@@ -1,9 +1,9 @@
 // API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  // BASE_URL: "https://gs-server-svmt.onrender.com",
+  BASE_URL: "https://glorypos.com/gs-server",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  BASE_URL: "http://localhost:3000",
+  // BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
 
   // API Version
@@ -61,6 +61,6 @@ export const buildVersionedApiUrl = (endpoint: string): string => {
 };
 
 // Image Upload Server configuration
-export const Image_BASE_URL = "https://gs-image-server.onrender.com";
+export const Image_BASE_URL = "https://glorypos.com/image-upload";
 export const SINGLE_IMAGE_UPLOAD_URL = `${Image_BASE_URL}/upload`;
 export const MULTIPLE_IMAGE_UPLOAD_URL = `${Image_BASE_URL}/uploads`;
