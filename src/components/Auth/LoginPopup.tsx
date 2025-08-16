@@ -183,7 +183,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
           typeof (error as { message: string }).message === "string"
             ? (error as { message: string }).message
             : "Login failed. Please check your credentials and try again.";
-        showToaster(errorMessage, "error");
+        showToaster("Login failed. Please check your credentials and try again", "error");
       }
     }
   };
