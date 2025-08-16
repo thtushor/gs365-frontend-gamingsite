@@ -1,7 +1,7 @@
 // API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://gs-server-svmt.onrender.com",
+  BASE_URL: "https://glorypos.com/gs-server",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
   // BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
@@ -37,6 +37,7 @@ export const API_ENDPOINTS = {
     GET_PAYMENT_METHODS_BY_NAME: "/api/payment-method/name",
     DEPOSIT_TRANSACTION: "/api/transactions/deposit",
     WITHDRAW_TRANSACTION: "/api/transactions/withdraw",
+    TURNOVER: "/api/turnover",
   },
 
   // User endpoints
@@ -45,6 +46,7 @@ export const API_ENDPOINTS = {
     UPDATE_PROFILE: "/api/users/profile",
     CHANGE_PASSWORD: "/api/users/change-password",
     UPLOAD_AVATAR: "/api/users/avatar",
+    TURNOVER: "/api/turnover",
   },
 } as const;
 
