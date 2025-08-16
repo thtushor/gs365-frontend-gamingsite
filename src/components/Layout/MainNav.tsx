@@ -431,7 +431,7 @@ const MainNav: React.FC = () => {
             onMouseEnter={() => handleNavToggle(0)}
           >
             <MdSportsSoccer className="nav-icon" />
-            স্পোর্ট
+            Sports
             <FaChevronDown className="nav-dropdown-icon" />
           </Link>
         </li>
@@ -443,42 +443,42 @@ const MainNav: React.FC = () => {
         >
           <Link to="/live-casino">
             <MdCasino className="nav-icon" />
-            লাইভ ক্যাসিনো
+            Live Casino
           </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/casino" ? "active" : ""}`}>
           <Link to="/casino">
             <MdCasino className="nav-icon" />
-            ক্যাসিনো
+            Casino
           </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/slots" ? "active" : ""}`}>
           <Link to="/slots">
             <RiGamepadFill className="nav-icon" />
-            স্লট
+            Slot
           </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/games" ? "active" : ""}`}>
           <Link to="/games">
             <RiGamepadFill className="nav-icon" />
-            গেমস
+            Games
           </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/poker" ? "active" : ""}`}>
           <Link to="/poker">
             <GiPokerHand className="nav-icon" />
-            পোকার
+            Poker
           </Link>
         </li>
 
         <li className={`nav-item ${activePage === "/lottery" ? "active" : ""}`}>
           <Link to="/lottery">
             <BsFillTrophyFill className="nav-icon" />
-            লটারি
+            Lotery
           </Link>
         </li>
 
@@ -494,7 +494,7 @@ const MainNav: React.FC = () => {
         >
           <Link to="/promotions">
             <MdLiveTv className="nav-icon" />
-            প্রমোশন
+            Promotion
           </Link>
         </li>
 
