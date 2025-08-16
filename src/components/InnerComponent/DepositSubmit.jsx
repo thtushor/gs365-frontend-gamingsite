@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axiosInstance from "../../lib/api/axios";
 import { SINGLE_IMAGE_UPLOAD_URL, API_ENDPOINTS } from "../../lib/api/config";
 import { useAuth } from "../../contexts/auth-context";
+import BaseModal from "../Promotion/BaseModal";
 
 const PaymentConfirmation = () => {
   return (
@@ -171,7 +172,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   };
 
   if (isCompleted) {
-  return <PaymentConfirmation />;
+  return <BaseModal showClose={false} open={true}><PaymentConfirmation /></BaseModal>;
 }
 
   return (
