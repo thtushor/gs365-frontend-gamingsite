@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axiosInstance from "../../lib/api/axios";
 import { SINGLE_IMAGE_UPLOAD_URL, API_ENDPOINTS } from "../../lib/api/config";
 import { useAuth } from "../../contexts/auth-context";
+
+const PaymentConfirmation = () => {
+  return (
+    <div className="flex flex-col items-center justify-center p-6 text-white">
+      <div className="bg-green-500 rounded-full w-20 h-20 flex items-center justify-center mb-4">
+        <span className="text-3xl">✔</span>
+      </div>
+      <h2 className="text-2xl font-bold mb-2">Payment Submitted!</h2>
+      <p className="text-gray-300 mb-4">
+        Your deposit information has been received successfully.  
+        Funds will be processed shortly.
+      </p>
+      <button
+        onClick={() => window.location.reload()} // Or navigate to dashboard
+        className="bg-yellow-400 hover:bg-yellow-600 text-black px-6 py-2 rounded"
+      >
+        Back
+      </button>
+    </div>
+  );
+};
+
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
@@ -14,7 +36,25 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadRes, setUploadRes] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes = 600s
+   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
+
+
+   // Timer countdown
+  useEffect(() => {
+    if (timeLeft <= 0 || isCompleted) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, isCompleted]);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  };
 
   // Extract main details
   const paymentType = depositOptions?.payment_type;
@@ -119,7 +159,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         toast.error(message);
       } else {
         toast.success(message);
-        setStep(stepDetails?.nextStep || 0);
+        // setStep(stepDetails?.nextStep || 0);
+        setIsCompleted(true); // ✅ show confirmation screen
       }
     } catch (error) {
       const message = error?.message || "Failed to submit deposit information";
@@ -129,8 +170,25 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
+  if (isCompleted) {
+  return <PaymentConfirmation />;
+}
+
   return (
     <div className="text-white">
+      {/* Timer */}
+    <div className="flex justify-center items-center p-3 bg-black/40 rounded-md mb-4">
+      <p className="text-yellow-400 font-bold text-lg">
+        Time Remaining: {formatTime(timeLeft)}
+      </p>
+    </div>
+
+    {/* If expired */}
+    {timeLeft <= 0 && (
+      <p className="text-red-400 font-semibold mb-3">
+        Deposit window expired. Please try again.
+      </p>
+    )}
       {/* Payment Type Info */}
       <div className="flex flex-col items-center second-bg justify-center p-5 rounded-md">
         <img
