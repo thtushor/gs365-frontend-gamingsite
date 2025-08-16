@@ -351,7 +351,7 @@ const SingleDepositAndWithdrawPage = () => {
         <DepositTransfer
           stepDetails={stepDetails}
           setStep={setStep}
-          depositOptions={paymentMethodData || depositOptions}
+          depositOptions={depositOptions }
         />
       ) : (
         <LocalBankInfo

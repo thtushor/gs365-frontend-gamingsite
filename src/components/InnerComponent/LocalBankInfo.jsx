@@ -91,7 +91,7 @@ const LocalBankInfo = ({
       </div>
 
       {/* Select Payment Type */}
-      <div className="bg-gray-1000">
+      <div className="">
         <p className="text-base text-left mb-2 mt-4">Select Payment</p>
         <div className="flex flex-wrap gap-3">
           {transformedPaymentTypes?.map((info, idx) => (
