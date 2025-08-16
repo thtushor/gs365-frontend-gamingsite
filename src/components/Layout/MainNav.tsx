@@ -468,6 +468,13 @@ const MainNav: React.FC = () => {
           </Link>
         </li>
 
+        <li className={`nav-item ${activePage === "/test-game" ? "active" : ""}`}>
+          <Link to="/test-game">
+            <RiGamepadFill className="nav-icon" />
+            Test Gaming
+          </Link>
+        </li>
+
         <li className={`nav-item ${activePage === "/poker" ? "active" : ""}`}>
           <Link to="/poker">
             <GiPokerHand className="nav-icon" />

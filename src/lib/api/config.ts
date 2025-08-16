@@ -40,6 +40,11 @@ export const API_ENDPOINTS = {
     TURNOVER: "/api/turnover",
   },
 
+  GAME: {
+    GAME_LIST: "/api/games/games",
+    PLAY_GAME: "/api/games/play"
+  },
+
   // User endpoints
   USER: {
     PROFILE: "/api/users/profile",

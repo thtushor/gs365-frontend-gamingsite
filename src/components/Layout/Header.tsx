@@ -24,6 +24,7 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import MobileSideBar from "./MobileSideBar";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import { UserBalance } from "./UserBalance";
+import { FaGamepad } from "react-icons/fa";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -77,6 +78,11 @@ const Header: React.FC = () => {
       name: "Turnover",
       icon: <TargetIcon className="w-4 h-4" />,
       url: "/profile/turnover",
+    },
+    {
+      name: "Test Gaming",
+      icon: <FaGamepad />,
+      url: "/test-game",
     },
     {
       name: "My Referral",
