@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/auth-context";
 import axiosInstance from "../lib/api/axios";
 import { API_ENDPOINTS } from "../lib/api/config";
 import { toast } from "react-toastify";
-import { FaFilter, FaSearch, FaChartLine, FaTrophy, FaClock, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaFilter, FaChartLine, FaTrophy, FaClock, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 
 interface TurnoverData {
@@ -110,6 +110,8 @@ const TurnoverPage: React.FC = () => {
         return <FaClock className="text-gray-400" />;
     }
   };
+
+  console.log({getStatusIcon})
 
   const getTypeColor = (type: string) => {
     switch (type) {

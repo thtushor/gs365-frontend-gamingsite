@@ -20,6 +20,9 @@ import formatDate from "../../lib/utils/formatDate";
 import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { CircleDollarSignIcon, TargetIcon } from "lucide-react";
+import { HiMenuAlt1 } from "react-icons/hi";
+import MobileSideBar from "./MobileSideBar";
+import { CurrencyModal } from "../Modal/CurrencyModal";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
