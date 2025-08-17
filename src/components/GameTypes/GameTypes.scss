@@ -212,12 +212,9 @@
   // min-height: 100vh;
   background: linear-gradient(180deg, #191e32 0%, #222843 100%);
   padding: 0.5rem;
-  display: none; // Hide by default
+  // display: none; // Hide by default
 
-  @media (max-width: 1024px) {
-    // Show on both mobile and tablet
-    display: block;
-  }
+  display: block;
 }
 
 .game-types-selector {
@@ -259,7 +256,7 @@
   }
 
   &.active {
-    background: #323d63;
+    background: #005d41;
     &::after {
       content: "";
       position: absolute;
@@ -273,12 +270,9 @@
     }
   }
 
-  .game-icon {
-    width: 40px;
-    height: 40px;
+  .game-icon { 
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.1);
-    padding: 0.35rem;
     object-fit: contain;
   }
 

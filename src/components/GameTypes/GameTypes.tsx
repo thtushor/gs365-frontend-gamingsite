@@ -9,6 +9,8 @@ import Fishing from "../../assets/gameType/icon-fish.png";
 import Arcade from "../../assets/gameType/icon-arcade.png";
 import CockFighting from "../../assets/gameType/icon-cockfighting.png";
 import "./GameTypes.scss";
+import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
+import { useQuery } from "@tanstack/react-query";
 
 // Define game category types
 const gameCategories = [
@@ -34,360 +36,86 @@ interface GameItem {
   imageAlt: string;
 }
 
-// Games data by category
-const gamesByCategory: Record<number, GameItem[]> = {
-  // Sports games
-  1: [
-    {
-      key: "exchange",
-      name: "Exchange",
-      vendorCode: "CRICKET",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-exchange",
-    },
-    {
-      key: "sportsbook",
-      name: "Sportsbook",
-      vendorCode: "Saba",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sportbook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sportbook",
-    },
-    {
-      key: "sbov2",
-      name: "SBO",
-      vendorCode: "SBOv2",
-      gameType: 4,
-      extraData: "football",
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/brand/white/provider-sbov2.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "provider-sbov2",
-    },
-    {
-      key: "horsebook",
-      name: "Horsebook",
-      vendorCode: "AWCMHORSEBOOK",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-horsebook",
-    },
-    {
-      key: "bti",
-      name: "BTi",
-      vendorCode: "SBTech",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sbtech",
-    },
-    {
-      key: "cmd",
-      name: "CMD",
-      vendorCode: "CMD",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-cmd",
-    },
-    {
-      key: "rwb",
-      name: "RWB",
-      vendorCode: "AWCMRWB",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmrwb",
-    },
-    {
-      key: "insports",
-      name: "iNsports",
-      vendorCode: "NST",
-      gameType: 32,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-nst.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-nst",
-    },
-    {
-      key: "pinnacle",
-      name: "Pinnacle",
-      vendorCode: "AWCMPINNACLE",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmpinnacle.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmpinnacle",
-    },
-  ],
-  // Casino games (using the same sports games as placeholder - replace with actual casino games)
-  2: [
-    {
-      key: "evolution",
-      name: "Evolution",
-      vendorCode: "EVOLUTION",
-      gameType: 2,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/casino-icon/icon-evolution.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-evolution",
-    },
-    // Add more casino games
-  ],
-  // Add placeholder data for other game types (3-8)
-  3: [
-    {
-      key: "exchange",
-      name: "Exchange",
-      vendorCode: "CRICKET",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-exchange",
-    },
-    {
-      key: "sportsbook",
-      name: "Sportsbook",
-      vendorCode: "Saba",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sportbook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sportbook",
-    },
-    {
-      key: "sbov2",
-      name: "SBO",
-      vendorCode: "SBOv2",
-      gameType: 4,
-      extraData: "football",
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/brand/white/provider-sbov2.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "provider-sbov2",
-    },
-    {
-      key: "horsebook",
-      name: "Horsebook",
-      vendorCode: "AWCMHORSEBOOK",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-horsebook",
-    },
-    {
-      key: "bti",
-      name: "BTi",
-      vendorCode: "SBTech",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sbtech",
-    },
-    {
-      key: "cmd",
-      name: "CMD",
-      vendorCode: "CMD",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-cmd",
-    },
-    {
-      key: "rwb",
-      name: "RWB",
-      vendorCode: "AWCMRWB",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmrwb",
-    },
-    {
-      key: "insports",
-      name: "iNsports",
-      vendorCode: "NST",
-      gameType: 32,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-nst.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-nst",
-    },
-    {
-      key: "pinnacle",
-      name: "Pinnacle",
-      vendorCode: "AWCMPINNACLE",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmpinnacle.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmpinnacle",
-    },
-  ],
-  4: [],
-  5: [
-    {
-      key: "exchange",
-      name: "Exchange",
-      vendorCode: "CRICKET",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-exchange.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-exchange",
-    },
-    {
-      key: "sportsbook",
-      name: "Sportsbook",
-      vendorCode: "Saba",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sportbook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sportbook",
-    },
-    {
-      key: "sbov2",
-      name: "SBO",
-      vendorCode: "SBOv2",
-      gameType: 4,
-      extraData: "football",
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/brand/white/provider-sbov2.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "provider-sbov2",
-    },
-    {
-      key: "horsebook",
-      name: "Horsebook",
-      vendorCode: "AWCMHORSEBOOK",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-horsebook.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-horsebook",
-    },
-    {
-      key: "bti",
-      name: "BTi",
-      vendorCode: "SBTech",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-sbtech.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sbtech",
-    },
-    {
-      key: "cmd",
-      name: "CMD",
-      vendorCode: "CMD",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-cmd.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-cmd",
-    },
-    {
-      key: "rwb",
-      name: "RWB",
-      vendorCode: "AWCMRWB",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmrwb.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmrwb",
-    },
-    {
-      key: "insports",
-      name: "iNsports",
-      vendorCode: "NST",
-      gameType: 32,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-nst.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-nst",
-    },
-    {
-      key: "pinnacle",
-      name: "Pinnacle",
-      vendorCode: "AWCMPINNACLE",
-      gameType: 4,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/sports-icon/icon-awcmpinnacle.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-awcmpinnacle",
-    },
-  ],
-  6: [],
-  7: [],
-  8: [
-    {
-      key: "sv388",
-      name: "SV388",
-      vendorCode: "SV388",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-sv388.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sv388",
-    },
-    {
-      key: "s128",
-      name: "S128",
-      vendorCode: "S128",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-s128.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-s128",
-    },
-    {
-      key: "wm-cockfight",
-      name: "WM Cockfight",
-      vendorCode: "WMCOCKFIGHT",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-wmcockfight.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-wmcockfight",
-    },
-    {
-      key: "bti-cockfight",
-      name: "BTi Cockfight",
-      vendorCode: "BTICOCKFIGHT",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-bticockfight.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-bticockfight",
-    },
-  ],
-  // Cock Fighting games
-  9: [
-    {
-      key: "sv388",
-      name: "SV388",
-      vendorCode: "SV388",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-sv388.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-sv388",
-    },
-    {
-      key: "s128",
-      name: "S128",
-      vendorCode: "S128",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-s128.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-s128",
-    },
-    {
-      key: "wm-cockfight",
-      name: "WM Cockfight",
-      vendorCode: "WMCOCKFIGHT",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-wmcockfight.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-wmcockfight",
-    },
-    {
-      key: "bti-cockfight",
-      name: "BTi Cockfight",
-      vendorCode: "BTICOCKFIGHT",
-      gameType: 9,
-      imageSrc:
-        "https://img.m167cw.com/mcw/h5/assets/images/icon-set/cockfight-icon/icon-bticockfight.png?v=1746501399063&source=mcdsrc",
-      imageAlt: "icon-bticockfight",
-    },
-  ],
-};
+// Define types
+interface CategoryOption {
+  id: number;
+  title: string;
+  status: string;
+  imgUrl?: string;
+  created_at?: string;
+  created_by?: string;
+}
+
+interface Category {
+  id: number;
+  title: string;
+  status: string;
+  options: CategoryOption[];
+}
+
+interface CategoriesResponse {
+  data: Category;
+}
+
+interface Provider {
+  id: number;
+  name: string;
+  parentId: number;
+  status: string;
+  minBalanceLimit: string;
+  mainBalance: string;
+  totalExpense: string;
+  providerIp: string;
+  licenseKey: string;
+  phone: string;
+  email: string;
+  whatsapp: string;
+  parentName: string;
+  telegram: string;
+  country: string;
+  logo: string;
+  createdAt: string;
+}
 
 export const GameTypes = () => {
   const [selected, setSelected] = useState<number | null>(1);
   const [animate, setAnimate] = useState(false);
+  console.log("selected", selected);
+
+  const getRequest = useGetRequest();
+
+  // Use in useQuery
+  const {
+    data: categoriesList,
+    isLoading: categoryLoading,
+    isError: categoryErr,
+  } = useQuery<CategoriesResponse, Error>({
+    queryKey: ["categories"],
+    queryFn: () =>
+      getRequest({
+        url: `${BASE_URL + API_LIST.GET_CATEGORIES}?id=2`,
+        successMessage: "Categories fetched successfully", // ✅ Added
+        errorMessage: "Failed to fetch categories",
+      }),
+  });
+  const categoryOption: CategoryOption[] = categoriesList?.data?.options || [];
+
+  const {
+    data: providerData,
+    isLoading: providerLoading,
+    isError: providerErr,
+  } = useQuery({
+    queryKey: ["providers", selected], // 👈 include `selected`
+    queryFn: () =>
+      getRequest({
+        url: `${BASE_URL + API_LIST.GET_CATEGORY_WISE_PROVIDER}/${selected}`,
+        successMessage: "Category wise provider fetched successfully",
+        errorMessage: "Failed to fetch categories",
+      }),
+    enabled: !!selected, // 👈 only run if `selected` has a value
+  });
+
+  const providerList = providerData?.data || [];
 
   const handleSelect = (id: number) => {
     if (selected !== id) {
@@ -400,31 +128,43 @@ export const GameTypes = () => {
   };
 
   // Function to ensure 4 items per row
-  const getGridItems = (items: GameItem[]) => {
+  const getGridItems = (items: GameItem[] | Provider[]) => {
     const itemsPerRow = 4;
     const totalItems = items.length;
     const rows = Math.ceil(totalItems / itemsPerRow);
     const totalSlots = rows * itemsPerRow;
     const emptySlots = totalSlots - totalItems;
 
-    // Generate game items
-    const gameItems = items.map((game) => (
-      <li
-        key={game.key}
-        className="ng-star-inserted"
-        data-web-category-type="GAME"
-        data-game-type={game.gameType}
-        data-vendor-code={game.vendorCode}
-        {...(game.extraData ? { "data-extra-data": game.extraData } : {})}
-      >
-        <a>
-          <img loading="lazy" alt={game.imageAlt} src={game.imageSrc} />
-          <p>{game.name}</p>
-        </a>
-      </li>
-    ));
+    const gameItems = items.map((item) => {
+      // Type guard to check if it's a provider
+      const isProvider = (obj: unknown): obj is Provider => {
+        return typeof obj === "object" && obj !== null && "logo" in obj;
+      };
 
-    // Add empty slots if needed
+      return (
+        <li
+          key={isProvider(item) ? item.id : item.key}
+          className="ng-star-inserted"
+          data-web-category-type="GAME"
+          data-game-type={isProvider(item) ? "provider" : item.gameType}
+          data-vendor-code={isProvider(item) ? item.name : item.vendorCode}
+          {...(!isProvider(item) && item.extraData
+            ? { "data-extra-data": item.extraData }
+            : {})}
+        >
+          <a>
+            <img
+              loading="lazy"
+              alt={isProvider(item) ? item.name : item.imageAlt}
+              src={isProvider(item) ? item.logo : item.imageSrc}
+              className="md:!w-[50px] md:!h-[50px]"
+            />
+            <p className="md:!leading-3 md:!text-[12px]">{item.name}</p>
+          </a>
+        </li>
+      );
+    });
+
     const emptyItems = Array(emptySlots)
       .fill(null)
       .map((_, index) => <li key={`empty-${index}`}></li>);
@@ -432,28 +172,62 @@ export const GameTypes = () => {
     return [...gameItems, ...emptyItems];
   };
 
+  if (categoryLoading) {
+    return (
+      <div className="game-types-container flex items-center justify-center loading !p-0 !min-h-[120px] md:!min-h-[300px]">
+        <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
+      </div>
+    );
+  }
+
+  if (categoryErr || providerErr) {
+    return;
+  }
+
   return (
     <div className="game-types-container">
-      <div className="game-types-selector">
-        {gameCategories.map((item) => (
+      <div className="game-types-selector max-w-[1190px] px-1 md:px-[10px] md:mx-auto rounded-md">
+        {categoryOption.map((item) => (
           <div
             key={item?.id}
-            className={`gametype-box ${selected === item?.id ? "active" : ""}`}
+            className={`gametype-box md:min-w-[80px] ${
+              selected === item?.id ? "active" : ""
+            }`}
             onClick={() => handleSelect(item.id)}
           >
-            <img src={item?.image} alt={item?.name} className="game-icon" />
-            <span className="game-name">{item?.name}</span>
+            <img
+              src={item?.imgUrl}
+              alt={item?.title}
+              className="game-icon md:min-w-[70px] md:h-[70px]"
+            />
+            <span className="game-name md:!text-[14px] md:!font-medium">
+              {item?.title}
+            </span>
           </div>
         ))}
       </div>
 
-      <div className="content-title">
-        <h2>{gameCategories.find((g) => g.id === selected)?.name || ""}</h2>
-      </div>
+      {providerLoading ? (
+        <div className="game-types-container flex items-center justify-center loading !p-0 !min-h-[80px] md:!min-h-[150px]">
+          <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
+        </div>
+      ) : (
+        <>
+          <div className="content-title !mb-0 !pb-0 max-w-[1200px] md:px-[15px] mx-auto">
+            <h2 className="md:!text-[24px] ">
+              {gameCategories.find((g) => g.id === selected)?.name || ""}
+            </h2>
+          </div>
 
-      <ul className={`game-types-list ${animate ? "slide-in" : ""}`}>
-        {getGridItems(gamesByCategory[selected!] || [])}
-      </ul>
+          <ul
+            className={`game-types-list md:grid-cols-12 max-w-[1200px] md:px-[15px] mx-auto ${
+              animate ? "slide-in" : ""
+            }`}
+          >
+            {getGridItems(providerList || [])}
+          </ul>
+        </>
+      )}
     </div>
   );
 };

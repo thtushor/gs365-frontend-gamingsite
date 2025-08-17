@@ -1,9 +1,9 @@
 // API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://gs-server-svmt.onrender.com",
+  // BASE_URL: "https://gs-server-svmt.onrender.com",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  // BASE_URL: "http://localhost:3000",
+  BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
 
   // API Version
@@ -33,7 +33,7 @@ export const API_ENDPOINTS = {
   },
 
   PAYMENT: {
-    GET_METHODS: "/api/payment-method",      // PAy
+    GET_METHODS: "/api/payment-method", // PAy
     GET_PAYMENT_METHODS_BY_NAME: "/api/payment-method/name",
     DEPOSIT_TRANSACTION: "/api/transactions/deposit",
     WITHDRAW_TRANSACTION: "/api/transactions/withdraw",

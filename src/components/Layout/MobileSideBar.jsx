@@ -11,20 +11,10 @@ import CockFighting from "../../assets/gameType/icon-cockfighting.png";
 import { TbTargetArrow, TbUserShare } from "react-icons/tb";
 import { IoIosAddCircle, IoMdGift } from "react-icons/io";
 import { RiPoliceBadgeLine, RiVipDiamondLine } from "react-icons/ri";
+import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
+import { useQuery } from "@tanstack/react-query";
 
 const MobileSideBar = () => {
-  const gameCategories = [
-    { id: 1, name: "Sports", image: sports },
-    { id: 2, name: "Casino", image: Casino },
-    { id: 3, name: "Slot", image: Slots },
-    { id: 4, name: "Table", image: Table },
-    { id: 5, name: "Crash", image: Crash },
-    { id: 6, name: "Lottery", image: Lottery },
-    { id: 7, name: "Fishing", image: Fishing },
-    { id: 8, name: "Arcade", image: Arcade },
-    { id: 9, name: "Cock Fighting", image: CockFighting },
-  ];
-
   const sidebarLinks = [
     { id: 1, name: "Invite Friends", link: "", image: <TbUserShare /> },
     { id: 2, name: "Promotion", link: "", image: <IoMdGift /> },
@@ -32,16 +22,35 @@ const MobileSideBar = () => {
     { id: 4, name: "VIP", link: "", image: <RiVipDiamondLine /> },
     { id: 6, name: "Deposit", link: "", image: <IoIosAddCircle /> },
   ];
+
+  const getRequest = useGetRequest();
+
+  const {
+    data: categoriesList,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () =>
+      getRequest({
+        url: `${BASE_URL + API_LIST.GET_CATEGORIES}?id=2`,
+        errorMessage: "Failed to fetch categories",
+      }),
+  });
+
+  const categoryOption = categoriesList?.data?.options || [];
   return (
     <div className="">
       <div className="grid grid-cols-2 gap-1">
-        {gameCategories?.map((g) => (
+        {categoryOption?.map((g) => (
           <div
             key={g?.id}
             className="bg-[#1a1a2ef2] flex flex-col rounded-md pt-3 p-2 items-center justify-center"
           >
-            <img src={g?.image} alt={g?.name} className="w-[25px]" />
-            <p className="text-[10px] font-normal">{g?.name}</p>
+            <div className="border-yellow-300 border w-[25px] text-[18px] flex items-center justify-center h-[25px] rounded-full">
+              <img src={g?.imgUrl} alt={g?.title} className="object-cover" />
+            </div>
+            <p className="text-[10px] font-normal">{g?.title}</p>
           </div>
         ))}
         {sidebarLinks?.map((g) => (

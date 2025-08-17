@@ -16,15 +16,16 @@ import {
 // import { providerGames } from "../lib/mockProviderGames";
 import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
-import GameGrid from "../components/GameGrid";
 import SeoSection from "../components/Layout/SeoSection";
 import DraggableContainer from "../components/DraggableContainer/DraggableContainer";
 import SupportUs from "../components/SupportUs/SupportUs";
 import FloatingContact from "../components/FloatingContact/FloatingContact";
 import { HeroV2 } from "../components/Hero/HeroV2";
-import { NoticeBoard } from "../components/Notice/NoticeBoard"; 
+import { NoticeBoard } from "../components/Notice/NoticeBoard";
 import Advertisement from "../components/Advertisement/Advertisement";
 import Sponsors from "../components/Sponsors";
+import GameGrid from "../components/GameGrid";
+import SportGrid from "../components/SportGrid/SportGrid";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -59,6 +60,7 @@ const HomePage: React.FC = () => {
       {/* <ProviderGames games={providerGames} /> */}
 
       <GameGrid />
+      <SportGrid />
       <SeoSection title={seoTitle} content={seoContent} />
       <Advertisement />
       <Sponsors />

@@ -87,7 +87,7 @@ const FilterContainer = ({ onFilter, onSearch }) => {
       </div>
     ));
   };
-
+  return;
   return (
     <div className="filter-container">
       {/* Top filter bar with search and quick filters */}
