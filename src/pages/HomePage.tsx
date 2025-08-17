@@ -79,7 +79,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <GameGrid />
-      <SportGrid />
+      {/* <SportGrid /> */}
 
       <SeoSection title={seoTitle} content={seoContent} />
       <Advertisement />
