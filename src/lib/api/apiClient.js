@@ -5,8 +5,9 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://glorypos.com/gs-server";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://gs-server-svmt.onrender.com";
+// export const BASE_URL = "https://glorypos.com/gs-server";
+export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_HERO_BANNERS: "/api/public/banners-list",
   GET_ANNOUNCEMENTS: "/api/public/announcement",
@@ -19,6 +20,10 @@ export const API_LIST = {
   GET_ACTIVE_ADVERTISEMENT: "/api/public/advertisement",
   GET_PROMOTIONS: "/api/public/promotions",
   GET_PROMOTION_DETAILS: "/api/public/promotions",
+  GET_CATEGORIES: "/api/public/categories",
+  GET_CATEGORY_WISE_PROVIDER: "/api/public/category-wise-provider",
+  GET_CATEGORY_WISE_GAME: "/api/public/category-wise-games",
+  GET_CATEGORY_WISE_SPORT: "/api/public/category-wise-sports",
 };
 
 // --- Reusable POST Request Hook ---

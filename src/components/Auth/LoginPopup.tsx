@@ -68,6 +68,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   onClose,
   onSignUpClick,
 }) => {
+  const { login, isPendingLogin } = useAuth();
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
   const [formData, setFormData] = useState({
@@ -77,7 +78,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // React Query hook for login
-  const { login, isPendingLogin } = useAuth();
 
   if (!isOpen) return null;
 

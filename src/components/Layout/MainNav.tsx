@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import "./MainNav.scss";
-import { FaHome, FaMobileAlt, FaChevronDown } from "react-icons/fa";
+import { FaHome, FaChevronDown } from "react-icons/fa";
 import { BsFillTrophyFill } from "react-icons/bs";
 import { GiPokerHand } from "react-icons/gi";
 import { MdSportsSoccer, MdCasino, MdLiveTv } from "react-icons/md";
@@ -405,16 +405,6 @@ const MainNav: React.FC = () => {
           <Link to="/">
             <FaHome className="nav-icon" />
           </Link>
-        </li>
-
-        <li
-          className={`nav-item ${
-            activePage === "/page/guest/appDownload.jsp" ? "active" : ""
-          }`}
-        >
-          <a href="/page/guest/appDownload.jsp" target="_blank">
-            <FaMobileAlt className="nav-icon" />
-          </a>
         </li>
 
         <li

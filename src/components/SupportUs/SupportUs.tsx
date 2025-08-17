@@ -20,7 +20,7 @@ const SupportUs: React.FC = () => {
     <>
       {open && <SupportPanel open={open} onClose={handleClose} />}
       <button
-        className="support-us-floating-button fixed right-5 bottom-[60px] !w-[40px] !h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
+        className="support-us-floating-button !w-[40px] !h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
         style={{
           width: BUTTON_SIZE,
           height: BUTTON_SIZE,

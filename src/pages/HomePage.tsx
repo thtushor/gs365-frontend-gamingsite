@@ -16,15 +16,16 @@ import {
 // import { providerGames } from "../lib/mockProviderGames";
 import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
-import GameGrid from "../components/GameGrid";
 import SeoSection from "../components/Layout/SeoSection";
 import DraggableContainer from "../components/DraggableContainer/DraggableContainer";
 import SupportUs from "../components/SupportUs/SupportUs";
 import FloatingContact from "../components/FloatingContact/FloatingContact";
 import { HeroV2 } from "../components/Hero/HeroV2";
-import { NoticeBoard } from "../components/Notice/NoticeBoard"; 
+import { NoticeBoard } from "../components/Notice/NoticeBoard";
 import Advertisement from "../components/Advertisement/Advertisement";
 import Sponsors from "../components/Sponsors";
+import GameGrid from "../components/GameGrid";
+import SportGrid from "../components/SportGrid/SportGrid";
 import { Link } from "react-router-dom";
 import { FaGamepad } from "react-icons/fa";
 
@@ -62,10 +63,14 @@ const HomePage: React.FC = () => {
 
       {/* Test Gaming Section - Moved to top for first look */}
       <div className="text-center py-8">
-        <h2 className="text-2xl font-bold text-white mb-4">Ready to Test Games?</h2>
-        <p className="text-gray-400 mb-6">Try out our game collection with real API integration</p>
-        <Link 
-          to="/test-game" 
+        <h2 className="text-2xl font-bold text-white mb-4">
+          Ready to Test Games?
+        </h2>
+        <p className="text-gray-400 mb-6">
+          Try out our game collection with real API integration
+        </p>
+        <Link
+          to="/test-game"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold px-6 py-3 rounded-lg hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
         >
           <FaGamepad />
@@ -74,7 +79,8 @@ const HomePage: React.FC = () => {
       </div>
 
       <GameGrid />
-      
+      <SportGrid />
+
       <SeoSection title={seoTitle} content={seoContent} />
       <Advertisement />
       <Sponsors />
