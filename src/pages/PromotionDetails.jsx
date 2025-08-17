@@ -35,7 +35,7 @@ const PromotionDetails = () => {
   console.log(promotionId);
   return (
     <div className="!max-w-[900px] mx-auto px-4 py-8">
-      <h1 className="text-[22px] flex items-center font-bold text-white">
+      <h1 className="text-[18px] md:text-[22px] flex items-center font-semibold md:font-bold text-white">
         <Link
           className="text-white font-bold text-[25px] mr-2 hover:text-yellow-400"
           to={"/promotions"}
@@ -97,14 +97,14 @@ const PromotionDetails = () => {
       <div className="header-auth">
         {user?.id ? (
           <button
-            className="signup-btn w-full h-[45px]"
+            className="bg-[#ffd700] text-black w-full h-[35px] md:h-[45px] md:font-semibold font-medium"
             onClick={() => navigate(`/deposit?promotionId=${promotionId}`)}
           >
             Deposit now
           </button>
         ) : (
           <button
-            className="signup-btn w-full h-[45px]"
+            className="bg-[#ffd700] text-black w-full h-[35px] md:h-[45px] md:font-semibold font-medium"
             onClick={() => handleRegisterClick()}
           >
             Signup

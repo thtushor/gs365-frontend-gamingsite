@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegClock, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface Tag {
   id: number;
@@ -81,7 +82,7 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
                 <FaRegClock className="mr-1 text-yellow-400" /> {promotion.time}
               </span>
             </div>
-            <h3 className="text-[18px] text-left mb-4 font-extrabold text-white mb-2 leading-tight drop-shadow-sm">
+            <h3 className="text-[16px] text-left md:text-[18px] font-semibold text-white mb-2 leading-tight drop-shadow-sm">
               {promotion.title}
             </h3>
             {/* <p className="text-gray-100 mb-3 text-base leading-relaxed">
@@ -111,18 +112,12 @@ const PromotionModal: React.FC<PromotionModalProps> = ({
               </a>
             </div> */}
             <div className="flex flex-col md:flex-row gap-2 mt-2">
-              <a
-                href={promotion?.signupLink}
-                className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-600 text-gray-900 font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center hover:text-gray-900"
-              >
-                Signup
-              </a>
-              <a
-                href={promotion?.detailsLink}
-                className="w-full md:w-auto border-yellow-400 hover:border-white text-yellow-400 hover:text-white font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center border"
+              <Link
+                to={promotion?.detailsLink}
+                className="w-full md:w-auto border-yellow-400 hover:border-white text-yellow-400 hover:text-white font-medium py-1 px-3 rounded-md transition text-[14px] shadow-md text-center border"
               >
                 Read more
-              </a>
+              </Link>
             </div>
           </motion.div>
         </motion.div>

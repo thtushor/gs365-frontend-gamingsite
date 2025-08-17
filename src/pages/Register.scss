@@ -232,19 +232,19 @@
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     overflow: hidden;
+    max-height: 480px;
 
     @media (max-width: 980px) {
       display: none;
     }
 
     .banner-slide {
-      position: relative;
-      height: 100%;
+      position: relative; 
       min-height: 500px;
+      max-height: 500px;
 
       img {
-        width: 100%;
-        height: 100%;
+        width: 100%; 
         object-fit: cover;
       }
 
@@ -276,9 +276,15 @@
 
     // Slick slider customization
     .slick-dots {
-      bottom: 10px;
+      bottom: 40px;
       z-index: 1;
-
+    background: rgb(43, 43, 43);
+    padding-bottom: 5px;
+    width: fit-content;
+    border-radius: 30px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
       li {
         button:before {
           color: rgba(255, 255, 255, 0.5);
@@ -296,14 +302,13 @@
   width: 100%;
   height: 42px;  
   padding-left: 12px; 
-
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 14px;
-    transition: all 0.3s ease;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.3s ease;
 
   &:focus {
     border-color: #d1d5db;

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { FaUser, FaTelegramPlane, FaFacebook } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
@@ -15,10 +17,14 @@ export const TopBar: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCurrencySelect = (value: {
-    currency: string;
-    language: string;
-  }) => {
+  const handleCurrencySelect = (
+    value: {
+      currency: string;
+      language: string;
+    },
+    fullData: any
+  ) => {
+    console.log(fullData);
     setCurrency(value);
   };
 

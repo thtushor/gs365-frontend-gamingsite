@@ -1,6 +1,7 @@
 import React from "react";
 import { FaRegClock } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/auth-context";
 
 interface Tag {
   id: number;
@@ -27,10 +28,10 @@ const PromotionCard: React.FC<PromotionCardProps> = ({
   // description,
   tag,
   time,
-  signupLink,
   detailsLink,
 }) => {
-  console.log(tag);
+  const { user } = useAuth();
+  console.log(user);
   return (
     <div className="bg-gray-800 text-left rounded-2xl shadow-2xl overflow-hidden flex flex-col h-full border border-gray-700 hover:shadow-yellow-400/40 transition-shadow duration-300 group promotion-fade-in-up">
       {/*
@@ -70,7 +71,7 @@ const PromotionCard: React.FC<PromotionCardProps> = ({
               <FaRegClock className="mr-1 text-yellow-400" /> {time}
             </span>
           </div>
-          <h3 className="text-[18px] font-extrabold text-white mb-2 leading-tight drop-shadow-sm">
+          <h3 className="text-[16px] md:text-[18px] font-semibold text-white mb-2 leading-tight drop-shadow-sm">
             {title}
           </h3>
           {/* <p className="text-gray-100 mb-3 text-base leading-relaxed">
@@ -85,14 +86,8 @@ const PromotionCard: React.FC<PromotionCardProps> = ({
         </div>
         <div className="flex flex-col md:flex-row gap-2 mt-2">
           <Link
-            to={signupLink}
-            className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-600 text-gray-900 font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center hover:text-gray-900"
-          >
-            Signup
-          </Link>
-          <Link
             to={detailsLink}
-            className="w-full md:w-auto border-yellow-400 hover:border-white text-yellow-400 hover:text-white font-bold py-1 px-4 rounded-md transition text-base shadow-md text-center border"
+            className="w-full md:w-auto border-yellow-400 hover:border-white text-yellow-400 hover:text-white font-medium py-1 px-3 rounded-md transition text-[14px] shadow-md text-center border"
           >
             Read more
           </Link>

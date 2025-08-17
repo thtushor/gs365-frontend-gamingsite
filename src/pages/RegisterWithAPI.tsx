@@ -13,6 +13,8 @@ import "./Register.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
 import { useSearchParams } from "react-router-dom";
+import signup1 from "../assets/signup1.jpg";
+import signup2 from "../assets/signup2.jpg";
 
 const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -53,24 +55,15 @@ const Register: React.FC = () => {
   const bannerImages = [
     {
       id: 1,
-      image:
-        "https://www.shutterstock.com/image-vector/this-image-features-colorful-online-600nw-2467530093.jpg",
+      image: signup1,
       title: "Welcome to GameStar365",
       description: "Join our gaming community today!",
     },
     {
       id: 2,
-      image:
-        "https://c8.alamy.com/comp/PHN4DX/casino-design-with-777-jackpot-and-money-coins-over-purple-background-colorful-design-vector-illustration-PHN4DX.jpg",
+      image: signup2,
       title: "Exclusive Bonuses",
       description: "Get amazing welcome bonuses on registration",
-    },
-    {
-      id: 3,
-      image:
-        "https://c8.alamy.com/comp/2EM4KEP/poker-cards-casino-gambling-games-vector-design-playing-cards-and-casino-chips-with-golden-ribbon-banner-sparkles-and-poker-hand-four-rockets-with-2EM4KEP.jpg",
-      title: "24/7 Support",
-      description: "Our customer service team is always ready to help",
     },
   ];
 
@@ -426,7 +419,6 @@ const Register: React.FC = () => {
                           </div>
                         )}
                       </li>
-                   
                     </ul>
                     <div className="form-btn-box">
                       <button
@@ -620,15 +612,11 @@ const Register: React.FC = () => {
             </div>
           </div>
 
-          <div className="right-register-banner">
+          <div className="right-register-banner mt-[66px]">
             <Slider {...sliderSettings}>
               {bannerImages.map((banner) => (
                 <div key={banner.id} className="banner-slide">
                   <img src={banner.image} alt={banner.title} />
-                  <div className="banner-content">
-                    <h3>{banner.title}</h3>
-                    <p>{banner.description}</p>
-                  </div>
                 </div>
               ))}
             </Slider>

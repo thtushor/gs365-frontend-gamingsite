@@ -11,8 +11,7 @@ interface GameCardProps {
   gameUrl: string;
   ggrPercent: string;
   categoryInfo: string;
-  providerInfo: string;
-  provider: {
+  providerInfo: {
     id: number;
     name: string;
     logo: string;
@@ -32,7 +31,6 @@ const GameCard: React.FC<GameCardProps> = ({
   ggrPercent,
   categoryInfo,
   providerInfo,
-  provider,
   onPlayClick,
   className = "",
 }) => {
@@ -48,51 +46,56 @@ const GameCard: React.FC<GameCardProps> = ({
 
   const getProviderName = () => {
     try {
-      const parsed = JSON.parse(providerInfo);
-      return parsed.name || provider.name || "Unknown Provider";
+      return providerInfo?.name || "Unknown Provider";
     } catch {
-      return provider.name || "Unknown Provider";
+      return providerInfo?.name || "Unknown Provider";
     }
   };
 
   const handlePlayClick = () => {
     // e.stopPropagation();
-    console.log("click me")
+    console.log("click me");
     onPlayClick(id);
   };
 
   return (
-    <div className={`game-card ${className} cursor-pointer`} onClick={handlePlayClick}>
-      <div className="game-card-image" style={{ backgroundImage: `url(${gameLogo})` }}>
+    <div
+      className={`game-card ${className} cursor-pointer`}
+      onClick={handlePlayClick}
+    >
+      <div
+        className="game-card-image"
+        style={{ backgroundImage: `url(${gameLogo})` }}
+      >
         <div className="game-card-overlay">
-          <button 
-            className="play-now-btn" 
+          <button
+            className="play-now-btn"
             onClick={handlePlayClick}
             disabled={status !== "active"}
           >
             {status === "active" ? "PLAY NOW" : "UNAVAILABLE"}
           </button>
         </div>
-        
+
         <div className="game-provider-tag">{getProviderName()}</div>
-        
+
         {isFavorite && (
           <div className="favorite-badge">
             <span>❤️</span>
           </div>
         )}
-        
+
         <div className="logo-watermark">
           <Logo />
         </div>
-        
+
         {status !== "active" && (
           <div className="status-overlay">
             <span className="status-text">{status}</span>
           </div>
         )}
       </div>
-      
+
       <div className="game-card-content">
         <h3 className="game-title">{name}</h3>
         <div className="game-details">

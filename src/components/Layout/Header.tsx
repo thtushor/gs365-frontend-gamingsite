@@ -22,9 +22,9 @@ import UserProfileDropdown from "./UserProfileDropdown";
 import { CircleDollarSignIcon, TargetIcon } from "lucide-react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import MobileSideBar from "./MobileSideBar";
-import { CurrencyModal } from "../Modal/CurrencyModal";
 import { UserBalance } from "./UserBalance";
 import { FaGamepad } from "react-icons/fa";
+import { CurrencyModal } from "../Modal/CurrencyModal";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -128,7 +128,7 @@ const Header: React.FC = () => {
           <div className="header-left">
             <div
               onClick={() => navigate("/")}
-              className="hidden sm:flex items-center"
+              className="hidden cursor-pointer sm:flex items-center"
             >
               <Logo />
               <h1 className="text-[23px] font-semibold text-yellow-300">

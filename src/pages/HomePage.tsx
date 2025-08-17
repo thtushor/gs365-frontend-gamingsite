@@ -25,7 +25,7 @@ import { NoticeBoard } from "../components/Notice/NoticeBoard";
 import Advertisement from "../components/Advertisement/Advertisement";
 import Sponsors from "../components/Sponsors";
 import GameGrid from "../components/GameGrid";
-import SportGrid from "../components/SportGrid/SportGrid";
+// import SportGrid from "../components/SportGrid/SportGrid";
 import { Link } from "react-router-dom";
 import { FaGamepad } from "react-icons/fa";
 
