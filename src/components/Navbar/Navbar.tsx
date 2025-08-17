@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { Logo } from "../Logo/Logo";
 import "./Navbar.scss";
-import { CurrencyModal } from "../Modal/CurrencyModal";
 import { NavLink, useNavigate } from "react-router-dom";
 import { WalletIcon } from "../Icon/WalletIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
 import { MobileDrawer } from "./MobileDrawer";
+import { CurrencyModal } from "../Modal/CurrencyModal";
 
 const subnavSlides = [
   {

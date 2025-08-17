@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import "./GameGrid.scss";
 import { Logo } from "../Logo/Logo";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import GameCardComponent from "../GameCard/GameCardComponent";
+import GameCard from "../GameCard/GameCard";
+import { API_ENDPOINTS } from "../../lib/api/config";
+import { toast } from "react-toastify";
+import { useAuth } from "../../contexts/auth-context";
+import axiosInstance from "../../lib/api/axios";
 
 const GameGrid = () => {
+  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [gamesPerPage] = useState(12);
@@ -58,6 +64,46 @@ const GameGrid = () => {
 
   const progressPercentage = Math.min((games.length / totalGames) * 100, 100);
 
+  // Play game mutation
+  const playGameMutation = useMutation({
+    mutationFn: async (request) => {
+      const response = await axiosInstance.post(
+        API_ENDPOINTS.GAME.PLAY_GAME,
+        request
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("Game session created successfully!");
+        // Open game in new window
+        window.open(data.data.url, "_blank", "noopener,noreferrer");
+      } else {
+        toast.error(data.message || "Failed to create game session");
+      }
+    },
+    onError: (error) => {
+      console.error("Play game error:", error);
+      toast.error(error.response?.data?.message || "Failed to start game");
+    },
+  });
+
+  const handlePlayGame = (gameId) => {
+    if (!user?.id) {
+      toast.error("Please login to play games");
+      return;
+    }
+
+    const request = {
+      userId: user.id,
+      gameId: gameId,
+      betAmount: 0, // As requested
+      userScore: 0, // As requested
+    };
+
+    playGameMutation.mutate(request);
+  };
+
   if (categoryLoading || gamesLoading) {
     return (
       <div className="game-grid-container flex items-center justify-center loading !p-0 !min-h-[120px] md:!min-h-[300px]">
@@ -65,6 +111,8 @@ const GameGrid = () => {
       </div>
     );
   }
+
+  console.log(games);
 
   return (
     <div className="game-grid-container">
@@ -95,7 +143,7 @@ const GameGrid = () => {
       <div className="flex flex-wrap gap-[6px] md:gap-3 items-center justify-center">
         {games.map((game, index) => (
           <div key={game.id} style={{ animationDelay: `${index * 0.05}s` }}>
-            <GameCardComponent gameDetails={game} />
+            <GameCard key={game.id} {...game} onPlayClick={handlePlayGame} />
           </div>
         ))}
       </div>

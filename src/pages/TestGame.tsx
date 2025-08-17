@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "../contexts/auth-context";
@@ -59,7 +60,11 @@ const TestGame: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState("all");
 
   // Fetch games using React Query
-  const { data: gamesData, isLoading, error } = useQuery({
+  const {
+    data: gamesData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["games"],
     queryFn: async (): Promise<GamesResponse> => {
       const response = await axiosInstance.get(API_ENDPOINTS.GAME.GAME_LIST);
@@ -71,14 +76,17 @@ const TestGame: React.FC = () => {
   // Play game mutation
   const playGameMutation = useMutation({
     mutationFn: async (request: PlayGameRequest): Promise<PlayGameResponse> => {
-      const response = await axiosInstance.post(API_ENDPOINTS.GAME.PLAY_GAME, request);
+      const response = await axiosInstance.post(
+        API_ENDPOINTS.GAME.PLAY_GAME,
+        request
+      );
       return response.data;
     },
     onSuccess: (data) => {
       if (data.success) {
         toast.success("Game session created successfully!");
         // Open game in new window
-        window.open(data.data.url, '_blank', 'noopener,noreferrer');
+        window.open(data.data.url, "_blank", "noopener,noreferrer");
       } else {
         toast.error(data.message || "Failed to create game session");
       }
@@ -106,41 +114,59 @@ const TestGame: React.FC = () => {
   };
 
   // Filter games based on search and category
-  const filteredGames = gamesData?.data?.filter((game) => {
-    const matchesSearch = game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         game.provider.name.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = selectedCategory === "all" || 
-                           (() => {
-                             try {
-                               const parsed = JSON.parse(game.categoryInfo);
-                               return parsed.category?.toLowerCase() === selectedCategory.toLowerCase();
-                             } catch {
-                               return false;
-                             }
-                           })();
-    
-    const matchesProvider = selectedProvider === "all" || 
-                           game.provider.name.toLowerCase() === selectedProvider.toLowerCase();
+  const filteredGames =
+    gamesData?.data?.filter((game) => {
+      const matchesSearch =
+        game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.provider.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return matchesSearch && matchesCategory && matchesProvider;
-  }) || [];
+      const matchesCategory =
+        selectedCategory === "all" ||
+        (() => {
+          try {
+            const parsed = JSON.parse(game.categoryInfo);
+            return (
+              parsed.category?.toLowerCase() === selectedCategory.toLowerCase()
+            );
+          } catch {
+            return false;
+          }
+        })();
+
+      const matchesProvider =
+        selectedProvider === "all" ||
+        game.provider.name.toLowerCase() === selectedProvider.toLowerCase();
+
+      return matchesSearch && matchesCategory && matchesProvider;
+    }) || [];
 
   // Get unique categories and providers for filters
-  const categories = ["all", ...Array.from(new Set(
-    gamesData?.data?.map(game => {
-      try {
-        const parsed = JSON.parse(game.categoryInfo);
-        return parsed.category;
-      } catch {
-        return "Unknown";
-      }
-    }).filter(Boolean) || []
-  ))];
+  const categories = [
+    "all",
+    ...Array.from(
+      new Set(
+        gamesData?.data
+          ?.map((game) => {
+            try {
+              const parsed = JSON.parse(game.categoryInfo);
+              return parsed.category;
+            } catch {
+              return "Unknown";
+            }
+          })
+          .filter(Boolean) || []
+      )
+    ),
+  ];
 
-  const providers = ["all", ...Array.from(new Set(
-    gamesData?.data?.map(game => game.provider.name).filter(Boolean) || []
-  ))];
+  const providers = [
+    "all",
+    ...Array.from(
+      new Set(
+        gamesData?.data?.map((game) => game.provider.name).filter(Boolean) || []
+      )
+    ),
+  ];
 
   if (isLoading) {
     return (
@@ -160,8 +186,12 @@ const TestGame: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-20">
             <FaGamepad className="mx-auto h-16 w-16 text-red-400 mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Error Loading Games</h2>
-            <p className="text-gray-400">Failed to load games. Please try again later.</p>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Error Loading Games
+            </h2>
+            <p className="text-gray-400">
+              Failed to load games. Please try again later.
+            </p>
           </div>
         </div>
       </div>
@@ -189,7 +219,9 @@ const TestGame: React.FC = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-300">Total Games</p>
-                <p className="text-2xl font-bold text-white">{gamesData?.count || 0}</p>
+                <p className="text-2xl font-bold text-white">
+                  {gamesData?.count || 0}
+                </p>
               </div>
             </div>
           </div>
@@ -200,9 +232,12 @@ const TestGame: React.FC = () => {
                 <FaPlay className="text-green-400 text-xl" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Active Games</p>
+                <p className="text-sm font-medium text-gray-300">
+                  Active Games
+                </p>
                 <p className="text-2xl font-bold text-white">
-                  {gamesData?.data?.filter(g => g.status === "active").length || 0}
+                  {gamesData?.data?.filter((g) => g.status === "active")
+                    .length || 0}
                 </p>
               </div>
             </div>
@@ -214,9 +249,11 @@ const TestGame: React.FC = () => {
                 <FaStar className="text-purple-400 text-xl" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Favorite Games</p>
+                <p className="text-sm font-medium text-gray-300">
+                  Favorite Games
+                </p>
                 <p className="text-2xl font-bold text-white">
-                  {gamesData?.data?.filter(g => g.isFavorite).length || 0}
+                  {gamesData?.data?.filter((g) => g.isFavorite).length || 0}
                 </p>
               </div>
             </div>
@@ -232,7 +269,9 @@ const TestGame: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Search Games</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Search Games
+                </label>
                 <div className="relative">
                   <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
@@ -246,7 +285,9 @@ const TestGame: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Category
+                </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
@@ -261,7 +302,9 @@ const TestGame: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Provider</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Provider
+                </label>
                 <select
                   value={selectedProvider}
                   onChange={(e) => setSelectedProvider(e.target.value)}
@@ -308,7 +351,9 @@ const TestGame: React.FC = () => {
           {filteredGames.length === 0 ? (
             <div className="text-center py-12">
               <FaGamepad className="mx-auto h-12 w-12 text-gray-500" />
-              <h3 className="mt-2 text-sm font-medium text-white">No games found</h3>
+              <h3 className="mt-2 text-sm font-medium text-white">
+                No games found
+              </h3>
               <p className="mt-1 text-sm text-gray-400">
                 No games match your current filters.
               </p>
@@ -319,6 +364,11 @@ const TestGame: React.FC = () => {
                 <GameCard
                   key={game.id}
                   {...game}
+                  providerInfo={
+                    typeof game.providerInfo === "string"
+                      ? JSON.parse(game.providerInfo)
+                      : game.providerInfo
+                  }
                   onPlayClick={handlePlayGame}
                 />
               ))}

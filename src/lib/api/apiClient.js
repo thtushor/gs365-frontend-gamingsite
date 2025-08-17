@@ -23,6 +23,7 @@ export const API_LIST = {
   GET_CATEGORY_WISE_PROVIDER: "/api/public/category-wise-provider",
   GET_CATEGORY_WISE_GAME: "/api/public/category-wise-games",
   GET_CATEGORY_WISE_SPORT: "/api/public/category-wise-sports",
+  GET_COUNTRIES: "/api/countries",
 };
 
 // --- Reusable POST Request Hook ---

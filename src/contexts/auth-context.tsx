@@ -55,6 +55,8 @@ interface AuthContextType extends AuthState {
   register: (data: RegisterRequest) => Promise<any>;
   clearAuth: () => void;
   getToken: () => string | null;
+  countries: any;
+  setCountries: any;
 }
 
 // Create Auth Context
@@ -75,6 +77,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   const { user, isLoading: isLoadingUserProfile, error } = useUserProfile();
+  const [countries, setCountries] = useState(null);
 
   const loginMutation = useLogin();
 
@@ -207,6 +210,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     register,
     clearAuth,
     getToken,
+    countries,
+    setCountries,
   };
 
   return (

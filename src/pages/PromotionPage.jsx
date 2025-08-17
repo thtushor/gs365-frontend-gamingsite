@@ -28,7 +28,7 @@ const PromotionPage = () => {
   return (
     <div className="vip-page bg-gray-900 min-h-screen pb-10">
       <HeroV2 />
-      <VipFilterBar options={filterOptions} />
+      {/* <VipFilterBar options={filterOptions} /> */}
       <div className="!max-w-[1200px] mx-auto px-4 py-8">
         <PromotionList
           promotions={
