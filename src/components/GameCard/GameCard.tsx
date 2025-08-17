@@ -55,13 +55,14 @@ const GameCard: React.FC<GameCardProps> = ({
     }
   };
 
-  const handlePlayClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handlePlayClick = () => {
+    // e.stopPropagation();
+    console.log("click me")
     onPlayClick(id);
   };
 
   return (
-    <div className={`game-card ${className}`}>
+    <div className={`game-card ${className} cursor-pointer`} onClick={handlePlayClick}>
       <div className="game-card-image" style={{ backgroundImage: `url(${gameLogo})` }}>
         <div className="game-card-overlay">
           <button 

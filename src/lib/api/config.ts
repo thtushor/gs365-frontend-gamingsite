@@ -1,9 +1,9 @@
 // API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  // BASE_URL: "https://glorypos.com/gs-server",
+  BASE_URL: "https://glorypos.com/gs-server",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
-  BASE_URL: "http://localhost:3000",
+  // BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
 
   // API Version
