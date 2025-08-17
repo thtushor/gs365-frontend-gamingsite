@@ -55,7 +55,7 @@ interface RegisterResponseData {
 
 // Auth Hooks
 export const useLogin = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // const { setUser } = useAuth();
 
@@ -78,7 +78,7 @@ export const useLogin = () => {
 
       // setUser(response.data)
       // Invalidate and refetch user profile
-      queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });
+      // queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });
     },
   });
 };

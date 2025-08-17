@@ -1,9 +1,10 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { GameCard } from "../GameCard/GameCard";
+// import { GameCard } from "../GameCard/GameCard";
 import { SliderHeader } from "./SliderHeader";
 import "./GameSlider.scss";
+import { GameCard } from "./GameCard";
 
 interface GameSliderProps {
   title: string;

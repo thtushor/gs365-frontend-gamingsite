@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axiosInstance from "../../lib/api/axios";
 import { SINGLE_IMAGE_UPLOAD_URL, API_ENDPOINTS } from "../../lib/api/config";
 import { useAuth } from "../../contexts/auth-context";
+import BaseModal from "../Promotion/BaseModal";
+
+const PaymentConfirmation = () => {
+  return (
+    <div className="flex flex-col items-center justify-center p-6 text-white">
+      <div className="bg-green-500 rounded-full w-20 h-20 flex items-center justify-center mb-4">
+        <span className="text-3xl">✔</span>
+      </div>
+      <h2 className="text-2xl font-bold mb-2">Payment Submitted!</h2>
+      <p className="text-gray-300 mb-4">
+        Your deposit information has been received successfully.  
+        Funds will be processed shortly.
+      </p>
+      <button
+        onClick={() => window.location.reload()} // Or navigate to dashboard
+        className="bg-yellow-400 hover:bg-yellow-600 text-black px-6 py-2 rounded"
+      >
+        Back
+      </button>
+    </div>
+  );
+};
+
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
@@ -14,46 +37,48 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadRes, setUploadRes] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes = 600s
+   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
-  console.log("depositOptions", { depositOptions });
 
-  // Extract data from depositOptions
+   // Timer countdown
+  useEffect(() => {
+    if (timeLeft <= 0 || isCompleted) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, isCompleted]);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  };
+
+  // Extract main details
+  const paymentType = depositOptions?.payment_type;
   const selectedGateway = depositOptions?.selectedGateway;
   const selectedProvider = depositOptions?.selectedProvider;
+  const depositChannel = depositOptions?.deposit_channel;
+  const transferType = depositOptions?.transfer_type;
   const amount = depositOptions?.amount;
 
-  // Get account information from the selected provider
-  const accountInfo = selectedProvider?.gatewayProvider?.account?.[0] || null;
+  // Extract account info
+  const accountInfo = depositChannel?.gatewayProvider?.account?.[0] || null;
 
-  // Transfer details from the account information
-  const transferDetails = accountInfo
-    ? {
-        amount: amount || "0",
-        bankName: accountInfo.bankName || "Bank",
-        accountNumber: accountInfo.accountNumber || "N/A",
-        accountName: accountInfo.holderName || "N/A",
-        branch: accountInfo.branchName || "N/A",
-        swiftCode: accountInfo.swiftCode || "N/A",
-        iban: accountInfo.iban || "N/A",
-        walletAddress: accountInfo.walletAddress || "N/A",
-        network: accountInfo.network || "N/A",
-      }
-    : {
-        amount: amount || "0",
-        bankName: "Bank",
-        accountNumber: "N/A",
-        accountName: "N/A",
-        branch: "N/A",
-        swiftCode: "N/A",
-        iban: "N/A",
-        walletAddress: "N/A",
-        network: "N/A",
-      };
-
-  // Extract from depositOptions
-  const selectedTransferType = depositOptions?.name || "Transfer";
-  const selectedDepositChannel = selectedGateway?.name || "Deposit Channel";
+  const transferDetails = {
+    amount: amount || "0",
+    bankName: accountInfo?.bankName || null,
+    accountNumber: accountInfo?.accountNumber || null,
+    accountName: accountInfo?.holderName || null,
+    branch: accountInfo?.branchName || null,
+    swiftCode: accountInfo?.swiftCode || null,
+    iban: accountInfo?.iban || null,
+    walletAddress: accountInfo?.walletAddress || null,
+    network: accountInfo?.network || null,
+  };
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -106,11 +131,10 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       return;
     }
 
-    // Only required fields for API
     const formData = {
       userId: user?.id,
-      amount: Number(transferDetails.amount),
-      currencyId: selectedGateway?.currencyId||1,
+      amount: Number(amount),
+      currencyId: selectedGateway?.currencyId || 1,
       promotionId: depositOptions?.promotionId || null,
       paymentGatewayProviderAccountId: accountInfo?.id,
       notes: referenceId,
@@ -136,7 +160,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         toast.error(message);
       } else {
         toast.success(message);
-        setStep(stepDetails?.nextStep || 0);
+        // setStep(stepDetails?.nextStep || 0);
+        setIsCompleted(true); // ✅ show confirmation screen
       }
     } catch (error) {
       const message = error?.message || "Failed to submit deposit information";
@@ -146,24 +171,39 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
+  if (isCompleted) {
+  return <BaseModal showClose={false} open={true}><PaymentConfirmation /></BaseModal>;
+}
+
   return (
     <div className="text-white">
+      {/* Timer */}
+    <div className="flex justify-center items-center p-3 bg-black/40 rounded-md mb-4">
+      <p className="text-yellow-400 font-bold text-lg">
+        Time Remaining: {formatTime(timeLeft)}
+      </p>
+    </div>
+
+    {/* If expired */}
+    {timeLeft <= 0 && (
+      <p className="text-red-400 font-semibold mb-3">
+        Deposit window expired. Please try again.
+      </p>
+    )}
       {/* Payment Type Info */}
       <div className="flex flex-col items-center second-bg justify-center p-5 rounded-md">
         <img
-          src={selectedGateway?.iconUrl}
-          alt={selectedGateway?.name}
+          src={paymentType?.icon}
+          alt={paymentType?.title}
           className="h-10 object-contain"
           onError={(e) => {
             e.target.style.display = "none";
           }}
         />
-        <h4 className="text-[18px] font-bold mt-2">
-          {selectedGateway?.name || "Payment Method"}
-        </h4>
-        {selectedProvider && (
-          <p className="text-[14px] text-gray-400 mt-1">
-            Provider: {selectedProvider.name}
+        <h4 className="text-[18px] font-bold mt-2">{paymentType?.title}</h4>
+        {paymentType?.bonus && (
+          <p className="text-[14px] text-green-400 mt-1">
+            Bonus: {paymentType?.bonus}
           </p>
         )}
       </div>
@@ -171,7 +211,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       {/* Transfer Info */}
       <div className="border-t border-b second-border py-3 mt-5">
         <p className="text-[14px] text-gray-200 mt-1">
-          Cash Out to the account below and fill in the required information.
+          Please transfer to the account below and fill in required details.
         </p>
       </div>
 
@@ -179,19 +219,19 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       <div className="mt-3 text-sm text-gray-300">
         <p>
           Transfer Method:{" "}
-          <span className="font-medium text-white">{selectedTransferType}</span>
+          <span className="font-medium text-white">{transferType?.title}</span>
         </p>
         <p>
           Channel:{" "}
           <span className="font-medium text-white">
-            {selectedDepositChannel}
+            {depositChannel?.name}
           </span>
         </p>
         {selectedProvider && (
           <p>
             Provider:{" "}
             <span className="font-medium text-white">
-              {selectedProvider.name}
+              {selectedProvider?.name}
             </span>
           </p>
         )}
@@ -214,153 +254,27 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           </button>
         </div>
 
-        {/* Dynamic account details based on available information */}
-        {accountInfo ? (
-          <>
-            {transferDetails.bankName && transferDetails.bankName !== "N/A" && (
-              <div className="flex justify-between items-center text-left">
-                <div>
-                  <p className="text-sm text-gray-400">Bank name</p>
-                  <p className="text-lg font-semibold text-[20px]">
-                    {transferDetails.bankName}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(transferDetails.bankName)}
-                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                >
-                  Copy
-                </button>
+        {/* Account Info */}
+        {Object.entries(transferDetails).map(([key, value]) =>
+          key !== "amount" && value ? (
+            <div
+              key={key}
+              className="flex justify-between items-center text-left"
+            >
+              <div>
+                <p className="text-sm text-gray-400 capitalize">
+                  {key.replace(/([A-Z])/g, " $1")}
+                </p>
+                <p className="text-lg font-semibold text-[20px]">{value}</p>
               </div>
-            )}
-
-            {transferDetails.accountNumber &&
-              transferDetails.accountNumber !== "N/A" && (
-                <div className="flex justify-between items-center text-left">
-                  <div>
-                    <p className="text-sm text-gray-400">Account number</p>
-                    <p className="text-lg font-semibold text-[20px]">
-                      {transferDetails.accountNumber}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(transferDetails.accountNumber)}
-                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                  >
-                    Copy
-                  </button>
-                </div>
-              )}
-
-            {transferDetails.accountName &&
-              transferDetails.accountName !== "N/A" && (
-                <div className="flex justify-between items-center text-left">
-                  <div>
-                    <p className="text-sm text-gray-400">Bank account name</p>
-                    <p className="text-lg font-semibold text-[20px]">
-                      {transferDetails.accountName}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(transferDetails.accountName)}
-                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                  >
-                    Copy
-                  </button>
-                </div>
-              )}
-
-            {transferDetails.branch && transferDetails.branch !== "N/A" && (
-              <div className="flex justify-between items-center text-left">
-                <div>
-                  <p className="text-sm text-gray-400">Bank branch</p>
-                  <p className="text-lg font-semibold text-[20px]">
-                    {transferDetails.branch}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(transferDetails.branch)}
-                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                >
-                  Copy
-                </button>
-              </div>
-            )}
-
-            {transferDetails.swiftCode &&
-              transferDetails.swiftCode !== "N/A" && (
-                <div className="flex justify-between items-center text-left">
-                  <div>
-                    <p className="text-sm text-gray-400">Swift Code</p>
-                    <p className="text-lg font-semibold text-[20px]">
-                      {transferDetails.swiftCode}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(transferDetails.swiftCode)}
-                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                  >
-                    Copy
-                  </button>
-                </div>
-              )}
-
-            {transferDetails.iban && transferDetails.iban !== "N/A" && (
-              <div className="flex justify-between items-center text-left">
-                <div>
-                  <p className="text-sm text-gray-400">IBAN</p>
-                  <p className="text-lg font-semibold text-[20px]">
-                    {transferDetails.iban}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(transferDetails.iban)}
-                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                >
-                  Copy
-                </button>
-              </div>
-            )}
-
-            {transferDetails.walletAddress &&
-              transferDetails.walletAddress !== "N/A" && (
-                <div className="flex justify-between items-center text-left">
-                  <div>
-                    <p className="text-sm text-gray-400">Wallet Address</p>
-                    <p className="text-lg font-semibold text-[20px]">
-                      {transferDetails.walletAddress}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(transferDetails.walletAddress)}
-                    className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                  >
-                    Copy
-                  </button>
-                </div>
-              )}
-
-            {transferDetails.network && transferDetails.network !== "N/A" && (
-              <div className="flex justify-between items-center text-left">
-                <div>
-                  <p className="text-sm text-gray-400">Network</p>
-                  <p className="text-lg font-semibold text-[20px]">
-                    {transferDetails.network}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleCopy(transferDetails.network)}
-                  className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
-                >
-                  Copy
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center py-4">
-            <p className="text-gray-400">No account information available</p>
-          </div>
+              <button
+                onClick={() => handleCopy(value)}
+                className="bg-yellow-400 hover:bg-yellow-600 text-black px-4 py-1 rounded"
+              >
+                Copy
+              </button>
+            </div>
+          ) : null
         )}
       </div>
 
@@ -371,20 +285,14 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           Reminder
         </div>
         <ul className="text-sm text-gray-300 list-decimal text-left pl-5 space-y-1">
-          <li>
-            Please ensure the deposited amount matches the transferred amount.
-          </li>
-          <li>Use the registered phone number for Deposit/Withdrawal.</li>
-          <li>
-            Transfer the funds within <strong>09:35 minutes</strong> after
-            submitting.
-          </li>
+          <li>Please ensure the deposited amount matches the transferred amount.</li>
+          <li>Use your registered phone number for Deposit/Withdrawal.</li>
+          <li>Transfer funds within <strong>10 minutes</strong> after submitting.</li>
         </ul>
       </div>
 
       {/* Form Section */}
       <div className="mt-6 space-y-4">
-        {/* Bank Account Name */}
         <div>
           <label className="block text-sm mb-1 text-left">
             Bank account name
@@ -398,7 +306,6 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           />
         </div>
 
-        {/* Reference ID */}
         <div>
           <label className="block text-sm mb-1 text-left">
             Reference No. / Trans ID
@@ -447,7 +354,6 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button
           onClick={handleSubmit}
           disabled={!accountName || !referenceId || !receiptFile || loading || isSubmitting}

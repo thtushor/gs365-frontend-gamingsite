@@ -1,44 +1,107 @@
 import React from "react";
-import { FaPlay } from "react-icons/fa";
 import "./GameCard.scss";
+import { Logo } from "../Logo/Logo";
 
 interface GameCardProps {
-  game: {
-    title: string;
-    imageUrl: string;
-    provider?: string;
-    isLive?: boolean;
-    badge?: string;
+  id: number;
+  name: string;
+  status: string;
+  isFavorite: boolean;
+  gameLogo: string;
+  gameUrl: string;
+  ggrPercent: string;
+  categoryInfo: string;
+  providerInfo: string;
+  provider: {
+    id: number;
+    name: string;
+    logo: string;
+    status: string;
+    country: string;
   };
+  onPlayClick: (gameId: number) => void;
+  className?: string;
 }
 
-export const GameCard: React.FC<GameCardProps> = ({ game }) => {
+const GameCard: React.FC<GameCardProps> = ({
+  id,
+  name,
+  status,
+  isFavorite,
+  gameLogo,
+  ggrPercent,
+  categoryInfo,
+  providerInfo,
+  provider,
+  onPlayClick,
+  className = "",
+}) => {
+  // Parse category and provider info from JSON strings
+  const getCategoryInfo = () => {
+    try {
+      const parsed = JSON.parse(categoryInfo);
+      return parsed.category || "Unknown";
+    } catch {
+      return "Unknown";
+    }
+  };
+
+  const getProviderName = () => {
+    try {
+      const parsed = JSON.parse(providerInfo);
+      return parsed.name || provider.name || "Unknown Provider";
+    } catch {
+      return provider.name || "Unknown Provider";
+    }
+  };
+
+  const handlePlayClick = () => {
+    // e.stopPropagation();
+    console.log("click me")
+    onPlayClick(id);
+  };
+
   return (
-    <div className="game-card">
-      <div className="game-card-image-container">
-        <img src={game.imageUrl} alt={game.title} className="game-card-image" />
-        <div className="hover-overlay">
-          <div className="play-button-wrapper">
-            <div className="play-button">
-              <div className="ripple"></div>
-              <div className="ripple ripple-2"></div>
-              <div className="play-icon-container">
-                <FaPlay className="play-icon" />
-                <svg className="progress-ring" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" />
-                </svg>
-              </div>
-            </div>
-            <span className="play-text">PLAY NOW</span>
-          </div>
+    <div className={`game-card ${className} cursor-pointer`} onClick={handlePlayClick}>
+      <div className="game-card-image" style={{ backgroundImage: `url(${gameLogo})` }}>
+        <div className="game-card-overlay">
+          <button 
+            className="play-now-btn" 
+            onClick={handlePlayClick}
+            disabled={status !== "active"}
+          >
+            {status === "active" ? "PLAY NOW" : "UNAVAILABLE"}
+          </button>
         </div>
-        {game.badge && <span className="game-badge">{game.badge}</span>}
-        {game.isLive && <span className="live-badge">LIVE</span>}
+        
+        <div className="game-provider-tag">{getProviderName()}</div>
+        
+        {isFavorite && (
+          <div className="favorite-badge">
+            <span>❤️</span>
+          </div>
+        )}
+        
+        <div className="logo-watermark">
+          <Logo />
+        </div>
+        
+        {status !== "active" && (
+          <div className="status-overlay">
+            <span className="status-text">{status}</span>
+          </div>
+        )}
       </div>
+      
       <div className="game-card-content">
-        <h3 className="game-title">{game.title}</h3>
-        {game.provider && <p className="game-provider">{game.provider}</p>}
+        <h3 className="game-title">{name}</h3>
+        <div className="game-details">
+          <span className="category">{getCategoryInfo()}</span>
+          <span className="ggr-percent">GGR: {ggrPercent}%</span>
+        </div>
       </div>
     </div>
   );
 };
+
+export default GameCard;

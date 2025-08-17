@@ -37,14 +37,22 @@ export const API_ENDPOINTS = {
     GET_PAYMENT_METHODS_BY_NAME: "/api/payment-method/name",
     DEPOSIT_TRANSACTION: "/api/transactions/deposit",
     WITHDRAW_TRANSACTION: "/api/transactions/withdraw",
+    TURNOVER: "/api/turnover",
+  },
+
+  GAME: {
+    GAME_LIST: "/api/games/games",
+    PLAY_GAME: "/api/games/play",
   },
 
   // User endpoints
   USER: {
     PROFILE: "/api/users/profile",
+    USER_BALANCE: "/api/balance/player",
     UPDATE_PROFILE: "/api/users/profile",
     CHANGE_PASSWORD: "/api/users/change-password",
     UPLOAD_AVATAR: "/api/users/avatar",
+    TURNOVER: "/api/turnover",
   },
 } as const;
 

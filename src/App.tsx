@@ -33,6 +33,8 @@ import CashRewardHistory from "./pages/CashRewardHistory";
 import PersonalInformation from "./pages/PersonalInformation";
 import LoginSecurity from "./pages/LoginSecurity";
 import PasswordChangePage from "./pages/PasswordChangePage";
+import TurnoverPage from "./pages/TurnoverPage";
+import TestGame from "./pages/TestGame";
 import PrivateRoute from "./routes/PrivateRoute";
 import Layout from "./components/Layout/Layout";
 import PromotionDetails from "./pages/PromotionDetails";
@@ -119,6 +121,22 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <PasswordChangePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile/turnover"
+            element={
+              <PrivateRoute>
+                <TurnoverPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/test-game"
+            element={
+              <PrivateRoute>
+                <TestGame />
               </PrivateRoute>
             }
           />

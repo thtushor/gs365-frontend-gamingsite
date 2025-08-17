@@ -91,13 +91,13 @@ const LocalBankInfo = ({
       </div>
 
       {/* Select Payment Type */}
-      <div>
+      <div className="">
         <p className="text-base text-left mb-2 mt-4">Select Payment</p>
         <div className="flex flex-wrap gap-3">
           {transformedPaymentTypes?.map((info, idx) => (
             <div
               key={idx}
-              className={`border group cursor-pointer overflow-hidden flex items-center justify-center flex-col rounded-md max-w-[200px] p-3 pt-4 relative ${
+              className={`border flex-1 md:min-w-[30%] group cursor-pointer overflow-hidden flex items-center justify-center flex-col rounded-md max-w-[200px] p-3 pt-4 relative ${
                 selectedPaymentTypes?.title === info.title
                   ? "border-yellow-400"
                   : "border-[#1a1a1a]"
@@ -116,7 +116,7 @@ const LocalBankInfo = ({
               <span className="absolute top-0 right-0 bg-yellow-400 rounded-bl-md px-2 text-black text-[14px] font-semibold">
                 {info?.bonus}
               </span>
-              <img className="w-[30px]" src={info?.icon} alt="icon" />
+              <img className="w-[60px]" src={info?.icon} alt="icon" />
               <p className="group-hover:text-yellow-400 font-medium">
                 {info?.title}
               </p>
