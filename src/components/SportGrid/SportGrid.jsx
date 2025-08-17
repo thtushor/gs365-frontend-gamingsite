@@ -22,7 +22,7 @@ const SportGrid = () => {
   });
 
   const categoryOption = categoriesList?.data?.options || [];
-
+  console.log(activeCategory);
   // Fetch sports
   const { data: sportsData, isLoading: sportsLoading } = useQuery({
     queryKey: ["sports", activeCategory, currentPage],
