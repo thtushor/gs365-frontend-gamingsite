@@ -11,7 +11,7 @@ import {
   transformAffiliateRegistrationData,
 } from "../lib/utils/validation";
 import "./Register.scss";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
 import axios from "axios";
