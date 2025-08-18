@@ -28,6 +28,7 @@ import GameGrid from "../components/GameGrid";
 // import SportGrid from "../components/SportGrid/SportGrid";
 import { Link } from "react-router-dom";
 import { FaGamepad } from "react-icons/fa";
+import SportGrid from "../components/SportGrid/SportGrid";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -79,7 +80,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <GameGrid />
-      {/* <SportGrid /> */}
+      <SportGrid />
 
       <SeoSection title={seoTitle} content={seoContent} />
       <Advertisement />

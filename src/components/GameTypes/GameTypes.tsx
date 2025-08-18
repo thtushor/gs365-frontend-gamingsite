@@ -1,32 +1,34 @@
 import { useState } from "react";
-import sports from "../../assets/gameType/icon-sport.png";
-import Casino from "../../assets/gameType/icon-casino.png";
-import Slots from "../../assets/gameType/icon-slot.png";
-import Table from "../../assets/gameType/icon-table.png";
-import Crash from "../../assets/gameType/icon-crash.png";
-import Lottery from "../../assets/gameType/icon-lottery.png";
-import Fishing from "../../assets/gameType/icon-fish.png";
-import Arcade from "../../assets/gameType/icon-arcade.png";
-import CockFighting from "../../assets/gameType/icon-cockfighting.png";
+// import sports from "../../assets/gameType/icon-sport.png";
+// import Casino from "../../assets/gameType/icon-casino.png";
+// import Slots from "../../assets/gameType/icon-slot.png";
+// import Table from "../../assets/gameType/icon-table.png";
+// import Crash from "../../assets/gameType/icon-crash.png";
+// import Lottery from "../../assets/gameType/icon-lottery.png";
+// import Fishing from "../../assets/gameType/icon-fish.png";
+// import Arcade from "../../assets/gameType/icon-arcade.png";
+// import CockFighting from "../../assets/gameType/icon-cockfighting.png";
 import "./GameTypes.scss";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 // Define game category types
-const gameCategories = [
-  { id: 1, name: "Sports", image: sports },
-  { id: 2, name: "Casino", image: Casino },
-  { id: 3, name: "Slot", image: Slots },
-  { id: 4, name: "Table", image: Table },
-  { id: 5, name: "Crash", image: Crash },
-  { id: 6, name: "Lottery", image: Lottery },
-  { id: 7, name: "Fishing", image: Fishing },
-  { id: 8, name: "Arcade", image: Arcade },
-  { id: 9, name: "Cock", image: CockFighting },
-];
+// const gameCategories = [
+//   { id: 1, name: "Sports", image: sports },
+//   { id: 2, name: "Casino", image: Casino },
+//   { id: 3, name: "Slot", image: Slots },
+//   { id: 4, name: "Table", image: Table },
+//   { id: 5, name: "Crash", image: Crash },
+//   { id: 6, name: "Lottery", image: Lottery },
+//   { id: 7, name: "Fishing", image: Fishing },
+//   { id: 8, name: "Arcade", image: Arcade },
+//   { id: 9, name: "Cock", image: CockFighting },
+// ];
 
 // Define the game data structure
 interface GameItem {
+  id: number | string;
   key: string;
   name: string;
   vendorCode: string;
@@ -78,6 +80,7 @@ interface Provider {
 }
 
 export const GameTypes = () => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<number | null>(1);
   const [animate, setAnimate] = useState(false);
   console.log("selected", selected);
@@ -115,7 +118,8 @@ export const GameTypes = () => {
     enabled: !!selected, // 👈 only run if `selected` has a value
   });
 
-  const providerList = providerData?.data || [];
+  const providerList = providerData?.data?.game_providers || [];
+  const providerListSports = providerData?.data?.sport_providers || [];
 
   const handleSelect = (id: number) => {
     if (selected !== id) {
@@ -128,7 +132,7 @@ export const GameTypes = () => {
   };
 
   // Function to ensure 4 items per row
-  const getGridItems = (items: GameItem[] | Provider[]) => {
+  const getGridItems = (items: GameItem[] | Provider[], type: string) => {
     const itemsPerRow = 4;
     const totalItems = items.length;
     const rows = Math.ceil(totalItems / itemsPerRow);
@@ -141,25 +145,31 @@ export const GameTypes = () => {
         return typeof obj === "object" && obj !== null && "logo" in obj;
       };
 
+      console.log(item);
       return (
         <li
+          onClick={() =>
+            navigate(
+              `/${type}/${item?.id}?type=${type}&providerName=${item?.name}`
+            )
+          }
           key={isProvider(item) ? item.id : item.key}
           className="ng-star-inserted"
           data-web-category-type="GAME"
-          data-game-type={isProvider(item) ? "provider" : item.gameType}
-          data-vendor-code={isProvider(item) ? item.name : item.vendorCode}
-          {...(!isProvider(item) && item.extraData
-            ? { "data-extra-data": item.extraData }
+          data-game-type={isProvider(item) ? "provider" : item?.gameType}
+          data-vendor-code={isProvider(item) ? item.name : item?.vendorCode}
+          {...(!isProvider(item) && item?.extraData
+            ? { "data-extra-data": item?.extraData }
             : {})}
         >
           <a>
             <img
               loading="lazy"
-              alt={isProvider(item) ? item.name : item.imageAlt}
-              src={isProvider(item) ? item.logo : item.imageSrc}
+              alt={isProvider(item) ? item?.name : item?.imageAlt}
+              src={isProvider(item) ? item?.logo : item?.imageSrc}
               className="md:!w-[50px] md:!h-[50px]"
             />
-            <p className="md:!leading-3 md:!text-[12px]">{item.name}</p>
+            <p className="md:!leading-3 md:!text-[12px]">{item?.name}</p>
           </a>
         </li>
       );
@@ -211,22 +221,47 @@ export const GameTypes = () => {
         <div className="game-types-container flex items-center justify-center loading !p-0 !min-h-[80px] md:!min-h-[150px]">
           <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
         </div>
-      ) : (
+      ) : providerList?.length > 0 || providerListSports?.length > 0 ? (
         <>
-          <div className="content-title !mb-0 !pb-0 max-w-[1200px] md:px-[15px] mx-auto">
-            <h2 className="md:!text-[24px] ">
-              {gameCategories.find((g) => g.id === selected)?.name || ""}
-            </h2>
-          </div>
+          {providerList?.length > 0 ? (
+            <div>
+              <div className="content-title !mb-0 !pb-0 max-w-[1200px] md:px-[15px] mx-auto">
+                <h2 className="md:!text-[24px] ">Game Providers</h2>
+              </div>
 
-          <ul
-            className={`game-types-list md:grid-cols-12 max-w-[1200px] md:px-[15px] mx-auto ${
-              animate ? "slide-in" : ""
-            }`}
-          >
-            {getGridItems(providerList || [])}
-          </ul>
+              <ul
+                className={`game-types-list md:grid-cols-12 max-w-[1200px] md:px-[15px] mx-auto ${
+                  animate ? "slide-in" : ""
+                }`}
+              >
+                {getGridItems(providerList || [], "games")}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
+          {providerListSports?.length > 0 ? (
+            <div>
+              <div className="content-title !mb-0 !pb-0 max-w-[1200px] md:px-[15px] mx-auto">
+                <h2 className="md:!text-[24px] ">Sport Providers</h2>
+              </div>
+
+              <ul
+                className={`game-types-list md:grid-cols-12 max-w-[1200px] md:px-[15px] mx-auto ${
+                  animate ? "slide-in" : ""
+                }`}
+              >
+                {getGridItems(providerListSports || [], "sports")}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
         </>
+      ) : (
+        <div className="text-[18px] border-l-[3px] border-yellow-300 max-w-[1190px] px-1 md:px-[10px] md:mx-auto rounded-md font-medium py-5 text-left">
+          Provider data not found.
+        </div>
       )}
     </div>
   );
