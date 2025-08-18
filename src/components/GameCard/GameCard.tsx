@@ -1,14 +1,15 @@
 import React from "react";
 import "./GameCard.scss";
-import { Logo } from "../Logo/Logo";
 
 interface GameCardProps {
   id: number;
   name: string;
   status: string;
+  logo: string;
   isFavorite: boolean;
   gameLogo: string;
   gameUrl: string;
+  sportLogo: string;
   ggrPercent: string;
   categoryInfo: string;
   providerInfo: {
@@ -24,33 +25,35 @@ interface GameCardProps {
 
 const GameCard: React.FC<GameCardProps> = ({
   id,
-  name,
+  // name,
   status,
-  isFavorite,
+  // isFavorite,
   gameLogo,
-  ggrPercent,
-  categoryInfo,
-  providerInfo,
+  sportLogo,
+  logo,
+  // ggrPercent,
+  // categoryInfo,
+  // providerInfo,
   onPlayClick,
   className = "",
 }) => {
   // Parse category and provider info from JSON strings
-  const getCategoryInfo = () => {
-    try {
-      const parsed = JSON.parse(categoryInfo);
-      return parsed.category || "Unknown";
-    } catch {
-      return "Unknown";
-    }
-  };
+  // const getCategoryInfo = () => {
+  //   try {
+  //     const parsed = JSON.parse(categoryInfo);
+  //     return parsed.category || "Unknown";
+  //   } catch {
+  //     return "Unknown";
+  //   }
+  // };
 
-  const getProviderName = () => {
-    try {
-      return providerInfo?.name || "Unknown Provider";
-    } catch {
-      return providerInfo?.name || "Unknown Provider";
-    }
-  };
+  // const getProviderName = () => {
+  //   try {
+  //     return providerInfo?.name || "Unknown Provider";
+  //   } catch {
+  //     return providerInfo?.name || "Unknown Provider";
+  //   }
+  // };
 
   const handlePlayClick = () => {
     // e.stopPropagation();
@@ -58,15 +61,18 @@ const GameCard: React.FC<GameCardProps> = ({
     onPlayClick(id);
   };
 
+  console.log(gameLogo, sportLogo);
   return (
     <div
-      className={`game-card ${className} cursor-pointer`}
+      className={`game-card ${className} cursor-pointer  w-[120px] h-[160px] md:w-[140px] md:h-[185px]`}
       onClick={handlePlayClick}
     >
-      <div
-        className="game-card-image"
-        style={{ backgroundImage: `url(${gameLogo})` }}
-      >
+      <img
+        src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo}
+        alt=""
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute game-card-image top-0 left-0 flex items-center justify-center">
         <div className="game-card-overlay">
           <button
             className="play-now-btn"
@@ -75,32 +81,6 @@ const GameCard: React.FC<GameCardProps> = ({
           >
             {status === "active" ? "PLAY NOW" : "UNAVAILABLE"}
           </button>
-        </div>
-
-        <div className="game-provider-tag">{getProviderName()}</div>
-
-        {isFavorite && (
-          <div className="favorite-badge">
-            <span>❤️</span>
-          </div>
-        )}
-
-        <div className="logo-watermark">
-          <Logo />
-        </div>
-
-        {status !== "active" && (
-          <div className="status-overlay">
-            <span className="status-text">{status}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="game-card-content">
-        <h3 className="game-title">{name}</h3>
-        <div className="game-details">
-          <span className="category">{getCategoryInfo()}</span>
-          <span className="ggr-percent">GGR: {ggrPercent}%</span>
         </div>
       </div>
     </div>
