@@ -364,6 +364,8 @@ const TestGame: React.FC = () => {
                 <GameCard
                   key={game.id}
                   {...game}
+                  logo={game.gameLogo}
+                  sportLogo={game.gameLogo}
                   providerInfo={
                     typeof game.providerInfo === "string"
                       ? JSON.parse(game.providerInfo)
