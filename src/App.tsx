@@ -38,7 +38,6 @@ import TestGame from "./pages/TestGame";
 import PrivateRoute from "./routes/PrivateRoute";
 import Layout from "./components/Layout/Layout";
 import PromotionDetails from "./pages/PromotionDetails";
-import SportProviderPage from "./pages/SportProviderPage";
 import GameProviderPage from "./pages/GameProviderPage";
 
 const App: React.FC = () => {
@@ -63,8 +62,12 @@ const App: React.FC = () => {
           <Route path="/affiliate-signup" element={<AffiliateRegister />} />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
-          <Route path="/sports/:providerId" element={<SportProviderPage />} />
-          <Route path="/games/:providerId" element={<GameProviderPage />} />
+
+          <Route
+            path="/play/:providerId/:categoryId"
+            element={<GameProviderPage />}
+          />
+          <Route path="/provider/:providerId" element={<GameProviderPage />} />
           <Route path="/promotions/:id" element={<PromotionDetails />} />
 
           {/* --------------------- */}

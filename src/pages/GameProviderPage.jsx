@@ -8,15 +8,9 @@ const GameProviderPage = () => {
   return (
     <div className="max-w-[1200px] px-[15px] mx-auto text-left">
       <div className="py-10">
-        {providerName ? (
-          <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
-            Games of <span className="text-yellow-300">{providerName}</span>
-          </h1>
-        ) : (
-          <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
-            Provider Wise Games
-          </h1>
-        )}
+        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+          Play Now
+        </h1>
 
         <ProviderGames />
       </div>

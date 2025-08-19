@@ -104,3 +104,6 @@ body {
   border: 2px solid #004127;
   box-shadow: 0 0 10px 4px #00341f72;
 }
+.slick-track {
+  margin-left: 0px !important;
+}

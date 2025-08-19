@@ -64,18 +64,18 @@ const GameCard: React.FC<GameCardProps> = ({
   console.log(gameLogo, sportLogo);
   return (
     <div
-      className={`game-card ${className} cursor-pointer  w-[120px] h-[160px] md:w-[140px] md:h-[185px]`}
+      className={`game-card ${className} cursor-pointer  min-h-[140px] md:w-[140px] md:h-[185px]`}
       onClick={handlePlayClick}
     >
       <img
-        src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo}
+        src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo ? logo : ""}
         alt=""
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover min-h-[140px] md:w-[140px] md:h-[185px]"
       />
       <div className="absolute game-card-image top-0 left-0 flex items-center justify-center">
         <div className="game-card-overlay">
           <button
-            className="play-now-btn"
+            className="play-now-btn !text-[12px] md:!text-[14px] !py-1 !px-2 md:!py-[8px] md:!px-[10px]"
             onClick={handlePlayClick}
             disabled={status !== "active"}
           >
