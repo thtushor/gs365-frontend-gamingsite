@@ -3,6 +3,7 @@ import React, { useState } from "react";
 // import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 // import { FAQ } from "../components/FAQ/FAQ";
 import {
+  gamesData,
   // crashGames,
   // gamesData,
   // liveGames,
@@ -14,7 +15,6 @@ import {
 } from "../lib/mock";
 // import { ProviderGames } from "../components/ProviderGames/ProviderGames";
 // import { providerGames } from "../lib/mockProviderGames";
-import { GameTypes } from "../components/GameTypes/GameTypes";
 import FilterContainer from "../components/UI/FilterContainer";
 import SeoSection from "../components/Layout/SeoSection";
 import DraggableContainer from "../components/DraggableContainer/DraggableContainer";
@@ -29,6 +29,11 @@ import GameGrid from "../components/GameGrid";
 import { Link } from "react-router-dom";
 import { FaGamepad } from "react-icons/fa";
 import SportGrid from "../components/SportGrid/SportGrid";
+import { GameTypes } from "../components/GameTypes/GameTypes";
+import AllProviders from "./AllProviders";
+import { Event } from "../components/Event";
+import { ExclusiveGames } from "../components/ExclusiveGames";
+import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -60,6 +65,10 @@ const HomePage: React.FC = () => {
 
       {/* <FilterableGames games={gamesData} /> */}
       <GameTypes />
+      <AllProviders type={"games"} />
+      <AllProviders type={"sports"} />
+      <Event />
+      <ExclusiveGames />
       {/* <ProviderGames games={providerGames} /> */}
 
       {/* Test Gaming Section - Moved to top for first look */}
