@@ -28,6 +28,7 @@ export const API_LIST = {
   GET_GAMES_SPORTS: "/api/public/sports-games-list",
   GET_ALL_PROVIDERS: "/api/public/providers",
   GET_ALL_EXCLUSIVE: "/api/public/exclusive-games-sports",
+  GET_ALL_PUBLIC_EVENTS: "/api/public/public-events",
 };
 
 // --- Reusable POST Request Hook ---

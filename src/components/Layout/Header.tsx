@@ -173,14 +173,14 @@ const Header: React.FC = () => {
                 {/* User balance buttons */}
                 <UserBalance />
                 <button
-                  className="signup-btn flex items-center gap-2"
+                  className="signup-btn !hidden md:!flex items-center gap-2"
                   onClick={() => navigate("/deposit")}
                 >
                   <CircleDollarSignIcon className="w-4 h-4" />
                   Deposit
                 </button>
                 <button
-                  className="signup-btn flex items-center gap-2"
+                  className="signup-btn !hidden md:!flex items-center gap-2"
                   onClick={() => navigate("/withdraw")}
                 >
                   <CircleDollarSignIcon className="w-4 h-4" />

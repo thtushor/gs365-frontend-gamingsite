@@ -3,7 +3,6 @@ import React, { useState } from "react";
 // import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 // import { FAQ } from "../components/FAQ/FAQ";
 import {
-  gamesData,
   // crashGames,
   // gamesData,
   // liveGames,
@@ -33,7 +32,6 @@ import { GameTypes } from "../components/GameTypes/GameTypes";
 import AllProviders from "./AllProviders";
 import { Event } from "../components/Event";
 import { ExclusiveGames } from "../components/ExclusiveGames";
-import { FilterableGames } from "../components/FilterableGames/FilterableGames";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -92,9 +90,10 @@ const HomePage: React.FC = () => {
       <SportGrid />
 
       <SeoSection title={seoTitle} content={seoContent} />
-      <Advertisement />
-      <Sponsors />
-
+      <div className="max-w-[1200px] px-[15px] mx-auto text-left">
+        <Advertisement />
+        <Sponsors />
+      </div>
       <DraggableContainer
         initialPosition={{
           x: window.innerWidth - 94,

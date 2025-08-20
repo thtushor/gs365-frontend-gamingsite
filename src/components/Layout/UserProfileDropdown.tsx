@@ -30,7 +30,7 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   formatDate,
 }) => {
   return (
-    <div className="user-section relative group">
+    <div className="user-section md:block hidden relative group">
       <UserProfileButton
         className="user-profile-btn signup-btn gap-2 !light-bg !px-2 !pr-3"
         title="View Profile"
