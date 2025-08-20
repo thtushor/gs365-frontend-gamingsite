@@ -6,6 +6,12 @@ import "./GameSlider/GameSlider.scss";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // optional: using react-icons
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axiosInstance from "../lib/api/axios";
+import { API_ENDPOINTS } from "../lib/api/config";
+import { toast } from "react-toastify";
+import { useAuth } from "../contexts/auth-context";
 
 // Custom Previous Arrow
 const PrevArrow = ({ onClick }) => {
@@ -45,40 +51,25 @@ const NextArrow = ({ onClick }) => {
   );
 };
 
-const eventList = [
-  {
-    id: 1,
-    name: "something",
-    img: "https://img.b112j.com/upload/announcement/image_247691.jpg",
-  },
-  {
-    id: 2,
-    name: "https://img.b112j.com/upload/announcement/image_247687.jpg",
-    img: "https://img.b112j.com/upload/announcement/image_247691.jpg",
-  },
-  {
-    id: 3,
-    name: "something",
-    img: "https://img.b112j.com/upload/announcement/image_247691.jpg",
-  },
-  {
-    id: 4,
-    name: "something",
-    img: "https://img.b112j.com/upload/announcement/image_247687.jpg",
-  },
-  {
-    id: 5,
-    name: "something",
-    img: "https://img.b112j.com/upload/announcement/image_247691.jpg",
-  },
-  {
-    id: 6,
-    name: "something",
-    img: "https://img.b112j.com/upload/announcement/image_247687.jpg",
-  },
-];
 export const Event = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const getRequest = useGetRequest();
+
+  const {
+    data: eventsData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_ALL_PUBLIC_EVENTS,
+        errorMessage: "Failed to fetch events",
+      }),
+  });
+  const eventList = eventsData?.data || [];
 
   const settings = {
     infinite: true,
@@ -108,26 +99,69 @@ export const Event = () => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 2.2,
         },
       },
     ],
+  };
+
+  // Play game mutation
+  const playGameMutation = useMutation({
+    mutationFn: async (request) => {
+      const response = await axiosInstance.post(
+        API_ENDPOINTS.GAME.PLAY_GAME,
+        request
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("Game session created successfully!");
+        // Open game in new window
+        window.open(data.data.url, "_blank", "noopener,noreferrer");
+      } else {
+        toast.error(data.message || "Failed to create game session");
+      }
+    },
+    onError: (error) => {
+      console.error("Play game error:", error);
+      toast.error(error.response?.data?.message || "Failed to start game");
+    },
+  });
+
+  const handlePlayGame = (gameId) => {
+    if (!user?.id) {
+      toast.error("Please login to play games");
+      return;
+    }
+
+    const request = {
+      userId: user.id,
+      gameId: gameId,
+      betAmount: 0, // As requested
+      userScore: 0, // As requested
+    };
+
+    playGameMutation.mutate(request);
   };
 
   // If only one provider, render it normally
   if (eventList.length === 1) {
     const event = eventList[0];
     return (
-      <div className="game-slider-container !p-0 !py-3 !pb-5">
+      <div className="max-w-[1200px] px-[15px] mx-auto text-left pt-5 mb-5">
+        <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+          Events
+        </h1>
         <div
-          onClick={() =>
-            navigate(
-              `/event/${event?.id}?type=${type}&eventName=${event?.name}`
-            )
-          }
-          className=""
+          onClick={() => handlePlayGame(eventList[0]?.sportId)}
+          className="pr-2 md:pr-3 mt-3 cursor-pointer"
         >
-          <img loading="lazy" src={event?.img} className="w-full h-full" />
+          <img
+            loading="lazy"
+            src={eventList[0]?.images?.original}
+            className="w-full rounded-md full max-w-[378px] max-h-[195px] md:min-h-[195px] object-cover"
+          />
         </div>
       </div>
     );
@@ -141,11 +175,15 @@ export const Event = () => {
       <div className="game-slider-container  !p-0 !py-3 !pb-5 relative justify-start">
         <Slider {...settings}>
           {eventList.map((event) => (
-            <div key={event.id} className="pr-2 md:pr-3">
+            <div
+              onClick={() => handlePlayGame(event?.sportId)}
+              key={event.id}
+              className="pr-2 md:pr-3 cursor-pointer"
+            >
               <img
                 loading="lazy"
-                src={event?.img}
-                className="w-full rounded-md h-[90px] md:h-auto object-cover"
+                src={event?.images?.original || ""}
+                className="w-full rounded-md full max-w-[378px] max-h-[195px] md:min-h-[195px] min-h-[80px] object-cover"
               />
             </div>
           ))}

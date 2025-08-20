@@ -21,8 +21,8 @@ export const NoticeBoard = () => {
   const announcement = data?.data?.description || "";
 
   return announcement ? (
-    <div className="notice-board">
-      <div className="notice-content">
+    <div className="notice-board ">
+      <div className="notice-content max-w-[1200px] mx-auto">
         <FaBullhorn className="notice-icon" style={{ color: "#fff" }} />
         <div className="marquee-container">
           <marquee
@@ -31,7 +31,7 @@ export const NoticeBoard = () => {
             scrollamount="4"
             onMouseOver={(e) => e.currentTarget.stop()}
             onMouseOut={(e) => e.currentTarget.start()}
-            className="text-[12px] md:text-base font-normal md:font-medium mt-[6px]"
+            className="text-[12px] md:text-base font-normal md:font-medium mt-[6px] md:mt-[2px]"
           >
             {isLoading
               ? "Loading announcement..."

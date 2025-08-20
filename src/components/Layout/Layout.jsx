@@ -8,6 +8,7 @@ import PopupContent from "../PopupContent";
 import MobileNav from "./MobileNav";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/auth-context";
+import PlayInstant from "../PlayInstant";
 
 const Layout = ({ children }) => {
   const { setCountries } = useAuth();
@@ -85,6 +86,7 @@ const Layout = ({ children }) => {
       <BaseModal open={modalOpen} showClose={false}>
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
       </BaseModal>
+      <PlayInstant />
     </div>
   );
 };

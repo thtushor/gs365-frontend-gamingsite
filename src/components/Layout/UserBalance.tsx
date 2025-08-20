@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { CircleDollarSignIcon } from "lucide-react";
+import { EyeIcon } from "lucide-react";
 import { useAuth } from "../../contexts/auth-context";
 import axiosInstance from "../../lib/api/axios";
 import { useQuery } from "@tanstack/react-query";
+import { FiPlus } from "react-icons/fi";
+import takaIcon from "../../assets/taka.png";
+import dollarIcon from "../../assets/dollar.png";
+import BaseModal from "../Promotion/BaseModal";
+import BalanceModal from "./BalanceModal";
 
 interface BalanceData {
   userId: number;
@@ -12,13 +17,12 @@ interface BalanceData {
 }
 
 export const UserBalance: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
-  const [show, setShow] = useState(true);
+  const [showDollar, setShowDollar] = useState(false);
+  const [showTaka, setShowTaka] = useState(false);
 
-  const {
-    data: balance,
-    isLoading,
-  } = useQuery<BalanceData | null>({
+  const { data: balance, isLoading } = useQuery<BalanceData | null>({
     queryKey: ["player-balance", user?.id],
     queryFn: async () => {
       if (!user?.id) return null;
@@ -30,30 +34,84 @@ export const UserBalance: React.FC = () => {
   });
 
   const bdtBalance = balance?.currentBalance ?? 0;
-  const dollarBalance = (bdtBalance / 120).toFixed(2)||0;
+  const dollarBalance = (bdtBalance / 120).toFixed(2) || "0";
 
   if (!user) return null;
 
   return (
-    <div className="flex gap-2 items-center">
-      
-      <button onClick={() => setShow((s) => !s)}>
-        <div className="flex items-center gap-2">
-          <CircleDollarSignIcon className="w-4 h-4" />
-          <span className="text-sm font-semibold">
-            {show ? (isLoading ? "..." : `$${dollarBalance}`) : "****"}
+    <div className="flex gap-[1px] items-center border border-yellow-300 overflow-hidden text-yellow-300 bg-yellow-300 rounded-md">
+      {/* Dollar */}
+      <div
+        onClick={() => setShowDollar((s) => !s)}
+        className="bg-[#121212] rounded-[4px] md:rounded-md py-1 px-1 cursor-pointer"
+      >
+        <div className="flex items-center gap-1">
+          <img src={dollarIcon} className="w-[18px]" />
+          <span className="text-[14px] font-medium text-white">
+            {showDollar ? (
+              isLoading ? (
+                "..."
+              ) : (
+                `${
+                  Number(dollarBalance) > 0
+                    ? Number(dollarBalance).toFixed(2)
+                    : 0
+                }`
+              )
+            ) : (
+              <div className="flex items-center gap-1">
+                <span className="mb-[-7px] block text-[18px]">*****</span>
+                <EyeIcon className="text-yellow-300" size={18} />
+              </div>
+            )}
           </span>
         </div>
-      </button>
+      </div>
 
-      <button onClick={() => setShow((s) => !s)}>
-        <div className="flex items-center gap-2">
-          <CircleDollarSignIcon className="w-4 h-4" />
-          <span className="text-sm font-semibold">
-            {show ? (isLoading ? "..." : `${bdtBalance} BDT`) : "****"}
+      {/* Taka */}
+      <div
+        onClick={() => setShowTaka((s) => !s)}
+        className="bg-[#121212] rounded-[4px] md:rounded-md py-1 px-1 cursor-pointer"
+      >
+        <div className="flex items-center gap-1">
+          <img src={takaIcon} className="w-[18px]" />
+          <span className="text-[14px] font-medium text-white">
+            {showTaka ? (
+              isLoading ? (
+                "..."
+              ) : (
+                `${Number(bdtBalance) > 0 ? Number(bdtBalance).toFixed(2) : 0}`
+              )
+            ) : (
+              <div className="flex items-center gap-1">
+                <span className="mb-[-7px] block text-[18px]">*****</span>
+                <EyeIcon className="text-yellow-300" size={18} />
+              </div>
+            )}
           </span>
         </div>
-      </button>
+      </div>
+
+      <div
+        onClick={() => setIsModalOpen(true)}
+        className="h-full w-[25px] flex md:hidden items-center justify-center py-[2px] bg-yellow-300 text-[#121212] text-[20px]"
+      >
+        <FiPlus />
+      </div>
+
+      <BaseModal
+        onClose={() => setIsModalOpen(false)}
+        open={isModalOpen}
+        children={
+          <BalanceModal
+            bdtBalance={bdtBalance}
+            dollarBalance={dollarBalance}
+            dollarIcon={dollarIcon}
+            takaIcon={takaIcon}
+            onClose={() => setIsModalOpen(false)}
+          />
+        }
+      />
     </div>
   );
 };
