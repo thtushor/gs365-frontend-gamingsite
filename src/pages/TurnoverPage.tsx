@@ -14,6 +14,7 @@ interface TurnoverData {
   status: "active" | "inactive" | "completed";
   turnoverName: string;
   targetTurnover: string;
+  depositAmount: string;
   remainingTurnover: string;
   createdAt: string;
   updatedAt: string;
@@ -435,7 +436,11 @@ const TurnoverPage: React.FC = () => {
                         </div>
 
                         {/* Amount Details */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="light-bg p-3 rounded border second-border">
+                            <p className="text-xs text-gray-400 mb-1">Deposit</p>
+                            <p className="text-lg font-bold text-blue-400">{formatCurrency(turnover.depositAmount)}</p>
+                          </div>
                           <div className="light-bg p-3 rounded border second-border">
                             <p className="text-xs text-gray-400 mb-1">Target Turnover</p>
                             <p className="text-lg font-bold text-blue-400">{formatCurrency(turnover.targetTurnover)}</p>

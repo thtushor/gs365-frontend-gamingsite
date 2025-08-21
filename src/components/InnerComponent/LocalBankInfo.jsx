@@ -16,7 +16,7 @@ const LocalBankInfo = ({
   // Transform the new data structure to match the expected format
   const transformedPaymentTypes =
     gatewayInfo?.paymentGateways?.map((gateway) => ({
-      bonus: "3%", // Static bonus as requested
+      bonus: gateway?.bonus ?`${gateway?.bonus}%`:undefined, // Static bonus as requested
       icon: gateway.iconUrl,
       title: gateway.name,
       transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],

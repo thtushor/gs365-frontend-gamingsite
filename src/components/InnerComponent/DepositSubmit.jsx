@@ -19,7 +19,7 @@ const PaymentConfirmation = () => {
         Funds will be processed shortly.
       </p>
       <button
-        onClick={() => window.location.reload()} // Or navigate to dashboard
+        onClick={() => window.location.href='/'} // Or navigate to dashboard
         className="bg-yellow-400 hover:bg-yellow-600 text-black px-6 py-2 rounded"
       >
         Back

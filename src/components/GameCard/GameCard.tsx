@@ -65,7 +65,7 @@ const GameCard: React.FC<GameCardProps> = ({
   return (
     <div
       className={`game-card ${className} cursor-pointer  min-h-[140px] md:w-[140px] md:h-[185px]`}
-      onClick={handlePlayClick}
+      // onClick={handlePlayClick}
     >
       <img
         src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo ? logo : ""}
