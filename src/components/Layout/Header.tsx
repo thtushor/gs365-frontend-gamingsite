@@ -162,7 +162,7 @@ const Header: React.FC = () => {
                 <button onClick={handleCloseSidebar}>✖</button>
               </div> */}
               <nav className="p-4">
-                <MobileSideBar />
+                <MobileSideBar setSidebarOpen={setSidebarOpen} />
               </nav>
             </div>
           </div>

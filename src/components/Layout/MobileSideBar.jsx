@@ -14,8 +14,10 @@ import { RiPoliceBadgeLine, RiVipDiamondLine } from "react-icons/ri";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { BiWallet } from "react-icons/bi";
+import { Link, useNavigate } from "react-router-dom";
 
-const MobileSideBar = () => {
+const MobileSideBar = ({ setSidebarOpen }) => {
+  const navigate = useNavigate();
   const sidebarLinks = [
     {
       id: 1,
@@ -51,11 +53,25 @@ const MobileSideBar = () => {
   });
 
   const categoryOption = categoriesList?.data?.options || [];
+
+  const handleNavigate = (g) => {
+    const url = `/category/${g.id}`;
+    navigate(url);
+    setSidebarOpen(false);
+  };
+  const handleNavigateStatic = (g) => {
+    const url = g?.link;
+    navigate(url);
+    setSidebarOpen(false);
+  };
   return (
     <div className="">
       <div className="grid grid-cols-2 gap-1">
         {categoryOption?.map((g) => (
           <div
+            onClick={() => {
+              handleNavigate(g);
+            }}
             key={g?.id}
             className="bg-[#1a1a2ef2] flex flex-col rounded-md gap-1 pt-3 p-2 items-center justify-center"
           >
@@ -67,13 +83,16 @@ const MobileSideBar = () => {
         ))}
         {sidebarLinks?.map((g) => (
           <div
+            onClick={() => {
+              handleNavigateStatic(g);
+            }}
             key={g?.id}
             className="bg-[#1a1a2ef2] flex flex-col gap-1 rounded-md pt-3 p-2 items-center justify-center"
           >
             <div className="bg-yellow-300 text-black w-[25px] text-[18px] flex items-center justify-center h-[25px] rounded-full">
               {g?.image}
             </div>
-            <p className="text-[10px] font-normal">{g?.name}</p>
+            <p className="text-[10px] font-normal !text-white">{g?.name}</p>
           </div>
         ))}
       </div>

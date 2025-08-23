@@ -35,10 +35,14 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
     if (!value) {
       setError("");
-    } else if (num < availableBalance.min) {
-      setError(`Amount must be at least ৳${availableBalance.min}`);
-    } else if (num > availableBalance.max) {
-      setError(`Amount must not exceed ৳${availableBalance.max}`);
+    } else if (num < depositOptions?.promotionDetails?.minimumDepositAmount) {
+      setError(
+        `Amount must be at least ৳${depositOptions?.promotionDetails?.minimumDepositAmount}`
+      );
+    } else if (num > depositOptions?.promotionDetails?.maximumDepositAmount) {
+      setError(
+        `Amount must not exceed ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
+      );
     } else {
       setError("");
     }
@@ -46,8 +50,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
   const isNextDisabled =
     !amount ||
-    Number(amount) < availableBalance.min ||
-    Number(amount) > availableBalance.max ||
+    Number(amount) < depositOptions?.promotionDetails?.minimumDepositAmount ||
+    Number(amount) > depositOptions?.promotionDetails?.maximumDepositAmount ||
     !currentGateway ||
     !currentProvider;
 
@@ -248,8 +252,10 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               onClick={() => {
                 const amountValue = Number(amount);
                 const isAmountValid =
-                  amountValue >= availableBalance.min &&
-                  amountValue <= availableBalance.max;
+                  amountValue >=
+                    depositOptions?.promotionDetails?.minimumDepositAmount &&
+                  amountValue <=
+                    depositOptions?.promotionDetails?.maximumDepositAmount;
 
                 const hasValidOptions =
                   currentGateway && currentProvider && amount;
@@ -265,7 +271,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                     toast.error("Please enter an amount");
                   } else {
                     toast.error(
-                      `Amount must be between ৳${availableBalance.min} and ৳${availableBalance.max}`
+                      `Amount must be between ৳${depositOptions?.promotionDetails?.minimumDepositAmount} and ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
                     );
                   }
                 }
