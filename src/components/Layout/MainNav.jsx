@@ -8,6 +8,8 @@ import { RiVipDiamondFill, RiGamepadFill } from "react-icons/ri";
 import bgGalaxy from "../../assets/sports/galaxy.png";
 import GalaxyStars from "./GalaxyStars";
 import { useLocation, Link } from "react-router-dom";
+import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
+import { useQuery } from "@tanstack/react-query";
 
 const subnavOptions = [
   {
@@ -94,17 +96,11 @@ const subnavOptions = [
 ];
 
 // Memoize the SubnavCard component to prevent unnecessary re-renders
-const SubnavCard = memo<{
-  title: string;
-  images: string[];
-  button: string;
-}>(({ title, images, button }) => {
+const SubnavCard = memo(({ title, images, button }) => {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [animated, setAnimated] = useState<{ x: number; y: number }[]>(
-    images.map(() => ({ x: 0, y: 0 }))
-  );
-  const animRef = useRef<number>();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [animated, setAnimated] = useState(images.map(() => ({ x: 0, y: 0 })));
+  const animRef = useRef();
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const animate = () => {
@@ -113,7 +109,7 @@ const SubnavCard = memo<{
           const depth = 1 - i * 0.5;
           const targetX = mouse.x * depth;
           const targetY = mouse.y * depth;
-          const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+          const lerp = (a, b, t) => a + (b - a) * t;
           return {
             x: lerp(a.x, targetX, 0.1),
             y: lerp(a.y, targetY, 0.1),
@@ -123,10 +119,10 @@ const SubnavCard = memo<{
       animRef.current = requestAnimationFrame(animate);
     };
     animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current!);
+    return () => cancelAnimationFrame(animRef.current);
   }, [mouse.x, mouse.y, images.length]);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -185,13 +181,13 @@ const SubnavCard = memo<{
               style={{
                 zIndex: 10 + i,
                 transform: `
-                    translate(-50%, -50%)
-                    rotateY(${rotateY}deg)
-                    rotateX(${rotateX}deg)
-                    translateX(${translateX}px)
-                    translateY(${translateY}px)
-                    scale(${1 + 0.05 * (1 - i * 0.2)})
-                  `,
+                  translate(-50%, -50%)
+                  rotateY(${rotateY}deg)
+                  rotateX(${rotateX}deg)
+                  translateX(${translateX}px)
+                  translateY(${translateY}px)
+                  scale(${1 + 0.05 * (1 - i * 0.2)})
+                `,
                 opacity: 1 - i * 0.15,
               }}
             />
@@ -212,7 +208,7 @@ const SubnavCard = memo<{
 
 // Memoize the SubnavSlider component
 const SubnavSlider = memo(() => {
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef(null);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -233,7 +229,7 @@ const SubnavSlider = memo(() => {
     }
   }, [checkOverflow]);
 
-  const scroll = useCallback((direction: "left" | "right") => {
+  const scroll = useCallback((direction) => {
     if (!sliderRef.current) return;
     const scrollAmount = sliderRef.current.clientWidth * 0.8;
     const newScrollLeft =
@@ -245,7 +241,7 @@ const SubnavSlider = memo(() => {
     });
   }, []);
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  const handleMouseDown = useCallback((e) => {
     if (!sliderRef.current) return;
     setIsDragging(true);
     setStartX(e.pageX - sliderRef.current.offsetLeft);
@@ -253,7 +249,7 @@ const SubnavSlider = memo(() => {
   }, []);
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
+    (e) => {
       if (!isDragging || !sliderRef.current) return;
       e.preventDefault();
       const x = e.pageX - sliderRef.current.offsetLeft;
@@ -332,16 +328,34 @@ const SubnavSlider = memo(() => {
   );
 });
 
-const MainNav: React.FC = () => {
+const MainNav = () => {
   const [activePage, setActivePage] = useState("/");
-  const [openSubNav, setOpenSubNav] = useState<number | null>(null);
-  const [subMenuAnimationState, setSubMenuAnimationState] = useState<
-    "closed" | "opening" | "open" | "closing"
-  >("closed");
-  const navRef = useRef<HTMLDivElement>(null);
-  const closeTimerRef = useRef<number | null>(null);
-  const openTimerRef = useRef<number | null>(null);
+  const [openSubNav, setOpenSubNav] = useState(null); // number or null
+  const [subMenuAnimationState, setSubMenuAnimationState] = useState("closed"); // "closed", "opening", "open", "closing"
+  const navRef = useRef(null); // ref to a div
+  const closeTimerRef = useRef(null); // ref to store timeout id
+  const openTimerRef = useRef(null); // ref to store timeout i
   const location = useLocation();
+
+  const getRequest = useGetRequest();
+
+  const {
+    data: menuList,
+    isLoading: menuLoading,
+    isError: menuErr,
+  } = useQuery({
+    queryKey: ["menus"],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_ALL_MENU_PROVIDERS,
+        errorMessage: "Failed to fetch banners list",
+      }),
+    keepPreviousData: true,
+  });
+
+  const gameMenus = menuList?.data?.game_providers || [];
+  const sportMenu = menuList?.data?.sports_providers || [];
+  const categoryMenu = menuList?.data?.category_menu || [];
 
   // Handle submenu state transitions
   useEffect(() => {
@@ -367,8 +381,8 @@ const MainNav: React.FC = () => {
 
   // Handle click outside for the main submenu
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
+    const handleClickOutside = (event) => {
+      const target = event.target;
       if (
         navRef.current &&
         !navRef.current.contains(target) &&
@@ -382,7 +396,7 @@ const MainNav: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [subMenuAnimationState]);
 
-  const handleNavToggle = useCallback((index: number | null) => {
+  const handleNavToggle = useCallback((index) => {
     setOpenSubNav((prev) => (prev === index ? null : index));
   }, []);
 
@@ -406,8 +420,7 @@ const MainNav: React.FC = () => {
             <FaHome className="nav-icon" />
           </Link>
         </li>
-
-        <li
+        {/* <li
           className={`nav-item ${
             openSubNav === 0 || activePage === "/sports" ? "active" : ""
           }`}
@@ -424,60 +437,82 @@ const MainNav: React.FC = () => {
             Sports
             <FaChevronDown className="nav-dropdown-icon" />
           </Link>
-        </li>
+        </li> */}
+        {gameMenus.length > 0 &&
+          gameMenus.map((menu) => {
+            const isActive =
+              activePage.startsWith(`/provider/${menu?.id}`) &&
+              new URLSearchParams(location.search).get("type") === "games";
 
-        <li
-          className={`nav-item ${
-            activePage === "/live-casino" ? "active" : ""
-          }`}
-        >
-          <Link to="/live-casino">
-            <MdCasino className="nav-icon" />
-            Live Casino
-          </Link>
-        </li>
+            return (
+              <li
+                key={menu.id}
+                className={`nav-item mr-4 ${isActive ? "active" : ""}`}
+              >
+                <Link
+                  to={`/provider/${menu?.id}?type=games&providerName=${menu?.name}`}
+                >
+                  {menu?.icon && (
+                    <img
+                      src={menu.icon || ""}
+                      alt={menu.name || ""}
+                      className="w-[16px]"
+                    />
+                  )}
+                  {menu.name || ""}
+                </Link>
+              </li>
+            );
+          })}
+        {sportMenu.length > 0 &&
+          sportMenu.map((menu) => {
+            const isActive =
+              activePage.startsWith(`/provider/${menu?.id}`) &&
+              new URLSearchParams(location.search).get("type") === "sports";
 
-        <li className={`nav-item ${activePage === "/casino" ? "active" : ""}`}>
-          <Link to="/casino">
-            <MdCasino className="nav-icon" />
-            Casino
-          </Link>
-        </li>
-
-        <li className={`nav-item ${activePage === "/slots" ? "active" : ""}`}>
-          <Link to="/slots">
-            <RiGamepadFill className="nav-icon" />
-            Slot
-          </Link>
-        </li>
-
-        <li className={`nav-item ${activePage === "/games" ? "active" : ""}`}>
-          <Link to="/games">
-            <RiGamepadFill className="nav-icon" />
-            Games
-          </Link>
-        </li>
-
-        <li className={`nav-item ${activePage === "/test-game" ? "active" : ""}`}>
-          <Link to="/test-game">
-            <RiGamepadFill className="nav-icon" />
-            Test Gaming
-          </Link>
-        </li>
-
-        <li className={`nav-item ${activePage === "/poker" ? "active" : ""}`}>
-          <Link to="/poker">
-            <GiPokerHand className="nav-icon" />
-            Poker
-          </Link>
-        </li>
-
-        <li className={`nav-item ${activePage === "/lottery" ? "active" : ""}`}>
-          <Link to="/lottery">
-            <BsFillTrophyFill className="nav-icon" />
-            Lotery
-          </Link>
-        </li>
+            return (
+              <li
+                key={menu.id}
+                className={`nav-item mr-4 ${isActive ? "active" : ""}`}
+              >
+                <Link
+                  to={`/provider/${menu?.id}?type=sports&providerName=${menu?.name}`}
+                >
+                  {menu?.icon && (
+                    <img
+                      src={menu.icon || ""}
+                      alt={menu.name || ""}
+                      className="w-[16px]"
+                    />
+                  )}
+                  {menu.name || ""}
+                </Link>
+              </li>
+            );
+          })}
+        {categoryMenu.length > 0 &&
+          categoryMenu.map((menu) => {
+            const isActive = location.pathname.startsWith(
+              `/category/${menu.id}`
+            );
+            return (
+              <li
+                key={menu.id}
+                className={`nav-item mr-4 ${isActive ? "active" : ""}`}
+              >
+                <Link to={`/category/${menu.id}`}>
+                  {menu?.imgUrl && (
+                    <img
+                      src={menu.imgUrl || ""}
+                      alt={menu.title || ""}
+                      className="w-[16px]"
+                    />
+                  )}
+                  {menu.title || ""}
+                </Link>
+              </li>
+            );
+          })}
 
         <li className={`nav-item ${activePage === "/vip" ? "active" : ""}`}>
           <Link to="/vip">
@@ -485,7 +520,6 @@ const MainNav: React.FC = () => {
             VIP
           </Link>
         </li>
-
         <li
           className={`nav-item ${activePage === "/promotions" ? "active" : ""}`}
         >
@@ -494,7 +528,6 @@ const MainNav: React.FC = () => {
             Promotion
           </Link>
         </li>
-
         {/* <li
           className={`nav-item ${activePage === "/profile/referral-details" ? "active" : ""}`}
         >

@@ -9,27 +9,22 @@ import { useAuth } from "../../contexts/auth-context";
 import axiosInstance from "../../lib/api/axios";
 import { useParams, useSearchParams } from "react-router-dom";
 
-const ProviderGames = () => {
+const CategoryGames = () => {
   const { user } = useAuth();
-  const { providerId, categoryId } = useParams(); // providerId & categoryId from URL
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type"); // type from query params
-  const providerName = searchParams.get("providerName");
+  const { categoryId } = useParams();
 
   const getRequest = useGetRequest();
 
   const { data: gamesData, isLoading: gamesLoading } = useQuery({
-    queryKey: [type, providerId, categoryId || "all"], // use "all" for missing category
+    queryKey: [categoryId],
     queryFn: () =>
       getRequest({
-        url: BASE_URL + API_LIST.GET_GAMES_OR_SPORTS_BY_CATEGORY_PROVIDER,
+        url: BASE_URL + API_LIST.GET_GAMES_OR_SPORTS_BY_CATEGORY,
         params: {
-          type,
-          providerId,
-          categoryId: categoryId ? Number(categoryId) : undefined, // only send if exists
+          categoryId,
         },
       }),
-    enabled: !!providerId && !!type, // fetch as long as providerId and type exist
+    enabled: !!categoryId,
   });
 
   const games = gamesData?.data || [];
@@ -71,23 +66,33 @@ const ProviderGames = () => {
 
   console.log(games);
   return (
-    <div className="game-grid-container !px-0 !pb-0">
-      {/* No Games */}
-      {games?.length > 0 ? (
-        <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center">
-          {games.map((game, index) => (
-            <div key={game.id} style={{ animationDelay: `${index * 0.05}s` }}>
-              <GameCard {...game} onPlayClick={handlePlayGame} />
+    <div className="max-w-[1200px] px-[15px] mx-auto text-left">
+      <div className="py-5 md:py-10">
+        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+          Play Now
+        </h1>
+        <div className="game-grid-container !px-0 !pb-0">
+          {/* No Games */}
+          {games?.length > 0 ? (
+            <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center">
+              {games.map((game, index) => (
+                <div
+                  key={game.id}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <GameCard {...game} onPlayClick={handlePlayGame} />
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="no-games-message">
+              No games and sports found in this category.
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="no-games-message">
-          No {type} found in this category.
-        </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default ProviderGames;
+export default CategoryGames;

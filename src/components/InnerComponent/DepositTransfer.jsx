@@ -74,7 +74,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           <p className="text-base text-left mb-2 font-medium">
             Available Balance{" "}
             <span className="text-yellow-400">
-              ৳{availableBalance.min} ~ ৳{availableBalance.max}
+              ৳{depositOptions?.promotionDetails?.minimumDepositAmount || 0} ~ ৳
+              {depositOptions?.promotionDetails?.maximumDepositAmount || 0}
             </span>
           </p>
 
@@ -89,7 +90,11 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               className="px-5 py-4 pb-6 text-[30px] placeholder:text-[16px] pr-3 w-full bg-transparent outline-none border-none text-white"
               value={amount}
               onChange={handleChange}
-              placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
+              placeholder={`Enter amount between ৳${
+                depositOptions?.promotionDetails?.minimumDepositAmount || 0
+              } and ৳${
+                depositOptions?.promotionDetails?.maximumDepositAmount || 0
+              }`}
             />
             {error && (
               <p className="text-white px-2 rounded-full pb-1 bg-red-500 absolute top-[-5px] left-[15px] text-xs font-medium">
@@ -143,8 +148,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   <div className="text-left">
                     <h4 className="text-[16px] font-medium text-white">
                       {defaultGateway.name}
-                    </h4>             
-                    
+                    </h4>
                   </div>
                 </div>
                 <div className="flex gap-1">
