@@ -39,6 +39,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Layout from "./components/Layout/Layout";
 import PromotionDetails from "./pages/PromotionDetails";
 import GameProviderPage from "./pages/GameProviderPage";
+import CategoryGames from "./components/GameGrid/CategoryGames";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -68,6 +69,7 @@ const App: React.FC = () => {
             element={<GameProviderPage />}
           />
           <Route path="/provider/:providerId" element={<GameProviderPage />} />
+          <Route path="/category/:categoryId" element={<CategoryGames />} />
           <Route path="/promotions/:id" element={<PromotionDetails />} />
 
           {/* --------------------- */}

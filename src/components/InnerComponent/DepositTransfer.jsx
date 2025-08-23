@@ -35,10 +35,14 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
     if (!value) {
       setError("");
-    } else if (num < availableBalance.min) {
-      setError(`Amount must be at least ৳${availableBalance.min}`);
-    } else if (num > availableBalance.max) {
-      setError(`Amount must not exceed ৳${availableBalance.max}`);
+    } else if (num < depositOptions?.promotionDetails?.minimumDepositAmount) {
+      setError(
+        `Amount must be at least ৳${depositOptions?.promotionDetails?.minimumDepositAmount}`
+      );
+    } else if (num > depositOptions?.promotionDetails?.maximumDepositAmount) {
+      setError(
+        `Amount must not exceed ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
+      );
     } else {
       setError("");
     }
@@ -46,8 +50,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
   const isNextDisabled =
     !amount ||
-    Number(amount) < availableBalance.min ||
-    Number(amount) > availableBalance.max ||
+    Number(amount) < depositOptions?.promotionDetails?.minimumDepositAmount ||
+    Number(amount) > depositOptions?.promotionDetails?.maximumDepositAmount ||
     !currentGateway ||
     !currentProvider;
 
@@ -74,7 +78,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           <p className="text-base text-left mb-2 font-medium">
             Available Balance{" "}
             <span className="text-yellow-400">
-              ৳{availableBalance.min} ~ ৳{availableBalance.max}
+              ৳{depositOptions?.promotionDetails?.minimumDepositAmount || 0} ~ ৳
+              {depositOptions?.promotionDetails?.maximumDepositAmount || 0}
             </span>
           </p>
 
@@ -89,7 +94,11 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               className="px-5 py-4 pb-6 text-[30px] placeholder:text-[16px] pr-3 w-full bg-transparent outline-none border-none text-white"
               value={amount}
               onChange={handleChange}
-              placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
+              placeholder={`Enter amount between ৳${
+                depositOptions?.promotionDetails?.minimumDepositAmount || 0
+              } and ৳${
+                depositOptions?.promotionDetails?.maximumDepositAmount || 0
+              }`}
             />
             {error && (
               <p className="text-white px-2 rounded-full pb-1 bg-red-500 absolute top-[-5px] left-[15px] text-xs font-medium">
@@ -143,8 +152,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   <div className="text-left">
                     <h4 className="text-[16px] font-medium text-white">
                       {defaultGateway.name}
-                    </h4>             
-                    
+                    </h4>
                   </div>
                 </div>
                 <div className="flex gap-1">
@@ -244,8 +252,10 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               onClick={() => {
                 const amountValue = Number(amount);
                 const isAmountValid =
-                  amountValue >= availableBalance.min &&
-                  amountValue <= availableBalance.max;
+                  amountValue >=
+                    depositOptions?.promotionDetails?.minimumDepositAmount &&
+                  amountValue <=
+                    depositOptions?.promotionDetails?.maximumDepositAmount;
 
                 const hasValidOptions =
                   currentGateway && currentProvider && amount;
@@ -261,7 +271,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                     toast.error("Please enter an amount");
                   } else {
                     toast.error(
-                      `Amount must be between ৳${availableBalance.min} and ৳${availableBalance.max}`
+                      `Amount must be between ৳${depositOptions?.promotionDetails?.minimumDepositAmount} and ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
                     );
                   }
                 }

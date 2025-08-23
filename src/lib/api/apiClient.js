@@ -24,11 +24,13 @@ export const API_LIST = {
   GET_CATEGORY_WISE_GAME: "/api/public/category-wise-games",
   GET_CATEGORY_WISE_SPORT: "/api/public/category-wise-sports",
   GET_GAMES_OR_SPORTS_BY_CATEGORY_PROVIDER: "/api/public/category-provider",
+  GET_GAMES_OR_SPORTS_BY_CATEGORY: "/api/public/category-games",
   GET_COUNTRIES: "/api/countries",
   GET_GAMES_SPORTS: "/api/public/sports-games-list",
   GET_ALL_PROVIDERS: "/api/public/providers",
   GET_ALL_EXCLUSIVE: "/api/public/exclusive-games-sports",
   GET_ALL_PUBLIC_EVENTS: "/api/public/public-events",
+  GET_ALL_MENU_PROVIDERS: "/api/public/menu-providers",
 };
 
 // --- Reusable POST Request Hook ---

@@ -13,7 +13,7 @@ import bkash from "../assets/payment-type/bkash.png";
 import nagad from "../assets/payment-type/nagad.png";
 import rocket from "../assets/payment-type/rocket.png";
 import { useQuery } from "@tanstack/react-query";
-import { API_LIST } from "../lib/api/apiClient";
+import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
 import axiosInstance from "../lib/api/axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
 
@@ -266,12 +266,13 @@ const SingleDepositAndWithdrawPage = () => {
 
   console.log({ paymentMethodData });
 
-  const [selectedPromotion, setSelectedPromotion] = useState({
-    id: 2,
-    title: "৮০% রিলোড বোনাস",
-    type: "এক্সক্লুসিভ অফার",
-    time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
-  });
+  const [selectedPromotion, setSelectedPromotion] = useState(null);
+  // {
+  //   id: 2,
+  //   title: "৮০% রিলোড বোনাস",
+  //   type: "এক্সক্লুসিভ অফার",
+  //   time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
+  // }
 
   const [depositOptions, setDepositOptions] = useState({
     payment_type: "",
@@ -333,6 +334,30 @@ const SingleDepositAndWithdrawPage = () => {
     setStep(crStep);
   };
 
+  // promotion
+
+  // promotions
+  const getRequest = useGetRequest();
+  const {
+    data: promotionList,
+    isLoading: promotionLoading,
+    isError: promotionErr,
+  } = useQuery({
+    queryKey: ["promotions"],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_PROMOTIONS,
+        errorMessage: "Failed to fetch promotions",
+        isPublic: true,
+      }),
+  });
+
+  useEffect(() => {
+    if (promotionList?.data?.length > 0) {
+      setSelectedPromotion(promotionList.data[0]);
+    }
+  }, [promotionList?.data]);
+
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
       <h2 className="text-[22px] flex items-center font-bold ">
@@ -351,7 +376,7 @@ const SingleDepositAndWithdrawPage = () => {
         <DepositTransfer
           stepDetails={stepDetails}
           setStep={setStep}
-          depositOptions={depositOptions }
+          depositOptions={depositOptions}
         />
       ) : (
         <LocalBankInfo
@@ -370,10 +395,18 @@ const SingleDepositAndWithdrawPage = () => {
         onClose={handleCloseModal}
         children={
           <DepositPromotionSelect
-            fakePromotions={fakePromotions}
+            promotionList={promotionList?.data || []}
             selectedPromotion={selectedPromotion}
-            setSelectedPromotion={setSelectedPromotion}
+            setSelectedPromotion={(promo) => {
+              setSelectedPromotion(promo);
+              setDepositOptions((prev) => ({
+                ...prev,
+                promotionId: promo.id,
+                promotionDetails: promo,
+              }));
+            }}
             onClose={handleCloseModal}
+            promotionLoading={promotionLoading}
           />
         }
       />

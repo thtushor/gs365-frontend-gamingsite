@@ -16,7 +16,7 @@ const LocalBankInfo = ({
   // Transform the new data structure to match the expected format
   const transformedPaymentTypes =
     gatewayInfo?.paymentGateways?.map((gateway) => ({
-      bonus: gateway?.bonus ?`${gateway?.bonus}%`:undefined, // Static bonus as requested
+      bonus: gateway?.bonus ? `${gateway?.bonus}%` : undefined, // Static bonus as requested
       icon: gateway.iconUrl,
       title: gateway.name,
       transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
@@ -75,16 +75,16 @@ const LocalBankInfo = ({
       {/* Select Promotion */}
       <p className="text-base text-left mb-2">Select Promotion</p>
       <div
-        className="second-bg border border-[#1a1a1a] hover:border-yellow-400 hover:text-yellow-400 cursor-pointer transition px-5 py-4 pr-3 rounded-md text-[18px] font-semibold flex items-center w-full gap-2 justify-between"
+        className="second-bg border border-[#1a1a1a] hover:border-yellow-400 hover:text-yellow-400 cursor-pointer transition md:px-5 py-4 md:pr-3 pl-2 rounded-md text-[16px] md:text-[18px] font-semibold flex items-center w-full gap-2 justify-between"
         onClick={handleOpenModal}
       >
         <span className="flex items-center gap-2">
           <LuGift size={22} />
           Promotions
         </span>
-        <span className="flex items-center gap-3 text-[24px]">
-          <small className="text-yellow-400 text-[14px] font-medium">
-            {selectedPromotion?.title}
+        <span className="flex items-center md:gap-3 text-[24px]">
+          <small className="text-yellow-400 text-[14px] block truncate max-w-[120px] sm:max-w-[400px]   font-medium">
+            {selectedPromotion?.promotionName}
           </small>
           <IoIosArrowForward />
         </span>
@@ -114,11 +114,11 @@ const LocalBankInfo = ({
               }}
             >
               <span className="absolute top-0 right-0 bg-yellow-400 rounded-bl-md px-2 text-black text-[14px] font-semibold">
-                {info?.bonus}
+                {selectedPromotion?.bonus || "0"}%
               </span>
               <img className="w-[60px]" src={info?.icon} alt="icon" />
               <p className="group-hover:text-yellow-400 font-medium">
-                {info?.title}
+                {info.title || ""}
               </p>
             </div>
           ))}

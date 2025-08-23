@@ -11,7 +11,6 @@ import { Logo } from "../Logo/Logo";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopHeader from "./TopHeader";
-import MainNav from "./MainNav";
 import LoginPopup from "../Auth/LoginPopup";
 import { showToaster } from "../../lib/utils/toast";
 import profilePic from "../../assets/member-avatar.png";
@@ -25,6 +24,7 @@ import MobileSideBar from "./MobileSideBar";
 import { UserBalance } from "./UserBalance";
 import { FaGamepad } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
+import MainNav from "./MainNav";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
                 <button onClick={handleCloseSidebar}>✖</button>
               </div> */}
               <nav className="p-4">
-                <MobileSideBar />
+                <MobileSideBar setSidebarOpen={setSidebarOpen} />
               </nav>
             </div>
           </div>

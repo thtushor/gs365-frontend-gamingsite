@@ -7,7 +7,7 @@ const BaseModal = ({ open, onClose, showClose = true, children }) => {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[9999999999999999999]  flex items-center justify-center bg-black bg-opacity-60"
+          className="fixed inset-0 z-[9999]  flex items-center justify-center bg-black bg-opacity-60"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

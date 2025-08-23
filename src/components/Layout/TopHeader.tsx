@@ -4,8 +4,10 @@ import { FaStar } from "react-icons/fa";
 import { Logo } from "../Logo/Logo";
 import { BiCloudDownload } from "react-icons/bi";
 import { CurrencyModal } from "../Modal/CurrencyModal";
+import { useNavigate } from "react-router-dom";
 
 const TopHeader: React.FC = () => {
+  const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,7 +68,10 @@ const TopHeader: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center md:hidden">
+        <div
+          className="flex items-center md:hidden"
+          onClick={() => navigate("/")}
+        >
           <Logo />
           <div className="flex items-start flex-col">
             <p className="text-[10px] font-semibold text-yellow-300">
