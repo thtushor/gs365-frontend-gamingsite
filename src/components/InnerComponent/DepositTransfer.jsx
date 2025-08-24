@@ -35,14 +35,10 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
     if (!value) {
       setError("");
-    } else if (num < depositOptions?.promotionDetails?.minimumDepositAmount) {
-      setError(
-        `Amount must be at least ৳${depositOptions?.promotionDetails?.minimumDepositAmount}`
-      );
-    } else if (num > depositOptions?.promotionDetails?.maximumDepositAmount) {
-      setError(
-        `Amount must not exceed ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
-      );
+    } else if (num < availableBalance.min) {
+      setError(`Amount must be at least ৳${availableBalance.min}`);
+    } else if (num > availableBalance.max) {
+      setError(`Amount must not exceed ৳${availableBalance.max}`);
     } else {
       setError("");
     }
@@ -50,8 +46,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
 
   const isNextDisabled =
     !amount ||
-    Number(amount) < depositOptions?.promotionDetails?.minimumDepositAmount ||
-    Number(amount) > depositOptions?.promotionDetails?.maximumDepositAmount ||
+    Number(amount) < availableBalance.min ||
+    Number(amount) > availableBalance.max ||
     !currentGateway ||
     !currentProvider;
 
@@ -78,8 +74,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
           <p className="text-base text-left mb-2 font-medium">
             Available Balance{" "}
             <span className="text-yellow-400">
-              ৳{depositOptions?.promotionDetails?.minimumDepositAmount || 0} ~ ৳
-              {depositOptions?.promotionDetails?.maximumDepositAmount || 0}
+              ৳{availableBalance.min} ~ ৳{availableBalance.max}
             </span>
           </p>
 
@@ -94,11 +89,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               className="px-5 py-4 pb-6 text-[30px] placeholder:text-[16px] pr-3 w-full bg-transparent outline-none border-none text-white"
               value={amount}
               onChange={handleChange}
-              placeholder={`Enter amount between ৳${
-                depositOptions?.promotionDetails?.minimumDepositAmount || 0
-              } and ৳${
-                depositOptions?.promotionDetails?.maximumDepositAmount || 0
-              }`}
+              placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
             />
             {error && (
               <p className="text-white px-2 rounded-full pb-1 bg-red-500 absolute top-[-5px] left-[15px] text-xs font-medium">
@@ -252,10 +243,8 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
               onClick={() => {
                 const amountValue = Number(amount);
                 const isAmountValid =
-                  amountValue >=
-                    depositOptions?.promotionDetails?.minimumDepositAmount &&
-                  amountValue <=
-                    depositOptions?.promotionDetails?.maximumDepositAmount;
+                  amountValue >= availableBalance.min &&
+                  amountValue <= availableBalance.max;
 
                 const hasValidOptions =
                   currentGateway && currentProvider && amount;
@@ -271,7 +260,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                     toast.error("Please enter an amount");
                   } else {
                     toast.error(
-                      `Amount must be between ৳${depositOptions?.promotionDetails?.minimumDepositAmount} and ৳${depositOptions?.promotionDetails?.maximumDepositAmount}`
+                      `Amount must be between ৳${availableBalance.min} and ৳${availableBalance.max}`
                     );
                   }
                 }
