@@ -189,7 +189,7 @@ export const GameTypes = () => {
               <img
                 src={item?.imgUrl}
                 alt={item?.title}
-                className="game-icon min-w-[70px] h-[50px] !object-cover !p-0"
+                className="min-w-[70px] h-[50px] object-contain !p-0"
               />
               <span className="game-name !text-[14px] !font-semibold">
                 {item?.title}
