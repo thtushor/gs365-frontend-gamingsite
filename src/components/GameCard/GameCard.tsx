@@ -70,7 +70,7 @@ const GameCard: React.FC<GameCardProps> = ({
       <img
         src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo ? logo : ""}
         alt=""
-        className="w-full h-full object-cover min-h-[140px] max-h-[140px] md:w-[140px] md:h-[185px]"
+        className="w-full h-full object-cover min-h-[140px] max-h-[140px] md:w-[140px] md:min-h-[185px]"
       />
       <div className="absolute game-card-image top-0 left-0 flex items-center justify-center">
         <div className="game-card-overlay">

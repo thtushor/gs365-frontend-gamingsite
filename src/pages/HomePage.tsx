@@ -27,7 +27,7 @@ import GameGrid from "../components/GameGrid";
 // import SportGrid from "../components/SportGrid/SportGrid";
 import { Link } from "react-router-dom";
 import { FaGamepad } from "react-icons/fa";
-import SportGrid from "../components/SportGrid/SportGrid";
+// import SportGrid from "../components/SportGrid/SportGrid";
 import { GameTypes } from "../components/GameTypes/GameTypes";
 import AllProviders from "./AllProviders";
 import { Event } from "../components/Event";
@@ -87,7 +87,7 @@ const HomePage: React.FC = () => {
       </div>
 
       <GameGrid />
-      <SportGrid />
+      {/* <SportGrid /> */}
 
       <SeoSection title={seoTitle} content={seoContent} />
       <div className="max-w-[1200px] px-[15px] mx-auto text-left">
