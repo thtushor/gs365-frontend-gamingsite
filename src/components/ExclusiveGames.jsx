@@ -147,10 +147,14 @@ export const ExclusiveGames = () => {
       return response.data;
     },
     onSuccess: (data) => {
+      console.log(data);
       if (data.success) {
+        const token = localStorage.getItem("token");
         toast.success("Game session created successfully!");
         // Open game in new window
-        window.open(data.data.url, "_blank", "noopener,noreferrer");
+        const tempUrl = `https://gsgameprovider-git-dev-branch-sohidulislams-projects.vercel.app/?sessionId=${data?.data?.sessionId}&token=${data?.data?.sessionToken}`;
+        // window.open(data.data.url, "_blank", "noopener,noreferrer");
+        window.open(tempUrl, "_blank", "noopener,noreferrer");
       } else {
         toast.error(data.message || "Failed to create game session");
       }

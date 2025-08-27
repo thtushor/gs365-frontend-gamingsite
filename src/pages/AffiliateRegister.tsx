@@ -39,7 +39,7 @@ const Register: React.FC = () => {
     email: "",
     captchaInput: "",
     ageCheck: true,
-    role: "superAffiliate",
+    role: refCodeParam ? "affiliate" : "superAffiliate",
     refCode: refCodeParam,
   });
 
