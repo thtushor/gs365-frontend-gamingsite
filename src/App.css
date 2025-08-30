@@ -107,3 +107,18 @@ body {
 .slick-track {
   margin-left: 0px !important;
 }
+.register-select .css-13cymwt-control,
+.register-select .css-t3ipsp-control {
+  background: rgb(88 88 88) !important;
+  padding: 4px 0 !important;
+}
+.register-select .css-1dimb5e-singleValue {
+  color: white !important;
+  font-size: 14px;
+}
+.PhoneInput {
+  border: 1px solid rgba(255, 255, 255, 0.379) !important;
+  background: rgb(88 88 88) !important;
+  padding: 10px 12px !important;
+  border-radius: 5px !important;
+}

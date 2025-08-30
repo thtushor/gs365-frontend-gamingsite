@@ -7,7 +7,8 @@ import { useSearchParams } from "react-router-dom";
 
 const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const refCodeParam = searchParams.get("refcode") || "";
+  const refCodeParam =
+    searchParams.get("refcode") || searchParams.get("refCode") || "";
 
   console.log({ refCodeParam });
 

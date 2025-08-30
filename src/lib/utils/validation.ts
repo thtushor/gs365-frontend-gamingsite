@@ -135,7 +135,7 @@ export const transformRegistrationData = (formData: {
   ageCheck: boolean;
 }) => {
   // Combine calling code and phone number
-  const fullPhone = `${formData.callingCode}${formData.phoneNumber}`;
+  const fullPhone = `${formData.phoneNumber}`;
 
   // Map currency type to currency_id
   const currencyIdMap: Record<string, number> = {
