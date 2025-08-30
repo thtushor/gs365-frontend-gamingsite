@@ -140,7 +140,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       currencyId: selectedGateway?.currencyId || 1,
       promotionId: depositOptions?.promotionId || null,
       paymentGatewayProviderAccountId: accountInfo?.id,
-      notes: referenceId,
+      givenTransactionId: referenceId,
+      notes: "Deposit via " + (paymentType?.title || ""),
       attachment: uploadRes?.data?.original || uploadRes?.original,
     };
 
