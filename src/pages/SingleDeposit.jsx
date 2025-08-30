@@ -263,16 +263,8 @@ const SingleDepositAndWithdrawPage = () => {
   });
 
   const paymentMethodData = paymentMethods?.[0];
-
-  console.log({ paymentMethodData });
-
+  
   const [selectedPromotion, setSelectedPromotion] = useState(null);
-  // {
-  //   id: 2,
-  //   title: "৮০% রিলোড বোনাস",
-  //   type: "এক্সক্লুসিভ অফার",
-  //   time: "2025-07-05 22:07:00 ~ 2025-07-12 21:07:00",
-  // }
 
   const [depositOptions, setDepositOptions] = useState({
     payment_type: "",
@@ -355,6 +347,11 @@ const SingleDepositAndWithdrawPage = () => {
   useEffect(() => {
     if (promotionList?.data?.length > 0) {
       setSelectedPromotion(promotionList.data[0]);
+      setDepositOptions((prev) => ({
+        ...prev,
+        promotionId: promotionList.data[0].id,
+        promotionDetails: promotionList.data[0],
+      }) );
     }
   }, [promotionList?.data]);
 

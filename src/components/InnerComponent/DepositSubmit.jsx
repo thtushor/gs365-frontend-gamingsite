@@ -121,6 +121,9 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
+
+  console.log({depositOptions: depositOptions})
+
   const handleSubmit = async () => {
     if (!accountName || !referenceId || !receiptFile) {
       toast.error("Please fill all the fields and upload the receipt.");

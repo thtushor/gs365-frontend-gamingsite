@@ -161,7 +161,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
             )}
 
             {/* Provider Selection */}
-            {currentGateway && currentGateway.providers?.length > 0 && (
+            {/* {currentGateway && currentGateway.providers?.length > 0 && (
               <div className="mt-4">
                 <p className="text-base text-left mb-2 font-medium">
                   Select Provider
@@ -182,9 +182,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                         <h4 className="text-[16px] font-medium text-white">
                           {provider.name}
                         </h4>
-                        {/* <p className="text-gray-400 text-[14px]">
-                          Commission: {provider.commission}%
-                        </p> */}
+                        
                         {provider.isRecomended && (
                           <p className="text-yellow-400 text-[10px]">
                             Recommended
@@ -200,7 +198,7 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
                   </div>
                 ))}
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Reminder Section */}
