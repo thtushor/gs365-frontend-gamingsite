@@ -121,6 +121,9 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
+
+  console.log({depositOptions: depositOptions})
+
   const handleSubmit = async () => {
     if (!accountName || !referenceId || !receiptFile) {
       toast.error("Please fill all the fields and upload the receipt.");
@@ -137,7 +140,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       currencyId: selectedGateway?.currencyId || 1,
       promotionId: depositOptions?.promotionId || null,
       paymentGatewayProviderAccountId: accountInfo?.id,
-      notes: referenceId,
+      givenTransactionId: referenceId,
+      notes: "Deposit via " + (paymentType?.title || ""),
       attachment: uploadRes?.data?.original || uploadRes?.original,
     };
 
