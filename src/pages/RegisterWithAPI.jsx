@@ -182,7 +182,9 @@ const Register = () => {
       );
       window.location.href = "/";
     } catch (error) {
-      console.error("Registration failed:", error);
+      // console.error("Registration failed:", error);
+      return showToaster("Registration failed. Please try again.");
+
       const errorMessage =
         typeof error === "object" &&
         error !== null &&
