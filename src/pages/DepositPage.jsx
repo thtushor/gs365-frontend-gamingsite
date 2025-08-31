@@ -171,7 +171,7 @@ const DepositAndWithdrawPage = () => {
           return (
             <Link
               key={item.id}
-              to={isDisabled ? "#" : `/deposit/${item.name}${currentQuery}`}
+              to={isDisabled ? "#" : `/${isWithdraw ?'withdraw':'deposit'}/${item.name}${currentQuery}`}
               onClick={isDisabled ? (e) => e.preventDefault() : undefined}
               className={`second-bg border border-[#1a1a1a] transition px-5 py-4 pr-3 text-white rounded-md text-[18px] font-semibold flex items-center w-full justify-between ${
                 isDisabled 
