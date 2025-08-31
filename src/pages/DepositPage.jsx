@@ -43,7 +43,7 @@ const DepositAndWithdrawPage = () => {
   });
 
   // Fetch withdrawal capability when it's a withdraw page
-  const { data: withdrawalCapability, isLoading: isLoadingWithdrawal } = useQuery({
+  const { data: withdrawalCapability, isLoading: isLoadingWithdrawal,isRefetching } = useQuery({
     queryKey: [API_ENDPOINTS.PAYMENT.CHECK_WITHDRAWAL_CAPABILITY, user?.id],
     queryFn: () => {
       if (!user?.id) return null;
@@ -55,10 +55,10 @@ const DepositAndWithdrawPage = () => {
 
   // Auto-open modal when withdrawReason is available
   React.useEffect(() => {
-    if (withdrawalCapability?.data?.data?.withdrawReason) {
+    if (withdrawalCapability?.data?.data?.withdrawReason && isWithdraw) {
       setShowWithdrawReasonModal(true);
     }
-  }, [withdrawalCapability?.data?.data?.withdrawReason]);
+  }, [withdrawalCapability?.data?.data?.withdrawReason,isWithdraw]);
 
   const paymentMethodsData = paymentMethods?.data || [];
   const withdrawalData = withdrawalCapability?.data?.data;
