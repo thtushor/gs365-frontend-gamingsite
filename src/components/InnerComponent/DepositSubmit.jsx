@@ -125,7 +125,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   console.log({depositOptions: depositOptions})
 
   const handleSubmit = async () => {
-    if (!accountName || !referenceId || !receiptFile) {
+    if ( !referenceId || !receiptFile) {
       toast.error("Please fill all the fields and upload the receipt.");
       return;
     }
@@ -297,7 +297,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
 
       {/* Form Section */}
       <div className="mt-6 space-y-4">
-        <div>
+        {/* <div>
           <label className="block text-sm mb-1 text-left">
             Bank account name
           </label>
@@ -308,11 +308,11 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
             className="w-full p-2 bg-[#1e1e1e] border border-gray-700 rounded text-white"
             placeholder="Enter your bank account name"
           />
-        </div>
+        </div> */}
 
         <div>
           <label className="block text-sm mb-1 text-left">
-            Reference No. / Trans ID
+            Trx ID
           </label>
           <input
             type="text"
@@ -360,7 +360,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
 
         <button
           onClick={handleSubmit}
-          disabled={!accountName || !referenceId || !receiptFile || loading || isSubmitting}
+          disabled={ !referenceId || !receiptFile || loading || isSubmitting}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
             !accountName || !referenceId || !receiptFile || loading || isSubmitting
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
