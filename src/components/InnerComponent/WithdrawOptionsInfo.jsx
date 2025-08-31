@@ -25,7 +25,9 @@ const WithdrawOptionsInfo = ({
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log({withdrawOptions})
+  const paymentMethod = withdrawOptions.paymentMethod
+
+  console.log({paymentMethod})
 
   // Transform the new data structure to match the expected format
   const transformedPaymentTypes =
