@@ -27,8 +27,6 @@ const WithdrawOptionsInfo = ({
 
   const paymentMethod = withdrawOptions.paymentMethod
 
-  console.log({paymentMethod})
-
   // Transform the new data structure to match the expected format
   const transformedPaymentTypes =
     gatewayInfo?.paymentGateways?.map((gateway) => ({
