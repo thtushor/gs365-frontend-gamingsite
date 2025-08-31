@@ -149,7 +149,7 @@ export const ExclusiveGames = () => {
     onSuccess: (data) => {
       console.log(data);
       if (data.success) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access_token");
         toast.success("Game session created successfully!");
         // Open game in new window
         const tempUrl = `https://gsgameprovider-git-dev-branch-sohidulislams-projects.vercel.app/?sessionId=${data?.data?.sessionId}&token=${data?.data?.sessionToken}`;

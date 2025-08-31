@@ -22,14 +22,14 @@ import { CircleDollarSignIcon, TargetIcon } from "lucide-react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import MobileSideBar from "./MobileSideBar";
 import { UserBalance } from "./UserBalance";
-import { FaGamepad } from "react-icons/fa";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import MainNav from "./MainNav";
+import { LuGamepad2, LuShieldCheck } from "react-icons/lu";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
-  const { logout: handleContextLogout, user } = useAuth();
-  console.log(user);
+  const { logout: handleContextLogout, user, selectedCurrency } = useAuth();
+  console.log(selectedCurrency);
   const navigate = useNavigate();
 
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
@@ -70,6 +70,11 @@ const Header: React.FC = () => {
       url: "/profile/login-security",
     },
     {
+      name: "Verification",
+      icon: <LuShieldCheck />,
+      url: "/profile/verification",
+    },
+    {
       name: "Transaction Records",
       icon: <TbFileDollar />,
       url: "/profile/transaction-records",
@@ -81,7 +86,7 @@ const Header: React.FC = () => {
     },
     {
       name: "Test Gaming",
-      icon: <FaGamepad />,
+      icon: <LuGamepad2 />,
       url: "/test-game",
     },
     {
@@ -229,8 +234,8 @@ const Header: React.FC = () => {
               onClick={() => setModalOpen(true)}
             >
               <img
-                src="https://img.b112j.com/bj/h5/assets/v3/images/icon-set/flag-type/BD.png"
-                alt="Bangladesh Flag"
+                src={`data:image/png;base64,${selectedCurrency?.country.flagUrl}`}
+                alt="Flag"
                 className="country-flag"
               />
             </div>

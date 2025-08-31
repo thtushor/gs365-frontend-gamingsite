@@ -54,20 +54,26 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
                       className="font-medium cursor-pointer text-[16px] flex items-center gap-2 mt-[-2px]"
                     >
                       <span className="block truncate max-w-[100px] md:max-w-[200px]">
-                        {user.fullname || "Player"}
+                        {(user.fullname || "Player").length > 12
+                          ? (user.fullname || "Player").slice(0, 12) + "..."
+                          : user.fullname || "Player"}
                       </span>
                       <LuCopy />
                     </p>
                   </div>
+
                   <div className="h-[40px] mt-[5px] w-[1px] bg-[#2b2b2b]"></div>
-                  <div className=" pl-2">
+
+                  <div className="pl-2">
                     <span className="opacity-60 text-[14px]">Username</span>
                     <p
                       onClick={() => handleCopyName(user.username || "Player")}
                       className="font-medium cursor-pointer text-[16px] flex items-center gap-2 mt-[-2px]"
                     >
-                      <span className=" truncate max-w-[90px] md:max-w-[200px]">
-                        {user.username || "Player"}
+                      <span className="truncate max-w-[90px] md:max-w-[200px]">
+                        {(user.username || "Player").length > 11
+                          ? (user.username || "Player").slice(0, 11) + "..."
+                          : user.username || "Player"}
                       </span>
                       <LuCopy />
                     </p>
@@ -80,12 +86,12 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
             </div>
           </div>
 
-          <div className="">
+          <div className="space-y-4 py-4">
             {profileNavOption?.map((p, idx) => (
               <div
                 onClick={() => handleUserProfileClick(p.url)}
                 key={idx}
-                className="font-medium p-4 cursor-pointer text-base  flex justify-between opacity-70 hover:opacity-100 hover:text-yellow-400 hover:border-transparent outline-none items-center w-full"
+                className="font-medium px-4 cursor-pointer text-base  flex justify-between opacity-70 hover:opacity-100 hover:text-yellow-400 hover:border-transparent outline-none items-center w-full"
               >
                 <p className="flex items-center gap-[6px]">
                   <span className="text-[20px]">{p.icon}</span>

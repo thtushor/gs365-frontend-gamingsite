@@ -7,10 +7,10 @@ import { CgCloseO } from "react-icons/cg";
 import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/auth-context";
+import KycVerifyImg from "../assets/kyc-verify.png";
 
-const PersonalInformation = () => {
+const KycVerification = () => {
   const { logout: handleContextLogout } = useAuth();
-
   const [user, setUser] = useState(null);
   console.log(user);
   const navigate = useNavigate();
@@ -88,89 +88,51 @@ const PersonalInformation = () => {
         {/* Personal Info */}
         <div className="col-span-full md:col-span-2 lg:col-span-4 text-left border light-border rounded-md">
           <h3 className="text-white text-[18px] md:text-[20px] p-4 font-semibold">
-            Personal info
+            Verification
           </h3>
 
+          <div className="px-4">
+            <div className="flex items-center px-5 py-4 rounded-md bg-gradient-to-r from-yellow-400 to-yellow-600">
+              <img src={KycVerifyImg} className="w-[50px]" />
+              <p className="max-w-[500px] font-medium text-black text-[14px]">
+                The following info will be reviewed when Withdrawal. Complete it
+                in advance and get quick Withdrawal!
+              </p>
+            </div>
+          </div>
+
           <div className="">
-            {/* Username */}
             <div
-              onClick={() => handleCopy(user?.username)}
+              onClick={() => navigate("/profile/verification/documents")}
               className="flex justify-between items-center hover:bg-[#1a1a1a] cursor-pointer p-4"
             >
               <p className="text-white text-[14px] md:text-[16px] font-medium">
-                Username
-              </p>
-              <div className="text-right text-gray-300 flex items-center md:text-[16px] text-[14px] gap-2">
-                {user?.username || "Not Available"}
-                <LuCopy />
-              </div>
-            </div>
-
-            {/* Full name */}
-            <div
-              onClick={() => handleCopy(user?.fullname)}
-              className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4"
-            >
-              <p className="text-white text-[14px] md:text-[16px] font-medium">
-                Full legal name
+                Documents
               </p>
               <div className="text-right text-gray-300 md:text-[16px] text-[14px] flex items-center gap-2">
-                {user?.fullname || "Not Available"}
-                <LuCopy />
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4">
-              <p className="text-white text-[16px] font-medium">Phone</p>
-              <p className="text-right text-gray-300 flex md:text-[16px] text-[14px] items-center gap-1">
-                {user?.phone || "Not Available"}
-                {user?.isVerified ? (
-                  <span className="text-green-500 text-[16px] md:text-[20px]">
-                    <LuBadgeCheck />
-                  </span>
-                ) : (
-                  <span className="text-red-500 text-[16px] md:text-[20px]">
-                    <CgCloseO />
-                  </span>
-                )}
-
-                {/* <span className="rotate-180 text-[25px] mr-[-6px] block">
+                <div className="capitalize">
+                  {user?.kyc_status === "verified" ? (
+                    <span className="text-green-500 flex gap-1 items-center text-[14px] md:text-[16px]">
+                      {user?.kyc_status}
+                      <LuBadgeCheck />
+                    </span>
+                  ) : user?.kyc_status === "required" ? (
+                    <span className="text-red-500 flex gap-1 items-center text-[14px] md:text-[16px]">
+                      {user?.kyc_status}
+                      <CgCloseO />
+                    </span>
+                  ) : (
+                    <span className="text-yellow-300 flex gap-1 items-center text-[14px] md:text-[16px]">
+                      {user?.kyc_status}
+                      <CgCloseO />
+                    </span>
+                  )}
+                </div>
+                Manage
+                <span className="rotate-180 text-[16px] md:text-[20px] mr-[-6px] block">
                   <IoIosArrowBack />
-                </span> */}
-              </p>
-            </div>
-
-            {/* Email */}
-            <div className="flex justify-between items-center hover:bg-[#1a1a1a]  cursor-pointer p-4">
-              <p className="text-white font-medium text-[14px] md:text-[16px]">
-                Email
-              </p>
-              <p className="text-right text-gray-300 md:text-[16px] text-[14px] flex items-center gap-1 ">
-                {user?.email || "Not Available"}
-
-                {user?.isVerified ? (
-                  <span className="text-green-500 text-[16px] md:text-[20px]">
-                    <LuBadgeCheck />
-                  </span>
-                ) : (
-                  <span className="text-red-500 text-[16px] md:text-[20px]">
-                    <CgCloseO />
-                  </span>
-                )}
-              </p>
-            </div>
-
-            {/* Sign up date */}
-            <div className="flex justify-between items-center p-4">
-              <p className="text-white text-[14px] md:text-[16px] font-medium">
-                Sign up date
-              </p>
-              <p className="text-right text-gray-300 md:text-[16px] text-[14px]">
-                {user?.created_at
-                  ? formatDate(user?.created_at)
-                  : "Not Available"}
-              </p>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -179,4 +141,4 @@ const PersonalInformation = () => {
   );
 };
 
-export default PersonalInformation;
+export default KycVerification;

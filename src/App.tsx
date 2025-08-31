@@ -40,6 +40,8 @@ import Layout from "./components/Layout/Layout";
 import PromotionDetails from "./pages/PromotionDetails";
 import GameProviderPage from "./pages/GameProviderPage";
 import CategoryGames from "./components/GameGrid/CategoryGames";
+import KycVerification from "./pages/KycVerification";
+import DocumentSubmitKyc from "./pages/DocumentSubmitKyc";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -122,6 +124,22 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <LoginSecurity />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile/verification"
+            element={
+              <PrivateRoute>
+                <KycVerification />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile/verification/documents"
+            element={
+              <PrivateRoute>
+                <DocumentSubmitKyc />
               </PrivateRoute>
             }
           />

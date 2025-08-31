@@ -9,9 +9,11 @@ import MobileNav from "./MobileNav";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/auth-context";
 import PlayInstant from "../PlayInstant";
+import { toast } from "react-toastify";
+import KycModal from "../KycModal";
 
 const Layout = ({ children }) => {
-  const { setCountries } = useAuth();
+  const { setCountries, user, countries } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
 
@@ -76,6 +78,22 @@ const Layout = ({ children }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
+  const [kycModal, setKycModal] = useState(false);
+
+  useEffect(() => {
+    if (user?.kyc_status === "required") {
+      const alreadyShown = localStorage.getItem("kycModalShown");
+
+      if (!alreadyShown) {
+        const timer = setTimeout(() => {
+          setKycModal(true);
+          localStorage.setItem("kycModalShown", "true");
+        }, 1000);
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [user?.kyc_status]);
   return (
     <div className="app-layout">
       <Header />
@@ -87,6 +105,14 @@ const Layout = ({ children }) => {
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
       </BaseModal>
       <PlayInstant />
+
+      <BaseModal
+        open={kycModal}
+        showClose={true}
+        onClose={() => setKycModal(false)}
+      >
+        <KycModal data={user} onClose={() => setKycModal(false)} />
+      </BaseModal>
     </div>
   );
 };
