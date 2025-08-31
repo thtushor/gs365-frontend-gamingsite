@@ -21,8 +21,10 @@ const DepositOptionsInfo = ({
       title: gateway.name,
       transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
       deposit_channel: gateway.providers,
-      gateway: gateway, // Keep original gateway data for reference
+      gateway: gateway // Keep original gateway data for reference
     })) || [];
+
+    console.log({transformedPaymentTypes,depositOptions})
 
   const [selectedPaymentTypes, setSelectedPaymentTypes] = useState(null);
   const [selectedDepositChannel, setSelectedDepositChannel] = useState(null);

@@ -89,6 +89,8 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
               className="px-5 py-4 pb-6 text-[30px] placeholder:text-[16px] pr-3 w-full bg-transparent outline-none border-none text-white"
               value={amount}
               onChange={handleChange}
+              onWheel={(e) => e.currentTarget.blur()} // ✅ disables scroll increment/decrement
+
               placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
             />
             {error && (

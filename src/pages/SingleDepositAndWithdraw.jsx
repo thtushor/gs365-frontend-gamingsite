@@ -242,6 +242,8 @@ const SingleDepositAndWithdrawPage = () => {
     depositId === "Local Bank" ? stepDetails?.LOCAL_BANK : 1
   );
 
+  
+
   const { data: paymentMethods } = useQuery({
     queryKey: [
       API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,
@@ -262,6 +264,8 @@ const SingleDepositAndWithdrawPage = () => {
     },
   });
 
+  console.log({paymentMethods: paymentMethods})
+
   const paymentMethodData = paymentMethods?.[0];
   
   const [selectedPromotion, setSelectedPromotion] = useState(null);
@@ -278,10 +282,12 @@ const SingleDepositAndWithdrawPage = () => {
     if (paymentMethodData?.paymentGateways?.length > 0) {
       const firstGateway = paymentMethodData.paymentGateways[0];
       const firstProvider = firstGateway?.providers?.[0];
+      const paymentType = paymentMethodData?.name;
 
       setDepositOptions({
         payment_type: {
           bonus: "3%",
+          
           icon: firstGateway.iconUrl,
           title: firstGateway.name,
           transfer_type: [
@@ -290,6 +296,10 @@ const SingleDepositAndWithdrawPage = () => {
           deposit_channel: firstGateway.providers,
           gateway: firstGateway,
         },
+
+
+        paymentMethod: paymentType,
+
         payment_channel: "",
         deposit_channel: firstProvider,
         transfer_type: {
