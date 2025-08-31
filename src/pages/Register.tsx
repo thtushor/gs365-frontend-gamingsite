@@ -87,6 +87,7 @@ const Register: React.FC = () => {
       refer_code: formData.refCode,
     };
     console.log({ apiBody });
+    window.location.href = "/"
   };
 
   const nextStep = () => {

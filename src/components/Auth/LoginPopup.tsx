@@ -5,6 +5,7 @@ import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
+import { useNavigate } from "react-router-dom";
 
 // Reusable PasswordInput component
 interface PasswordInputProps {
@@ -77,6 +78,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const navigate = useNavigate();
   // React Query hook for login
 
   if (!isOpen) return null;
@@ -151,6 +153,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         userNameOrEmailorPhone: "",
         password: "",
       });
+
+      navigate("/");
 
       // Dispatch custom event to notify other components about login
       window.dispatchEvent(new Event("userLogin"));

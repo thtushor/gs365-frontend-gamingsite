@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
     DEPOSIT_TRANSACTION: "/api/transactions/deposit",
     WITHDRAW_TRANSACTION: "/api/transactions/withdraw",
     TURNOVER: "/api/turnover",
+    CHECK_WITHDRAWAL_CAPABILITY: '/api/transactions/withdraw-capability'
   },
 
   GAME: {

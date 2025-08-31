@@ -14,7 +14,7 @@ import {
 import "./Register.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { showToaster } from "../lib/utils/toast";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import signup1 from "../assets/signup1.jpg";
 import signup2 from "../assets/signup2.jpg";
 import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
@@ -22,6 +22,8 @@ import { useQuery } from "@tanstack/react-query";
 
 const Register = () => {
   const getRequest = useGetRequest();
+
+  const navigate = useNavigate();
 
   // Fetch country list
   const { data: countryData, isLoading: countryLoading } = useQuery({
@@ -180,7 +182,7 @@ const Register = () => {
         "Registration successful! Welcome to GameStar365!",
         "success"
       );
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       // console.error("Registration failed:", error);
       return showToaster("Registration failed. Please try again.");
