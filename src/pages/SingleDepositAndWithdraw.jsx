@@ -309,10 +309,7 @@ const SingleDepositAndWithdrawPage = () => {
 
     if(options.withdrawId) return "Withdraw";
     
-    return options
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+    return "Deposit"
   };
 
   const formattedTitle = formatDepositId({depositId,withdrawId});
