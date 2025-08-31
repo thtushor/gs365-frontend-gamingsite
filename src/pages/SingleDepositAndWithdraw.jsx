@@ -6,8 +6,8 @@ import { LuGift } from "react-icons/lu";
 import DepositPromotionSelect from "../components/InnerComponent/DepositPromotionSelect";
 
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
-import LocalBankInfo from "../components/InnerComponent/LocalBankInfo";
-import DepositTransfer from "../components/InnerComponent/DepositTransfer";
+import DepositOptionsInfo from "../components/InnerComponent/DepositOptionsInfo";
+import DepositAmountProvider from "../components/InnerComponent/DepositAmountProvider";
 import bankCard from "../assets/bank-card.png";
 import bkash from "../assets/payment-type/bkash.png";
 import nagad from "../assets/payment-type/nagad.png";
@@ -373,13 +373,13 @@ const SingleDepositAndWithdrawPage = () => {
       </h2>
 
       {step === stepDetails?.LOCAL_BANK_TRANSFER ? (
-        <DepositTransfer
+        <DepositAmountProvider
           stepDetails={stepDetails}
           setStep={setStep}
           depositOptions={depositOptions}
         />
       ) : (
-        <LocalBankInfo
+        <DepositOptionsInfo
           handleOpenModal={handleOpenModal}
           selectedPromotion={selectedPromotion}
           stepDetails={stepDetails}

@@ -4,7 +4,7 @@ import { LuGift } from "react-icons/lu";
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import CustomSelect from "../UI/CustomSelect";
 
-const LocalBankInfo = ({
+const DepositOptionsInfo = ({
   selectedPromotion,
   handleOpenModal,
   stepDetails,
@@ -181,4 +181,4 @@ const LocalBankInfo = ({
   );
 };
 
-export default LocalBankInfo;
+export default DepositOptionsInfo;

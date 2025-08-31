@@ -4,7 +4,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import DepositSubmit from "./DepositSubmit";
 import { toast } from "react-toastify";
 
-const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
+const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
   console.log("DepositTransfer received data:", depositOptions);
 
   const [transferInfoValid, setTransferInfoValid] = useState(false);
@@ -284,4 +284,4 @@ const DepositTransfer = ({ depositOptions, setStep, stepDetails }) => {
   );
 };
 
-export default DepositTransfer;
+export default DepositAmountProvider;
