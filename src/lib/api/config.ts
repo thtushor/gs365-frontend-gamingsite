@@ -1,10 +1,11 @@
-// API Configuration
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://glorypos.com/gs-server",
-  // BASE_URL: "http://localhost:3000",
+  // BASE_URL: "https://glorypos.com/gs-server",
+  BASE_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
+  SINGLE_IMAGE_UPLOAD_URL: `https://glorypos.com/image-upload/upload`,
+  MULTIPLE_IMAGE_UPLOAD_URL: `https://glorypos.com/image-upload/uploads`,
 
   // API Version
   API_VERSION: "v1",
@@ -53,6 +54,12 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: "/api/users/change-password",
     UPLOAD_AVATAR: "/api/users/avatar",
     TURNOVER: "/api/turnover",
+  },
+
+  // kyc endpoints
+  KYC: {
+    SUBMIT_KYC: "/api/users/create-update-kyc",
+    GET_ALL_KYC: "/api/users/kyc",
   },
 } as const;
 

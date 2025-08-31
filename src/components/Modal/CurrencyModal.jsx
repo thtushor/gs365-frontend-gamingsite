@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useAuth } from "../../contexts/auth-context";
 
 export const CurrencyModal = ({ isOpen, onClose, onChange, value }) => {
-  const { countries } = useAuth();
+  const { countries, selectedCurrency, setSelectedCurrency } = useAuth();
   const [search, setSearch] = useState("");
 
   // Filter countries by search term
@@ -31,7 +31,7 @@ export const CurrencyModal = ({ isOpen, onClose, onChange, value }) => {
             </h3>
             <div
               onClick={onClose}
-              className="text-white !w-[30px] !h-[30px] md:w-[50px] md:h-[50px] text-2xl font-bold rounded-full bg-white/10 hover:bg-green-800/80 hover:scale-110 transition flex items-center justify-center shadow-lg backdrop-blur-md border border-white/30"
+              className="text-white cursor-pointer select-none !w-[30px] !h-[30px] md:w-[50px] md:h-[50px] text-2xl font-bold rounded-full bg-white/10 hover:bg-green-800/80 hover:scale-110 transition flex items-center justify-center shadow-lg backdrop-blur-md border border-white/30"
             >
               <span className="inline-block transition-transform hover:rotate-90 duration-300">
                 &times;
@@ -75,11 +75,13 @@ export const CurrencyModal = ({ isOpen, onClose, onChange, value }) => {
                     </div>
                   </div>
 
-                  <div className="flex gap-2 flex-wrap justify-end">
+                  <div className="flex gap-3 flex-wrap justify-end">
                     {country.languages.map((lang) => {
                       const selected =
-                        value?.currency === country?.currency?.code &&
-                        value?.language === lang?.code;
+                        selectedCurrency?.currency ===
+                          country?.currency?.code &&
+                        selectedCurrency?.language === lang?.code;
+
                       return (
                         <label
                           key={lang.id}
@@ -90,13 +92,11 @@ export const CurrencyModal = ({ isOpen, onClose, onChange, value }) => {
                             name={`lang-${country?.currency?.code}`}
                             checked={selected}
                             onChange={() =>
-                              onChange(
-                                {
-                                  currency: country?.currency?.code || "N/A",
-                                  language: lang?.code || "N/A",
-                                },
-                                country
-                              )
+                              setSelectedCurrency({
+                                currency: country?.currency?.code || "N/A",
+                                language: lang?.code || "N/A",
+                                country,
+                              })
                             }
                             className="hidden"
                           />

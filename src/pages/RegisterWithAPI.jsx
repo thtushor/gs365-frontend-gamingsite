@@ -19,8 +19,11 @@ import signup1 from "../assets/signup1.jpg";
 import signup2 from "../assets/signup2.jpg";
 import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "../contexts/auth-context";
 
 const Register = () => {
+  const { selectedCurrency } = useAuth();
+  console.log(selectedCurrency);
   const getRequest = useGetRequest();
 
   // Fetch country list
@@ -52,8 +55,16 @@ const Register = () => {
       flagUrl: `data:image/png;base64,${country.flagUrl}`,
     })) || [];
 
+  // Extract selectedCountry from selectedCurrency
+  const selectedCountryFromCurrency = countryOptions.find(
+    (c) => c.value === selectedCurrency?.country?.code
+  );
+
+  // Fallback: Bangladesh or first available country
   const defaultCountry =
-    countryOptions.find((c) => c.value === "BD") || countryOptions[0];
+    selectedCountryFromCurrency ||
+    countryOptions.find((c) => c.value === "BD") ||
+    countryOptions[0];
 
   const [searchParams] = useSearchParams();
   const refCodeParam =
@@ -76,7 +87,7 @@ const Register = () => {
   const [form, setForm] = useState({
     country: defaultCountry?.value || "",
     currency: defaultCountry?.currency?.id || "",
-    phoneCode: defaultCountry?.phoneCode || "+880",
+    phoneCode: defaultCountry?.phoneCode || "",
     countryId: defaultCountry?.id,
   });
 
@@ -86,21 +97,27 @@ const Register = () => {
 
   // Update currency & phoneCode when country changes
   useEffect(() => {
-    const selected = countryOptions.find((c) => c.value === form.country);
-    if (selected) {
-      setForm((prev) => ({
-        ...prev,
-        currency: selected.currency?.id || "",
-        phoneCode: selected.phoneCode || "+880",
-      }));
+    if (!countryLoading && countryOptions.length > 0) {
+      const selected = countryOptions.find(
+        (c) => c.value === selectedCurrency?.country?.code
+      );
 
-      setFormData((prev) => ({
-        ...prev,
-        currencyType: selected.currency?.id || "",
-        callingCode: selected.phoneCode || "+880",
-      }));
+      if (selected) {
+        setForm({
+          country: selected.value,
+          currency: selected.currency?.id || "",
+          phoneCode: selected.phoneCode || "",
+          countryId: selected.id,
+        });
+
+        setFormData((prev) => ({
+          ...prev,
+          currencyType: selected.currency?.id || "",
+          callingCode: selected.phoneCode || "",
+        }));
+      }
     }
-  }, [form.country, countryOptions?.length]);
+  }, [countryLoading, countryOptions?.length, selectedCurrency]);
 
   // Sync phoneValue with formData.phoneNumber
   useEffect(() => {
@@ -464,7 +481,7 @@ const Register = () => {
                       id="phoneNumber"
                       name="phoneNumber"
                       international
-                      defaultCountry="BD"
+                      defaultCountry={selectedCurrency?.country?.code || "BD"}
                       value={phoneValue}
                       onChange={(value) => setPhoneValue(value || "")}
                       placeholder="Enter phone number"

@@ -9,6 +9,7 @@ import axiosInstance from "../../lib/api/axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/auth-context";
 import { LuCrown } from "react-icons/lu";
+import exclusive1 from "../../assets/exclusive1.png";
 
 export const GameTypes = () => {
   const { user } = useAuth();
@@ -170,8 +171,8 @@ export const GameTypes = () => {
           }`}
           onClick={() => handleSelect("exclusive")}
         >
-          <div className="game-icon flex items-center justify-center text-yellow-300 min-w-[70px] h-[50px] !object-cover !p-0">
-            <LuCrown size={35} />
+          <div className="game-icon !bg-transparent flex items-center justify-center text-yellow-300 min-w-[70px] h-[50px] !object-cover !p-0">
+            <img src={exclusive1} className="w-[80px]" />
           </div>
           <span className="game-name !text-[14px] !font-semibold">
             Exclusive

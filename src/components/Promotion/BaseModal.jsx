@@ -14,7 +14,7 @@ const BaseModal = ({ open, onClose, showClose = true, children }) => {
           onClick={onClose}
         >
           <motion.div
-            className=" rounded-2xl shadow-2xl  max-w-lg  w-full p-6 relative second-bg"
+            className="rounded-2xl shadow-2xl  max-w-[450px]  w-full p-6 relative second-bg"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
