@@ -111,6 +111,7 @@ axiosInstance.interceptors.response.use(
     // Handle successful responses
     return response;
   },
+  
   async (error: AxiosError<ApiError>) => {
     const { logout: handleContextLogout } = useAuth();
     const originalRequest = error.config as ExtendedAxiosRequestConfig & {

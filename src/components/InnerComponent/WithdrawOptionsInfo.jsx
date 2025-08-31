@@ -21,7 +21,12 @@ const WithdrawOptionsInfo = ({
   const [bankName, setBankName] = useState("");
   const [swiftCode, setSwiftCode] = useState("");
   const [branchCode, setBranchCode] = useState("");
+  const [branchName, setBranchName] = useState("");
+  const [branchAddress, setBranchAddress] = useState("");
   const [notes, setNotes] = useState("");
+  const [iban, setIban] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [network, setNetwork] = useState("");
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,12 +103,16 @@ const WithdrawOptionsInfo = ({
       setAccountHolderName("");
       setBankName("");
       setSwiftCode("");
+      setBranchCode("");
+      setBranchName("");
+      setBranchAddress("");
+      setIban("");
       setNotes("");
       setAmount("");
       setErrors({});
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.message || "Failed to submit withdrawal request");
+      toast.error("Failed to submit withdrawal request");
     }
   });
 
@@ -121,52 +130,62 @@ const WithdrawOptionsInfo = ({
     if (paymentMethod?.toLowerCase().includes("bank")) {
       if (!accountNumber) newErrors.accountNumber = "Account number is required";
       if (!accountHolderName) newErrors.accountHolderName = "Account holder name is required";
-      if (!bankName) newErrors.bankName = "Bank name is required";
-      if (!swiftCode) newErrors.swiftCode = "SWIFT code is required";
+      // if (!bankName) newErrors.bankName = "Bank name is required";
+      if (!branchCode) newErrors.branchCode = "Branch name is required";
+      // SWIFT code and IBAN are now optional.
     }
 
     // For crypto, only account number is required
     if (paymentMethod?.toLowerCase().includes("crypto")) {
       if (!accountNumber) newErrors.accountNumber = "Account number is required";
     }
-
+    
     // For wallet, no additional fields needed (uses user's phone number)
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     if (!validateForm()) {
       toast.error("Please fix the errors in the form");
       return;
     }
 
-    // Prepare data based on payment type
+
+    const selectedTypes = transformedPaymentTypes?.find((item)=>item?.title ===selectedPaymentTypes?.title);
+
     const requestData = {
       userId: user?.id,
       amount: Number(amount),
-      currencyId: 1, // Default currency ID
-      paymentMethod: paymentMethod,
-      notes: notes || ""
+      currencyId: 1,
+      paymentGatewayId: selectedTypes?.gateway.id,
+      notes: notes || "",
+      attachment: null, // You can later handle file upload if needed
     };
 
-    // Add payment details based on payment type
-    if (paymentMethod?.toLowerCase().includes("wallet")) {
-      requestData.walletPhoneNumber = user?.phone;
-    } else if (paymentMethod?.toLowerCase().includes("bank")) {
+    if (paymentMethod?.toLowerCase().includes("bank")) {
       requestData.accountNumber = accountNumber;
       requestData.accountHolderName = accountHolderName;
       requestData.bankName = bankName;
+      requestData.branchName = branchName;
+      requestData.branchAddress = branchAddress;
       requestData.swiftCode = swiftCode;
-      requestData.branchCode = branchCode;
+      requestData.iban = iban;
+    }
+
+    if (paymentMethod?.toLowerCase().includes("wallet")) {
+      requestData.accountNumber = user?.phone || "";
+      requestData.walletAddress = walletAddress;
+      requestData.network = network;
     } else if (paymentMethod?.toLowerCase().includes("crypto")) {
-      requestData.accountNumber = accountNumber;
+      requestData.walletAddress = walletAddress;
+      requestData.network = network;
     }
 
     withdrawMutation.mutate(requestData);
   };
+
 
   // Get minimum and maximum amounts from payment options
   const getAmountLimits = () => {
@@ -314,10 +333,11 @@ const WithdrawOptionsInfo = ({
       {/* Wallet Payment - Show Phone Number */}
       {paymentMethod?.toLowerCase().includes("wallet") && (
         <div className="mb-4">
-          <p className="text-base text-left mb-2">Wallet Phone Number</p>
+          <p className="text-base text-left mb-2">Account Number</p>
           <div className="second-bg border border-yellow-400 rounded-md px-5 py-4 text-white font-medium">
             {user?.phone || "Phone number not available"}
           </div>
+          <p className="text-sm text-gray-400 mt-1 text-left">This is your registered phone number</p>
         </div>
       )}
 
@@ -374,7 +394,23 @@ const WithdrawOptionsInfo = ({
           </div>
 
           <div className="mb-4">
-            <p className="text-base text-left mb-2">SWIFT Code</p>
+            <p className="text-base text-left mb-2">Branch Address</p>
+            <input
+              type="text"
+              className={`second-bg border ${
+                errors.branchAddress ? "border-red-500" : "border-gray-600"
+              } rounded-md px-5 py-4 w-full text-white font-medium outline-none`}
+              value={branchAddress}
+              onChange={(e) => setBranchAddress(e.target.value)}
+              placeholder="Enter Branch Address"
+            />
+            {errors.branchAddress && (
+              <p className="text-red-500 text-sm mt-1 text-left">{errors.branchAddress}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <p className="text-base text-left mb-2">SWIFT Code (Optional)</p>
             <input
               type="text"
               className={`second-bg border ${
@@ -388,6 +424,24 @@ const WithdrawOptionsInfo = ({
               <p className="text-red-500 text-sm mt-1 text-left">{errors.swiftCode}</p>
             )}
           </div>
+
+          <div className="mb-4">
+            <p className="text-base text-left mb-2">IBAN (Optional)</p>
+            <input
+              type="text"
+              className={`second-bg border ${
+                errors.iban ? "border-red-500" : "border-gray-600"
+              } rounded-md px-5 py-4 w-full text-white font-medium outline-none`}
+              value={iban}
+              onChange={(e) => setIban(e.target.value)}
+              placeholder="Enter IBAN"
+            />
+            {errors.iban && (
+              <p className="text-red-500 text-sm mt-1 text-left">{errors.iban}</p>
+            )}
+          </div>
+
+          
         </>
       )}
 
@@ -431,7 +485,7 @@ const WithdrawOptionsInfo = ({
           onClick={handleSubmit}
           disabled={withdrawMutation.isPending || !selectedPaymentTypes}
         >
-          {withdrawMutation.isPending ? "Processing..." : "Submit Withdrawal"}
+          {withdrawMutation.isPending ? "Processing..." : "Withdraw"}
         </button>
       </div>
 
@@ -446,7 +500,12 @@ const WithdrawOptionsInfo = ({
             Please wait for approval of your withdrawal request. This may take some time.
           </p>
           <button
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => {
+
+              setIsModalOpen(false)
+
+              window.location.href = "/"
+            }}
             className="bg-yellow-400 hover:bg-yellow-600 text-black px-6 py-2 rounded"
           >
             Close
