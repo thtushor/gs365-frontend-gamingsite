@@ -236,7 +236,7 @@ const cryptoDetails = {
 };
 
 const SingleDepositAndWithdrawPage = () => {
-  const { depositId } = useParams();
+  const { depositId,withdrawId } = useParams();
 
   const [step, setStep] = useState(
     depositId === "Local Bank" ? stepDetails?.LOCAL_BANK : 1
@@ -246,12 +246,12 @@ const SingleDepositAndWithdrawPage = () => {
     queryKey: [
       API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,
       {
-        name: depositId,
+        name: depositId||withdrawId,
       },
     ],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId}`,
+        `${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId||withdrawId}`,
         {
           params: {
             status: "active",
@@ -304,15 +304,18 @@ const SingleDepositAndWithdrawPage = () => {
 
   const navigate = useNavigate();
 
-  const formatDepositId = (id) => {
-    if (!id) return "Deposit";
-    return id
+  const formatDepositId = (options) => {
+    if (options.depositId) return "Deposit";
+
+    if(options.withdrawId) return "Withdraw";
+    
+    return options
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
 
-  const formattedTitle = formatDepositId(depositId);
+  const formattedTitle = formatDepositId({depositId,withdrawId});
 
   // modal logic
   const handleOpenModal = () => {

@@ -25,7 +25,7 @@ import VipPage from "./pages/VipPage";
 import PromotionPage from "./pages/PromotionPage";
 import Register from "./pages/RegisterWithAPI";
 import AffiliateRegister from "./pages/AffiliateRegister";
-import DepositAndWithdrawPage from "./pages/DepositPage";
+import DepositAndWithdrawPage from "./pages/DepositAndWithdrawPage";
 import SingleDepositAndWithdrawPage from "./pages/SingleDeposit";
 import ReferralInfo from "./pages/ReferralInfo";
 import ReferralDetails from "./pages/ReferralDetails";
