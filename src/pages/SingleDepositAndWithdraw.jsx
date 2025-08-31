@@ -7,6 +7,7 @@ import DepositPromotionSelect from "../components/InnerComponent/DepositPromotio
 
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import DepositOptionsInfo from "../components/InnerComponent/DepositOptionsInfo";
+import WithdrawOptionsInfo from "../components/InnerComponent/WithdrawOptionsInfo";
 import DepositAmountProvider from "../components/InnerComponent/DepositAmountProvider";
 import bankCard from "../assets/bank-card.png";
 import bkash from "../assets/payment-type/bkash.png";
@@ -277,6 +278,7 @@ const SingleDepositAndWithdrawPage = () => {
     transfer_type: "",
   });
 
+
   // Set default deposit options when payment method data is loaded
   useEffect(() => {
     if (paymentMethodData?.paymentGateways?.length > 0) {
@@ -379,7 +381,15 @@ const SingleDepositAndWithdrawPage = () => {
           : formattedTitle}
       </h2>
 
-      {step === stepDetails?.LOCAL_BANK_TRANSFER ? (
+      {withdrawId ? (
+        <WithdrawOptionsInfo
+          withdrawOptions={depositOptions}
+          setStep={setStep}
+          stepDetails={stepDetails}
+          setWithdrawOptions={setDepositOptions}
+          gatewayInfo={paymentMethodData || ""}
+        />
+      ) : step === stepDetails?.LOCAL_BANK_TRANSFER ? (
         <DepositAmountProvider
           stepDetails={stepDetails}
           setStep={setStep}
