@@ -20,12 +20,16 @@ const WithdrawOptionsInfo = ({
   const [accountHolderName, setAccountHolderName] = useState("");
   const [bankName, setBankName] = useState("");
   const [swiftCode, setSwiftCode] = useState("");
+  const [branchCode, setBranchCode] = useState("");
   const [notes, setNotes] = useState("");
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const paymentMethod = withdrawOptions.paymentMethod
+
+
+  console.log({withdrawOptions})
 
   // Transform the new data structure to match the expected format
   const transformedPaymentTypes =
@@ -114,7 +118,7 @@ const WithdrawOptionsInfo = ({
     }
 
     // For bank transfers, validate all required fields
-    if (selectedPaymentTypes?.title?.toLowerCase().includes("bank")) {
+    if (paymentMethod?.toLowerCase().includes("bank")) {
       if (!accountNumber) newErrors.accountNumber = "Account number is required";
       if (!accountHolderName) newErrors.accountHolderName = "Account holder name is required";
       if (!bankName) newErrors.bankName = "Bank name is required";
@@ -122,7 +126,7 @@ const WithdrawOptionsInfo = ({
     }
 
     // For crypto, only account number is required
-    if (selectedPaymentTypes?.title?.toLowerCase().includes("crypto")) {
+    if (paymentMethod?.toLowerCase().includes("crypto")) {
       if (!accountNumber) newErrors.accountNumber = "Account number is required";
     }
 
@@ -144,19 +148,20 @@ const WithdrawOptionsInfo = ({
       userId: user?.id,
       amount: Number(amount),
       currencyId: 1, // Default currency ID
-      paymentMethod: selectedPaymentTypes?.title,
+      paymentMethod: paymentMethod,
       notes: notes || ""
     };
 
     // Add payment details based on payment type
-    if (selectedPaymentTypes?.title?.toLowerCase().includes("wallet")) {
+    if (paymentMethod?.toLowerCase().includes("wallet")) {
       requestData.walletPhoneNumber = user?.phone;
-    } else if (selectedPaymentTypes?.title?.toLowerCase().includes("bank")) {
+    } else if (paymentMethod?.toLowerCase().includes("bank")) {
       requestData.accountNumber = accountNumber;
       requestData.accountHolderName = accountHolderName;
       requestData.bankName = bankName;
       requestData.swiftCode = swiftCode;
-    } else if (selectedPaymentTypes?.title?.toLowerCase().includes("crypto")) {
+      requestData.branchCode = branchCode;
+    } else if (paymentMethod?.toLowerCase().includes("crypto")) {
       requestData.accountNumber = accountNumber;
     }
 
@@ -166,9 +171,12 @@ const WithdrawOptionsInfo = ({
   // Get minimum and maximum amounts from payment options
   const getAmountLimits = () => {
     // This would typically come from the API, but we'll use defaults for now
+    const selectedTypes = transformedPaymentTypes?.find((item)=>item?.title ===selectedPaymentTypes?.title);
+
+    console.log({selectedTypes})
     return {
-      min: 100,
-      max: 100000
+      min: selectedTypes?.gateway?.minWithdraw||500,
+      max: selectedTypes?.gateway?.maxWithdraw||25000
     };
   };
 
@@ -304,7 +312,7 @@ const WithdrawOptionsInfo = ({
       </div>
 
       {/* Wallet Payment - Show Phone Number */}
-      {selectedPaymentTypes?.title?.toLowerCase().includes("wallet") && (
+      {paymentMethod?.toLowerCase().includes("wallet") && (
         <div className="mb-4">
           <p className="text-base text-left mb-2">Wallet Phone Number</p>
           <div className="second-bg border border-yellow-400 rounded-md px-5 py-4 text-white font-medium">
@@ -314,7 +322,7 @@ const WithdrawOptionsInfo = ({
       )}
 
       {/* Bank Transfer Fields */}
-      {selectedPaymentTypes?.title?.toLowerCase().includes("bank") && (
+      {paymentMethod?.toLowerCase().includes("bank") && (
         <>
           <div className="mb-4">
             <p className="text-base text-left mb-2">Account Number *</p>
@@ -348,24 +356,25 @@ const WithdrawOptionsInfo = ({
             )}
           </div>
 
+
           <div className="mb-4">
-            <p className="text-base text-left mb-2">Bank Name *</p>
+            <p className="text-base text-left mb-2">Branch Name *</p>
             <input
               type="text"
               className={`second-bg border ${
-                errors.bankName ? "border-red-500" : "border-gray-600"
+                errors.branchCode ? "border-red-500" : "border-gray-600"
               } rounded-md px-5 py-4 w-full text-white font-medium outline-none`}
-              value={bankName}
-              onChange={(e) => setBankName(e.target.value)}
-              placeholder="Enter bank name"
+              value={branchCode}
+              onChange={(e) => setBranchCode(e.target.value)}
+              placeholder="Enter Branch Name"
             />
-            {errors.bankName && (
-              <p className="text-red-500 text-sm mt-1 text-left">{errors.bankName}</p>
+            {errors.branchCode && (
+              <p className="text-red-500 text-sm mt-1 text-left">{errors.branchCode}</p>
             )}
           </div>
 
           <div className="mb-4">
-            <p className="text-base text-left mb-2">SWIFT Code *</p>
+            <p className="text-base text-left mb-2">SWIFT Code</p>
             <input
               type="text"
               className={`second-bg border ${
@@ -383,7 +392,7 @@ const WithdrawOptionsInfo = ({
       )}
 
       {/* Crypto Payment Fields */}
-      {selectedPaymentTypes?.title?.toLowerCase().includes("crypto") && (
+      {paymentMethod?.toLowerCase().includes("crypto") && (
         <div className="mb-4">
           <p className="text-base text-left mb-2">Account Number *</p>
           <input
