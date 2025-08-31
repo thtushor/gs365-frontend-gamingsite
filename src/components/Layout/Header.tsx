@@ -132,7 +132,7 @@ const Header: React.FC = () => {
             >
               <Logo />
               <h1 className="text-[23px] font-semibold text-yellow-300">
-                GS360
+                GS365
               </h1>
             </div>
 
