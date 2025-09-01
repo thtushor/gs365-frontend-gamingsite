@@ -76,7 +76,7 @@ const PlayInstant = () => {
     isLoading || !featuredGameDetails?.data ? (
       ""
     ) : (
-      <div className="fixed bottom-16 md:bottom-5 left-3 md:left-10 z-[999]">
+      <div className="fixed bottom-20 md:bottom-5 left-3 md:left-10 z-[999]">
         <div
           onClick={handleClose}
           className="ml-auto mr-[-15px] mb-[-10px] cursor-pointer text-[17px] md:text-[25px] bg-white/10 md:w-[35px] md:h-[35px] w-[23px] h-[23px] flex items-center justify-center rounded-full"

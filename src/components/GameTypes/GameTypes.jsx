@@ -171,7 +171,7 @@ export const GameTypes = () => {
           }`}
           onClick={() => handleSelect("exclusive")}
         >
-          <div className="game-icon !bg-transparent flex items-center justify-center text-yellow-300 min-w-[70px] h-[50px] !object-cover !p-0">
+          <div className="game-icon !bg-transparent flex items-center justify-center text-yellow-300 min-w-[70px] max-h-[50px] min-h-[50px] !object-cover !p-0">
             <img src={exclusive1} className="w-[80px]" />
           </div>
           <span className="game-name !text-[14px] !font-semibold">

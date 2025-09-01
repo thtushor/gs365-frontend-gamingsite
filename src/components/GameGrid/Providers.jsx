@@ -76,7 +76,7 @@ export const Providers = ({ providerList = [], type = "games" }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2.2,
+          slidesToShow: 2,
         },
       },
     ],

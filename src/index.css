@@ -17,7 +17,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+input,
+select {
+  background-color: #242424;
+}
+select option {
+  background-color: #242424;
+}
 a {
   font-weight: 500;
   color: #646cff;

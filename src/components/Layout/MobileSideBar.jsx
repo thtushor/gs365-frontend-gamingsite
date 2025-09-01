@@ -9,15 +9,21 @@ import Fishing from "../../assets/gameType/icon-fish.png";
 import Arcade from "../../assets/gameType/icon-arcade.png";
 import CockFighting from "../../assets/gameType/icon-cockfighting.png";
 import { TbTargetArrow, TbUserShare } from "react-icons/tb";
-import { IoIosAddCircle, IoMdGift } from "react-icons/io";
+import { IoIosAddCircle, IoIosArrowBack, IoMdGift } from "react-icons/io";
 import { RiPoliceBadgeLine, RiVipDiamondLine } from "react-icons/ri";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { BiWallet } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { profileNavOption } from "./MobileNav";
+import { useAuth } from "../../contexts/auth-context";
+import { showToaster } from "../../lib/utils/toast";
+import { IoClose } from "react-icons/io5";
 
 const MobileSideBar = ({ setSidebarOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user: authUser, logout: handleContextLogout } = useAuth();
   const sidebarLinks = [
     {
       id: 1,
@@ -64,21 +70,42 @@ const MobileSideBar = ({ setSidebarOpen }) => {
     navigate(url);
     setSidebarOpen(false);
   };
+
+  const handleUserProfileClick = (url) => {
+    navigate(url);
+    setSidebarOpen(false);
+  };
+  const handleLogout = async () => {
+    // Clear localStorage data
+    handleContextLogout();
+
+    // Show success message
+    showToaster("Logged out successfully", "success");
+    setSidebarOpen(false);
+  };
   return (
     <div className="">
-      <div className="grid grid-cols-2 gap-1">
+      <div className="grid grid-cols-1 gap-1">
         {categoryOption?.map((g) => (
           <div
             onClick={() => {
               handleNavigate(g);
             }}
             key={g?.id}
-            className="bg-[#1a1a2ef2] flex flex-col rounded-md gap-1 pt-3 p-2 items-center justify-center"
+            className="flex rounded-md font-normal cursor-pointer text-[14px] gap-1 my-1 items-center justify-between"
           >
-            <div className="text-black border border-yellow-300 w-[25px] h-[25px] text-[18px] flex items-center justify-center rounded-full">
-              <img src={g?.imgUrl} alt={g?.title} className="w-[18px]" />
+            <div className="flex items-center gap-[6px]">
+              <div className="w-[17px] h-[17px] border border-white rounded-[4px] flex items-center justify-center">
+                <img src={g?.imgUrl} alt={g?.title} className="w-[17px]" />
+              </div>
+              <p className="font-normal !text-white hover:text-yellow-400">
+                {g?.title}
+              </p>
             </div>
-            <p className="text-[10px] font-normal">{g?.title}</p>
+
+            <span className="rotate-180 text-[20px] text-white mr-[-3px] block">
+              <IoIosArrowBack />
+            </span>
           </div>
         ))}
         {sidebarLinks?.map((g) => (
@@ -87,14 +114,56 @@ const MobileSideBar = ({ setSidebarOpen }) => {
               handleNavigateStatic(g);
             }}
             key={g?.id}
-            className="bg-[#1a1a2ef2] flex flex-col gap-1 rounded-md pt-3 p-2 items-center justify-center"
+            className=" flex gap-1 font-normal my-[6px] cursor-pointer text-[14px] rounded-md items-center justify-between"
           >
-            <div className="bg-yellow-300 text-black w-[25px] text-[18px] flex items-center justify-center h-[25px] rounded-full">
-              {g?.image}
+            <div className="flex items-center gap-[6px]">
+              <div className="w-[17px] h-[17px] bg-white flex items-center rounded-[4px] text-[14px] justify-center text-black">
+                {g?.image}
+              </div>
+              <p className="font-normal !text-white  hover:text-yellow-400">
+                {g?.name}
+              </p>
             </div>
-            <p className="text-[10px] font-normal !text-white">{g?.name}</p>
+            <span className="rotate-180 text-[20px] text-white mr-[-3px] block">
+              <IoIosArrowBack />
+            </span>
           </div>
         ))}
+      </div>
+
+      {/* Navigation Options */}
+      <div className="mt-[-2px]">
+        {profileNavOption?.map((p, idx) => {
+          const isActive = location.pathname === p.url;
+          return (
+            <div
+              onClick={() => handleUserProfileClick(p.url)}
+              key={idx}
+              className={`font-normal my-4 cursor-pointer text-[14px] flex justify-between items-center w-full
+                      ${isActive ? "text-yellow-400 opacity-100" : ""}`}
+            >
+              <p className="flex items-center gap-[6px]">
+                <div className="w-[17px] h-[17px] bg-white flex items-center rounded-[4px] text-[14px] justify-center text-black">
+                  {p.icon}
+                </div>
+                {p?.name}
+              </p>
+              <span className="rotate-180 text-[20px] mr-[-3px] block">
+                <IoIosArrowBack />
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Logout Button */}
+      <div className="my-4">
+        <button
+          className="w-full px-4 py-[6px] text-[14px] border light-border text-center hover:border-yellow-400 hover:text-yellow-400"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
