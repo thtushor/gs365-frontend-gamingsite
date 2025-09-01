@@ -362,7 +362,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           onClick={handleSubmit}
           disabled={ !referenceId || !receiptFile || loading || isSubmitting}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
-            !accountName || !referenceId || !receiptFile || loading || isSubmitting
+          !referenceId || !receiptFile || loading || isSubmitting
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
               : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}
