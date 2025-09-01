@@ -25,6 +25,7 @@ import { UserBalance } from "./UserBalance";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import MainNav from "./MainNav";
 import { LuGamepad2, LuShieldCheck } from "react-icons/lu";
+import { IoClose } from "react-icons/io5";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -136,7 +137,7 @@ const Header: React.FC = () => {
               className="hidden cursor-pointer sm:flex items-center"
             >
               <Logo />
-              <h1 className="text-[23px] font-semibold text-yellow-300">
+              <h1 className="text-[23px] font-semibold text-[#ffd700]">
                 GS365
               </h1>
             </div>
@@ -158,14 +159,18 @@ const Header: React.FC = () => {
 
             {/* Sidebar content */}
             <div
-              className={`fixed top-0 overflow-y-auto left-0 h-full w-56 bg-[#111] text-white z-[99999999] transform ${
+              className={`fixed top-0 overflow-y-auto left-0 h-full w-[75%] bg-[#111] text-white z-[99999999] transform ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out`}
             >
-              {/* <div className="p-4 flex justify-between items-center border-b border-gray-700">
-                <h2 className="text-lg font-bold">Menu</h2>
-                <button onClick={handleCloseSidebar}>✖</button>
-              </div> */}
+              <div className="p-4 py-2 flex sticky top-0 bg-[#111] z-[5] justify-between items-center border-b border-gray-700">
+                <h2 className="text-[16px] font-bold">Menu</h2>
+                <div onClick={handleCloseSidebar}>
+                  <span className="rotate-180 text-[24px] text-white mr-[-3px] block">
+                    <IoClose />
+                  </span>
+                </div>
+              </div>
               <nav className="p-4">
                 <MobileSideBar setSidebarOpen={setSidebarOpen} />
               </nav>

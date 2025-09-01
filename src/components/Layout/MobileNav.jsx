@@ -17,7 +17,7 @@ import { TbFileDollar, TbUserShare } from "react-icons/tb";
 import { TargetIcon } from "lucide-react";
 import { FaGamepad } from "react-icons/fa";
 
-const profileNavOption = [
+export const profileNavOption = [
   {
     name: "Personal Info",
     icon: <CgProfile />,
@@ -169,7 +169,7 @@ const MobileNav = () => {
   return (
     <>
       {/* Bottom Navigation */}
-      <div className="md:hidden flex fixed bottom-3 w-full z-[999999]">
+      <div className="md:hidden flex fixed bottom-7 w-full z-[999999]">
         <div className="w-[90%] bg-[#00623b] mx-auto rounded-full footer-menu-mobile">
           <div className="w-full flex items-center justify-between gap-2 pt-[4px] pb-[2px] px-4">
             {sidebarLinks?.map((s) => {

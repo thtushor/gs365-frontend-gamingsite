@@ -31,7 +31,7 @@ export const API_LIST = {
   GET_ALL_EXCLUSIVE: "/api/public/exclusive-games-sports",
   GET_ALL_PUBLIC_EVENTS: "/api/public/public-events",
   GET_ALL_MENU_PROVIDERS: "/api/public/menu-providers",
-  CHECK_WITHDRAWAL_CAPABILITY: '/api/transactions/withdraw-capability',
+  CHECK_WITHDRAWAL_CAPABILITY: "/api/transactions/withdraw-capability",
   GET_FEATURED_GAME: "/api/public/featured-games",
 };
 
