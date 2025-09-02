@@ -5,8 +5,8 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://glorypos.com/gs-server";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://glorypos.com/gs-server";
+export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_HERO_BANNERS: "/api/public/banners-list",
   GET_ANNOUNCEMENTS: "/api/public/announcement",
@@ -16,6 +16,7 @@ export const API_LIST = {
   GET_RESPONSIBLE_GAMINGS: "/api/public/responsible-gamings",
   GET_ACTIVE_UTILS: "/api/public/active-utils",
   GET_ACTIVE_POPUP: "/api/public/popup",
+  GET_ACTIVE_SOCIAL: "/api/public/social-platforms",
   GET_ACTIVE_ADVERTISEMENT: "/api/public/advertisement",
   GET_PROMOTIONS: "/api/public/promotions",
   GET_PROMOTION_DETAILS: "/api/public/promotions",

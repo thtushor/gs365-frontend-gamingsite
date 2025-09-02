@@ -50,7 +50,7 @@ export const HeroV2 = () => {
 
   if (isLoading) {
     return (
-      <div className="hero-section !h-[120px] md:!h-[400px]">
+      <div className="hero-section !h-[120px] md:!h-[470px]">
         <div className="game-grid-container loading !p-0 !min-h-[120px] md:!min-h-[300px]">
           <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
         </div>
@@ -67,8 +67,8 @@ export const HeroV2 = () => {
   if (banners?.length <= 1) {
     return (
       <div
-        className="slide-item !h-[120px] md:!h-[450px]"
-        style={{ width: "100%", height: "400px", overflow: "hidden" }}
+        className="slide-item !h-[120px] md:!h-[470px]"
+        style={{ width: "100%", height: "470px", overflow: "hidden" }}
       >
         <img
           src={banners?.[0]?.original || "/src/assets/banner-placeholder.png"}
@@ -88,8 +88,8 @@ export const HeroV2 = () => {
         {banners.map((banner, index) => (
           <div
             key={index}
-            className="slide-item !h-[120px] md:!h-[450px]"
-            style={{ width: "100%", height: "400px", overflow: "hidden" }}
+            className="slide-item !h-[120px] md:!h-[470px]"
+            style={{ width: "100%", height: "470px", overflow: "hidden" }}
           >
             <img
               src={banner.original}

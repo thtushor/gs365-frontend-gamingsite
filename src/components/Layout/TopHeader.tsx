@@ -75,7 +75,7 @@ const TopHeader: React.FC = () => {
           <Logo />
           <div className="flex items-start flex-col">
             <p className="text-[10px] font-semibold text-yellow-300">
-              GS360 APP
+              GS365 APP
             </p>
             <div className="flex text-yellow-300 gap-[3px]">
               <FaStar />

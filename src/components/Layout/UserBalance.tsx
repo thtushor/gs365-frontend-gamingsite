@@ -8,6 +8,7 @@ import takaIcon from "../../assets/taka.png";
 import dollarIcon from "../../assets/dollar.png";
 import BaseModal from "../Promotion/BaseModal";
 import BalanceModal from "./BalanceModal";
+import { TbRefresh } from "react-icons/tb";
 
 interface BalanceData {
   userId: number;
@@ -21,8 +22,13 @@ export const UserBalance: React.FC = () => {
   const { user } = useAuth();
   const [showDollar, setShowDollar] = useState(false);
   const [showTaka, setShowTaka] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data: balance, isLoading } = useQuery<BalanceData | null>({
+  const {
+    data: balance,
+    isLoading,
+    refetch,
+  } = useQuery<BalanceData | null>({
     queryKey: ["player-balance", user?.id],
     queryFn: async () => {
       if (!user?.id) return null;
@@ -37,6 +43,15 @@ export const UserBalance: React.FC = () => {
   const dollarBalance = (bdtBalance / 120).toFixed(2) || "0";
 
   if (!user) return null;
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true); // Start spinning
+    try {
+      await refetch(); // Fetch latest data
+    } finally {
+      setIsRefreshing(false); // Stop spinning after data is fetched
+    }
+  };
 
   return (
     <div className="flex gap-[1px] items-center border border-yellow-300 overflow-hidden text-yellow-300 bg-yellow-300 rounded-md">
@@ -97,6 +112,16 @@ export const UserBalance: React.FC = () => {
         className="h-full w-[25px] flex md:hidden items-center justify-center py-[2px] bg-yellow-300 text-[#121212] text-[20px]"
       >
         <FiPlus />
+      </div>
+
+      {/* Refresh button */}
+      <div
+        onClick={handleRefresh}
+        className={`text-black px-1 cursor-pointer transition-transform duration-500 ${
+          isRefreshing ? "animate-spin" : ""
+        }`}
+      >
+        <TbRefresh />
       </div>
 
       <BaseModal
