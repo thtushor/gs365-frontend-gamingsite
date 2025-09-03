@@ -116,6 +116,8 @@ interface AuthContextType extends AuthState {
   setSelectedCurrency: (value: SelectedCurrency) => void;
   social: Social[]; // ✅ social data
   setSocial: React.Dispatch<React.SetStateAction<Social[]>>;
+  favorites: Favorite[];
+  setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
 }
 
 // Create Auth Context
@@ -125,9 +127,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 interface AuthProviderProps {
   children: ReactNode;
 }
-
+interface Favorite {
+  id: number;
+  gameId: number;
+  gameName: string;
+  gameLogo: string;
+  gameUrl: string;
+  gameApiKey: string;
+  gameLicenseKey: string;
+  userId: number;
+  username: string;
+  userFullname: string;
+  userEmail: string;
+  createdAt: string;
+}
 // Auth Provider Component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: true,
@@ -334,6 +350,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setSelectedCurrency: handleSetSelectedCurrency,
     social,
     setSocial,
+    favorites, // ✅
+    setFavorites, // ✅
   };
 
   return (

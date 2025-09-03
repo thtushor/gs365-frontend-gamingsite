@@ -16,6 +16,7 @@ import { MdOutlineLockPerson } from "react-icons/md";
 import { TbFileDollar, TbUserShare } from "react-icons/tb";
 import { TargetIcon } from "lucide-react";
 import { FaGamepad } from "react-icons/fa";
+import { RiHeart3Fill } from "react-icons/ri";
 
 export const profileNavOption = [
   {
@@ -52,6 +53,11 @@ export const profileNavOption = [
     name: "My Referral",
     icon: <TbUserShare />,
     url: "/profile/referral-details",
+  },
+  {
+    name: "Favorites",
+    icon: <RiHeart3Fill />,
+    url: "/favorites",
   },
 ];
 

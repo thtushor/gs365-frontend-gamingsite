@@ -1,12 +1,16 @@
 import React from "react";
 import "./GameCard.scss";
+import { RiHeart3Fill, RiHeart3Line } from "react-icons/ri";
+import { API_LIST, BASE_URL } from "../../lib/api/apiClient";
+import { useAuth } from "../../contexts/auth-context";
+import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface GameCardProps {
   id: number;
   name: string;
   status: string;
   logo: string;
-  isFavorite: boolean;
   gameLogo: string;
   gameUrl: string;
   sportLogo: string;
@@ -25,64 +29,165 @@ interface GameCardProps {
 
 const GameCard: React.FC<GameCardProps> = ({
   id,
-  // name,
+  name,
   status,
-  // isFavorite,
   gameLogo,
   sportLogo,
   logo,
-  // ggrPercent,
-  // categoryInfo,
-  // providerInfo,
   onPlayClick,
   className = "",
 }) => {
-  // Parse category and provider info from JSON strings
-  // const getCategoryInfo = () => {
-  //   try {
-  //     const parsed = JSON.parse(categoryInfo);
-  //     return parsed.category || "Unknown";
-  //   } catch {
-  //     return "Unknown";
-  //   }
-  // };
+  const { user, favorites, setFavorites } = useAuth();
+  const queryClient = useQueryClient();
 
-  // const getProviderName = () => {
-  //   try {
-  //     return providerInfo?.name || "Unknown Provider";
-  //   } catch {
-  //     return providerInfo?.name || "Unknown Provider";
-  //   }
-  // };
+  const isFavorite = favorites.some((fav) => fav.gameId === id);
 
-  const handlePlayClick = () => {
-    // e.stopPropagation();
-    console.log("click me");
-    onPlayClick(id);
+  const addApiUrl = `${BASE_URL}${API_LIST.ADD_FAVORITE}`;
+  const removeApiUrl = `${BASE_URL}${API_LIST.REMOVE_FAVORITE}`;
+
+  // ✅ Add Favorite Mutation
+  const addFavoriteMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(addApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({ userId: user?.id, gameId: id }),
+      });
+      return res.json();
+    },
+    onMutate: async () => {
+      if (!user?.id) {
+        toast.error("Please login first!");
+        throw new Error("Not logged in");
+      }
+
+      const newFav = {
+        id: Date.now(),
+        gameId: id,
+        gameName: String(name) || "",
+        gameLogo: gameLogo || sportLogo || logo || "",
+        gameUrl: "",
+        gameApiKey: "",
+        gameLicenseKey: "",
+        userId: user.id,
+        username: user.username,
+        userFullname: user.fullname,
+        userEmail: user.email,
+        createdAt: new Date().toISOString(),
+      };
+
+      setFavorites((prev) => [...prev, newFav]);
+      return { newFav };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.newFav) {
+        setFavorites((prev) =>
+          prev.filter((fav) => fav.gameId !== context.newFav.gameId)
+        );
+      }
+      toast.error("Failed to add favorite");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+  });
+
+  // ✅ Remove Favorite Mutation
+  const removeFavoriteMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(removeApiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({ userId: user?.id, gameId: id }),
+      });
+      return res.json();
+    },
+    onMutate: async () => {
+      const prevFavs = favorites;
+      setFavorites((prev) => prev.filter((fav) => fav.gameId !== id));
+      return { prevFavs };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.prevFavs) {
+        setFavorites(context.prevFavs);
+      }
+      toast.error("Failed to remove favorite");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+  });
+
+  const handleFavoriteFunction = () => {
+    if (!user?.id) return toast.error("Please login first!");
+    if (isFavorite) {
+      removeFavoriteMutation.mutate();
+    } else {
+      addFavoriteMutation.mutate();
+    }
   };
 
-  console.log(gameLogo, sportLogo);
+  console.log("favorites", favorites);
   return (
     <div
-      className={`game-card ${className} cursor-pointer  min-h-[140px] md:w-[140px] md:h-[185px]`}
-      // onClick={handlePlayClick}
+      className={`game-card ${className} cursor-pointer relative min-h-[140px] md:w-[140px] md:h-[185px]`}
     >
       <img
         src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo ? logo : ""}
         alt=""
         className="w-full h-full object-cover min-h-[140px] max-h-[140px] md:w-[140px] md:min-h-[185px]"
       />
+
       <div className="absolute game-card-image top-0 left-0 flex items-center justify-center">
         <div className="game-card-overlay">
           <button
             className="play-now-btn !text-[12px] md:!text-[14px] !py-1 !px-2 md:!py-[8px] md:!px-[10px]"
-            onClick={handlePlayClick}
+            onClick={() => onPlayClick(id)}
             disabled={status !== "active"}
           >
             {status === "active" ? "PLAY NOW" : "UNAVAILABLE"}
           </button>
         </div>
       </div>
+
+      {/* Favorite button */}
+
+      {addFavoriteMutation.isPending || removeFavoriteMutation.isPending ? (
+        <div
+          className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
+            isFavorite
+              ? "bg-red-500 border-red-500 text-white"
+              : "bg-yellow-300 border-orange-300 text-gray-600"
+          } ${
+            addFavoriteMutation.isPending || removeFavoriteMutation.isPending
+              ? "cursor-progress opacity-70"
+              : "cursor-pointer"
+          }`}
+        >
+          {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
+        </div>
+      ) : (
+        <div
+          onClick={handleFavoriteFunction}
+          className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
+            isFavorite
+              ? "bg-red-500 border-red-500 text-white"
+              : "bg-yellow-300 border-orange-300 text-gray-600"
+          } ${
+            addFavoriteMutation.isPending || removeFavoriteMutation.isPending
+              ? "cursor-progress opacity-70"
+              : "cursor-pointer"
+          }`}
+        >
+          {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
+        </div>
+      )}
     </div>
   );
 };

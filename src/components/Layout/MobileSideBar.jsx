@@ -10,7 +10,12 @@ import Arcade from "../../assets/gameType/icon-arcade.png";
 import CockFighting from "../../assets/gameType/icon-cockfighting.png";
 import { TbTargetArrow, TbUserShare } from "react-icons/tb";
 import { IoIosAddCircle, IoIosArrowBack, IoMdGift } from "react-icons/io";
-import { RiPoliceBadgeLine, RiVipDiamondLine } from "react-icons/ri";
+import {
+  RiHeart3Fill,
+  RiHeart3Line,
+  RiPoliceBadgeLine,
+  RiVipDiamondLine,
+} from "react-icons/ri";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { BiWallet } from "react-icons/bi";
@@ -25,13 +30,12 @@ const MobileSideBar = ({ setSidebarOpen }) => {
   const location = useLocation();
   const { user: authUser, logout: handleContextLogout } = useAuth();
   const sidebarLinks = [
-    {
-      id: 1,
-      name: "Invite Friends",
-      link: "/profile/referral-details",
-      image: <TbUserShare />,
-    },
     { id: 2, name: "Promotion", link: "/promotions", image: <IoMdGift /> },
+    {
+      name: "Favorites",
+      image: <RiHeart3Fill />,
+      url: "/favorites",
+    },
     {
       id: 3,
       name: "Reward Center",
@@ -41,6 +45,12 @@ const MobileSideBar = ({ setSidebarOpen }) => {
     { id: 4, name: "VIP", link: "/vip", image: <RiVipDiamondLine /> },
     { id: 6, name: "Deposit", link: "/deposit", image: <IoIosAddCircle /> },
     { id: 6, name: "Withdraw", link: "/withdraw", image: <BiWallet /> },
+    {
+      id: 1,
+      name: "Invite Friends",
+      link: "/profile/referral-details",
+      image: <TbUserShare />,
+    },
   ];
 
   const getRequest = useGetRequest();

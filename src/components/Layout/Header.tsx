@@ -26,6 +26,7 @@ import { CurrencyModal } from "../Modal/CurrencyModal";
 import MainNav from "./MainNav";
 import { LuGamepad2, LuShieldCheck } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
+import { RiHeart3Fill } from "react-icons/ri";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -94,6 +95,11 @@ const Header: React.FC = () => {
       name: "My Referral",
       icon: <TbUserShare />,
       url: "/profile/referral-details",
+    },
+    {
+      name: "Favorites",
+      icon: <RiHeart3Fill />,
+      url: "/favorites",
     },
   ];
 

@@ -140,7 +140,7 @@ const GameGrid = () => {
       </div>
 
       {/* Game Grid */}
-      <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center">
+      <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center md:!justify-start">
         {games.map((game, index) => (
           <div key={game.id} style={{ animationDelay: `${index * 0.05}s` }}>
             <GameCard key={game.id} {...game} onPlayClick={handlePlayGame} />
