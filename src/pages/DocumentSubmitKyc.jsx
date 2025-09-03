@@ -141,7 +141,7 @@ const DocumentSubmitKyc = () => {
         {kycDetails?.data.holderKycStatus !== "verified" && (
           <form
             onSubmit={handleSubmit}
-            className="space-y-3 w-1/2 border-yellow-300"
+            className="space-y-3 w-full md:w-1/2 border-yellow-300"
           >
             {/* Full Name */}
             <div>
@@ -261,7 +261,7 @@ const DocumentSubmitKyc = () => {
         <div
           className={`border border-yellow-300 bg-[#1a1a1a] ${
             kycDetails?.data.holderKycStatus !== "verified"
-              ? "md:mt-[28px] w-1/2"
+              ? "md:mt-[28px] w-full md:w-1/2"
               : "w-full"
           } p-4 rounded-lg  space-y-2`}
         >

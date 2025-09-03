@@ -87,6 +87,20 @@ interface AuthState {
   token: string | null;
 }
 
+interface SocialImage {
+  original: string;
+  thumbnail: string;
+}
+
+interface Social {
+  id: number;
+  status: string;
+  images: SocialImage;
+  title: string;
+  link: string;
+  createdAt: string;
+}
+
 // Auth Context interface
 interface AuthContextType extends AuthState {
   isInitialized: boolean;
@@ -100,6 +114,8 @@ interface AuthContextType extends AuthState {
   setCountries: React.Dispatch<React.SetStateAction<Country[] | null>>;
   selectedCurrency: SelectedCurrency;
   setSelectedCurrency: (value: SelectedCurrency) => void;
+  social: Social[]; // ✅ social data
+  setSocial: React.Dispatch<React.SetStateAction<Social[]>>;
 }
 
 // Create Auth Context
@@ -118,7 +134,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user: null,
     token: null,
   });
-
+  const [social, setSocial] = useState<Social[]>([]);
   const { user, isLoading: isLoadingUserProfile, error } = useUserProfile();
   const [countries, setCountries] = useState<Country[] | null>(null);
 
@@ -316,6 +332,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setCountries,
     selectedCurrency,
     setSelectedCurrency: handleSetSelectedCurrency,
+    social,
+    setSocial,
   };
 
   return (

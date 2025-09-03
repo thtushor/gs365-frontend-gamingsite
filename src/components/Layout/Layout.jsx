@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import KycModal from "../KycModal";
 
 const Layout = ({ children }) => {
-  const { setCountries, user, countries } = useAuth();
+  const { setCountries, user, countries, setSocial } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
 
@@ -32,6 +32,20 @@ const Layout = ({ children }) => {
         isPublic: true,
       }),
   });
+  const {
+    data: socialData,
+    isLoading: socialLoading,
+    isError: socialErr,
+  } = useQuery({
+    queryKey: ["popup"],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_ACTIVE_SOCIAL,
+        errorMessage: "Failed to fetch active socials",
+        isPublic: true,
+      }),
+  });
+  console.log(socialData);
   const {
     data: countryData,
     isLoading: countryLoading,
@@ -53,6 +67,13 @@ const Layout = ({ children }) => {
       setCountries([]);
     }
   }, [countryData]);
+  useEffect(() => {
+    if (socialData?.data?.length > 0) {
+      setSocial(socialData?.data);
+    } else {
+      setSocial([]);
+    }
+  }, [socialData?.data?.length]);
 
   useEffect(() => {
     if (popupData?.data?.message) {
@@ -98,7 +119,7 @@ const Layout = ({ children }) => {
     <div className="app-layout">
       <Header />
       <main className="main-content">{children}</main>
-      <Footer />
+      <Footer socialData={socialData?.data || []} />
 
       <MobileNav />
       <BaseModal open={modalOpen} showClose={false}>

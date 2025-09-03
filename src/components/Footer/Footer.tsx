@@ -1,17 +1,8 @@
 import React, { useState } from "react";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaTelegram,
-  FaYoutube,
-  FaStar,
-  FaGamepad,
-  FaTrophy,
-  FaHeadset,
-} from "react-icons/fa";
+import { FaStar, FaGamepad, FaTrophy, FaHeadset } from "react-icons/fa";
 import "./Footer.scss";
 import { IoIosArrowUp } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 // Import your actual logo path - update this to your actual logo location
 // import { Logo } from "../Logo/Logo";
@@ -82,7 +73,23 @@ const CollapseItem: React.FC<CollapseItemProps> = ({
   );
 };
 
-export const Footer: React.FC = () => {
+interface SocialImage {
+  original: string;
+  thumbnail: string;
+}
+interface SocialItem {
+  id: number;
+  status: string;
+  images: SocialImage;
+  title: string;
+  link: string;
+  createdAt: string;
+}
+// Props for Footer component
+interface FooterProps {
+  socialData?: SocialItem[]; // optional array
+}
+export const Footer: React.FC<FooterProps> = ({ socialData }) => {
   return (
     <footer className="main-footer">
       <div className="footer-container">
@@ -209,23 +216,25 @@ export const Footer: React.FC = () => {
               License No: <span className="highlight">8048/JAZ2019-015</span>
             </p>
           </div>
-          <div className="social-links">
-            <a href="#" className="social-link">
-              <FaFacebookF />
-            </a>
-            <a href="#" className="social-link">
-              <FaTwitter />
-            </a>
-            <a href="#" className="social-link">
-              <FaInstagram />
-            </a>
-            <a href="#" className="social-link">
-              <FaTelegram />
-            </a>
-            <a href="#" className="social-link">
-              <FaYoutube />
-            </a>
-          </div>
+
+          {socialData && socialData.length > 0 && (
+            <div className="social-links">
+              {socialData.map((s: SocialItem) => (
+                <Link
+                  key={s.id}
+                  to={s?.link || ""}
+                  target="_blank"
+                  className="social-link"
+                >
+                  <img
+                    src={s.images?.original || ""}
+                    className="object-cover"
+                    alt="social icon"
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
           <div className="copyright">
             <p>
               &copy; 2025 <span>GameStar365</span>. All rights reserved.

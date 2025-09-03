@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BiGift, BiHome, BiShareAlt } from "react-icons/bi";
+import { BiGift, BiHome, BiShareAlt, BiShield } from "react-icons/bi";
 import { IoIosAddCircle } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,6 +27,11 @@ export const profileNavOption = [
     name: "Login & Security",
     icon: <MdOutlineLockPerson />,
     url: "/profile/login-security",
+  },
+  {
+    name: "Verification",
+    icon: <BiShield />,
+    url: "/profile/verification",
   },
   {
     name: "Transaction Records",

@@ -20,6 +20,7 @@ import signup2 from "../assets/signup2.jpg";
 import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../contexts/auth-context";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { selectedCurrency } = useAuth();
@@ -206,22 +207,25 @@ const Register = () => {
       // console.error("Registration failed:", error);
       return showToaster(error?.message|| "Registration failed. Please try again.","error");
 
+      // Grab message from backend if available
       const errorMessage =
-        typeof error === "object" &&
-        error !== null &&
-        "message" in error &&
-        typeof error.message === "string"
+        error?.response?.data?.message ||
+        (error?.message
           ? error.message
-          : "Registration failed. Please try again.";
-      showToaster(errorMessage, "error");
+          : "Registration failed. Please try again.");
 
-      if (error && typeof error === "object" && "errors" in error) {
+      toast.error(errorMessage, "error");
+
+      // Handle field-level validation errors
+      if (error?.response?.data?.errors) {
         const serverErrors = {};
-        Object.entries(error.errors).forEach(([field, messages]) => {
-          if (Array.isArray(messages) && messages.length > 0) {
-            serverErrors[field] = messages[0];
+        Object.entries(error.response.data.errors).forEach(
+          ([field, messages]) => {
+            if (Array.isArray(messages) && messages.length > 0) {
+              serverErrors[field] = messages[0];
+            }
           }
-        });
+        );
         setErrors(serverErrors);
       } else {
         setErrors({ general: errorMessage });
@@ -523,7 +527,7 @@ const Register = () => {
                     )}
                   </li>
 
-                  <li className="check-wrap">
+                  <li className="check-wrap !items-start">
                     <input
                       type="checkbox"
                       id="ageCheck"
@@ -532,12 +536,19 @@ const Register = () => {
                       onChange={handleInputChange}
                       required
                     />
-                    <label htmlFor="ageCheck">
+                    <div htmlFor="ageCheck" className="mt-[-2px]">
                       <span className="check-cube"></span>
-                      <p>
-                        I am 18 years old and agree to the terms & conditions.
+                      <p className="!text-[12px] md:!text-[14px]">
+                        I confirm that I am 18 years of age or older and agree
+                        to the Terms & Conditions. If USD is selected as the
+                        currency, you must complete OTP verification through
+                        your registered email address. Deposits will only be
+                        accepted through international payment methods such as
+                        VISA, MasterCard, Google Pay, and similar services.
+                        Withdrawals, however, will be available exclusively via
+                        cryptocurrency, specifically Tether (USDT).
                       </p>
-                    </label>
+                    </div>
                     {getFieldError("ageCheck") && (
                       <div className="field-error">
                         {getFieldError("ageCheck")}

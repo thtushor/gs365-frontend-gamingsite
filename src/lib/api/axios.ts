@@ -110,7 +110,7 @@ axiosInstance.interceptors.response.use(
     // Handle successful responses
     return response;
   },
-  
+
   async (error: AxiosError<ApiError>) => {
 
     // Log error in development

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BaseModal from "../components/Promotion/BaseModal";
 import { LuGift } from "react-icons/lu";
@@ -237,24 +237,27 @@ const cryptoDetails = {
 };
 
 const SingleDepositAndWithdrawPage = () => {
-  const { depositId,withdrawId } = useParams();
+  const { depositId, withdrawId } = useParams();
+
+  const [searchParams] = useSearchParams();
+  const promotionIdFromUrl = searchParams.get("promotionId");
 
   const [step, setStep] = useState(
     depositId === "Local Bank" ? stepDetails?.LOCAL_BANK : 1
   );
 
-  
-
   const { data: paymentMethods } = useQuery({
     queryKey: [
       API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS,
       {
-        name: depositId||withdrawId,
+        name: depositId || withdrawId,
       },
     ],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${depositId||withdrawId}`,
+        `${API_ENDPOINTS.PAYMENT.GET_PAYMENT_METHODS_BY_NAME}/${
+          depositId || withdrawId
+        }`,
         {
           params: {
             status: "active",
@@ -265,10 +268,10 @@ const SingleDepositAndWithdrawPage = () => {
     },
   });
 
-  console.log({paymentMethods: paymentMethods})
+  console.log({ paymentMethods: paymentMethods });
 
   const paymentMethodData = paymentMethods?.[0];
-  
+
   const [selectedPromotion, setSelectedPromotion] = useState(null);
 
   const [depositOptions, setDepositOptions] = useState({
@@ -277,7 +280,6 @@ const SingleDepositAndWithdrawPage = () => {
     deposit_channel: "",
     transfer_type: "",
   });
-
 
   // Set default deposit options when payment method data is loaded
   useEffect(() => {
@@ -289,7 +291,7 @@ const SingleDepositAndWithdrawPage = () => {
       setDepositOptions({
         payment_type: {
           bonus: "3%",
-          
+
           icon: firstGateway.iconUrl,
           title: firstGateway.name,
           transfer_type: [
@@ -298,7 +300,6 @@ const SingleDepositAndWithdrawPage = () => {
           deposit_channel: firstGateway.providers,
           gateway: firstGateway,
         },
-
 
         paymentMethod: paymentType,
 
@@ -319,12 +320,12 @@ const SingleDepositAndWithdrawPage = () => {
   const formatDepositId = (options) => {
     if (options.depositId) return "Deposit";
 
-    if(options.withdrawId) return "Withdraw";
-    
-    return "Deposit"
+    if (options.withdrawId) return "Withdraw";
+
+    return "Deposit";
   };
 
-  const formattedTitle = formatDepositId({depositId,withdrawId});
+  const formattedTitle = formatDepositId({ depositId, withdrawId });
 
   // modal logic
   const handleOpenModal = () => {
@@ -358,14 +359,23 @@ const SingleDepositAndWithdrawPage = () => {
 
   useEffect(() => {
     if (promotionList?.data?.length > 0) {
-      setSelectedPromotion(promotionList.data[0]);
+      let defaultPromotion = promotionList.data[0]; // fallback
+      if (promotionIdFromUrl) {
+        const promoFromUrl = promotionList.data.find(
+          (promo) => String(promo.id) === promotionIdFromUrl
+        );
+        if (promoFromUrl) defaultPromotion = promoFromUrl;
+      }
+
+      setSelectedPromotion(defaultPromotion);
+
       setDepositOptions((prev) => ({
         ...prev,
-        promotionId: promotionList.data[0].id,
-        promotionDetails: promotionList.data[0],
-      }) );
+        promotionId: defaultPromotion.id,
+        promotionDetails: defaultPromotion,
+      }));
     }
-  }, [promotionList?.data]);
+  }, [promotionList?.data, promotionIdFromUrl]);
 
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
