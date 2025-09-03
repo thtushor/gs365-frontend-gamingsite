@@ -202,7 +202,10 @@ const Register = () => {
       );
       navigate("/");
     } catch (error) {
-      console.error("Registration failed:", error);
+
+      // console.log({error})
+      // console.error("Registration failed:", error);
+      return showToaster(error?.message|| "Registration failed. Please try again.","error");
 
       // Grab message from backend if available
       const errorMessage =
