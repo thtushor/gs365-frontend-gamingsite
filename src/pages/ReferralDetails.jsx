@@ -8,7 +8,6 @@ import BaseModal from "../components/Promotion/BaseModal";
 import ActiveDownlines from "../components/InnerComponent/ActiveDownlines";
 import { useAuth } from "../contexts/auth-context";
 
-
 const ReferralDetails = () => {
   const { user } = useAuth();
   const bannerItems = [
@@ -32,9 +31,10 @@ const ReferralDetails = () => {
   // functionality
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success("Referral Code is Copied!");
+    // toast.success("Referral Code is Copied!");
+    console.log("Referral code is copied!");
   };
-  
+
   const handleShare = () => {
     if (navigator.share) {
       navigator

@@ -158,10 +158,10 @@ const Register: React.FC = () => {
       setLoading(false);
 
       // Show beautiful toast notification
-      showToaster(
-        "Registration successful! Welcome to GameStar365!",
-        "success"
-      );
+      // showToaster(
+      //   "Registration successful! Welcome to GameStar365!",
+      //   "success"
+      // );
 
       // Redirect to home page or dashboard
       navigate("/");

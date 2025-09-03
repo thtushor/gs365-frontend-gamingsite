@@ -5,8 +5,8 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://glorypos.com/gs-server";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://glorypos.com/gs-server";
+export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_HERO_BANNERS: "/api/public/banners-list",
   GET_ANNOUNCEMENTS: "/api/public/announcement",
@@ -39,6 +39,9 @@ export const API_LIST = {
   ADD_FAVORITE: "/api/users/add-favorite",
   REMOVE_FAVORITE: "/api/users/remove-favorite",
   GET_FAVORITE: "/api/users/get-favorites",
+
+  // bet result:
+  GET_BET_RESULTS: "/api/bet-results",
 };
 
 // --- Reusable POST Request Hook ---
@@ -83,7 +86,7 @@ export const usePostRequest = () => {
         );
       }
 
-      toast.success(successMessage || data.message || "Success");
+      // toast.success(successMessage || data.message || "Success");
       if (onSuccessFn) {
         onSuccessFn(data);
       }
@@ -222,7 +225,7 @@ export const useUpdateRequest = () => {
       if (refetch) {
         await refetch();
       }
-      toast.success(successMessage || data.message || "Success");
+      // toast.success(successMessage || data.message || "Success");
       return data;
     } catch (err) {
       console.error("Update request error:", err);

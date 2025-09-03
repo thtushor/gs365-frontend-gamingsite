@@ -13,7 +13,7 @@ import MobileProfile from "./MobileProfile";
 import formatDate from "../../lib/utils/formatDate";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLockPerson } from "react-icons/md";
-import { TbFileDollar, TbUserShare } from "react-icons/tb";
+import { TbFileDollar, TbHistoryToggle, TbUserShare } from "react-icons/tb";
 import { TargetIcon } from "lucide-react";
 import { FaGamepad } from "react-icons/fa";
 import { RiHeart3Fill } from "react-icons/ri";
@@ -45,11 +45,6 @@ export const profileNavOption = [
     url: "/profile/turnover",
   },
   {
-    name: "Test Gaming",
-    icon: <FaGamepad />,
-    url: "/test-game",
-  },
-  {
     name: "My Referral",
     icon: <TbUserShare />,
     url: "/profile/referral-details",
@@ -58,6 +53,11 @@ export const profileNavOption = [
     name: "Favorites",
     icon: <RiHeart3Fill />,
     url: "/favorites",
+  },
+  {
+    name: "Betting History",
+    icon: <TbHistoryToggle />,
+    url: "/profile/betting-history",
   },
 ];
 
@@ -104,7 +104,7 @@ const MobileNav = () => {
     handleContextLogout();
 
     // Show success message
-    showToaster("Logged out successfully", "success");
+    // showToaster("Logged out successfully", "success");
   };
 
   const handleCopyName = (text) => {

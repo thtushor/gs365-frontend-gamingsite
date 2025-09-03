@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
-import { TbUserShare } from "react-icons/tb";
+import { TbHistoryToggle, TbUserShare } from "react-icons/tb";
 import { TbFileDollar } from "react-icons/tb";
 
 import { MdOutlineLockPerson } from "react-icons/md";
@@ -12,9 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import TopHeader from "./TopHeader";
 import LoginPopup from "../Auth/LoginPopup";
-import { showToaster } from "../../lib/utils/toast";
 import profilePic from "../../assets/member-avatar.png";
-import { toast } from "react-toastify";
 import formatDate from "../../lib/utils/formatDate";
 import { useAuth } from "../../contexts/auth-context";
 import UserProfileDropdown from "./UserProfileDropdown";
@@ -24,7 +22,7 @@ import MobileSideBar from "./MobileSideBar";
 import { UserBalance } from "./UserBalance";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import MainNav from "./MainNav";
-import { LuGamepad2, LuShieldCheck } from "react-icons/lu";
+import { LuShieldCheck } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { RiHeart3Fill } from "react-icons/ri";
 
@@ -52,7 +50,7 @@ const Header: React.FC = () => {
     handleContextLogout();
 
     // Show success message
-    showToaster("Logged out successfully", "success");
+    // showToaster("Logged out successfully", "success");
   };
 
   const handleUserProfileClick = (url: string) => {
@@ -87,11 +85,6 @@ const Header: React.FC = () => {
       url: "/profile/turnover",
     },
     {
-      name: "Test Gaming",
-      icon: <LuGamepad2 />,
-      url: "/test-game",
-    },
-    {
       name: "My Referral",
       icon: <TbUserShare />,
       url: "/profile/referral-details",
@@ -101,13 +94,19 @@ const Header: React.FC = () => {
       icon: <RiHeart3Fill />,
       url: "/favorites",
     },
+    {
+      name: "Betting History",
+      icon: <TbHistoryToggle />,
+      url: "/profile/betting-history",
+    },
   ];
 
   const handleCopyName = (text: string) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        toast.success("Copied to clipboard!");
+        // toast.success("Copied to clipboard!");
+        console.log("Copied to clipboard!");
       })
       .catch((err) => {
         console.error("Failed to copy: ", err);

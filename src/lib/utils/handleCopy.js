@@ -7,7 +7,8 @@ export default function handleCopy(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      toast.success("Copied to clipboard!");
+      // toast.success("Copied to clipboard!");
+      console.log("Copied to clipboard!");
     })
     .catch((err) => {
       console.error("Failed to copy: ", err);

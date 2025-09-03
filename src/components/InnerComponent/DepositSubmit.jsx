@@ -15,11 +15,11 @@ const PaymentConfirmation = () => {
       </div>
       <h2 className="text-2xl font-bold mb-2">Payment Submitted!</h2>
       <p className="text-gray-300 mb-4">
-        Your deposit information has been received successfully.  
-        Funds will be processed shortly.
+        Your deposit information has been received successfully. Funds will be
+        processed shortly.
       </p>
       <button
-        onClick={() => window.location.href='/'} // Or navigate to dashboard
+        onClick={() => (window.location.href = "/")} // Or navigate to dashboard
         className="bg-yellow-400 hover:bg-yellow-600 text-black px-6 py-2 rounded"
       >
         Back
@@ -27,7 +27,6 @@ const PaymentConfirmation = () => {
     </div>
   );
 };
-
 
 const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [accountName, setAccountName] = useState("");
@@ -37,12 +36,11 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadRes, setUploadRes] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes = 600s
-   const [isCompleted, setIsCompleted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes = 600s
+  const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
-
-   // Timer countdown
+  // Timer countdown
   useEffect(() => {
     if (timeLeft <= 0 || isCompleted) return;
     const timer = setInterval(() => {
@@ -82,7 +80,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
+    // toast.success("Copied to clipboard");
   };
 
   const handleFileChange = (e) => {
@@ -110,9 +108,10 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setUploadRes(res.data);
-      toast.success("Receipt uploaded successfully");
+      // toast.success("Receipt uploaded successfully");
     } catch (err) {
-      const message = err?.response?.data?.message || err.message || "Upload failed";
+      const message =
+        err?.response?.data?.message || err.message || "Upload failed";
       setUploadRes({ status: false, message });
       setErrorMsg(message);
       toast.error(message);
@@ -121,11 +120,10 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
     }
   };
 
-
-  console.log({depositOptions: depositOptions})
+  console.log({ depositOptions: depositOptions });
 
   const handleSubmit = async () => {
-    if ( !referenceId || !receiptFile) {
+    if (!referenceId || !receiptFile) {
       toast.error("Please fill all the fields and upload the receipt.");
       return;
     }
@@ -163,7 +161,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       if (apiStatus === false) {
         toast.error(message);
       } else {
-        toast.success(message);
+        // toast.success(message);
         // setStep(stepDetails?.nextStep || 0);
         setIsCompleted(true); // ✅ show confirmation screen
       }
@@ -176,24 +174,28 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   };
 
   if (isCompleted) {
-  return <BaseModal showClose={false} open={true}><PaymentConfirmation /></BaseModal>;
-}
+    return (
+      <BaseModal showClose={false} open={true}>
+        <PaymentConfirmation />
+      </BaseModal>
+    );
+  }
 
   return (
     <div className="text-white">
       {/* Timer */}
-    <div className="flex justify-center items-center p-3 bg-black/40 rounded-md mb-4">
-      <p className="text-yellow-400 font-bold text-lg">
-        Time Remaining: {formatTime(timeLeft)}
-      </p>
-    </div>
+      <div className="flex justify-center items-center p-3 bg-black/40 rounded-md mb-4">
+        <p className="text-yellow-400 font-bold text-lg">
+          Time Remaining: {formatTime(timeLeft)}
+        </p>
+      </div>
 
-    {/* If expired */}
-    {timeLeft <= 0 && (
-      <p className="text-red-400 font-semibold mb-3">
-        Deposit window expired. Please try again.
-      </p>
-    )}
+      {/* If expired */}
+      {timeLeft <= 0 && (
+        <p className="text-red-400 font-semibold mb-3">
+          Deposit window expired. Please try again.
+        </p>
+      )}
       {/* Payment Type Info */}
       <div className="flex flex-col items-center second-bg justify-center p-5 rounded-md">
         <img
@@ -227,9 +229,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         </p>
         <p>
           Channel:{" "}
-          <span className="font-medium text-white">
-            {depositChannel?.name}
-          </span>
+          <span className="font-medium text-white">{depositChannel?.name}</span>
         </p>
         {selectedProvider && (
           <p>
@@ -289,9 +289,13 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           Reminder
         </div>
         <ul className="text-sm text-gray-300 list-decimal text-left pl-5 space-y-1">
-          <li>Please ensure the deposited amount matches the transferred amount.</li>
+          <li>
+            Please ensure the deposited amount matches the transferred amount.
+          </li>
           <li>Use your registered phone number for Deposit/Withdrawal.</li>
-          <li>Transfer funds within <strong>10 minutes</strong> after submitting.</li>
+          <li>
+            Transfer funds within <strong>10 minutes</strong> after submitting.
+          </li>
         </ul>
       </div>
 
@@ -311,9 +315,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
         </div> */}
 
         <div>
-          <label className="block text-sm mb-1 text-left">
-            Trx ID
-          </label>
+          <label className="block text-sm mb-1 text-left">Trx ID</label>
           <input
             type="text"
             value={referenceId}
@@ -360,9 +362,9 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
 
         <button
           onClick={handleSubmit}
-          disabled={ !referenceId || !receiptFile || loading || isSubmitting}
+          disabled={!referenceId || !receiptFile || loading || isSubmitting}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
-          !referenceId || !receiptFile || loading || isSubmitting
+            !referenceId || !receiptFile || loading || isSubmitting
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
               : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}

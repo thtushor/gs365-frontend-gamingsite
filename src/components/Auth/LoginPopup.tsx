@@ -148,7 +148,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       });
 
       // Success
-      showToaster("Login successful! Welcome back!", "success");
+      // showToaster("Login successful! Welcome back!", "success");
       setFormData({
         userNameOrEmailorPhone: "",
         password: "",
@@ -180,7 +180,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         setErrors(serverErrors);
       } else {
         // General error
-        showToaster("Login failed. Please check your credentials and try again", "error");
+        showToaster(
+          "Login failed. Please check your credentials and try again",
+          "error"
+        );
       }
     }
   };

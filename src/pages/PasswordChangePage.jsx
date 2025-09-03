@@ -72,7 +72,7 @@ const PasswordChangePage = () => {
         throw new Error(errorData.message || "Failed to update password");
       }
 
-      toast.success("Password changed successfully!");
+      // toast.success("Password changed successfully!");
       navigate("/profile/login-security");
     } catch (error) {
       console.error("Error updating password:", error);

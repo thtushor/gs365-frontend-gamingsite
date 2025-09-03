@@ -9,6 +9,8 @@ import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
 import type { ApiResponse } from "./axios";
 import { useCallback } from "react";
 import { useAuth } from "../../contexts/auth-context";
+import axios from "axios";
+import { API_LIST, BASE_URL } from "./apiClient";
 
 /**
  * Authentication Hooks
@@ -94,6 +96,26 @@ export const useRegister = () => {
       // Invalidate and refetch user profile
       queryClient.invalidateQueries({ queryKey: queryKeys.user.profile });
     },
+  });
+};
+const Axios = axios.create({
+  baseURL: BASE_URL, // Change to your API base URL
+  timeout: 30000,
+});
+export const useBetResults = (filters = {}, options = {}) => {
+  return useQuery({
+    queryKey: ["betResults", filters],
+    queryFn: async () => {
+      const token = localStorage.getItem("access_token"); // get token from localStorage
+      const res = await Axios.get(API_LIST.GET_BET_RESULTS, {
+        params: filters,
+        headers: {
+          Authorization: `Bearer ${token}`, // add token to headers
+        },
+      });
+      return res.data;
+    },
+    ...options,
   });
 };
 

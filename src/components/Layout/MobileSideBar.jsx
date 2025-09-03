@@ -90,7 +90,7 @@ const MobileSideBar = ({ setSidebarOpen }) => {
     handleContextLogout();
 
     // Show success message
-    showToaster("Logged out successfully", "success");
+    // showToaster("Logged out successfully", "success");
     setSidebarOpen(false);
   };
   return (

@@ -45,7 +45,7 @@ const CategoryGames = () => {
       });
 
       if (response.data.success) {
-        toast.success("Game session created successfully!");
+        // toast.success("Game session created successfully!");
         window.open(response.data.data.url, "_blank", "noopener,noreferrer");
       } else {
         toast.error(response.data.message || "Failed to create game session");

@@ -196,16 +196,18 @@ const Register = () => {
 
       const response = await registerMutation.mutateAsync(apiData);
       console.log("Registration successful:", response.data);
-      showToaster(
-        "Registration successful! Welcome to GameStar365!",
-        "success"
-      );
+      // showToaster(
+      //   "Registration successful! Welcome to GameStar365!",
+      //   "success"
+      // );
       navigate("/");
     } catch (error) {
-
       // console.log({error})
       // console.error("Registration failed:", error);
-      return showToaster(error?.message|| "Registration failed. Please try again.","error");
+      return showToaster(
+        error?.message || "Registration failed. Please try again.",
+        "error"
+      );
 
       // Grab message from backend if available
       const errorMessage =

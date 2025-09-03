@@ -120,7 +120,7 @@ export const GameTypes = () => {
     },
     onSuccess: (data) => {
       if (data.success) {
-        toast.success("Game session created successfully!");
+        // toast.success("Game session created successfully!");
         // Open game in new window
         window.open(data.data.url, "_blank", "noopener,noreferrer");
       } else {
