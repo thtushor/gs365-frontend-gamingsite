@@ -201,8 +201,10 @@ const Register = () => {
       );
       navigate("/");
     } catch (error) {
+
+      // console.log({error})
       // console.error("Registration failed:", error);
-      return showToaster("Registration failed. Please try again.");
+      return showToaster(error?.message|| "Registration failed. Please try again.","error");
 
       const errorMessage =
         typeof error === "object" &&
