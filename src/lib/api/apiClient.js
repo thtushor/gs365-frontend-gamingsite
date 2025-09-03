@@ -34,6 +34,11 @@ export const API_LIST = {
   GET_ALL_MENU_PROVIDERS: "/api/public/menu-providers",
   CHECK_WITHDRAWAL_CAPABILITY: "/api/transactions/withdraw-capability",
   GET_FEATURED_GAME: "/api/public/featured-games",
+
+  // favorite apis
+  ADD_FAVORITE: "/api/users/add-favorite",
+  REMOVE_FAVORITE: "/api/users/remove-favorite",
+  GET_FAVORITE: "/api/users/get-favorites",
 };
 
 // --- Reusable POST Request Hook ---

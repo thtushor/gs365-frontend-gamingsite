@@ -11,9 +11,11 @@ import { useAuth } from "../../contexts/auth-context";
 import PlayInstant from "../PlayInstant";
 import { toast } from "react-toastify";
 import KycModal from "../KycModal";
+import { FiArrowUpCircle } from "react-icons/fi";
+import { IoIosArrowDropup } from "react-icons/io";
 
 const Layout = ({ children }) => {
-  const { setCountries, user, countries, setSocial } = useAuth();
+  const { setCountries, user, countries, setSocial, setFavorites } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
 
@@ -37,7 +39,7 @@ const Layout = ({ children }) => {
     isLoading: socialLoading,
     isError: socialErr,
   } = useQuery({
-    queryKey: ["popup"],
+    queryKey: ["social"],
     queryFn: () =>
       getRequest({
         url: BASE_URL + API_LIST.GET_ACTIVE_SOCIAL,
@@ -45,7 +47,6 @@ const Layout = ({ children }) => {
         isPublic: true,
       }),
   });
-  console.log(socialData);
   const {
     data: countryData,
     isLoading: countryLoading,
@@ -60,13 +61,14 @@ const Layout = ({ children }) => {
         params: { status: "active" },
       }),
   });
+
   useEffect(() => {
     if (countryData?.data?.length > 0) {
       setCountries(countryData?.data);
     } else {
       setCountries([]);
     }
-  }, [countryData]);
+  }, [countryData?.data?.length]);
   useEffect(() => {
     if (socialData?.data?.length > 0) {
       setSocial(socialData?.data);
@@ -85,7 +87,7 @@ const Layout = ({ children }) => {
         setModalOpen(true);
       }
     }
-  }, [popupData]);
+  }, [popupData?.data?.length]);
 
   const handleCloseModal = () => {
     const today = new Date().toISOString().split("T")[0];
@@ -115,6 +117,46 @@ const Layout = ({ children }) => {
       }
     }
   }, [user?.kyc_status]);
+
+  const {
+    data: favData,
+    isLoading: favLoading,
+    isError: favError,
+  } = useQuery({
+    queryKey: ["favorite", user?.id], // 👈 include userId
+    enabled: !!user?.id, // 👈 only run if user exists
+    queryFn: async () => {
+      const token = localStorage.getItem("access_token");
+
+      const res = await fetch(
+        `${BASE_URL}${API_LIST.GET_FAVORITE}?userId=${user?.id}`, // 👈 send userId in params
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch favorites");
+
+      return res.json();
+    },
+  });
+
+  useEffect(() => {
+    if (favData?.length > 0) {
+      setFavorites(favData);
+    } else {
+      setFavorites([]);
+    }
+  }, [favData?.length]);
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
   return (
     <div className="app-layout">
       <Header />
@@ -134,6 +176,13 @@ const Layout = ({ children }) => {
       >
         <KycModal data={user} onClose={() => setKycModal(false)} />
       </BaseModal>
+
+      <div
+        onClick={scrollToTop}
+        className="bg-yellow-300 cursor-pointer text-black fixed bottom-[80px] left-5 flex items-center justify-center rounded-full text-[30px] md:text-[40px]"
+      >
+        <IoIosArrowDropup />
+      </div>
     </div>
   );
 };

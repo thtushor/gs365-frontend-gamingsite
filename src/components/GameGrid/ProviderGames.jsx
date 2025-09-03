@@ -74,7 +74,7 @@ const ProviderGames = () => {
     <div className="game-grid-container !px-0 !pb-0">
       {/* No Games */}
       {games?.length > 0 ? (
-        <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center">
+        <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center">
           {games.map((game, index) => (
             <div key={game.id} style={{ animationDelay: `${index * 0.05}s` }}>
               <GameCard {...game} onPlayClick={handlePlayGame} />

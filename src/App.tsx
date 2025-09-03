@@ -42,6 +42,7 @@ import GameProviderPage from "./pages/GameProviderPage";
 import CategoryGames from "./components/GameGrid/CategoryGames";
 import KycVerification from "./pages/KycVerification";
 import DocumentSubmitKyc from "./pages/DocumentSubmitKyc";
+import FavoriteGames from "./components/GameGrid/Favorite";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -83,6 +84,14 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <DepositAndWithdrawPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/favorites"
+            element={
+              <PrivateRoute>
+                <FavoriteGames />
               </PrivateRoute>
             }
           />
