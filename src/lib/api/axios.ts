@@ -6,7 +6,6 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_CONFIG } from "./config";
-import { useAuth } from "../../contexts/auth-context";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -113,10 +112,6 @@ axiosInstance.interceptors.response.use(
   },
 
   async (error: AxiosError<ApiError>) => {
-    const { logout: handleContextLogout } = useAuth();
-    const originalRequest = error.config as ExtendedAxiosRequestConfig & {
-      _retry?: boolean;
-    };
 
     // Log error in development
     if (import.meta.env.DEV) {
@@ -133,41 +128,11 @@ axiosInstance.interceptors.response.use(
     }
 
     // Handle 401 Unauthorized errors
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        // Try to refresh token
-        const refreshToken = localStorage.getItem("refresh_token");
-        if (refreshToken) {
-          const refreshResponse = await axios.post(
-            `${API_CONFIG.BASE_URL}/api/users/refresh-token`,
-            { refresh_token: refreshToken }
-          );
-
-          const { access_token, refresh_token } = refreshResponse.data.data;
-
-          // Update tokens in localStorage
-          localStorage.setItem("access_token", access_token);
-          localStorage.setItem("refresh_token", refresh_token);
-
-          // Retry original request with new token
-          if (originalRequest.headers) {
-            originalRequest.headers.Authorization = `Bearer ${access_token}`;
-          }
-
-          return axiosInstance(originalRequest);
-        }
-      } catch (refreshError) {
-        handleContextLogout();
-        // Refresh token failed, redirect to login
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-
-        // You can dispatch a logout action here if using Redux/Context
-        window.location.href = "/login";
-        return Promise.reject(refreshError);
-      }
+    if (error.response?.status === 401) {
+      // Remove access token and reload page
+      localStorage.removeItem("access_token");
+      window.location.reload();
+      return Promise.reject(error);
     }
 
     // Handle other errors
