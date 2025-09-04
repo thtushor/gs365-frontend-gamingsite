@@ -137,21 +137,13 @@ export const transformRegistrationData = (formData: {
   // Combine calling code and phone number
   const fullPhone = `${formData.phoneNumber}`;
 
-  // Map currency type to currency_id
-  const currencyIdMap: Record<string, number> = {
-    "8": 1, // BDT
-    "7": 2, // INR
-    "24": 3, // NPR
-    "17": 4, // PKR
-  };
-
   return {
     username: formData.username.trim().toLowerCase(),
     fullname: formData.realName.trim(),
     phone: fullPhone,
     email: formData.email.trim().toLowerCase(),
     password: formData.password,
-    currency_id: currencyIdMap[formData.currencyType] || 1,
+    currency_id: formData.currencyType || 1,
     refer_code: formData.friendReferCode?.trim() || undefined,
     isAgreeWithTerms: formData.ageCheck,
   };
@@ -185,7 +177,7 @@ export const transformAffiliateRegistrationData = (formData: {
     email: formData.email.trim().toLowerCase(),
     password: formData.password,
     // currency: currencyIdMap[formData.currencyType] || 1,
-    currency: 1,
+    currency: formData.currencyType || 1,
     refCode: formData.friendReferCode?.trim() || undefined,
     status: "inactive",
     role: "superAffiliate",

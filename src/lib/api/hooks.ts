@@ -118,7 +118,86 @@ export const useBetResults = (filters = {}, options = {}) => {
     ...options,
   });
 };
+const QUERY_KEYS = {
+  TRANSACTIONS: "transactions",
+};
 
+interface TransactionFilters {
+  page?: number;
+  pageSize?: number;
+  limit?: number;
+  type?: string;
+  status?: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  userId?: string;
+  affiliateId?: string;
+  historyType?: string;
+}
+
+// Fetch transactions with filters
+export const useTransactions = ({
+  page = 1,
+  pageSize = 20,
+  limit,
+  type,
+  status,
+  search,
+  sortBy = "createdAt",
+  sortOrder = "desc",
+  userId,
+  affiliateId,
+  historyType = "user",
+}: TransactionFilters = {}) => {
+  return useQuery({
+    queryKey: [
+      QUERY_KEYS.TRANSACTIONS,
+      {
+        page,
+        pageSize,
+        limit,
+        type,
+        status,
+        search,
+        sortBy,
+        sortOrder,
+        userId,
+        affiliateId,
+        historyType,
+      },
+    ],
+    queryFn: async () => {
+      const params: Record<string, unknown> = {
+        page,
+        sortBy,
+        sortOrder,
+      };
+
+      if (pageSize != null) params.pageSize = pageSize;
+      if (limit != null) params.limit = limit;
+      if (type) params.type = type;
+      if (status) params.status = status;
+      if (search) params.search = search;
+      if (userId) params.userId = userId;
+      if (affiliateId) params.affiliateId = affiliateId;
+      if (historyType) params.historyType = historyType;
+
+      // 🔑 Get token from localStorage
+      const token = localStorage.getItem("access_token");
+
+      const { data } = await Axios.get(API_LIST.PAYMENT_TRANSACTION, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ send token in headers
+        },
+      });
+
+      return data;
+    },
+    staleTime: 30 * 1000,
+  });
+};
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const { logout: handleContextLogout } = useAuth();

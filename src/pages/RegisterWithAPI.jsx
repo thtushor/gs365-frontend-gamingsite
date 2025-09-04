@@ -77,9 +77,9 @@ const Register = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    currencyType: defaultCountry?.currency?.id || "",
     friendReferCode: "",
     realName: "",
+    currencyType: defaultCountry?.currency?.id || "",
     callingCode: defaultCountry?.phoneCode || "+880",
     phoneNumber: "",
     email: "",
@@ -97,30 +97,6 @@ const Register = () => {
   const [phoneValue, setPhoneValue] = useState(formData.phoneNumber || "");
   const [errors, setErrors] = useState({});
   const registerMutation = useRegister();
-
-  // Update currency & phoneCode when country changes
-  useEffect(() => {
-    if (!countryLoading && countryOptions.length > 0) {
-      const selected = countryOptions.find(
-        (c) => c.value === selectedCurrency?.country?.code
-      );
-
-      if (selected) {
-        setForm({
-          country: selected.value,
-          currency: selected.currency?.id || "",
-          phoneCode: selected.phoneCode || "",
-          countryId: selected.id,
-        });
-
-        setFormData((prev) => ({
-          ...prev,
-          currencyType: selected.currency?.id || "",
-          callingCode: selected.phoneCode || "",
-        }));
-      }
-    }
-  }, [countryLoading, countryOptions?.length, selectedCurrency]);
 
   // Sync phoneValue with formData.phoneNumber
   useEffect(() => {
@@ -188,10 +164,15 @@ const Register = () => {
 
     try {
       const apiData = {
-        ...transformRegistrationData(formData),
-        refer_code: formData.refCode,
+        username: formData.username.trim().toLowerCase(),
+        fullname: formData.realName.trim(),
+        phone: formData.phoneNumber,
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+        currency_id: form.currency || 1,
+        refer_code: formData.friendReferCode?.trim() || undefined,
+        isAgreeWithTerms: formData.ageCheck,
         country_id: form.countryId,
-        currency_id: form.currency,
       };
 
       const response = await registerMutation.mutateAsync(apiData);

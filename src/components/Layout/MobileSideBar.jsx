@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import sports from "../../assets/gameType/icon-sport.png";
 import Casino from "../../assets/gameType/icon-casino.png";
 import Slots from "../../assets/gameType/icon-slot.png";
@@ -24,32 +24,53 @@ import { profileNavOption } from "./MobileNav";
 import { useAuth } from "../../contexts/auth-context";
 import { showToaster } from "../../lib/utils/toast";
 import { IoClose } from "react-icons/io5";
+import LoginPopup from "../Auth/LoginPopup";
 
-const MobileSideBar = ({ setSidebarOpen }) => {
+const MobileSideBar = ({
+  setSidebarOpen,
+  isLoginPopupOpen,
+  setIsLoginPopupOpen,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const { user: authUser, logout: handleContextLogout } = useAuth();
   const sidebarLinks = [
     { id: 2, name: "Promotion", link: "/promotions", image: <IoMdGift /> },
-    {
-      name: "Favorites",
-      image: <RiHeart3Fill />,
-      url: "/favorites",
-    },
     {
       id: 3,
       name: "Reward Center",
       link: "/profile/referral-details/cash-reward-history",
       image: <RiPoliceBadgeLine />,
+      isPrivate: true,
     },
-    { id: 4, name: "VIP", link: "/vip", image: <RiVipDiamondLine /> },
-    { id: 6, name: "Deposit", link: "/deposit", image: <IoIosAddCircle /> },
-    { id: 6, name: "Withdraw", link: "/withdraw", image: <BiWallet /> },
+    {
+      id: 4,
+      name: "VIP",
+      link: "/vip",
+      image: <RiVipDiamondLine />,
+      isPrivate: true,
+    },
+    {
+      id: 6,
+      name: "Deposit",
+      link: "/deposit",
+      image: <IoIosAddCircle />,
+      isPrivate: true,
+    },
+    {
+      id: 6,
+      name: "Withdraw",
+      link: "/withdraw",
+      image: <BiWallet />,
+      isPrivate: true,
+    },
     {
       id: 1,
       name: "Invite Friends",
       link: "/profile/referral-details",
       image: <TbUserShare />,
+      isPrivate: true,
     },
   ];
 
@@ -77,12 +98,21 @@ const MobileSideBar = ({ setSidebarOpen }) => {
   };
   const handleNavigateStatic = (g) => {
     const url = g?.link;
-    navigate(url);
+    if (g.isPrivate && !authUser) {
+      setIsLoginPopupOpen(true);
+    } else {
+      navigate(url);
+    }
     setSidebarOpen(false);
   };
 
-  const handleUserProfileClick = (url) => {
-    navigate(url);
+  const handleUserProfileClick = (p) => {
+    const url = p.url;
+    if (p.isPrivate && !authUser) {
+      setIsLoginPopupOpen(true);
+    } else {
+      navigate(url);
+    }
     setSidebarOpen(false);
   };
   const handleLogout = async () => {
@@ -92,6 +122,22 @@ const MobileSideBar = ({ setSidebarOpen }) => {
     // Show success message
     // showToaster("Logged out successfully", "success");
     setSidebarOpen(false);
+  };
+
+  const handleLoginClick = (g) => {
+    if (g.isPrivate && !authUser) {
+      setIsLoginPopupOpen(true);
+    } else {
+      navigate(url);
+    }
+    setSidebarOpen(false);
+  };
+  const handleRegisterClick = (affiliate = false) => {
+    if (affiliate) {
+      navigate("/affiliate-signup");
+    } else {
+      navigate("/register");
+    }
   };
   return (
     <div className="">
@@ -147,7 +193,7 @@ const MobileSideBar = ({ setSidebarOpen }) => {
           const isActive = location.pathname === p.url;
           return (
             <div
-              onClick={() => handleUserProfileClick(p.url)}
+              onClick={() => handleUserProfileClick(p)}
               key={idx}
               className={`font-normal my-4 cursor-pointer text-[14px] flex justify-between items-center w-full
                       ${isActive ? "text-yellow-400 opacity-100" : ""}`}
@@ -167,14 +213,16 @@ const MobileSideBar = ({ setSidebarOpen }) => {
       </div>
 
       {/* Logout Button */}
-      <div className="my-4">
-        <button
-          className="w-full px-4 py-[6px] text-[14px] border light-border text-center hover:border-yellow-400 hover:text-yellow-400"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
+      {authUser && (
+        <div className="my-4">
+          <button
+            className="w-full px-4 py-[6px] text-[14px] border light-border text-center hover:border-yellow-400 hover:text-yellow-400"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 };

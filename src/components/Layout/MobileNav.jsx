@@ -23,41 +23,55 @@ export const profileNavOption = [
     name: "Personal Info",
     icon: <CgProfile />,
     url: "/profile/personal-information",
+    isPrivate: true,
   },
   {
     name: "Login & Security",
     icon: <MdOutlineLockPerson />,
     url: "/profile/login-security",
+    isPrivate: true,
   },
   {
     name: "Verification",
     icon: <BiShield />,
     url: "/profile/verification",
+    isPrivate: true,
   },
   {
     name: "Transaction Records",
     icon: <TbFileDollar />,
     url: "/profile/transaction-records",
+    isPrivate: true,
   },
   {
     name: "Turnover",
     icon: <TargetIcon className="w-4 h-4" />,
     url: "/profile/turnover",
+    isPrivate: true,
   },
   {
     name: "My Referral",
     icon: <TbUserShare />,
     url: "/profile/referral-details",
+    isPrivate: true,
   },
   {
     name: "Favorites",
     icon: <RiHeart3Fill />,
     url: "/favorites",
+    isPrivate: true,
   },
   {
     name: "Betting History",
     icon: <TbHistoryToggle />,
     url: "/profile/betting-history",
+    isPrivate: true,
+  },
+  {
+    name: "Transaction History",
+    icon: <TbHistoryToggle />,
+    url: "/profile/transaction-history",
+    isPrivate: true,
   },
 ];
 

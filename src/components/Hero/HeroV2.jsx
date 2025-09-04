@@ -67,7 +67,7 @@ export const HeroV2 = () => {
   if (banners?.length <= 1) {
     return (
       <div
-        className="slide-item !h-[120px] md:!h-[470px]"
+        className="slide-item !h-[140px] md:!h-[470px]"
         style={{ width: "100%", height: "470px", overflow: "hidden" }}
       >
         <img
@@ -88,7 +88,7 @@ export const HeroV2 = () => {
         {banners.map((banner, index) => (
           <div
             key={index}
-            className="slide-item !h-[120px] md:!h-[470px]"
+            className="slide-item !h-[140px] md:!h-[470px]"
             style={{ width: "100%", height: "470px", overflow: "hidden" }}
           >
             <img

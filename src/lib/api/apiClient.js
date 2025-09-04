@@ -42,6 +42,7 @@ export const API_LIST = {
 
   // bet result:
   GET_BET_RESULTS: "/api/bet-results",
+  PAYMENT_TRANSACTION: "/api/transactions",
 };
 
 // --- Reusable POST Request Hook ---

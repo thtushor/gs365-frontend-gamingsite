@@ -18,25 +18,25 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4 justify-between w-full mt-4">
+    <div className="flex flex-wrap items-center gap-4 justify-between w-full mt-4 px-4 pb-4">
       <div className="flex items-center gap-2">
-        <button
-          className="px-3 py-1 border rounded disabled:opacity-50"
+        <div
+          className="px-3 py-1 border rounded cursor-pointer disabled:opacity-50"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={!canPrev}
         >
           Prev
-        </button>
+        </div>
         <span className="mx-2">
           Page <b>{currentPage}</b> of <b>{totalPages}</b>
         </span>
-        <button
-          className="px-3 py-1 border rounded disabled:opacity-50"
+        <div
+          className="px-3 py-1 border rounded cursor-pointer disabled:opacity-50"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={!canNext}
         >
           Next
-        </button>
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <span>Rows per page:</span>

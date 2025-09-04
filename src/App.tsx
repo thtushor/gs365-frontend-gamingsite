@@ -44,6 +44,7 @@ import KycVerification from "./pages/KycVerification";
 import DocumentSubmitKyc from "./pages/DocumentSubmitKyc";
 import FavoriteGames from "./components/GameGrid/Favorite";
 import BettingHistory from "./components/BettingHistory";
+import TransactionHistory from "./components/TransactionHistory";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -142,6 +143,14 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <BettingHistory />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile/transaction-history"
+            element={
+              <PrivateRoute>
+                <TransactionHistory />
               </PrivateRoute>
             }
           />

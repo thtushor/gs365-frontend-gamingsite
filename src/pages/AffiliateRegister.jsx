@@ -17,35 +17,133 @@ import axios from "axios";
 import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import signup3 from "../assets/signup3.jpg";
+import { useAuth } from "../contexts/auth-context";
+import Select from "react-select";
+import { useQuery } from "@tanstack/react-query";
+import { useGetRequest } from "../lib/api/apiClient";
 
-const Register: React.FC = () => {
+const AffiliateRegister = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const refCodeParam =
     searchParams.get("refCode") || searchParams.get("refcode");
-  const [loading, setLoading] = useState(false);
-  const [phoneValue, setPhoneValue] = useState<string | undefined>(undefined);
+  const { selectedCurrency } = useAuth();
+  const getRequest = useGetRequest();
 
-  const [currentStep] = useState(1);
+  // Fetch country list
+  const { data: countryData, isLoading: countryLoading } = useQuery({
+    queryKey: ["country", { status: "active" }],
+    queryFn: () =>
+      getRequest({
+        url: BASE_URL + API_LIST.GET_COUNTRIES,
+        errorMessage: "Failed to fetch countries",
+        isPublic: true,
+        params: { status: "active" },
+      }),
+  });
+
+  // Prepare country options
+  const countryOptions =
+    countryData?.data?.map((country) => ({
+      id: country.id,
+      value: country.code,
+      label: country.name,
+      currency: {
+        id: country.currency?.id,
+        code: country.currency?.code,
+        name: country.currency?.name,
+      },
+      phoneCode: `+${
+        country.callingCode || (country.code === "BD" ? "880" : "")
+      }`,
+      flagUrl: `data:image/png;base64,${country.flagUrl}`,
+    })) || [];
+
+  // Extract selectedCountry from selectedCurrency
+  const selectedCountryFromCurrency = countryOptions.find(
+    (c) => c.value === selectedCurrency?.country?.code
+  );
+
+  // Fallback: Bangladesh or first available country
+  const defaultCountry =
+    selectedCountryFromCurrency ||
+    countryOptions.find((c) => c.value === "BD") ||
+    countryOptions[0];
+
+  const [form, setForm] = useState({
+    country: defaultCountry?.value || "",
+    currency: defaultCountry?.currency?.id || "",
+    phoneCode: defaultCountry?.phoneCode || "",
+    countryId: defaultCountry?.id,
+  });
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
-    currencyType: "8", // Default to BDT
     friendReferCode: "",
     realName: "",
-    callingCode: "880", // Default to +880
-    phoneNumber: "",
     email: "",
     captchaInput: "",
     ageCheck: true,
+    currencyType: form.currency || "",
+    callingCode: defaultCountry?.phoneCode || "+880",
+    phoneNumber: "",
     role: refCodeParam ? "affiliate" : "superAffiliate",
     refCode: refCodeParam,
   });
 
+  console.log(formData);
+  const [loading, setLoading] = useState(false);
+  const [phoneValue, setPhoneValue] = useState(formData.phoneNumber || "");
+
+  // Update currency & phoneCode when country changes
+  useEffect(() => {
+    if (!countryLoading && countryOptions.length > 0) {
+      const selected = countryOptions.find(
+        (c) => c.value === selectedCurrency?.country?.code
+      );
+
+      if (selected) {
+        setForm({
+          country: selected.value,
+          currency: selected.currency?.id || "",
+          phoneCode: selected.phoneCode || "",
+          countryId: selected.id,
+        });
+
+        setFormData((prev) => ({
+          ...prev,
+          currencyType: selected.currency?.id || "",
+          callingCode: selected.phoneCode || "",
+        }));
+      }
+    }
+  }, [countryLoading, countryOptions?.length, selectedCurrency]);
+
+  // Sync phoneValue with formData.phoneNumber
+  useEffect(() => {
+    if (phoneValue) {
+      const fullNumber = phoneValue.startsWith("+")
+        ? phoneValue
+        : `${form.phoneCode}${phoneValue.replace(/^0+/, "")}`;
+      setFormData((prev) => ({
+        ...prev,
+        phoneNumber: fullNumber,
+      }));
+    }
+  }, [phoneValue, form.phoneCode]);
+
+  const currencyOptions =
+    countryOptions.map((c) => ({
+      value: c.currency?.id,
+      label: `${c.currency?.name} (${c.currency?.code})`,
+    })) || [];
+
+  const [currentStep] = useState(1);
+
   console.log({ refCodeParam });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState({});
 
   const bannerImages = [
     {
@@ -56,14 +154,9 @@ const Register: React.FC = () => {
     },
   ];
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e) => {
     const target = e.target;
-    const value =
-      target.type === "checkbox"
-        ? (target as HTMLInputElement).checked
-        : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     setFormData({
@@ -80,9 +173,9 @@ const Register: React.FC = () => {
     }
   };
 
-  const validateStep = (step: number): boolean => {
+  const validateStep = (step) => {
     const validation = validateRegistrationForm(formData);
-    const stepErrors: Record<string, string> = {};
+    const stepErrors = {};
 
     if (step === 1) {
       // Validate step 1 fields
@@ -115,7 +208,7 @@ const Register: React.FC = () => {
   };
 
   console.log(errors);
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep(1)) {
       return;
@@ -124,7 +217,7 @@ const Register: React.FC = () => {
     // Validate entire form
     const validation = validateRegistrationForm(formData);
     if (!validation.isValid) {
-      const errorMap: Record<string, string> = {};
+      const errorMap = {};
       validation.errors.forEach((error) => {
         errorMap[error.field] = error.message;
       });
@@ -141,6 +234,7 @@ const Register: React.FC = () => {
       const apiData = {
         ...transformAffiliateRegistrationData(formData),
         refer_code: formData.refCode,
+        country_id: form.countryId,
       };
 
       // Call registration API
@@ -165,7 +259,7 @@ const Register: React.FC = () => {
 
       // Redirect to home page or dashboard
       navigate("/");
-    } catch (error: unknown) {
+    } catch (error) {
       setLoading(false);
       let errorMessage = "Registration failed. Please try again.";
 
@@ -177,19 +271,19 @@ const Register: React.FC = () => {
         typeof error === "object" &&
         error !== null &&
         "message" in error &&
-        typeof (error as any).message === "string"
+        typeof error.message === "string"
       ) {
-        errorMessage = (error as any).message;
+        errorMessage = error.message;
       }
       showToaster(errorMessage, "error");
     }
   };
 
-  const getFieldError = (fieldName: string): string => {
+  const getFieldError = (fieldName) => {
     return errors[fieldName] || "";
   };
 
-  const isFieldValid = (fieldName: string): boolean => {
+  const isFieldValid = (fieldName) => {
     return !errors[fieldName];
   };
 
@@ -299,61 +393,104 @@ const Register: React.FC = () => {
                           </p>
                         </div>
                       </li>
-                      {/* <li className="">
-                        <label htmlFor="phoneNumber">Phone Number</label>
-                        <div className="phone-info ">
-                          <div className="phone-area-code">
-                            <div className="lang-select">
-                              <button
-                                type="button"
-                                className="btn-select"
-                                value="en"
-                              >
-                                <li className="flex items-center !mb-0">
-                                  <img
-                                    src="https://img.b112j.com/images/web/flag/BD.png"
-                                    alt=""
-                                  />
-                                  <span>+{formData.callingCode}</span>
-                                </li>
-                              </button>
-                            </div>
-                          </div>
-                          <input
-                            id="callingCode"
-                            name="callingCode"
-                            type="hidden"
-                            value={formData.callingCode}
-                            onChange={handleInputChange}
-                          />
-                          <input
-                            id="phoneNumber"
-                            type="text"
-                            name="phoneNumber"
-                            placeholder="Enter your phone number"
-                            style={{
-                              borderColor: isFieldValid("phoneNumber")
-                                ? undefined
-                                : "#ff0000",
+
+                      {/* COUNTRY */}
+                      <div className="register-select">
+                        <label
+                          htmlFor="country"
+                          className="text-white font-medium mb-1 block"
+                        >
+                          Country
+                        </label>
+                        {countryLoading ? (
+                          <p className="text-gray-500 text-sm">
+                            Loading countries...
+                          </p>
+                        ) : (
+                          <Select
+                            options={countryOptions}
+                            value={
+                              countryOptions.find(
+                                (opt) => opt.value === form.country
+                              ) || null
+                            }
+                            onChange={(selected) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                country: selected ? selected.value : "",
+                                countryId: selected ? selected.id : "",
+                              }))
+                            }
+                            isSearchable
+                            placeholder="Select Country"
+                            styles={{
+                              menuList: (base) => ({
+                                ...base,
+                                maxHeight: "300px",
+                                overflowY: "auto",
+                                background: "rgb(255 255 255 / 61%)",
+                                color: "#1a1a1a",
+                              }),
+                              input: (base) => ({ ...base, color: "#fff" }),
                             }}
-                            required
-                            value={formData.phoneNumber}
-                            onChange={handleInputChange}
+                            getOptionLabel={(option) => (
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src={option.flagUrl}
+                                  alt=""
+                                  width={20}
+                                  height={14}
+                                  style={{ borderRadius: "2px" }}
+                                />
+                                {option.label}
+                              </div>
+                            )}
+                            getOptionValue={(option) => option.value}
                           />
-                        </div>
-                        {getFieldError("phoneNumber") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
-                            {getFieldError("phoneNumber")}
-                          </div>
                         )}
-                      </li> */}
+                      </div>
+
+                      {/* CURRENCY */}
+                      <div className="mt-3 register-select">
+                        <label
+                          htmlFor="currency"
+                          className="text-white font-medium mb-1 block"
+                        >
+                          Currency
+                        </label>
+                        <Select
+                          options={currencyOptions}
+                          value={
+                            currencyOptions.find(
+                              (opt) => opt.value === form.currency
+                            ) || null
+                          }
+                          onChange={(selected) => {
+                            console.log(selected);
+                            setForm((prev) => ({
+                              ...prev,
+                              currency: selected ? selected.value : "",
+                            }));
+
+                            setFormData((prev) => ({
+                              ...prev,
+                              currencyType: selected ? selected.value : "",
+                            }));
+                          }}
+                          isSearchable
+                          placeholder="Select Currency"
+                          styles={{
+                            menuList: (base) => ({
+                              ...base,
+                              maxHeight: "300px",
+                              overflowY: "auto",
+                              background: "rgb(255 255 255 / 61%)",
+                              color: "#1a1a1a",
+                            }),
+                            input: (base) => ({ ...base, color: "#fff" }),
+                          }}
+                        />
+                      </div>
 
                       <li className="">
                         <label htmlFor="phoneNumber">Phone Number</label>
@@ -530,39 +667,6 @@ const Register: React.FC = () => {
                           </div>
                         )}
                       </li>
-                      <li>
-                        <label htmlFor="currencyType">
-                          Select Your Currency
-                        </label>
-                        <select
-                          id="currencyType"
-                          name="currencyType"
-                          value={formData.currencyType}
-                          onChange={handleInputChange}
-                          style={{
-                            borderColor: isFieldValid("currencyType")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                        >
-                          <option value="1">BDT</option>
-                          <option value="7">INR</option>
-                          <option value="24">NPR</option>
-                          <option value="17">PKR</option>
-                        </select>
-                        {getFieldError("currencyType") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
-                            {getFieldError("currencyType")}
-                          </div>
-                        )}
-                      </li>
                     </ul>
                   </div>
                 )}
@@ -598,4 +702,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default AffiliateRegister;

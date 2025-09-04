@@ -99,6 +99,11 @@ const Header: React.FC = () => {
       icon: <TbHistoryToggle />,
       url: "/profile/betting-history",
     },
+    {
+      name: "Transaction History",
+      icon: <TbHistoryToggle />,
+      url: "/profile/transaction-history",
+    },
   ];
 
   const handleCopyName = (text: string) => {
@@ -177,7 +182,11 @@ const Header: React.FC = () => {
                 </div>
               </div>
               <nav className="p-4">
-                <MobileSideBar setSidebarOpen={setSidebarOpen} />
+                <MobileSideBar
+                  setSidebarOpen={setSidebarOpen}
+                  isLoginPopupOpen={isLoginPopupOpen}
+                  setIsLoginPopupOpen={setIsLoginPopupOpen}
+                />
               </nav>
             </div>
           </div>
