@@ -39,7 +39,7 @@ const ReferralDetails = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: "Gamestar 365",
+          title: "Game Star 365",
           text: "Check out this link!",
           url: referralLink,
         })

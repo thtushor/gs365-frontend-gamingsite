@@ -209,7 +209,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         }`}
       >
         <div className="pop-title px-[10px] md:px-[20px] py-[8px] md:py-[20px]">
-          <h3 className="text-[16px] md:text-[20px]">Welcome To GameStar365</h3>{" "}
+          <h3 className="text-[16px] md:text-[20px]">
+            Welcome To Game Star 365
+          </h3>{" "}
           {/* Replaced Baji */}
           <div className="btn-close" onClick={onClose}></div>
         </div>

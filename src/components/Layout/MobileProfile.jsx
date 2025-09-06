@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { EyeIcon, RefreshCcw } from "lucide-react";
 import takaIcon from "../../assets/taka.png";
 import dollarIcon from "../../assets/dollar.png";
+import { useSettings } from "../../lib/api/hooks";
 
 const MobileProfile = ({
   user,
@@ -18,6 +19,14 @@ const MobileProfile = ({
   profilePic,
   formatDate,
 }) => {
+  const {
+    data: settingsData,
+    isLoading: settingsLoading,
+    isError,
+  } = useSettings();
+
+  const conversionRate =
+    settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
   const location = useLocation();
   const { user: authUser } = useAuth();
 
@@ -40,8 +49,9 @@ const MobileProfile = ({
     refetchOnWindowFocus: false,
   });
 
-  const bdtBalance = balance?.currentBalance ?? 0;
-  const dollarBalance = (bdtBalance / 120).toFixed(2) || "0";
+  const bdtBalance = Number(balance?.currentBalance) ?? 0;
+  const dollarBalance =
+    (Number(bdtBalance) / Number(conversionRate)).toFixed(2) || "0";
 
   const handleRefresh = async () => {
     setRefreshing(true);

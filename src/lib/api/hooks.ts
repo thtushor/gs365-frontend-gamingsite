@@ -198,6 +198,24 @@ export const useTransactions = ({
     staleTime: 30 * 1000,
   });
 };
+
+// Get all settings
+export const useSettings = () => {
+  return useQuery({
+    queryKey: ["settings"],
+    queryFn: async () => {
+      const token = localStorage.getItem("access_token");
+      const response = await Axios.get(API_LIST.GET_SETTINGS, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+};
+
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const { logout: handleContextLogout } = useAuth();

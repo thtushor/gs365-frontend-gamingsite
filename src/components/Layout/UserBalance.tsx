@@ -9,6 +9,7 @@ import dollarIcon from "../../assets/dollar.png";
 import BaseModal from "../Promotion/BaseModal";
 import BalanceModal from "./BalanceModal";
 import { TbRefresh } from "react-icons/tb";
+import { useSettings } from "../../lib/api/hooks";
 
 interface BalanceData {
   userId: number;
@@ -18,6 +19,10 @@ interface BalanceData {
 }
 
 export const UserBalance: React.FC = () => {
+  const { data: settingsData } = useSettings();
+  const conversionRate =
+    settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
   const [showDollar, setShowDollar] = useState(false);
@@ -40,7 +45,8 @@ export const UserBalance: React.FC = () => {
   });
 
   const bdtBalance = balance?.currentBalance ?? 0;
-  const dollarBalance = (bdtBalance / 120).toFixed(2) || "0";
+  const dollarBalance =
+    (Number(bdtBalance) / Number(conversionRate)).toFixed(2) || "0";
 
   if (!user) return null;
 

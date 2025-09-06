@@ -852,7 +852,7 @@ export const filterOptions = [
 ];
 
 export const seoTitle =
-  "GameStar365 – Top Crash Game Providers in Bangladesh: Your Gateway to Exciting Gameplay";
+  "Game Star 365 – Top Crash Game Providers in Bangladesh: Your Gateway to Exciting Gameplay";
 export const seoContent = `
 <p>Crash games are rapidly gaining popularity among online gaming enthusiasts, and in Bangladesh, their appeal is growing day by day. If you’re looking for a high-octane gaming experience that blends simplicity with excitement, you’ve come to the right place. Our platform offers a diverse selection of crash games from top providers, ensuring that every player can find their next favorite. Step into the world of crash games and discover a whole new level of entertainment!</p>
 

@@ -115,7 +115,7 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="About GameStar365" icon={<FaStar />}>
+            <CollapseItem title="About Game Star 365" icon={<FaStar />}>
               <ul className="footer-links">
                 <li>
                   <a href="#">About Us</a>
@@ -208,7 +208,7 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
           </div>
           <div className="footer-text">
             <p>
-              <span className="highlight">GameStar365</span> is operated by
+              <span className="highlight">Game Star 365</span> is operated by
               Glory Gaming N.V., registered and established under the laws of
               Curacao.
             </p>
@@ -237,7 +237,7 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
           )}
           <div className="copyright">
             <p>
-              &copy; 2025 <span>GameStar365</span>. All rights reserved.
+              &copy; 2025 <span>Game Star 365</span>. All rights reserved.
             </p>
           </div>
         </div>
