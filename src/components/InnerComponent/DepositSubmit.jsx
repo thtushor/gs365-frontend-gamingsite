@@ -40,6 +40,14 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
+  
+  const isInternational = (depositOptions.paymentMethod||"").toLowerCase().includes("international");
+  const isCrypto = (depositOptions.paymentMethod||"").toLowerCase().includes("crypto");
+
+  const currencyValue = isCrypto ?"USDT":isInternational ? "$" : "৳"
+
+  console.log({currencyValue})
+
   // Timer countdown
   useEffect(() => {
     if (timeLeft <= 0 || isCompleted) return;
@@ -247,7 +255,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
           <div>
             <p className="text-sm text-gray-400">Transfer amount</p>
             <p className="font-bold text-green-400 text-left text-[20px]">
-              ৳ {transferDetails.amount}
+              {currencyValue} {transferDetails.amount}
             </p>
           </div>
           <button

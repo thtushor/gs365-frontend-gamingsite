@@ -13,6 +13,13 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
 
+
+  const isInternational = (depositOptions.paymentMethod||"").toLowerCase().includes("international");
+  const isCrypto = (depositOptions.paymentMethod||"").toLowerCase().includes("crypto");
+
+  const currencyValue = isCrypto ?"USDT":isInternational ? "$" : "৳"
+  
+
   // Extract default gateway from API response
   const defaultGateway = depositOptions?.payment_type?.gateway || null;
   const currentGateway = selectedGateway || defaultGateway;
@@ -36,9 +43,9 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
     if (!value) {
       setError("");
     } else if (num < availableBalance.min) {
-      setError(`Amount must be at least ৳${availableBalance.min}`);
+      setError(`Amount must be at least ${currencyValue}${availableBalance.min}`);
     } else if (num > availableBalance.max) {
-      setError(`Amount must not exceed ৳${availableBalance.max}`);
+      setError(`Amount must not exceed ${currencyValue}${availableBalance.max}`);
     } else {
       setError("");
     }
@@ -66,6 +73,8 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
     );
   }
 
+  
+
   return (
     <div className="mt-5">
       {!transferInfoValid ? (
@@ -74,7 +83,7 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
           <p className="text-base text-left mb-2 font-medium">
             Available Balance{" "}
             <span className="text-yellow-400">
-              ৳{availableBalance.min} ~ ৳{availableBalance.max}
+              {currencyValue}{availableBalance.min} ~ {currencyValue}{availableBalance.max}
             </span>
           </p>
 
@@ -91,7 +100,7 @@ const DepositAmountProvider = ({ depositOptions, setStep, stepDetails }) => {
               onChange={handleChange}
               onWheel={(e) => e.currentTarget.blur()} // ✅ disables scroll increment/decrement
 
-              placeholder={`Enter amount between ৳${availableBalance.min} and ৳${availableBalance.max}`}
+              placeholder={`Enter amount between ${currencyValue}${availableBalance.min} and ${currencyValue}${availableBalance.max}`}
             />
             {error && (
               <p className="text-white px-2 rounded-full pb-1 bg-red-500 absolute top-[-5px] left-[15px] text-xs font-medium">
