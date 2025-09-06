@@ -21,6 +21,7 @@ import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../contexts/auth-context";
 import { toast } from "react-toastify";
+import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
 
 const Register = () => {
   const { selectedCurrency } = useAuth();
@@ -149,6 +150,7 @@ const Register = () => {
     e.preventDefault();
 
     const validation = validateRegistrationForm(formData);
+    console.log({validation})
     if (!validation.isValid) {
       const errorMap = {};
       validation.errors.forEach((error) => {
@@ -169,10 +171,10 @@ const Register = () => {
         phone: formData.phoneNumber,
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
-        currency_id: form.currency || 1,
+        currency_id: formData?.currency_id,
         refer_code: formData.friendReferCode?.trim() || undefined,
         isAgreeWithTerms: formData.ageCheck,
-        country_id: form.countryId,
+        country_id: formData.countryId,
       };
 
       const response = await registerMutation.mutateAsync(apiData);
@@ -302,52 +304,33 @@ const Register = () => {
 
                   <li>
                     <label htmlFor="password">Password</label>
-                    <input
+                    <PasswordInputBox
                       id="password"
                       name="password"
-                      type="password"
-                      minLength={6}
-                      maxLength={20}
-                      placeholder="6-20 characters"
-                      style={{
-                        borderColor: isFieldValid("password")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                      required
                       value={formData.password}
                       onChange={handleInputChange}
+                      placeholder="6-20 characters"
+                      minLength={6}
+                      maxLength={20}
+                      required
+                      error={getFieldError("password")}
                     />
-                    {getFieldError("password") && (
-                      <div className="field-error">
-                        {getFieldError("password")}
-                      </div>
-                    )}
+                    
                   </li>
 
                   <li>
                     <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input
+                     <PasswordInputBox
                       id="confirmPassword"
                       name="confirmPassword"
-                      type="password"
-                      minLength={6}
-                      maxLength={20}
-                      placeholder="Confirm password"
-                      style={{
-                        borderColor: isFieldValid("confirmPassword")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                      required
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
+                      placeholder="6-20 characters"
+                      minLength={6}
+                      maxLength={20}
+                      required
+                      error={getFieldError("confirmPassword")}
                     />
-                    {getFieldError("confirmPassword") && (
-                      <div className="field-error">
-                        {getFieldError("confirmPassword")}
-                      </div>
-                    )}
                   </li>
 
                   {/* COUNTRY */}
@@ -365,17 +348,16 @@ const Register = () => {
                     ) : (
                       <Select
                         options={countryOptions}
-                        value={
-                          countryOptions.find(
-                            (opt) => opt.value === form.country
-                          ) || null
+                        name="country"
+                        value={formData.country}
+                        onChange={(selected) =>{
+                          handleInputChange({
+                            target: {
+                              name: "country",
+                              value: selected ? selected : "",
+                            },
+                          })
                         }
-                        onChange={(selected) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            country: selected ? selected.value : "",
-                            countryId: selected ? selected.id : "",
-                          }))
                         }
                         isSearchable
                         placeholder="Select Country"
@@ -416,16 +398,15 @@ const Register = () => {
                     </label>
                     <Select
                       options={currencyOptions}
-                      value={
-                        currencyOptions.find(
-                          (opt) => opt.value === form.currency
-                        ) || null
-                      }
+                      name="currency"
+                      value={formData.currency}
                       onChange={(selected) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          currency: selected ? selected.value : "",
-                        }))
+                       handleInputChange({
+                        target:{
+                          value: selected,
+                          name:"currency"
+                        }
+                       })
                       }
                       isSearchable
                       placeholder="Select Currency"
