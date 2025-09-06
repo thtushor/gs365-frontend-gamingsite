@@ -44,7 +44,7 @@ const Register: React.FC = () => {
       id: 1,
       image:
         "https://www.shutterstock.com/image-vector/this-image-features-colorful-online-600nw-2467530093.jpg",
-      title: "Welcome to GameStar365",
+      title: "Welcome to Game Star 365",
       description: "Join our gaming community today!",
     },
     {
@@ -87,7 +87,7 @@ const Register: React.FC = () => {
       refer_code: formData.refCode,
     };
     console.log({ apiBody });
-    window.location.href = "/"
+    window.location.href = "/";
   };
 
   const nextStep = () => {

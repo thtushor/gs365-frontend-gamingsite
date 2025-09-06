@@ -21,6 +21,7 @@ import { useAuth } from "../contexts/auth-context";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { useGetRequest } from "../lib/api/apiClient";
+import { toast } from "react-toastify";
 
 const AffiliateRegister = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const AffiliateRegister = () => {
     {
       id: 1,
       image: signup3,
-      title: "Welcome to GameStar365",
+      title: "Welcome to Game Star 365",
       description: "Join our gaming community today!",
     },
   ];
@@ -212,6 +213,9 @@ const AffiliateRegister = () => {
     e.preventDefault();
     if (!validateStep(1)) {
       return;
+    }
+    if (!formData.refCode) {
+      return toast.error("Please provide a referral code!");
     }
 
     // Validate entire form

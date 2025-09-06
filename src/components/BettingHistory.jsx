@@ -70,6 +70,7 @@ const BettingHistory = () => {
   };
 
   const getBetStatusColor = (status) => {
+    console.log(status);
     switch (status) {
       case "win":
         return "success";
@@ -113,12 +114,6 @@ const BettingHistory = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-900">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    User
-                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Game
                   </th>
@@ -179,15 +174,7 @@ const BettingHistory = () => {
                   </tr>
                 ) : (
                   betResultsList.map((bet) => (
-                    <tr key={bet.id} className="hover:bg-gray-900">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                        {bet.id}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-medium cursor-pointer hover:underline">
-                        {bet?.user?.fullname ||
-                          bet?.user?.username ||
-                          bet?.userId}
-                      </td>
+                    <tr key={bet.id} className={``}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {bet.gameDetails?.name ||
                           bet.gameName ||
