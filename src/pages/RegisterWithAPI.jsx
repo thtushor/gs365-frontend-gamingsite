@@ -551,6 +551,9 @@ const Register = () => {
                       name="phoneNumber"
                       international
                       defaultCountry={formData?.country?.value || "BD"}
+                      disableCountryCode={true}
+                      countryCodeEditable={false}
+                      disableDropdown={true}
                       value={phoneValue}
                       onChange={(value) => {
                         handleInputChange({

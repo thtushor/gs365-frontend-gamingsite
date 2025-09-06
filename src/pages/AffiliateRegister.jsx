@@ -54,9 +54,8 @@ const AffiliateRegister = () => {
         code: country.currency?.code,
         name: country.currency?.name,
       },
-      phoneCode: `+${
-        country.callingCode || (country.code === "BD" ? "880" : "")
-      }`,
+      phoneCode: `+${country.callingCode || (country.code === "BD" ? "880" : "")
+        }`,
       flagUrl: `data:image/png;base64,${country.flagUrl}`,
     })) || [];
 
@@ -343,24 +342,16 @@ const AffiliateRegister = () => {
                           placeholder="Referral code"
                           readOnly={!!refCodeParam}
                           style={{
-                            borderColor: isFieldValid("refCode")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("refCode") ? undefined : "#ff0000",
                           }}
                         />
                         {getFieldError("refCode") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("refCode")}
                           </div>
                         )}
                       </li>
+
                       <li>
                         <label htmlFor="realName">Full Name</label>
                         <input
@@ -370,184 +361,19 @@ const AffiliateRegister = () => {
                           placeholder="Enter your full name"
                           maxLength={100}
                           style={{
-                            borderColor: isFieldValid("realName")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("realName") ? undefined : "#ff0000",
                           }}
-                          required
+                          // required
                           value={formData.realName}
                           onChange={handleInputChange}
                         />
                         {getFieldError("realName") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("realName")}
                           </div>
                         )}
-                        <div className="password-condition">
-                          <p>
-                            Please enter your full and accurate name for
-                            identity verification during withdrawal.
-                          </p>
-                        </div>
                       </li>
 
-                      {/* COUNTRY */}
-                      <div className="register-select">
-                        <label
-                          htmlFor="country"
-                          className="text-white font-medium mb-1 block"
-                        >
-                          Country
-                        </label>
-                        {countryLoading ? (
-                          <p className="text-gray-500 text-sm">
-                            Loading countries...
-                          </p>
-                        ) : (
-                          <Select
-                            options={countryOptions}
-                            value={
-                              countryOptions.find(
-                                (opt) => opt.value === form.country
-                              ) || null
-                            }
-                            onChange={(selected) =>
-                              setForm((prev) => ({
-                                ...prev,
-                                country: selected ? selected.value : "",
-                                countryId: selected ? selected.id : "",
-                              }))
-                            }
-                            isSearchable
-                            placeholder="Select Country"
-                            styles={{
-                              menuList: (base) => ({
-                                ...base,
-                                maxHeight: "300px",
-                                overflowY: "auto",
-                                background: "rgb(255 255 255 / 61%)",
-                                color: "#1a1a1a",
-                              }),
-                              input: (base) => ({ ...base, color: "#fff" }),
-                            }}
-                            getOptionLabel={(option) => (
-                              <div className="flex items-center gap-2">
-                                <img
-                                  src={option.flagUrl}
-                                  alt=""
-                                  width={20}
-                                  height={14}
-                                  style={{ borderRadius: "2px" }}
-                                />
-                                {option.label}
-                              </div>
-                            )}
-                            getOptionValue={(option) => option.value}
-                          />
-                        )}
-                      </div>
-
-                      {/* CURRENCY */}
-                      <div className="mt-3 register-select">
-                        <label
-                          htmlFor="currency"
-                          className="text-white font-medium mb-1 block"
-                        >
-                          Currency
-                        </label>
-                        <Select
-                          options={currencyOptions}
-                          value={
-                            currencyOptions.find(
-                              (opt) => opt.value === form.currency
-                            ) || null
-                          }
-                          onChange={(selected) => {
-                            console.log(selected);
-                            setForm((prev) => ({
-                              ...prev,
-                              currency: selected ? selected.value : "",
-                            }));
-
-                            setFormData((prev) => ({
-                              ...prev,
-                              currencyType: selected ? selected.value : "",
-                            }));
-                          }}
-                          isSearchable
-                          placeholder="Select Currency"
-                          styles={{
-                            menuList: (base) => ({
-                              ...base,
-                              maxHeight: "300px",
-                              overflowY: "auto",
-                              background: "rgb(255 255 255 / 61%)",
-                              color: "#1a1a1a",
-                            }),
-                            input: (base) => ({ ...base, color: "#fff" }),
-                          }}
-                        />
-                      </div>
-
-                      <li className="">
-                        <label htmlFor="phoneNumber">Phone Number</label>
-                        <div className="phone-info">
-                          <div className="phone-area-code">
-                            <div className="lang-select">
-                              <li className="flex items-center !mb-0">
-                                <img
-                                  src="https://img.b112j.com/images/web/flag/BD.png"
-                                  alt=""
-                                />
-                                <span>{phoneValue?.slice(0, 4) || "+880"}</span>
-                              </li>
-                            </div>
-                          </div>
-                          <PhoneInput
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            international
-                            defaultCountry="BD"
-                            value={phoneValue}
-                            onChange={(value) => {
-                              setPhoneValue(value);
-                              setFormData((prev) => ({
-                                ...prev,
-                                phoneNumber: value || "",
-                              }));
-
-                              // Clear error on change
-                              if (errors["phoneNumber"]) {
-                                setErrors((prev) => ({
-                                  ...prev,
-                                  phoneNumber: "",
-                                }));
-                              }
-                            }}
-                            className="custom-phone-input"
-                            placeholder="Enter phone number"
-                          />
-                        </div>
-                        {getFieldError("phoneNumber") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
-                            {getFieldError("phoneNumber")}
-                          </div>
-                        )}
-                      </li>
                       <li>
                         <label htmlFor="email">Email Address</label>
                         <input
@@ -556,27 +382,19 @@ const AffiliateRegister = () => {
                           name="email"
                           placeholder="Enter your valid email address"
                           style={{
-                            borderColor: isFieldValid("email")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("email") ? undefined : "#ff0000",
                           }}
-                          required
+                          // required
                           value={formData.email}
                           onChange={handleInputChange}
                         />
                         {getFieldError("email") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("email")}
                           </div>
                         )}
                       </li>
+
                       <li>
                         <label htmlFor="username">Username</label>
                         <input
@@ -586,27 +404,19 @@ const AffiliateRegister = () => {
                           placeholder="Enter 4-15 characters (numbers allowed)"
                           style={{
                             textTransform: "lowercase",
-                            borderColor: isFieldValid("username")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("username") ? undefined : "#ff0000",
                           }}
-                          required
+                          // required
                           value={formData.username}
                           onChange={handleInputChange}
                         />
                         {getFieldError("username") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("username")}
                           </div>
                         )}
                       </li>
+
                       <li>
                         <label htmlFor="password">Password</label>
                         <input
@@ -617,31 +427,21 @@ const AffiliateRegister = () => {
                           maxLength={20}
                           placeholder="Enter 6-20 characters (numbers allowed)"
                           style={{
-                            borderColor: isFieldValid("password")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("password") ? undefined : "#ff0000",
                           }}
-                          required
+                          // required
                           value={formData.password}
                           onChange={handleInputChange}
                         />
                         {getFieldError("password") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("password")}
                           </div>
                         )}
                       </li>
+
                       <li>
-                        <label htmlFor="confirmPassword">
-                          Confirm Password
-                        </label>
+                        <label htmlFor="confirmPassword">Confirm Password</label>
                         <input
                           id="confirmPassword"
                           name="confirmPassword"
@@ -650,27 +450,52 @@ const AffiliateRegister = () => {
                           maxLength={20}
                           placeholder="Confirm password"
                           style={{
-                            borderColor: isFieldValid("confirmPassword")
-                              ? undefined
-                              : "#ff0000",
+                            borderColor: isFieldValid("confirmPassword") ? undefined : "#ff0000",
                           }}
-                          required
+                          // required
                           value={formData.confirmPassword}
                           onChange={handleInputChange}
                         />
                         {getFieldError("confirmPassword") && (
-                          <div
-                            className="field-error"
-                            style={{
-                              color: "#ff0000",
-                              fontSize: "12px",
-                              marginTop: "5px",
-                            }}
-                          >
+                          <div className="text-[#ff0000] text-base mt-1">
                             {getFieldError("confirmPassword")}
                           </div>
                         )}
                       </li>
+
+                      <li>
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <PhoneInput
+                          id="phoneNumber"
+                          name="phoneNumber"
+                          international
+                          defaultCountry="BD"
+                          value={phoneValue}
+                          disableDropdown={true}
+                          disableCountryCode={true}
+                          onChange={(value) => {
+                            setPhoneValue(value);
+                            setFormData((prev) => ({
+                              ...prev,
+                              phoneNumber: value || "",
+                            }));
+                            if (errors["phoneNumber"]) {
+                              setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                            }
+                          }}
+                          className="custom-phone-input"
+                          placeholder="Enter phone number"
+                          style={{
+                            borderColor: isFieldValid("phoneNumber") ? undefined : "#ff0000",
+                          }}
+                        />
+                        {getFieldError("phoneNumber") && (
+                          <div className="text-[#ff0000] text-base mt-1">
+                            {getFieldError("phoneNumber")}
+                          </div>
+                        )}
+                      </li>
+
                     </ul>
                   </div>
                 )}
