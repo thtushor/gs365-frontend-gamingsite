@@ -6,7 +6,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_CONFIG } from "./config";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
