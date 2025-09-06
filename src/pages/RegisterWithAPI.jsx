@@ -48,15 +48,12 @@ const Register = () => {
       id: country.id,
       value: country.code,
       label: country.name,
+      flagUrl: `data:image/png;base64,${country.flagUrl}`,
       currency: {
         id: country.currency?.id,
-        code: country.currency?.code,
-        name: country.currency?.name,
-      },
-      phoneCode: `+${
-        country.callingCode || (country.code === "BD" ? "880" : "")
-      }`,
-      flagUrl: `data:image/png;base64,${country.flagUrl}`,
+        value: country.currency?.id,
+        label: `${country.currency?.name} (${country.currency.code})`,
+      }
     })) || [];
 
   // Extract selectedCountry from selectedCurrency
@@ -113,10 +110,23 @@ const Register = () => {
   }, [phoneValue, form.phoneCode]);
 
   const currencyOptions =
-    countryOptions.map((c) => ({
-      value: c.currency?.id,
-      label: `${c.currency?.name} (${c.currency?.code})`,
-    })) || [];
+    countryData?.data?.map((country) => ({
+      id: country.currency?.id,
+      value: country.currency?.id,
+      label: `${country.currency?.name} (${country.currency.code})`,
+      // flagUrl: `data:image/png;base64,${country.flagUrl}`,
+
+    }))
+
+  // console.log({countryData})
+
+  // const currencyOptions =
+  //   countryOptions.map((c) => ({
+  //     value: c.currency?.id,
+  //     label: `${c.currency?.name} (${c.currency?.code})`,
+  //   })) || [];
+
+  console.log({})
 
   const sliderSettings = {
     dots: true,
@@ -134,6 +144,33 @@ const Register = () => {
     { id: 2, image: signup2 },
   ];
 
+
+  useEffect(() => {
+
+    if (selectedCurrency) {
+      setFormData((prev) => ({
+        ...prev,
+        country: {
+          id: selectedCurrency.country?.id,
+          value: selectedCurrency?.country?.code,
+          flagUrl: `data:image/png;base64,${selectedCurrency?.country?.flagUrl}`,
+          currency: {
+            id: selectedCurrency?.country.currency?.id,
+            value: selectedCurrency?.country.currency?.id,
+            label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+          }
+        },
+        currency: {
+          id: selectedCurrency?.country.currency?.id,
+          value: selectedCurrency?.country.currency?.id,
+          label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+        }
+
+      }))
+    }
+
+  }, [selectedCurrency])
+
   const handleInputChange = (e) => {
     const target = e.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -150,7 +187,7 @@ const Register = () => {
     e.preventDefault();
 
     const validation = validateRegistrationForm(formData);
-    console.log({validation})
+    console.log({ validation })
     if (!validation.isValid) {
       const errorMap = {};
       validation.errors.forEach((error) => {
@@ -164,6 +201,8 @@ const Register = () => {
 
     setErrors({});
 
+    console.log({ formData })
+
     try {
       const apiData = {
         username: formData.username.trim().toLowerCase(),
@@ -171,10 +210,10 @@ const Register = () => {
         phone: formData.phoneNumber,
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
-        currency_id: formData?.currency_id,
+        currency_id: formData?.currency?.value,
         refer_code: formData.friendReferCode?.trim() || undefined,
         isAgreeWithTerms: formData.ageCheck,
-        country_id: formData.countryId,
+        country_id: formData.country?.id,
       };
 
       const response = await registerMutation.mutateAsync(apiData);
@@ -220,6 +259,8 @@ const Register = () => {
 
   const getFieldError = (fieldName) => errors[fieldName] || "";
   const isFieldValid = (fieldName) => !errors[fieldName];
+
+  // console.log({ formData })
 
   return (
     <div className="register-page">
@@ -273,7 +314,7 @@ const Register = () => {
                     />
                     {getFieldError("refCode") && (
                       <div className="text-[#ff0000] text-base mt-1"
-                      style={{ color: "#ff0000", fontSize: "12px" }}
+                        style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("refCode")}
                       </div>
@@ -315,7 +356,7 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      // error={}
+                    // error={}
                     />
 
                     {
@@ -325,12 +366,12 @@ const Register = () => {
                         </div>
                       )
                     }
-                    
+
                   </li>
 
                   <li>
                     <label htmlFor="confirmPassword">Confirm Password</label>
-                     <PasswordInputBox
+                    <PasswordInputBox
                       id="confirmPassword"
                       name="confirmPassword"
                       value={formData.confirmPassword}
@@ -338,7 +379,7 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      // error={getFieldError("confirmPassword")}
+                    // error={getFieldError("confirmPassword")}
                     />
                     {
                       getFieldError("confirmPassword") && (
@@ -366,14 +407,30 @@ const Register = () => {
                       <Select
                         options={countryOptions}
                         name="country"
-                        value={formData.country}
-                        onChange={(selected) =>{
+                        // defaultValue={selectedCurrency?.country?.id}
+                        value={formData.country || {
+                          id: selectedCurrency.country.id, value: selectedCurrency?.country?.code, flagUrl: `data:image/png;base64,${selectedCurrency?.country?.flagUrl}`,
+                          currency: {
+                            id: selectedCurrency?.country.currency?.id,
+                            value: selectedCurrency?.country.currency?.id,
+                            label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+                          }
+                        }}
+                        // inputValue={formData.country||{name: selectedCurrency?.country.name, id: selectedCurrency?.country?.id}}
+                        onChange={(selected) => {
+                          // console.log({ selected, selectedCurrency, formData })
                           handleInputChange({
                             target: {
                               name: "country",
-                              value: selected ? selected : "",
+                              value: selected,
                             },
                           })
+
+                          setFormData((prev) => ({
+                            ...prev,
+                            currency: selected.currency
+                          }))
+
                         }
                         }
                         isSearchable
@@ -403,7 +460,7 @@ const Register = () => {
                         getOptionValue={(option) => option.value}
                       />
                     )}
-                    
+
                     {getFieldError("country") && (
                       <div className="text-[#ff0000] text-base mt-1"
                       // style={{ color: "#ff0000", fontSize: "12px" }}
@@ -424,14 +481,19 @@ const Register = () => {
                     <Select
                       options={currencyOptions}
                       name="currency"
-                      value={formData.currency}
+                      value={formData.currency || {
+                        id: selectedCurrency?.country.currency?.id,
+                        value: selectedCurrency?.country.currency?.id,
+                        label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+
+                      }}
                       onChange={(selected) =>
-                       handleInputChange({
-                        target:{
-                          value: selected,
-                          name:"currency"
-                        }
-                       })
+                        handleInputChange({
+                          target: {
+                            value: selected,
+                            name: "currency"
+                          }
+                        })
                       }
                       isSearchable
                       placeholder="Select Currency"
@@ -488,15 +550,18 @@ const Register = () => {
                       id="phoneNumber"
                       name="phoneNumber"
                       international
-                      defaultCountry={selectedCurrency?.country?.code || "BD"}
+                      defaultCountry={formData?.country?.value || "BD"}
                       value={phoneValue}
-                      onChange={(value) => setPhoneValue(value || "")}
+                      onChange={(value) => {
+                        handleInputChange({
+                          target: { name: "phoneNumber", value: value || "" },
+                        })
+                      }}
                       placeholder="Enter phone number"
                     />
                     {getFieldError("phoneNumber") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("phoneNumber")}
                       </div>
