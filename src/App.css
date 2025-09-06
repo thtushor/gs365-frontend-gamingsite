@@ -116,9 +116,19 @@ body {
   color: white !important;
   font-size: 14px;
 }
+
 .PhoneInput {
   border: 1px solid rgba(255, 255, 255, 0.379) !important;
   background: rgb(88 88 88) !important;
   padding: 10px 12px !important;
   border-radius: 5px !important;
+}
+
+
+.react-phone-input {
+  border: 1px solid rgba(255, 255, 255, 0.379) !important;
+  background: rgb(88 88 88) !important;
+  padding: 10px 12px !important;
+  border-radius: 5px !important;
+  width: 100% !important;
 }
