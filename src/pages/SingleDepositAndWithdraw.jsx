@@ -359,7 +359,7 @@ const SingleDepositAndWithdrawPage = () => {
 
   useEffect(() => {
     if (promotionList?.data?.length > 0) {
-      let defaultPromotion = promotionList.data[0]; // fallback
+      let defaultPromotion = promotionList.data?.find((item)=>item?.isRecommended); // fallback
       if (promotionIdFromUrl) {
         const promoFromUrl = promotionList.data.find(
           (promo) => String(promo.id) === promotionIdFromUrl
@@ -371,7 +371,7 @@ const SingleDepositAndWithdrawPage = () => {
 
       setDepositOptions((prev) => ({
         ...prev,
-        promotionId: defaultPromotion.id,
+        promotionId: defaultPromotion?.id,
         promotionDetails: defaultPromotion,
       }));
     }

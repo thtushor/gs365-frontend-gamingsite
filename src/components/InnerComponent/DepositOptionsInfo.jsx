@@ -86,7 +86,7 @@ const DepositOptionsInfo = ({
         </span>
         <span className="flex items-center md:gap-3 text-[24px]">
           <small className="text-yellow-400 text-[14px] block truncate max-w-[120px] sm:max-w-[400px]   font-medium">
-            {selectedPromotion?.promotionName}
+            {selectedPromotion?.promotionName||"Choose Promotion"}
           </small>
           <IoIosArrowForward />
         </span>

@@ -6,6 +6,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { API_CONFIG } from "./config";
+import { toast } from "react-toastify";
 
 // Extend AxiosRequestConfig to include metadata
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -131,7 +132,9 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       // Remove access token and reload page
       localStorage.removeItem("access_token");
-      window.location.reload();
+      // window.location.reload();
+
+      // toast.error("Authentication error. Please log in again.")
       return Promise.reject(error);
     }
 
