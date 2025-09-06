@@ -272,7 +272,9 @@ const Register = () => {
                       }}
                     />
                     {getFieldError("refCode") && (
-                      <div className="field-error">
+                      <div className="text-[#ff0000] text-base mt-1"
+                      style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
                         {getFieldError("refCode")}
                       </div>
                     )}
@@ -291,12 +293,13 @@ const Register = () => {
                           ? undefined
                           : "#ff0000",
                       }}
-                      required
+                      // required
                       value={formData.username}
                       onChange={handleInputChange}
                     />
                     {getFieldError("username") && (
-                      <div className="field-error">
+                      <div className="text-[#ff0000] text-base mt-1"
+                      >
                         {getFieldError("username")}
                       </div>
                     )}
@@ -312,9 +315,16 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      required
-                      error={getFieldError("password")}
+                      // error={}
                     />
+
+                    {
+                      getFieldError("password") && (
+                        <div className="text-[#ff0000] text-base mt-1">
+                          {getFieldError("password")}
+                        </div>
+                      )
+                    }
                     
                   </li>
 
@@ -328,9 +338,16 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      required
-                      error={getFieldError("confirmPassword")}
+                      // error={getFieldError("confirmPassword")}
                     />
+                    {
+                      getFieldError("confirmPassword") && (
+                        <div className="text-[#ff0000] text-base mt-1">
+                          {getFieldError("confirmPassword")}
+                        </div>
+                      )
+                    }
+
                   </li>
 
                   {/* COUNTRY */}
@@ -386,6 +403,14 @@ const Register = () => {
                         getOptionValue={(option) => option.value}
                       />
                     )}
+                    
+                    {getFieldError("country") && (
+                      <div className="text-[#ff0000] text-base mt-1"
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
+                        {getFieldError("country")}
+                      </div>
+                    )}
                   </div>
 
                   {/* CURRENCY */}
@@ -421,6 +446,14 @@ const Register = () => {
                         input: (base) => ({ ...base, color: "#fff" }),
                       }}
                     />
+
+                    {getFieldError("currency") && (
+                      <div className="text-[#ff0000] text-base mt-1"
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
+                        {getFieldError("currency")}
+                      </div>
+                    )}
                   </div>
 
                   <li className="mt-3">
@@ -436,12 +469,14 @@ const Register = () => {
                           ? undefined
                           : "#ff0000",
                       }}
-                      required
+                      // required
                       value={formData.realName}
                       onChange={handleInputChange}
                     />
                     {getFieldError("realName") && (
-                      <div className="field-error">
+                      <div className="text-[#ff0000] text-base mt-1"
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
                         {getFieldError("realName")}
                       </div>
                     )}
@@ -460,8 +495,8 @@ const Register = () => {
                     />
                     {getFieldError("phoneNumber") && (
                       <div
-                        className="field-error"
-                        style={{ color: "#ff0000", fontSize: "12px" }}
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("phoneNumber")}
                       </div>
@@ -480,12 +515,14 @@ const Register = () => {
                           ? undefined
                           : "#ff0000",
                       }}
-                      required
+                      // required
                       value={formData.email}
                       onChange={handleInputChange}
                     />
                     {getFieldError("email") && (
-                      <div className="field-error">
+                      <div className="text-[#ff0000] text-base mt-1"
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
                         {getFieldError("email")}
                       </div>
                     )}
@@ -514,7 +551,9 @@ const Register = () => {
                       </p>
                     </div>
                     {getFieldError("ageCheck") && (
-                      <div className="field-error">
+                      <div className="text-[#ff0000] text-base mt-1"
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      >
                         {getFieldError("ageCheck")}
                       </div>
                     )}

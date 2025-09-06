@@ -16,7 +16,8 @@ export const validateRegistrationForm = (data: {
   username: string;
   password: string;
   confirmPassword: string;
-  currencyType: string;
+  currency: string;
+  country: string;
   friendReferCode?: string;
   realName: string;
   callingCode: string;
@@ -68,10 +69,17 @@ export const validateRegistrationForm = (data: {
   }
 
   // Currency validation
-  if (!data.currencyType) {
+  if (!data.currency) {
     errors.push({
-      field: "currencyType",
+      field: "currency",
       message: "কারেন্সি নির্বাচন করুন প্রয়োজন",
+    });
+  }
+
+  if (!data.country) {
+    errors.push({
+      field: "country",
+      message: "দেশ নির্বাচন করুন",
     });
   }
 

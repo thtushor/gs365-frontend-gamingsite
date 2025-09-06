@@ -11,7 +11,6 @@ interface PasswordInputProps {
   placeholder?: string;
   minLength?: number;
   maxLength?: number;
-  error?: string;
   required?: boolean;
 }
 
@@ -23,7 +22,6 @@ export const PasswordInputBox: React.FC<PasswordInputProps> = ({
   placeholder = "Password",
   minLength = 6,
   maxLength = 20,
-  error,
   required = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,12 +65,7 @@ export const PasswordInputBox: React.FC<PasswordInputProps> = ({
         {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
       </div>
 
-      {/* Error Message */}
-      {error && (
-        <div className="absolute -bottom-6 left-0 text-xs text-red-500">
-          {error}
-        </div>
-      )}
+      
     </div>
   );
 };
