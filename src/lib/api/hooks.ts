@@ -7,7 +7,7 @@ import {
 import { apiService } from "./services";
 import type { RegisterRequest, LoginRequest, UserProfile } from "./services";
 import type { ApiResponse } from "./axios";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useAuth } from "../../contexts/auth-context";
 import axios from "axios";
 import { API_LIST, BASE_URL } from "./apiClient";
@@ -232,6 +232,60 @@ export const useLogout = () => {
       queryClient.clear();
     },
   });
+};
+
+export const useAutoLogout = (timeout = 300000) => {
+  const { clearAuth } = useAuth();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) return;
+
+    // Update last activity timestamp
+    const updateActivity = () => {
+      localStorage.setItem("lastActivity", Date.now().toString());
+    };
+
+    // Check inactivity
+    const checkInactivity = () => {
+      const last = localStorage.getItem("lastActivity");
+      if (!last) return;
+      const now = Date.now();
+      if (now - parseInt(last) >= timeout) {
+        clearAuth();
+        localStorage.removeItem("lastActivity");
+        alert("Your session has expired. Please login again.");
+        window.location.reload();
+      }
+    };
+
+    // Activity events
+    const events = ["mousemove", "keydown", "click", "scroll"];
+    events.forEach((event) => window.addEventListener(event, updateActivity));
+
+    // Visibility change (tab switch)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        checkInactivity();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Check every second
+    const interval = setInterval(checkInactivity, 1000);
+
+    // Initialize
+    updateActivity();
+
+    // Cleanup
+    return () => {
+      clearInterval(interval);
+      events.forEach((event) =>
+        window.removeEventListener(event, updateActivity)
+      );
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [clearAuth, timeout]);
 };
 
 export const useForgotPassword = () => {

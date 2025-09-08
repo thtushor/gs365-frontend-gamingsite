@@ -211,6 +211,8 @@ const Register = () => {
         country_id: formData.country?.id,
       };
 
+      // return console.log(apiData);
+
       const response = await registerMutation.mutateAsync(apiData);
       console.log("Registration successful:", response.data);
       // showToaster(

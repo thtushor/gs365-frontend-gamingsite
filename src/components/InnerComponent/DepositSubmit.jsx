@@ -40,13 +40,16 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
-  
-  const isInternational = (depositOptions.paymentMethod||"").toLowerCase().includes("international");
-  const isCrypto = (depositOptions.paymentMethod||"").toLowerCase().includes("crypto");
+  const isInternational = (depositOptions.paymentMethod || "")
+    .toLowerCase()
+    .includes("international");
+  const isCrypto = (depositOptions.paymentMethod || "")
+    .toLowerCase()
+    .includes("crypto");
 
-  const currencyValue = isCrypto ?"USDT":isInternational ? "$" : "৳"
+  const currencyValue = isCrypto ? "USDT" : isInternational ? "$" : "৳";
 
-  console.log({currencyValue})
+  console.log({ currencyValue });
 
   // Timer countdown
   useEffect(() => {
@@ -131,8 +134,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   console.log({ depositOptions: depositOptions });
 
   const handleSubmit = async () => {
-    if (!referenceId || !receiptFile) {
-      toast.error("Please fill all the fields and upload the receipt.");
+    if (!referenceId) {
+      toast.error("Please fill all the fields.");
       return;
     }
     if (loading) {
@@ -370,9 +373,9 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
 
         <button
           onClick={handleSubmit}
-          disabled={!referenceId || !receiptFile || loading || isSubmitting}
+          disabled={!referenceId || loading || isSubmitting}
           className={`w-full mt-4 py-3 rounded transition duration-300 ${
-            !referenceId || !receiptFile || loading || isSubmitting
+            !referenceId || loading || isSubmitting
               ? "bg-gray-600 cursor-not-allowed text-gray-300 pointer-events-none"
               : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}
