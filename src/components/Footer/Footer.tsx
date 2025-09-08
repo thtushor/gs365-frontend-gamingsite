@@ -144,7 +144,9 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
                   <a href="#">Promotions</a>
                 </li>
                 <li>
-                  <a href="#">Referral Program</a>
+                  <Link to="/referral-program" target="_blank">
+                    Referral Program
+                  </Link>
                 </li>
                 <li>
                   <a href="#">Cashout</a>

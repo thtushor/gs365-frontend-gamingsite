@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BaseModal from "../components/Promotion/BaseModal";
 import ReferRules from "../components/InnerComponent/ReferRules";
+import { useAuth } from "../contexts/auth-context";
 
 interface BannerItem {
   id: string;
@@ -121,6 +122,7 @@ const BonusRow: React.FC<{ name: string; bonus: string; date: string }> = ({
 };
 
 const ReferralInfo: React.FC = () => {
+  const { user } = useAuth();
   const bannerItems: BannerItem[] = [
     {
       id: "message-message-125716",
@@ -142,7 +144,7 @@ const ReferralInfo: React.FC = () => {
         .share({
           title: "Baji Live",
           text: "Check out this link!",
-          url: "https://bajilive.online/?refcode=ARURyR",
+          url: `https://gamestar365.com?refCode=${user?.refer_code}`,
         })
         .then(() => console.log("Link shared successfully"))
         .catch((error) => console.error("Error sharing", error));
@@ -163,38 +165,40 @@ const ReferralInfo: React.FC = () => {
         </a>
       </div>
 
-      <div className="referral-container max-w-6xl mx-auto  px-5">
-        <div className="border-b second-border mb-5">
-          <div className=" max-w-[320px]  flex">
-            <div
-              onClick={() => {
-                navigate("/profile/referral-info");
-                setPageActiveTab("info");
-              }}
-              className={`border-b-[3px] border-transparent ${
-                pageActiveTab === "info"
-                  ? "border-yellow-400 text-yellow-400"
-                  : ""
-              } hover:border-yellow-200 w-full cursor-pointer`}
-            >
-              <p className="font-semibold text-[18px]">Info</p>
-            </div>
-            <div
-              onClick={() => {
-                navigate("/profile/referral-details");
-                setPageActiveTab("details");
-              }}
-              className={`border-b-[3px] border-transparent ${
-                pageActiveTab === "details"
-                  ? "border-yellow-400 text-yellow-400"
-                  : ""
-              } hover:border-yellow-200 w-full cursor-pointer`}
-            >
-              <p className="font-semibold text-[18px]">Details</p>
+      {user && (
+        <div className="referral-container max-w-6xl mx-auto  px-5">
+          <div className="border-b second-border mb-5">
+            <div className=" max-w-[320px]  flex">
+              <div
+                onClick={() => {
+                  navigate("/profile/referral-info");
+                  setPageActiveTab("info");
+                }}
+                className={`border-b-[3px] border-transparent ${
+                  pageActiveTab === "info"
+                    ? "border-yellow-400 text-yellow-400"
+                    : ""
+                } hover:border-yellow-200 w-full cursor-pointer`}
+              >
+                <p className="font-semibold text-[18px]">Info</p>
+              </div>
+              <div
+                onClick={() => {
+                  navigate("/profile/referral-details");
+                  setPageActiveTab("details");
+                }}
+                className={`border-b-[3px] border-transparent ${
+                  pageActiveTab === "details"
+                    ? "border-yellow-400 text-yellow-400"
+                    : ""
+                } hover:border-yellow-200 w-full cursor-pointer`}
+              >
+                <p className="font-semibold text-[18px]">Details</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Referral Program Section */}
       <div className="referral-container max-w-6xl mx-auto grid grid-cols-1 pt-0 p-5 md:grid-cols-3 gap-6 rounded-lg">
@@ -307,12 +311,15 @@ const ReferralInfo: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button
-              onClick={handleShare}
-              className="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded transition"
-            >
-              Refer a friend now
-            </button>
+
+            {user && (
+              <button
+                onClick={handleShare}
+                className="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded transition"
+              >
+                Refer a friend now
+              </button>
+            )}
           </div>
         </div>
         {/* Right: Leaderboard */}
@@ -361,9 +368,9 @@ const ReferralInfo: React.FC = () => {
             <div className="w-full  max-h-64 overflow-y-auto lg:max-w-full md:max-w-[320px] rounded shadow-inner border border-gray-600">
               <div className="w-full min-w-[400px]">
                 <div className="flex font-semibold text-yellow-400 border-b border-gray-700 px-2 py-1">
-                  <span className="w-1/3">নাম</span>
-                  <span className="w-1/3 text-center">বোনাস</span>
-                  <span className="w-1/3 text-right">তারিখ</span>
+                  <span className="w-1/3">Name</span>
+                  <span className="w-1/3 text-center">Bonus</span>
+                  <span className="w-1/3 text-right">Date</span>
                 </div>
                 {bonusList.map((item, idx) => (
                   <BonusRow

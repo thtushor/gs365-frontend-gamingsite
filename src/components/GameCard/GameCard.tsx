@@ -5,6 +5,7 @@ import { API_LIST, BASE_URL } from "../../lib/api/apiClient";
 import { useAuth } from "../../contexts/auth-context";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Logo from "../../assets/brand-logo.png";
 
 interface GameCardProps {
   id: number;
@@ -138,6 +139,11 @@ const GameCard: React.FC<GameCardProps> = ({
     <div
       className={`game-card ${className} cursor-pointer relative min-h-[140px] md:w-[140px] md:h-[185px]`}
     >
+      <img
+        src={Logo}
+        className="absolute top-1 left-1 w-[22px] h-[22px] border border-yellow-300 bg-[#121212] rounded-full"
+        alt=""
+      />
       <img
         src={gameLogo ? gameLogo : sportLogo ? sportLogo : logo ? logo : ""}
         alt=""

@@ -53,7 +53,7 @@ const Register = () => {
         id: country.currency?.id,
         value: country.currency?.id,
         label: `${country.currency?.name} (${country.currency.code})`,
-      }
+      },
     })) || [];
 
   // Extract selectedCountry from selectedCurrency
@@ -109,14 +109,12 @@ const Register = () => {
     }
   }, [phoneValue, form.phoneCode]);
 
-  const currencyOptions =
-    countryData?.data?.map((country) => ({
-      id: country.currency?.id,
-      value: country.currency?.id,
-      label: `${country.currency?.name} (${country.currency.code})`,
-      // flagUrl: `data:image/png;base64,${country.flagUrl}`,
-
-    }))
+  const currencyOptions = countryData?.data?.map((country) => ({
+    id: country.currency?.id,
+    value: country.currency?.id,
+    label: `${country.currency?.name} (${country.currency.code})`,
+    // flagUrl: `data:image/png;base64,${country.flagUrl}`,
+  }));
 
   // console.log({countryData})
 
@@ -126,7 +124,7 @@ const Register = () => {
   //     label: `${c.currency?.name} (${c.currency?.code})`,
   //   })) || [];
 
-  console.log({})
+  console.log({});
 
   const sliderSettings = {
     dots: true,
@@ -144,9 +142,7 @@ const Register = () => {
     { id: 2, image: signup2 },
   ];
 
-
   useEffect(() => {
-
     if (selectedCurrency) {
       setFormData((prev) => ({
         ...prev,
@@ -158,18 +154,16 @@ const Register = () => {
             id: selectedCurrency?.country.currency?.id,
             value: selectedCurrency?.country.currency?.id,
             label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
-          }
+          },
         },
         currency: {
           id: selectedCurrency?.country.currency?.id,
           value: selectedCurrency?.country.currency?.id,
           label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
-        }
-
-      }))
+        },
+      }));
     }
-
-  }, [selectedCurrency])
+  }, [selectedCurrency]);
 
   const handleInputChange = (e) => {
     const target = e.target;
@@ -187,7 +181,7 @@ const Register = () => {
     e.preventDefault();
 
     const validation = validateRegistrationForm(formData);
-    console.log({ validation })
+    console.log({ validation });
     if (!validation.isValid) {
       const errorMap = {};
       validation.errors.forEach((error) => {
@@ -201,8 +195,6 @@ const Register = () => {
 
     setErrors({});
 
-    console.log({ formData })
-
     try {
       const apiData = {
         username: formData.username.trim().toLowerCase(),
@@ -211,7 +203,10 @@ const Register = () => {
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
         currency_id: formData?.currency?.value,
-        refer_code: formData.friendReferCode?.trim() || undefined,
+        refer_code:
+          formData.friendReferCode?.trim() ||
+          formData.refCode?.trim() ||
+          undefined,
         isAgreeWithTerms: formData.ageCheck,
         country_id: formData.country?.id,
       };
@@ -313,7 +308,8 @@ const Register = () => {
                       }}
                     />
                     {getFieldError("refCode") && (
-                      <div className="text-[#ff0000] text-base mt-1"
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
                         style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("refCode")}
@@ -339,8 +335,7 @@ const Register = () => {
                       onChange={handleInputChange}
                     />
                     {getFieldError("username") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      >
+                      <div className="text-[#ff0000] text-base mt-1">
                         {getFieldError("username")}
                       </div>
                     )}
@@ -356,17 +351,14 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                    // error={}
+                      // error={}
                     />
 
-                    {
-                      getFieldError("password") && (
-                        <div className="text-[#ff0000] text-base mt-1">
-                          {getFieldError("password")}
-                        </div>
-                      )
-                    }
-
+                    {getFieldError("password") && (
+                      <div className="text-[#ff0000] text-base mt-1">
+                        {getFieldError("password")}
+                      </div>
+                    )}
                   </li>
 
                   <li>
@@ -379,16 +371,13 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                    // error={getFieldError("confirmPassword")}
+                      // error={getFieldError("confirmPassword")}
                     />
-                    {
-                      getFieldError("confirmPassword") && (
-                        <div className="text-[#ff0000] text-base mt-1">
-                          {getFieldError("confirmPassword")}
-                        </div>
-                      )
-                    }
-
+                    {getFieldError("confirmPassword") && (
+                      <div className="text-[#ff0000] text-base mt-1">
+                        {getFieldError("confirmPassword")}
+                      </div>
+                    )}
                   </li>
 
                   {/* COUNTRY */}
@@ -408,14 +397,18 @@ const Register = () => {
                         options={countryOptions}
                         name="country"
                         // defaultValue={selectedCurrency?.country?.id}
-                        value={formData.country || {
-                          id: selectedCurrency.country.id, value: selectedCurrency?.country?.code, flagUrl: `data:image/png;base64,${selectedCurrency?.country?.flagUrl}`,
-                          currency: {
-                            id: selectedCurrency?.country.currency?.id,
-                            value: selectedCurrency?.country.currency?.id,
-                            label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+                        value={
+                          formData.country || {
+                            id: selectedCurrency.country.id,
+                            value: selectedCurrency?.country?.code,
+                            flagUrl: `data:image/png;base64,${selectedCurrency?.country?.flagUrl}`,
+                            currency: {
+                              id: selectedCurrency?.country.currency?.id,
+                              value: selectedCurrency?.country.currency?.id,
+                              label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+                            },
                           }
-                        }}
+                        }
                         // inputValue={formData.country||{name: selectedCurrency?.country.name, id: selectedCurrency?.country?.id}}
                         onChange={(selected) => {
                           // console.log({ selected, selectedCurrency, formData })
@@ -424,15 +417,13 @@ const Register = () => {
                               name: "country",
                               value: selected,
                             },
-                          })
+                          });
 
                           setFormData((prev) => ({
                             ...prev,
-                            currency: selected.currency
-                          }))
-
-                        }
-                        }
+                            currency: selected.currency,
+                          }));
+                        }}
                         isSearchable
                         placeholder="Select Country"
                         styles={{
@@ -462,8 +453,9 @@ const Register = () => {
                     )}
 
                     {getFieldError("country") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("country")}
                       </div>
@@ -481,18 +473,19 @@ const Register = () => {
                     <Select
                       options={currencyOptions}
                       name="currency"
-                      value={formData.currency || {
-                        id: selectedCurrency?.country.currency?.id,
-                        value: selectedCurrency?.country.currency?.id,
-                        label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
-
-                      }}
+                      value={
+                        formData.currency || {
+                          id: selectedCurrency?.country.currency?.id,
+                          value: selectedCurrency?.country.currency?.id,
+                          label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
+                        }
+                      }
                       onChange={(selected) =>
                         handleInputChange({
                           target: {
                             value: selected,
-                            name: "currency"
-                          }
+                            name: "currency",
+                          },
                         })
                       }
                       isSearchable
@@ -510,8 +503,9 @@ const Register = () => {
                     />
 
                     {getFieldError("currency") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("currency")}
                       </div>
@@ -536,8 +530,9 @@ const Register = () => {
                       onChange={handleInputChange}
                     />
                     {getFieldError("realName") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("realName")}
                       </div>
@@ -558,14 +553,12 @@ const Register = () => {
                       onChange={(value) => {
                         handleInputChange({
                           target: { name: "phoneNumber", value: value || "" },
-                        })
+                        });
                       }}
                       placeholder="Enter phone number"
                     />
                     {getFieldError("phoneNumber") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                      >
+                      <div className="text-[#ff0000] text-base mt-1">
                         {getFieldError("phoneNumber")}
                       </div>
                     )}
@@ -588,8 +581,9 @@ const Register = () => {
                       onChange={handleInputChange}
                     />
                     {getFieldError("email") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("email")}
                       </div>
@@ -619,8 +613,9 @@ const Register = () => {
                       </p>
                     </div>
                     {getFieldError("ageCheck") && (
-                      <div className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
+                      <div
+                        className="text-[#ff0000] text-base mt-1"
+                        // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("ageCheck")}
                       </div>
