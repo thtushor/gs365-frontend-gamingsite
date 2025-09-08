@@ -48,12 +48,17 @@ const DepositPromotionSelect = ({
             <div
               key={promo?.id}
               onClick={() => setSelectedPromotion(promo)}
-              className={`p-4 rounded-lg border text-left cursor-pointer transition-all ${
+              className={`p-4 rounded-lg border relative text-left cursor-pointer transition-all ${
                 selectedPromotion?.id === promo?.id
                   ? "bg-[#1d1d1d] border-yellow-400"
                   : "bg-[#1a1a1a] border-transparent hover:border-gray-600"
               }`}
             >
+              {promo?.isRecommended && (
+                <div className="absolute top-[-8px] text-[12px] bg-yellow-300 text-black font-medium px-2 rounded-full">
+                  Recommended
+                </div>
+              )}
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-white font-bold text-[16px] mb-1">

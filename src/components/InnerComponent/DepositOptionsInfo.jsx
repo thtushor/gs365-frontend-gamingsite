@@ -21,10 +21,10 @@ const DepositOptionsInfo = ({
       title: gateway.name,
       transfer_type: [{ id: gateway.id, title: `${gateway.name} Transfer` }],
       deposit_channel: gateway.providers,
-      gateway: gateway // Keep original gateway data for reference
+      gateway: gateway, // Keep original gateway data for reference
     })) || [];
 
-    console.log({transformedPaymentTypes,depositOptions})
+  console.log({ transformedPaymentTypes, depositOptions });
 
   const [selectedPaymentTypes, setSelectedPaymentTypes] = useState(null);
   const [selectedDepositChannel, setSelectedDepositChannel] = useState(null);
@@ -72,6 +72,7 @@ const DepositOptionsInfo = ({
     }
   }, [selectedDepositChannel]);
 
+  console.log(selectedPromotion);
   return (
     <div className="mt-5">
       {/* Select Promotion */}
@@ -85,8 +86,13 @@ const DepositOptionsInfo = ({
           Promotions
         </span>
         <span className="flex items-center md:gap-3 text-[24px]">
-          <small className="text-yellow-400 text-[14px] block truncate max-w-[120px] sm:max-w-[400px]   font-medium">
-            {selectedPromotion?.promotionName||"Choose Promotion"}
+          <small className="text-yellow-400 items-center text-[14px] block truncate max-w-[120px] sm:max-w-[400px]   font-medium">
+            {selectedPromotion?.isRecommended && (
+              <span className="text-[12px] hidden md:inline-block text-orange-500 mt-[-5px] pr-1">
+                {selectedPromotion?.isRecommended ? "(Recommended) " : ""}
+              </span>
+            )}
+            {selectedPromotion?.promotionName || "Choose Promotion"}
           </small>
           <IoIosArrowForward />
         </span>

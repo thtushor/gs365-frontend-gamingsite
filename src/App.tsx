@@ -203,6 +203,7 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/referral-program" element={<ReferralInfo />} />
           <Route
             path="/profile/referral-details"
             element={
