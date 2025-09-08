@@ -13,8 +13,10 @@ import { toast } from "react-toastify";
 import KycModal from "../KycModal";
 import { FiArrowUpCircle } from "react-icons/fi";
 import { IoIosArrowDropup } from "react-icons/io";
+import { useAutoLogout } from "../../lib/api/hooks";
 
 const Layout = ({ children }) => {
+  useAutoLogout();
   const { setCountries, user, countries, setSocial, setFavorites } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);

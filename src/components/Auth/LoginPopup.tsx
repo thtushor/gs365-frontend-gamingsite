@@ -160,9 +160,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       window.dispatchEvent(new Event("userLogin"));
 
       onClose(); // Close popup after successful login
+      window.location.reload();
 
       // Optionally redirect or update app state
-      // window.location.href = "/";
     } catch (error: unknown) {
       console.error("Login failed:", error);
 
