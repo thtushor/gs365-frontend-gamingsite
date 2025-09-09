@@ -45,6 +45,8 @@ import DocumentSubmitKyc from "./pages/DocumentSubmitKyc";
 import FavoriteGames from "./components/GameGrid/Favorite";
 import BettingHistory from "./components/BettingHistory";
 import TransactionHistory from "./components/TransactionHistory";
+import PublicRoute from "./routes/PublicRoute";
+import NotFound from "./routes/NotFound";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,7 +67,14 @@ const App: React.FC = () => {
           {/* --------------------- */}
           <Route path="/" element={<HomePage />} />
           <Route path="/demo-deposit" element={<Deposit />} />
-          <Route path="/affiliate-signup" element={<AffiliateRegister />} />
+          <Route
+            path="/affiliate-signup"
+            element={
+              <PublicRoute>
+                <AffiliateRegister />
+              </PublicRoute>
+            }
+          />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
 
@@ -80,7 +89,14 @@ const App: React.FC = () => {
           {/* --------------------- */}
           {/* Private Pages--------------------- */}
           {/* --------------------- */}
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
           <Route
             path="/deposit"
             element={
@@ -224,7 +240,7 @@ const App: React.FC = () => {
           {/* --------------------- */}
           {/* Extra Pages--------------------- */}
           {/* --------------------- */}
-          {/* <Route path="*" element={<HomePage />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>

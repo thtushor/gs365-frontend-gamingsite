@@ -29,7 +29,7 @@ const AffiliateRegister = () => {
   const [searchParams] = useSearchParams();
   const refCodeParam =
     searchParams.get("refCode") || searchParams.get("refcode");
-  const { selectedCurrency } = useAuth();
+  const { user, selectedCurrency } = useAuth();
   const getRequest = useGetRequest();
 
   // Fetch country list
@@ -296,6 +296,12 @@ const AffiliateRegister = () => {
       phoneNumber: phoneValue || "",
     }));
   }, [phoneValue]);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div className="register-page">

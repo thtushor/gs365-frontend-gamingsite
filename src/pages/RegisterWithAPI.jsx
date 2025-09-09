@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
 
 const Register = () => {
-  const { selectedCurrency } = useAuth();
+  const { user, selectedCurrency } = useAuth();
   console.log(selectedCurrency);
   const getRequest = useGetRequest();
 
@@ -259,6 +259,11 @@ const Register = () => {
 
   // console.log({ formData })
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
   return (
     <div className="register-page">
       <div className="register-wrap">
