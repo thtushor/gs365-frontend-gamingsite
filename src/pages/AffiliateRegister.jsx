@@ -8,6 +8,7 @@ import "react-phone-number-input/style.css";
 import {
   validateRegistrationForm,
   transformAffiliateRegistrationData,
+  affiliateValidateRegistrationForm,
 } from "../lib/utils/validation";
 import "./Register.scss";
 
@@ -54,8 +55,9 @@ const AffiliateRegister = () => {
         code: country.currency?.code,
         name: country.currency?.name,
       },
-      phoneCode: `+${country.callingCode || (country.code === "BD" ? "880" : "")
-        }`,
+      phoneCode: `+${
+        country.callingCode || (country.code === "BD" ? "880" : "")
+      }`,
       flagUrl: `data:image/png;base64,${country.flagUrl}`,
     })) || [];
 
@@ -213,12 +215,9 @@ const AffiliateRegister = () => {
     if (!validateStep(1)) {
       return;
     }
-    if (!formData.refCode) {
-      return toast.error("Please provide a referral code!");
-    }
 
     // Validate entire form
-    const validation = validateRegistrationForm(formData);
+    const validation = affiliateValidateRegistrationForm(formData);
     if (!validation.isValid) {
       const errorMap = {};
       validation.errors.forEach((error) => {
@@ -238,6 +237,7 @@ const AffiliateRegister = () => {
         ...transformAffiliateRegistrationData(formData),
         refer_code: formData.refCode,
         country_id: form.countryId,
+        role: formData.refCode ? "affiliate" : "superAffiliate",
       };
 
       // Call registration API
@@ -342,7 +342,9 @@ const AffiliateRegister = () => {
                           placeholder="Referral code"
                           readOnly={!!refCodeParam}
                           style={{
-                            borderColor: isFieldValid("refCode") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("refCode")
+                              ? undefined
+                              : "#ff0000",
                           }}
                         />
                         {getFieldError("refCode") && (
@@ -361,7 +363,9 @@ const AffiliateRegister = () => {
                           placeholder="Enter your full name"
                           maxLength={100}
                           style={{
-                            borderColor: isFieldValid("realName") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("realName")
+                              ? undefined
+                              : "#ff0000",
                           }}
                           // required
                           value={formData.realName}
@@ -382,7 +386,9 @@ const AffiliateRegister = () => {
                           name="email"
                           placeholder="Enter your valid email address"
                           style={{
-                            borderColor: isFieldValid("email") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("email")
+                              ? undefined
+                              : "#ff0000",
                           }}
                           // required
                           value={formData.email}
@@ -404,7 +410,9 @@ const AffiliateRegister = () => {
                           placeholder="Enter 4-15 characters (numbers allowed)"
                           style={{
                             textTransform: "lowercase",
-                            borderColor: isFieldValid("username") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("username")
+                              ? undefined
+                              : "#ff0000",
                           }}
                           // required
                           value={formData.username}
@@ -427,7 +435,9 @@ const AffiliateRegister = () => {
                           maxLength={20}
                           placeholder="Enter 6-20 characters (numbers allowed)"
                           style={{
-                            borderColor: isFieldValid("password") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("password")
+                              ? undefined
+                              : "#ff0000",
                           }}
                           // required
                           value={formData.password}
@@ -441,7 +451,9 @@ const AffiliateRegister = () => {
                       </li>
 
                       <li>
-                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <label htmlFor="confirmPassword">
+                          Confirm Password
+                        </label>
                         <input
                           id="confirmPassword"
                           name="confirmPassword"
@@ -450,7 +462,9 @@ const AffiliateRegister = () => {
                           maxLength={20}
                           placeholder="Confirm password"
                           style={{
-                            borderColor: isFieldValid("confirmPassword") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("confirmPassword")
+                              ? undefined
+                              : "#ff0000",
                           }}
                           // required
                           value={formData.confirmPassword}
@@ -480,13 +494,18 @@ const AffiliateRegister = () => {
                               phoneNumber: value || "",
                             }));
                             if (errors["phoneNumber"]) {
-                              setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                              setErrors((prev) => ({
+                                ...prev,
+                                phoneNumber: "",
+                              }));
                             }
                           }}
                           className="custom-phone-input"
                           placeholder="Enter phone number"
                           style={{
-                            borderColor: isFieldValid("phoneNumber") ? undefined : "#ff0000",
+                            borderColor: isFieldValid("phoneNumber")
+                              ? undefined
+                              : "#ff0000",
                           }}
                         />
                         {getFieldError("phoneNumber") && (
@@ -495,7 +514,6 @@ const AffiliateRegister = () => {
                           </div>
                         )}
                       </li>
-
                     </ul>
                   </div>
                 )}

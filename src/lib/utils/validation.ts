@@ -65,7 +65,10 @@ export const validateRegistrationForm = (data: {
       message: "Confirm password is required",
     });
   } else if (data.password !== data.confirmPassword) {
-    errors.push({ field: "confirmPassword", message: "Passwords do not match" });
+    errors.push({
+      field: "confirmPassword",
+      message: "Passwords do not match",
+    });
   }
 
   // Currency validation
@@ -98,7 +101,10 @@ export const validateRegistrationForm = (data: {
   if (!data.phoneNumber.trim()) {
     errors.push({ field: "phoneNumber", message: "Phone number is required" });
   } else if (!isValidPhoneNumber(data.phoneNumber)) {
-    errors.push({ field: "phoneNumber", message: "Enter a valid phone number" });
+    errors.push({
+      field: "phoneNumber",
+      message: "Enter a valid phone number",
+    });
   }
 
   // Email validation
@@ -130,6 +136,111 @@ export const validateRegistrationForm = (data: {
   };
 };
 
+export const affiliateValidateRegistrationForm = (data: {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  friendReferCode?: string;
+  realName: string;
+  callingCode: string;
+  phoneNumber: string;
+  email: string;
+  ageCheck: boolean;
+}): ValidationResult => {
+  const errors: ValidationError[] = [];
+  console.log(data.phoneNumber);
+
+  // Username validation
+  if (!data.username.trim()) {
+    errors.push({ field: "username", message: "Username is required" });
+  } else if (data.username.length < 4 || data.username.length > 15) {
+    errors.push({
+      field: "username",
+      message: "Username must be between 4 and 15 characters",
+    });
+  } else if (!/^[a-zA-Z0-9_]+$/.test(data.username)) {
+    errors.push({
+      field: "username",
+      message: "Username can only contain letters, numbers, and underscores",
+    });
+  }
+
+  // Password validation
+  if (!data.password) {
+    errors.push({ field: "password", message: "Password is required" });
+  } else if (data.password.length < 6 || data.password.length > 20) {
+    errors.push({
+      field: "password",
+      message: "Password must be between 6 and 20 characters",
+    });
+  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)/.test(data.password)) {
+    errors.push({
+      field: "password",
+      message: "Password must contain at least one letter and one number",
+    });
+  }
+
+  // Confirm password validation
+  if (!data.confirmPassword) {
+    errors.push({
+      field: "confirmPassword",
+      message: "Confirm password is required",
+    });
+  } else if (data.password !== data.confirmPassword) {
+    errors.push({
+      field: "confirmPassword",
+      message: "Passwords do not match",
+    });
+  }
+
+  // Real name validation
+  if (!data.realName.trim()) {
+    errors.push({ field: "realName", message: "Full name is required" });
+  } else if (data.realName.length < 2 || data.realName.length > 100) {
+    errors.push({
+      field: "realName",
+      message: "Full name must be between 2 and 100 characters",
+    });
+  }
+
+  // Phone number validation
+  if (!data.phoneNumber.trim()) {
+    errors.push({ field: "phoneNumber", message: "Phone number is required" });
+  } else if (!isValidPhoneNumber(data.phoneNumber)) {
+    errors.push({
+      field: "phoneNumber",
+      message: "Enter a valid phone number",
+    });
+  }
+
+  // Email validation
+  if (!data.email.trim()) {
+    errors.push({ field: "email", message: "Email is required" });
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push({ field: "email", message: "Enter a valid email address" });
+  }
+
+  // Age check validation
+  if (!data.ageCheck) {
+    errors.push({
+      field: "ageCheck",
+      message: "You must be at least 18 years old and agree to the terms",
+    });
+  }
+
+  // Refer code validation (optional)
+  if (data.friendReferCode && data.friendReferCode.length < 6) {
+    errors.push({
+      field: "friendReferCode",
+      message: "Referral code must be at least 6 characters long",
+    });
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
+};
 
 // Transform form data to API format
 export const transformRegistrationData = (formData: {
@@ -171,6 +282,7 @@ export const transformAffiliateRegistrationData = (formData: {
   phoneNumber: string;
   email: string;
   ageCheck: boolean;
+  role: string;
 }) => {
   // Map currency type to currency_id
   // const currencyIdMap: Record<string, number> = {
@@ -190,7 +302,7 @@ export const transformAffiliateRegistrationData = (formData: {
     currency: formData.currencyType || 1,
     refCode: formData.friendReferCode?.trim() || undefined,
     status: "inactive",
-    role: "superAffiliate",
+    role: formData.role || "affiliate",
   };
 };
 

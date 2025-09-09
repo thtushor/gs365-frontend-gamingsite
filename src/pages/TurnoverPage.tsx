@@ -3,7 +3,14 @@ import { useAuth } from "../contexts/auth-context";
 import axiosInstance from "../lib/api/axios";
 import { API_ENDPOINTS } from "../lib/api/config";
 import { toast } from "react-toastify";
-import { FaFilter, FaChartLine, FaTrophy, FaClock, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import {
+  FaFilter,
+  FaChartLine,
+  FaTrophy,
+  FaClock,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 
 interface TurnoverData {
@@ -12,6 +19,7 @@ interface TurnoverData {
   transactionId: number;
   type: "default" | "bonus" | "promotion";
   status: "active" | "inactive" | "completed";
+  bonusAmount: string;
   turnoverName: string;
   targetTurnover: string;
   depositAmount: string;
@@ -36,8 +44,10 @@ interface TurnoverResponse {
 
 const TurnoverPage: React.FC = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<"active" | "inactive" | "completed">("active");
-  
+  const [activeTab, setActiveTab] = useState<
+    "active" | "inactive" | "completed"
+  >("active");
+
   // Filter states
   const [filters, setFilters] = useState({
     userId: user?.id?.toString() || "",
@@ -49,9 +59,9 @@ const TurnoverPage: React.FC = () => {
   // Update filters when user changes
   useEffect(() => {
     if (user?.id) {
-      setFilters(prev => ({
+      setFilters((prev) => ({
         ...prev,
-        userId: user.id.toString()
+        userId: user.id.toString(),
       }));
     }
   }, [user?.id]);
@@ -64,10 +74,16 @@ const TurnoverPage: React.FC = () => {
   queryParams.append("pageSize", filters.pageSize.toString());
 
   // React Query for fetching turnovers
-  const { data: turnoverData, isLoading, error } = useQuery({
+  const {
+    data: turnoverData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["turnover", filters],
     queryFn: async () => {
-      const response = await axiosInstance.get(`${API_ENDPOINTS.PAYMENT.TURNOVER}?${queryParams}`);
+      const response = await axiosInstance.get(
+        `${API_ENDPOINTS.PAYMENT.TURNOVER}?${queryParams}`
+      );
       return response.data?.data as TurnoverResponse;
     },
     enabled: !!filters.userId, // Only run query when we have a userId
@@ -78,7 +94,7 @@ const TurnoverPage: React.FC = () => {
   const turnovers = turnoverData?.data || [];
   const pagination = turnoverData?.pagination || null;
 
-  console.log({turnoverData})
+  console.log({ turnoverData });
 
   // Handle errors
   useEffect(() => {
@@ -88,7 +104,7 @@ const TurnoverPage: React.FC = () => {
   }, [error]);
 
   const handleFilterChange = (key: string, value: string | number) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [key]: value,
       page: 1, // Reset to first page when filters change
@@ -96,7 +112,7 @@ const TurnoverPage: React.FC = () => {
   };
 
   const handlePageChange = (newPage: number) => {
-    setFilters(prev => ({ ...prev, page: newPage }));
+    setFilters((prev) => ({ ...prev, page: newPage }));
   };
 
   const getStatusIcon = (status: string) => {
@@ -112,7 +128,7 @@ const TurnoverPage: React.FC = () => {
     }
   };
 
-  console.log({getStatusIcon})
+  console.log({ getStatusIcon });
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -147,7 +163,7 @@ const TurnoverPage: React.FC = () => {
     return Math.min((completed / targetNum) * 100, 100);
   };
 
-  const filteredTurnovers = turnovers.filter(turnover => {
+  const filteredTurnovers = turnovers.filter((turnover) => {
     if (activeTab === "active") return turnover.status === "active";
     if (activeTab === "inactive") return turnover.status === "inactive";
     if (activeTab === "completed") return turnover.status === "completed";
@@ -155,20 +171,20 @@ const TurnoverPage: React.FC = () => {
   });
 
   const formatCurrency = (amount: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'BDT',
-      minimumFractionDigits: 2
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "BDT",
+      minimumFractionDigits: 2,
     }).format(parseFloat(amount));
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -179,9 +195,13 @@ const TurnoverPage: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <FaChartLine className="text-3xl text-yellow-400" />
-            <h1 className="text-3xl font-bold text-white">Turnover Management</h1>
+            <h1 className="text-3xl font-bold text-white">
+              Turnover Management
+            </h1>
           </div>
-          <p className="text-gray-300">Track and manage your turnover targets and progress</p>
+          <p className="text-gray-300">
+            Track and manage your turnover targets and progress
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -192,8 +212,12 @@ const TurnoverPage: React.FC = () => {
                 <FaChartLine className="text-blue-400 text-xl" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Total Turnovers</p>
-                <p className="text-2xl font-bold text-white">{pagination?.total || 0}</p>
+                <p className="text-sm font-medium text-gray-300">
+                  Total Turnovers
+                </p>
+                <p className="text-2xl font-bold text-white">
+                  {pagination?.total || 0}
+                </p>
               </div>
             </div>
           </div>
@@ -206,7 +230,7 @@ const TurnoverPage: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-300">Active</p>
                 <p className="text-2xl font-bold text-white">
-                  {turnovers.filter(t => t.status === "active").length}
+                  {turnovers.filter((t) => t.status === "active").length}
                 </p>
               </div>
             </div>
@@ -220,7 +244,7 @@ const TurnoverPage: React.FC = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-300">Completed</p>
                 <p className="text-2xl font-bold text-white">
-                  {turnovers.filter(t => t.status === "completed").length}
+                  {turnovers.filter((t) => t.status === "completed").length}
                 </p>
               </div>
             </div>
@@ -232,9 +256,15 @@ const TurnoverPage: React.FC = () => {
                 <FaTrophy className="text-purple-400 text-xl" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Total Target</p>
+                <p className="text-sm font-medium text-gray-300">
+                  Total Target
+                </p>
                 <p className="text-2xl font-bold text-white">
-                  {formatCurrency(turnovers.reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0).toString())}
+                  {formatCurrency(
+                    turnovers
+                      .reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0)
+                      .toString()
+                  )}
                 </p>
               </div>
             </div>
@@ -250,19 +280,40 @@ const TurnoverPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <p className="text-2xl font-bold text-yellow-400">
-                {formatCurrency(turnovers.reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0).toString())}
+                {formatCurrency(
+                  turnovers
+                    .reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0)
+                    .toString()
+                )}
               </p>
               <p className="text-sm text-gray-300">Total Target Amount</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-green-400">
-                {formatCurrency(turnovers.reduce((sum, t) => sum + parseFloat(t.remainingTurnover), 0).toString())}
+                {formatCurrency(
+                  turnovers
+                    .reduce(
+                      (sum, t) => sum + parseFloat(t.remainingTurnover),
+                      0
+                    )
+                    .toString()
+                )}
               </p>
               <p className="text-sm text-gray-300">Total Remaining</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-blue-400">
-                {formatCurrency(turnovers.reduce((sum, t) => sum + (parseFloat(t.targetTurnover) - parseFloat(t.remainingTurnover)), 0).toString())}
+                {formatCurrency(
+                  turnovers
+                    .reduce(
+                      (sum, t) =>
+                        sum +
+                        (parseFloat(t.targetTurnover) -
+                          parseFloat(t.remainingTurnover)),
+                      0
+                    )
+                    .toString()
+                )}
               </p>
               <p className="text-sm text-gray-300">Total Completed</p>
             </div>
@@ -278,7 +329,9 @@ const TurnoverPage: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">User ID</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  User ID
+                </label>
                 <input
                   type="text"
                   placeholder="Filter by User ID"
@@ -287,11 +340,15 @@ const TurnoverPage: React.FC = () => {
                   className="w-full px-3 py-2 second-bg border second-border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   disabled
                 />
-                <p className="text-xs text-gray-500 mt-1">Auto-filled from your account</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Auto-filled from your account
+                </p>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Status
+                </label>
                 <select
                   value={filters.status}
                   onChange={(e) => handleFilterChange("status", e.target.value)}
@@ -305,10 +362,14 @@ const TurnoverPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Page Size</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Page Size
+                </label>
                 <select
                   value={filters.pageSize}
-                  onChange={(e) => handleFilterChange("pageSize", parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleFilterChange("pageSize", parseInt(e.target.value))
+                  }
                   className="w-full px-3 py-2 second-bg border second-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   <option value={5}>5 per page</option>
@@ -318,16 +379,16 @@ const TurnoverPage: React.FC = () => {
                 </select>
               </div>
 
-              <div className="flex items-end">
+              <div className="flex items-center mt-[7px]">
                 <button
                   onClick={() => {
-                    setFilters(prev => ({
+                    setFilters((prev) => ({
                       ...prev,
                       status: "",
                       page: 1,
                     }));
                   }}
-                  className="w-full px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+                  className="w-full px-4 py-[7px] bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
                 >
                   Clear Filters
                 </button>
@@ -341,25 +402,43 @@ const TurnoverPage: React.FC = () => {
           <div className="border-b second-border">
             <nav className="flex space-x-8 px-6" aria-label="Tabs">
               {[
-                { key: "active", label: "Active", count: turnovers.filter(t => t.status === "active").length },
-                { key: "inactive", label: "Inactive", count: turnovers.filter(t => t.status === "inactive").length },
-                { key: "completed", label: "Completed", count: turnovers.filter(t => t.status === "completed").length },
+                {
+                  key: "active",
+                  label: "Active",
+                  count: turnovers.filter((t) => t.status === "active").length,
+                },
+                {
+                  key: "inactive",
+                  label: "Inactive",
+                  count: turnovers.filter((t) => t.status === "inactive")
+                    .length,
+                },
+                {
+                  key: "completed",
+                  label: "Completed",
+                  count: turnovers.filter((t) => t.status === "completed")
+                    .length,
+                },
               ].map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key as any)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  onClick={() =>
+                    setActiveTab(tab.key as "active" | "inactive" | "completed")
+                  }
+                  className={`py-4 px-1 border-b-2 !w-full max-w-[220px] mt-5 font-medium text-sm ${
                     activeTab === tab.key
                       ? "border-yellow-400 text-yellow-400"
                       : "border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600"
                   }`}
                 >
                   {tab.label}
-                  <span className={`ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium ${
-                    activeTab === tab.key
-                      ? "bg-yellow-900 text-yellow-300"
-                      : "bg-gray-700 text-gray-300"
-                  }`}>
+                  <span
+                    className={`ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium ${
+                      activeTab === tab.key
+                        ? "bg-yellow-900 text-yellow-300"
+                        : "bg-gray-700 text-gray-300"
+                    }`}
+                  >
                     {tab.count}
                   </span>
                 </button>
@@ -376,7 +455,9 @@ const TurnoverPage: React.FC = () => {
             ) : filteredTurnovers.length === 0 ? (
               <div className="text-center py-12">
                 <FaChartLine className="mx-auto h-12 w-12 text-gray-500" />
-                <h3 className="mt-2 text-sm font-medium text-white">No turnovers found</h3>
+                <h3 className="mt-2 text-sm font-medium text-white">
+                  No turnovers found
+                </h3>
                 <p className="mt-1 text-sm text-gray-400">
                   No turnovers match your current filters.
                 </p>
@@ -384,70 +465,128 @@ const TurnoverPage: React.FC = () => {
             ) : (
               <div className="space-y-6">
                 {filteredTurnovers.map((turnover, index) => (
-                  <div key={index} className="second-bg rounded-lg p-6 border second-border">
+                  <div
+                    key={index}
+                    className="second-bg rounded-lg p-6 border second-border"
+                  >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-lg font-semibold text-white">
                             {turnover.turnoverName}
                           </h3>
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeColor(turnover.type)}`}>
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeColor(
+                              turnover.type
+                            )}`}
+                          >
                             {turnover.type}
                           </span>
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(turnover.status)}`}>
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                              turnover.status
+                            )}`}
+                          >
                             {turnover.status}
                           </span>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300 mb-4">
                           <div>
-                            <span className="font-medium">User ID:</span> {turnover.userId}
+                            <span className="font-medium">User ID:</span>{" "}
+                            {turnover.userId}
                           </div>
                           <div>
-                            <span className="font-medium">Transaction ID:</span> {turnover.transactionId || "N/A"}
+                            <span className="font-medium">Transaction ID:</span>{" "}
+                            {turnover.transactionId || "N/A"}
                           </div>
                           <div>
-                            <span className="font-medium">Created:</span> {formatDate(turnover.createdAt)}
+                            <span className="font-medium">Created:</span>{" "}
+                            {formatDate(turnover.createdAt)}
                           </div>
                           <div>
-                            <span className="font-medium">Updated:</span> {formatDate(turnover.updatedAt)}
+                            <span className="font-medium">Updated:</span>{" "}
+                            {formatDate(turnover.updatedAt)}
                           </div>
                         </div>
 
                         {/* Progress Section */}
                         <div className="mb-4">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-gray-200">Progress</span>
+                            <span className="text-sm font-medium text-gray-200">
+                              Progress
+                            </span>
                             <span className="text-sm text-gray-300">
-                              {formatCurrency((parseFloat(turnover.targetTurnover) - parseFloat(turnover.remainingTurnover)).toString())} / {formatCurrency(turnover.targetTurnover)}
+                              {formatCurrency(
+                                (
+                                  parseFloat(turnover.targetTurnover) -
+                                  parseFloat(turnover.remainingTurnover)
+                                ).toString()
+                              )}{" "}
+                              / {formatCurrency(turnover.targetTurnover)}
                             </span>
                           </div>
                           <div className="w-full bg-gray-700 rounded-full h-3">
                             <div
                               className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full transition-all duration-300"
-                              style={{ width: `${calculateProgress(turnover.targetTurnover, turnover.remainingTurnover)}%` }}
+                              style={{
+                                width: `${calculateProgress(
+                                  turnover.targetTurnover,
+                                  turnover.remainingTurnover
+                                )}%`,
+                              }}
                             ></div>
                           </div>
                           <div className="flex justify-between text-xs text-gray-400 mt-1">
                             <span>0%</span>
-                            <span>{calculateProgress(turnover.targetTurnover, turnover.remainingTurnover).toFixed(1)}%</span>
+                            <span>
+                              {calculateProgress(
+                                turnover.targetTurnover,
+                                turnover.remainingTurnover
+                              ).toFixed(1)}
+                              %
+                            </span>
                             <span>100%</span>
                           </div>
                         </div>
 
                         {/* Amount Details */}
                         <div className="grid grid-cols-3 gap-4">
+                          {turnover.type === "promotion" &&
+                          turnover.bonusAmount ? (
+                            <div className="light-bg p-3 rounded border second-border">
+                              <p className="text-xs text-gray-400 mb-1">
+                                Bonus
+                              </p>
+                              <p className="text-lg font-bold text-blue-400">
+                                {formatCurrency(turnover.bonusAmount)}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="light-bg p-3 rounded border second-border">
+                              <p className="text-xs text-gray-400 mb-1">
+                                Deposit
+                              </p>
+                              <p className="text-lg font-bold text-blue-400">
+                                {formatCurrency(turnover.depositAmount)}
+                              </p>
+                            </div>
+                          )}
                           <div className="light-bg p-3 rounded border second-border">
-                            <p className="text-xs text-gray-400 mb-1">Deposit</p>
-                            <p className="text-lg font-bold text-blue-400">{formatCurrency(turnover.depositAmount)}</p>
+                            <p className="text-xs text-gray-400 mb-1">
+                              Target Turnover
+                            </p>
+                            <p className="text-lg font-bold text-blue-400">
+                              {formatCurrency(turnover.targetTurnover)}
+                            </p>
                           </div>
                           <div className="light-bg p-3 rounded border second-border">
-                            <p className="text-xs text-gray-400 mb-1">Target Turnover</p>
-                            <p className="text-lg font-bold text-blue-400">{formatCurrency(turnover.targetTurnover)}</p>
-                          </div>
-                          <div className="light-bg p-3 rounded border second-border">
-                            <p className="text-xs text-gray-400 mb-1">Remaining</p>
-                            <p className="text-lg font-bold text-orange-400">{formatCurrency(turnover.remainingTurnover)}</p>
+                            <p className="text-xs text-gray-400 mb-1">
+                              Remaining
+                            </p>
+                            <p className="text-lg font-bold text-orange-400">
+                              {formatCurrency(turnover.remainingTurnover)}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -464,8 +603,8 @@ const TurnoverPage: React.FC = () => {
           <div className="light-bg rounded-lg shadow-lg px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-300">
-                Showing page {pagination.page} of {pagination.totalPages} 
-                ({pagination.total} total results)
+                Showing page {pagination.page} of {pagination.totalPages}(
+                {pagination.total} total results)
               </div>
               <div className="flex space-x-2">
                 <button
