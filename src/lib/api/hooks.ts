@@ -99,7 +99,8 @@ export const useRegister = () => {
   });
 };
 const Axios = axios.create({
-  baseURL: BASE_URL, // Change to your API base URL
+  // baseURL: "https://glorypos.com/gs-server", // Change to your API base URL
+  baseURL: "http://localhost:3000", // Change to your API base URL
   timeout: 30000,
 });
 export const useBetResults = (filters = {}, options = {}) => {

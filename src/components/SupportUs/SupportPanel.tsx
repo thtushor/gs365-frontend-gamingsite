@@ -13,6 +13,7 @@ interface SupportPanelProps {
 
 const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
   const [activeTab, setActiveTab] = useState("home");
+  const [parenScroll, setParentScroll] = useState(true);
   if (!open) return null;
   return (
     <div className="support-panel-overlay" onClick={onClose}>
@@ -25,12 +26,20 @@ const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
             <XIcon className="text-[10px]" />
           </button>
         </div>
-        <div className="support-panel-content">
+        <div
+          className={`support-panel-content ${
+            parenScroll ? "overflow-y-auto" : ""
+          }`}
+        >
           {activeTab === "home" && <SupportHomeTab />}
-          {activeTab === "messages" && <SupportMessagesTab />}
+          {activeTab === "messages" && (
+            <SupportMessagesTab setParentScroll={setParentScroll} />
+          )}
           {activeTab === "help" && <SupportHelpTab />}
         </div>
-        <SupportTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+        {parenScroll && (
+          <SupportTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+        )}
       </div>
     </div>
   );

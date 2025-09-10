@@ -97,8 +97,8 @@
   }
 
   .floating-contact-submenu {
-    right: 70px; // Adjusted position relative to smaller button
-    bottom: 20px; // Align with the button bottom
+    right: 20px !important; // Adjusted position relative to even smaller button
+    bottom: 15vh !important; // Align with the button bottom
     width: 240px; // Slightly smaller submenu
 
     .submenu-header {
@@ -177,8 +177,8 @@
   }
 
   .floating-contact-submenu {
-    right: 65px; // Adjusted position relative to even smaller button
-    bottom: 15px; // Align with the button bottom
+    right: 20px !important; // Adjusted position relative to even smaller button
+    bottom: 15vh !important; // Align with the button bottom
     width: 220px; // Even smaller submenu
 
     .submenu-header {
@@ -259,7 +259,7 @@
 
   .submenu-header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     padding: 20px 15px; // More padding
     background: rgba(

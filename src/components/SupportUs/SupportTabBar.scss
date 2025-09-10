@@ -44,19 +44,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0px;
   }
 
   .icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.15rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.6);
     transition: all 0.3s ease;
   }
 
   .label {
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     color: rgba(255, 255, 255, 0.6);
     transition: all 0.3s ease;
   }
@@ -100,10 +99,14 @@
 
 // Add padding to the bottom of the panel content to account for fixed tab bar
 .support-panel-content {
-  padding-bottom: 5rem;
+  // padding-bottom: 5rem;
+  margin-bottom: 50px;
 }
 
 @media (max-width: 600px) {
+  .support-panel-content{
+    // padding-bottom: 100px;
+  }
   .support-tab-bar {
     padding: 0.5rem 1rem;
   }
