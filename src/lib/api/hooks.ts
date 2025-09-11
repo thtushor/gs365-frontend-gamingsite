@@ -10,7 +10,7 @@ import type { ApiResponse } from "./axios";
 import { useCallback, useEffect } from "react";
 import { useAuth } from "../../contexts/auth-context";
 import axios from "axios";
-import { API_LIST, BASE_URL } from "./apiClient";
+import { API_LIST } from "./apiClient";
 
 /**
  * Authentication Hooks
@@ -99,8 +99,8 @@ export const useRegister = () => {
   });
 };
 const Axios = axios.create({
-  // baseURL: "https://glorypos.com/gs-server", // Change to your API base URL
-  baseURL: "http://localhost:3000", // Change to your API base URL
+  baseURL: "https://glorypos.com/gs-server", // Change to your API base URL
+  // baseURL: "http://localhost:3000", // Change to your API base URL
   timeout: 30000,
 });
 export const useBetResults = (filters = {}, options = {}) => {
