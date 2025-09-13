@@ -4,10 +4,10 @@
   box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.25),
     0 1.5px 8px 0 rgba(255, 219, 77, 0.08);
   color: #fff;
-  padding: 2.2rem 1.7rem 1.7rem 1.7rem;
-  min-height: 520px;
+  padding: 12px;
+  min-height: 320px;
   max-width: 420px;
-  margin: 2.5vh auto;
+  // margin: 2.5vh auto;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -26,16 +26,15 @@
   }
 
   h2 {
-    font-size: 2.2rem;
+    font-size: 20px;
     font-weight: 800;
-    margin-bottom: 1.7rem;
-    text-align: center;
+    text-align: left;
+    padding-left: 5px;
     background: linear-gradient(90deg, #ffd93d, #ff6b6b, #ffd93d);
     background-size: 200% 200%;
     animation: gradientMove 3s linear infinite alternate;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: 1.5px;
   }
   @keyframes gradientMove {
     0% {
@@ -47,12 +46,14 @@
   }
 
   .message-list {
+    padding: 5px ;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 7px;
     scrollbar-width: thin;
     scrollbar-color: #ffd93d #222;
     &::-webkit-scrollbar {
@@ -85,12 +86,7 @@
 
     &:hover,
     &:active {
-      background: rgba(255, 255, 255, 0.18);
-      box-shadow: 0 12px 32px rgba(255, 217, 61, 0.13), 0 2px 8px #ff6b6b33;
       transform: translateY(-3px) scale(1.025);
-      border: 2px solid;
-      border-image: linear-gradient(90deg, #ffd93d, #ff6b6b, #ffd93d) 1;
-      animation: borderGlow 1.2s linear infinite alternate;
     }
     @keyframes borderGlow {
       0% {
@@ -166,18 +162,17 @@
 
   .send-message-btn {
     width: 100%;
-    padding: 1rem 0;
+    padding: 10px 0;
     background: linear-gradient(90deg, #ff6b6b, #ffd93d);
     color: #fff;
-    font-weight: 800;
-    font-size: 1.13rem;
+    font-weight: 600;
+    font-size: 16px;
     border: none;
-    border-radius: 14px;
+    border-radius: 10px;
     box-shadow: 0 2px 12px #ffd93d33;
     cursor: pointer;
     margin-top: 0.7rem;
-    transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
-    letter-spacing: 0.5px;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.18s; 
     &:hover {
       background: linear-gradient(90deg, #ffd93d, #ff6b6b);
       box-shadow: 0 4px 18px #ffd93d55;
@@ -205,19 +200,19 @@
       align-items: center;
       gap: 1.1rem;
       background: rgba(255, 255, 255, 0.09);
-      padding: 1.3rem 1.7rem;
+      padding: 1rem;
       border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
       position: relative;
       .header-content {
         display: flex;
         align-items: center;
-        gap: 1.1rem;
-        margin-left: 3rem;
+        gap: 7px;
+        text-align: left;
       }
       .back-btn {
         position: absolute;
-        left: 10px;
-        top: 10px;
+        right: -20px;
+        top: 0px;
         background: none;
         border: none;
         color: #ffd93d;
@@ -231,8 +226,8 @@
         }
       }
       .avatar {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         border: 2.5px solid #ffd93d;
         object-fit: cover;
@@ -255,10 +250,13 @@
     .chat-body {
       flex: 1;
       overflow-y: auto;
-      padding: 1.7rem 1.2rem 1.2rem 1.7rem;
+      padding: 1rem;
+      padding-top: 10px;
+      padding-bottom: 10px;
       display: flex;
       flex-direction: column;
-      gap: 1.3rem;
+      max-height: 50vh;
+      gap: 15px;
       background: repeating-linear-gradient(
         135deg,
         #23233a 0 2px,
@@ -278,7 +276,7 @@
       }
       .chat-bubble {
         max-width: 80%;
-        padding: 1.1rem 1.3rem;
+        padding: 10px;
         border-radius: 20px;
         box-shadow: 0 2px 14px #ffd93d22;
         font-size: 1.04rem;
@@ -289,12 +287,12 @@
         animation: bubbleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         .bubble-text {
           white-space: pre-line;
+          font-size: 14px;
         }
         .bubble-time {
-          font-size: 0.82rem;
+          font-size: 12px;
           color: #ffd93d;
-          margin-top: 0.5rem;
-          text-align: right;
+          margin-top: 5px; 
           opacity: 0.7;
         }
         &.support {
@@ -328,37 +326,38 @@
     .chat-input-bar {
       display: flex;
       align-items: center;
-      padding: 1.1rem 1.7rem;
+      padding: 10px;
       background: rgba(255, 255, 255, 0.09);
       border-top: 1.5px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 -2px 12px #ffd93d22;
       position: relative;
       z-index: 2;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
       input {
         flex: 1;
-        padding: 0.9rem 1.1rem;
-        border-radius: 22px;
+        padding: 8.5px 1.1rem;
+        border-radius: 10px;
         border: none;
-        background: rgba(255, 255, 255, 0.18);
+        background: #16213e;
         color: #222;
-        font-size: 1.04rem;
-        margin-right: 1.1rem;
+        font-size: 14px;
+        margin-right: 10px;
         outline: none;
-        transition: background 0.2s, box-shadow 0.2s;
-        box-shadow: 0 2px 8px #ffd93d22;
+        transition: background 0.2s, box-shadow 0.2s; 
+        border: 1px solid orange;
         &:focus {
-          background: #fff;
-          box-shadow: 0 4px 16px #ffd93d44;
+        background: #202b4b;
         }
       }
       .send-btn {
         background: linear-gradient(90deg, #ff6b6b, #ffd93d);
         color: #fff;
         border: none;
-        border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        font-size: 10px;
+        border-radius: 10px;
+        width: 39px;
+        height: 39px;
+        font-size: 8px;
         display: flex;
         align-items: center;
         justify-content: center;

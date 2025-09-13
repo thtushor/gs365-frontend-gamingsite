@@ -24,9 +24,13 @@ interface Promotion {
 
 interface PromotionListProps {
   promotions: Promotion[];
+  className?: string;
 }
 
-const PromotionList: React.FC<PromotionListProps> = ({ promotions }) => {
+const PromotionList: React.FC<PromotionListProps> = ({
+  promotions,
+  className,
+}) => {
   const [visibleCount, setVisibleCount] = useState(8);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState<Promotion | null>(
@@ -43,7 +47,7 @@ const PromotionList: React.FC<PromotionListProps> = ({ promotions }) => {
   return (
     <>
       <AnimatePresence>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${className}`}>
           {promotions.slice(0, visibleCount).map((promo, idx) => (
             <motion.div
               key={idx}

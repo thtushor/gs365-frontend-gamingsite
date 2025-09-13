@@ -362,8 +362,8 @@ padding: 0px 5px;
 // Floating Contact Submenu Styles (Refined)
 .floating-contact-submenu {
   position: fixed;
-  right: 80px; // Position next to the button
-  bottom: 20px; // Align with the button bottom
+  right: 85px; // Position next to the button
+  bottom: 70px; // Align with the button bottom
   z-index: 999; // Below the button
   background-color: #3a3a3a; // Dark grey background from image
   border-radius: 10px;
@@ -375,14 +375,14 @@ padding: 0px 5px;
 
   .submenu-header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    padding: 15px 10px; // Padding top/bottom and left/right
+    padding: 0px 10px; // Padding top/bottom and left/right
     background-color: #4a4a4a; // Slightly lighter grey for header
     border-bottom: 1px solid #5a5a5a; // Header border
 
-    .submenu-logo {
-      width: 80px; // Logo size
+    .submenu-logo { 
       height: auto;
       margin-bottom: 5px;
     }

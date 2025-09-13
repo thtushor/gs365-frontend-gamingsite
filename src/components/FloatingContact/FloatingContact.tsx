@@ -71,10 +71,12 @@ const FloatingContact: React.FC = () => {
         >
           {/* Logo Area */}
           <div className="submenu-header">
-            <Logo />
+            <Logo className="!h-[50px] !w-[50px]" />
             <div className="headset-icon">
               <FiHeadphones />
-              <span>24/7</span>
+              <span className="!text-[18px] !font-semibold !text-yellow-300">
+                24/7
+              </span>
             </div>
           </div>
 
