@@ -22,9 +22,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../contexts/auth-context";
 import { toast } from "react-toastify";
 import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
+import BaseModal from "../components/Promotion/BaseModal";
+import ToastSuccess from "../lib/toastPopups/toastSuccess";
 
 const Register = () => {
   const { user, selectedCurrency } = useAuth();
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   console.log(selectedCurrency);
   const getRequest = useGetRequest();
 
@@ -219,7 +222,8 @@ const Register = () => {
       //   "Registration successful! Welcome to GameStar365!",
       //   "success"
       // );
-      navigate("/");
+      // navigate("/");
+      setSuccessModalOpen(true);
     } catch (error) {
       // console.log({error})
       // console.error("Registration failed:", error);
@@ -655,6 +659,19 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      <BaseModal
+        open={successModalOpen}
+        showClose={false}
+        onClose={() => setSuccessModalOpen(false)}
+      >
+        <ToastSuccess
+          title="Player Registered!"
+          description="Welcome to the GS365! Your journey starts now, get ready to play and win big."
+          onClose={setSuccessModalOpen}
+          location="/"
+        />
+      </BaseModal>
     </div>
   );
 };

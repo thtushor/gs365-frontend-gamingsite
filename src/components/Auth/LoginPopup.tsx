@@ -5,7 +5,8 @@ import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
-import { useNavigate } from "react-router-dom";
+import ToastSuccess from "../../lib/toastPopups/toastSuccess";
+import BaseModal from "../Promotion/BaseModal";
 
 // Reusable PasswordInput component
 interface PasswordInputProps {
@@ -70,6 +71,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   onSignUpClick,
 }) => {
   const { login, isPendingLogin } = useAuth();
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
   const [formData, setFormData] = useState({
@@ -78,7 +80,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const navigate = useNavigate();
   // React Query hook for login
 
   if (!isOpen) return null;
@@ -154,14 +155,14 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         password: "",
       });
 
-      navigate("/");
+      // navigate("/");
 
       // Dispatch custom event to notify other components about login
       window.dispatchEvent(new Event("userLogin"));
 
-      onClose(); // Close popup after successful login
-      window.location.reload();
-
+      // onClose(); // Close popup after successful login
+      // window.location.reload();
+      setSuccessModalOpen(true);
       // Optionally redirect or update app state
     } catch (error: unknown) {
       console.error("Login failed:", error);
@@ -204,7 +205,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       {/* <div className="tips-group tips-warning"><b></b></div> */}
 
       <div
-        className={`pop-wrap login ${
+        className={`pop-wrap login ${successModalOpen && "opacity-0"} ${
           showForgetPassword ? "forget-password-active" : ""
         }`}
       >
@@ -482,6 +483,20 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       {/* Placeholder for Fail/Lock Popups - can be implemented later */}
       {/* <div className="pop-wrap fail-pop" style={{display:'none'}}>...</div> */}
       {/* <div className="pop-wrap fail-pop login-lock-pop" style={{display:'none'}}>...</div> */}
+
+      <BaseModal
+        open={successModalOpen}
+        showClose={false}
+        onClose={() => setSuccessModalOpen(false)}
+      >
+        <ToastSuccess
+          title="Login Successful!"
+          description="You're now signed in. Place your bets and enjoy the game!"
+          onClose={setSuccessModalOpen}
+          location="/"
+          extraFn={onClose}
+        />
+      </BaseModal>
     </div>
   );
 };
