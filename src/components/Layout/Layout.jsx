@@ -14,7 +14,6 @@ import KycModal from "../KycModal";
 import { FiArrowUpCircle } from "react-icons/fi";
 import { IoIosArrowDropup } from "react-icons/io";
 import { useAutoLogout } from "../../lib/api/hooks";
-import ToastSuccess from "../../lib/toastPopups/toastSuccess";
 
 const Layout = ({ children }) => {
   useAutoLogout();
@@ -170,7 +169,6 @@ const Layout = ({ children }) => {
       <MobileNav />
       <BaseModal open={modalOpen} showClose={false}>
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
-        {/* <ToastSuccess /> */}
       </BaseModal>
       <PlayInstant />
 

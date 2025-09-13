@@ -23,7 +23,7 @@ import { useAuth } from "../contexts/auth-context";
 import { toast } from "react-toastify";
 import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
 import BaseModal from "../components/Promotion/BaseModal";
-import ToastSuccess from "../lib/toastPopups/toastSuccess";
+import ToastSuccess from "../lib/ToastSuccess";
 
 const Register = () => {
   const { user, selectedCurrency } = useAuth();

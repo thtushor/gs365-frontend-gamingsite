@@ -5,8 +5,8 @@ import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
-import ToastSuccess from "../../lib/toastPopups/toastSuccess";
 import BaseModal from "../Promotion/BaseModal";
+import ToastSuccess from "../../lib/ToastSuccess";
 
 // Reusable PasswordInput component
 interface PasswordInputProps {

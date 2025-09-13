@@ -23,8 +23,8 @@ import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { useGetRequest } from "../lib/api/apiClient";
 import { toast } from "react-toastify";
-import ToastSuccess from "../lib/toastPopups/toastSuccess";
 import BaseModal from "../components/Promotion/BaseModal";
+import ToastSuccess from "../lib/ToastSuccess";
 
 const AffiliateRegister = () => {
   const navigate = useNavigate();
