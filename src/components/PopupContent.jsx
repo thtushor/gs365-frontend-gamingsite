@@ -13,7 +13,10 @@ const PopupContent = ({ data, onClose }) => {
       >
         <FaTimes />
       </button>
-      <h2 className="text-[18px] pb-1 md:text-[22px] font-bold text-gray-900 w-fit rounded-full px-5 mx-auto mt-[-10px] mb-2 bg-yellow-300">
+      <h2
+        className="text-[18px] md:text-[22px] font-bold text-gray-900 w-fit rounded-full px-5 mx-auto mt-1
+       mb-5 bg-yellow-300"
+      >
         {data.title}
       </h2>
       <div

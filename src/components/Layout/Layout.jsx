@@ -79,6 +79,7 @@ const Layout = ({ children }) => {
     }
   }, [socialData?.data?.length]);
 
+  console.log("hello", popupData);
   useEffect(() => {
     if (popupData?.data?.message) {
       const today = new Date().toISOString().split("T")[0];
@@ -89,7 +90,7 @@ const Layout = ({ children }) => {
         setModalOpen(true);
       }
     }
-  }, [popupData?.data?.length]);
+  }, [popupData?.data]);
 
   const handleCloseModal = () => {
     const today = new Date().toISOString().split("T")[0];

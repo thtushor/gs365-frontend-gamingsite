@@ -23,9 +23,12 @@ import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { useGetRequest } from "../lib/api/apiClient";
 import { toast } from "react-toastify";
+import BaseModal from "../components/Promotion/BaseModal";
+import ToastSuccess from "../lib/ToastSuccess";
 
 const AffiliateRegister = () => {
   const navigate = useNavigate();
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const refCodeParam =
     searchParams.get("refCode") || searchParams.get("refcode");
@@ -261,7 +264,8 @@ const AffiliateRegister = () => {
       // );
 
       // Redirect to home page or dashboard
-      navigate("/");
+      // navigate("/");
+      setSuccessModalOpen(true);
     } catch (error) {
       setLoading(false);
       let errorMessage = "Registration failed. Please try again.";
@@ -551,6 +555,18 @@ const AffiliateRegister = () => {
           </div>
         </div>
       </div>
+      <BaseModal
+        open={successModalOpen}
+        showClose={false}
+        onClose={() => setSuccessModalOpen(false)}
+      >
+        <ToastSuccess
+          title="Affiliate Submitted!"
+          description="Thank you for joining our affiliate program. Your application is under review, we'll notify you once it's approved."
+          onClose={setSuccessModalOpen}
+          location="/"
+        />
+      </BaseModal>
     </div>
   );
 };
