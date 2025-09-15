@@ -331,9 +331,12 @@ const AffiliateRegister = () => {
         <div className="register-content">
           <div className="left-register-info">
             <div className="header-auth  mb-5">
-              <p className="signup-btn w-full !py-2 pointer-events-none select-none !text-base !font-semibold !capitalize">
-                Register as an affiliate with just one click and connect with
-                us.
+              <p className="signup-btn-green w-full !py-2 pointer-events-none select-none !text-base !font-semibold !capitalize">
+                Register as a{" "}
+                <span className="bg-black text-[#00ff99] px-2 rounded-full">
+                  Affiliate
+                </span>{" "}
+                with just one click and connect with us.
               </p>
             </div>
             <div className="general-register step-register text-left">
