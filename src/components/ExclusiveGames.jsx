@@ -136,7 +136,7 @@ export const ExclusiveGames = () => {
         url: BASE_URL + API_LIST.GET_ALL_EXCLUSIVE,
       }),
   });
-
+  console.log(exclusiveData?.data);
   // Play game mutation
   const playGameMutation = useMutation({
     mutationFn: async (request) => {
