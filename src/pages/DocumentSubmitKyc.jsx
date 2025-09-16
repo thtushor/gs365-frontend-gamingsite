@@ -7,6 +7,8 @@ import { API_CONFIG, API_ENDPOINTS } from "../lib/api/config";
 import { useAuth } from "../contexts/auth-context";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
+import BaseModal from "../components/Promotion/BaseModal";
+import ToastSuccess from "../lib/ToastSuccess";
 
 const DocumentSubmitKyc = () => {
   const navigate = useNavigate();
@@ -38,9 +40,10 @@ const DocumentSubmitKyc = () => {
     selfie: null,
   });
 
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Unverified");
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  console.log(kycDetails);
   // ✅ Prefill when details available
   useEffect(() => {
     if (kycDetails?.data) {
@@ -62,11 +65,18 @@ const DocumentSubmitKyc = () => {
       setStatus(
         d.status
           ? d.status.charAt(0).toUpperCase() + d.status.slice(1)
-          : "Pending"
+          : "Unverified"
+      );
+    } else {
+      setStatus(
+        user.kyc_status
+          ? user.kyc_status.charAt(0).toUpperCase() + user.kyc_status.slice(1)
+          : "Unverified"
       );
     }
   }, [kycDetails]);
 
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   // ------------------- Mutation -------------------
   const mutation = useMutation({
     mutationFn: async (payload) => {
@@ -78,8 +88,10 @@ const DocumentSubmitKyc = () => {
       });
     },
     onSuccess: () => {
-      setStatus("Submitted");
-      //   toast.success("KYC submitted successfully!");
+      setStatus("Pending");
+      // toast.success("KYC submitted successfully!");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setSuccessModalOpen(true);
     },
     onError: (err) => {
       console.error(err);
@@ -138,129 +150,128 @@ const DocumentSubmitKyc = () => {
         </h1>
       </div>
       <div className="flex md:flex-row flex-col-reverse  gap-8 items-start text-left">
-        {kycDetails?.data.holderKycStatus !== "verified" && (
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-3 w-full md:w-1/2 border-yellow-300"
-          >
-            {/* Full Name */}
-            <div>
-              <label className="text-sm font-medium text-white">
-                Full Name (As Per Documents)
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className="w-full mt-1 p-2 border rounded-md border-yellow-300"
-                placeholder="Enter your full name (as per documents)"
-              />
-            </div>
-
-            {/* Document Type */}
-            <div>
-              <label className="text-sm font-medium text-white">
-                Document (Any one)
-              </label>
-              <select
-                name="documentType"
-                value={formData.documentType}
-                onChange={handleInputChange}
-                className="w-full mt-1 p-2 border rounded-md border-yellow-300"
-              >
-                <option value="">Choose document type</option>
-                <option value="identity_card">Identity card</option>
-                <option value="passport">Passport</option>
-                <option value="drivers_license">Driver's license</option>
-              </select>
-            </div>
-
-            {/* Document No */}
-            <div>
-              <label className="text-sm font-medium text-white">
-                Document No.
-              </label>
-              <input
-                type="text"
-                name="documentNo"
-                value={formData.documentNo}
-                onChange={handleInputChange}
-                className="w-full mt-1 p-2 border rounded-md border-yellow-300"
-                placeholder="Enter document number"
-              />
-            </div>
-
-            {/* Expiry Date */}
-            <div>
-              <label className="text-sm font-medium text-white">
-                Expiry Date
-              </label>
-              <input
-                type="date"
-                name="expiryDate"
-                value={formData.expiryDate}
-                onChange={handleInputChange}
-                className="w-full mt-1 p-2 border border-yellow-300 rounded-md"
-              />
-            </div>
-
-            {/* Date of Birth */}
-            <div>
-              <label className="text-sm font-medium text-white">
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleInputChange}
-                className="w-full mt-1 p-2 border border-yellow-300 rounded-md"
-              />
-            </div>
-
-            {/* Uploads */}
-            {[
-              { label: "Upload Document Photo (Front Side)", type: "front" },
-              { label: "Upload Document Photo (Back Side)", type: "back" },
-              {
-                label: "Upload Document Photo (Selfie holding document)",
-                type: "selfie",
-              },
-            ].map((file) => (
-              <div key={file.type}>
+        {kycDetails?.data.holderKycStatus !== "verified" &&
+          status !== "Pending" && (
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-3 w-full md:w-1/2 border-yellow-300"
+            >
+              {/* Full Name */}
+              <div>
                 <label className="text-sm font-medium text-white">
-                  {file.label}
+                  Full Name (As Per Documents)
                 </label>
-                <ImageUploader
-                  setUploadRes={(url) =>
-                    setUploads((prev) => ({ ...prev, [file.type]: url }))
-                  }
-                  previewImage={uploads[file.type]?.data?.original}
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="w-full mt-1 p-2 border rounded-md border-yellow-300"
+                  placeholder="Enter your full name (as per documents)"
                 />
               </div>
-            ))}
 
-            {/* Submit */}
-            <div className="header-auth">
-              <button
-                type="submit"
-                className="bg-yellow-300 w-full min-h-[35px] md:min-h-[45px] signup-btn cursor-pointer text-white px-4 py-2 rounded-md hover:bg-yellow-500 disabled:opacity-50"
-                disabled={
-                  submitLoading ||
-                  kycDetails?.data.holderKycStatus === "verified"
-                }
-              >
-                {submitLoading ? "Submitting..." : "Submit KYC Documents"}
-              </button>
-            </div>
-          </form>
-        )}
+              {/* Document Type */}
+              <div>
+                <label className="text-sm font-medium text-white">
+                  Document (Any one)
+                </label>
+                <select
+                  name="documentType"
+                  value={formData.documentType}
+                  onChange={handleInputChange}
+                  className="w-full mt-1 p-2 border rounded-md border-yellow-300"
+                >
+                  <option value="">Choose document type</option>
+                  <option value="identity_card">Identity card</option>
+                  <option value="passport">Passport</option>
+                  <option value="drivers_license">Driver's license</option>
+                </select>
+              </div>
+
+              {/* Document No */}
+              <div>
+                <label className="text-sm font-medium text-white">
+                  Document No.
+                </label>
+                <input
+                  type="text"
+                  name="documentNo"
+                  value={formData.documentNo}
+                  onChange={handleInputChange}
+                  className="w-full mt-1 p-2 border rounded-md border-yellow-300"
+                  placeholder="Enter document number"
+                />
+              </div>
+
+              {/* Expiry Date */}
+              <div>
+                <label className="text-sm font-medium text-white">
+                  Expiry Date
+                </label>
+                <input
+                  type="date"
+                  name="expiryDate"
+                  value={formData.expiryDate}
+                  onChange={handleInputChange}
+                  className="w-full mt-1 p-2 border border-yellow-300 rounded-md"
+                />
+              </div>
+
+              {/* Date of Birth */}
+              <div>
+                <label className="text-sm font-medium text-white">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
+                  className="w-full mt-1 p-2 border border-yellow-300 rounded-md"
+                />
+              </div>
+
+              {/* Uploads */}
+              {[
+                { label: "Upload Document Photo (Front Side)", type: "front" },
+                { label: "Upload Document Photo (Back Side)", type: "back" },
+                {
+                  label: "Upload Document Photo (Selfie holding document)",
+                  type: "selfie",
+                },
+              ].map((file) => (
+                <div key={file.type}>
+                  <label className="text-sm font-medium text-white">
+                    {file.label}
+                  </label>
+                  <ImageUploader
+                    setUploadRes={(url) =>
+                      setUploads((prev) => ({ ...prev, [file.type]: url }))
+                    }
+                    previewImage={uploads[file.type]?.data?.original}
+                  />
+                </div>
+              ))}
+
+              {/* Submit */}
+              <div className="header-auth">
+                <button
+                  type="submit"
+                  className="bg-yellow-300 w-full min-h-[35px] md:min-h-[45px] signup-btn cursor-pointer text-white px-4 py-2 rounded-md hover:bg-yellow-500 disabled:opacity-50"
+                  disabled={submitLoading}
+                >
+                  {submitLoading ? "Submitting..." : "Submit KYC Documents"}
+                </button>
+              </div>
+            </form>
+          )}
 
         {/* Right Column: Preview */}
         <div
           className={`border border-yellow-300 bg-[#1a1a1a] ${
-            kycDetails?.data.holderKycStatus !== "verified"
+            kycDetails?.data.holderKycStatus !== "verified" &&
+            status !== "Pending"
               ? "md:mt-[28px] w-full md:w-1/2"
               : "w-full"
           } p-4 rounded-lg  space-y-2`}
@@ -334,6 +345,20 @@ const DocumentSubmitKyc = () => {
           </div>
         </div>
       </div>
+
+      <BaseModal
+        open={successModalOpen}
+        showClose={false}
+        onClose={() => setSuccessModalOpen(false)}
+      >
+        <ToastSuccess
+          title="KYC Submitted Successfully"
+          description="Your KYC details have been submitted. Our team is reviewing your application, and you’ll be notified once it has been approved."
+          onClose={setSuccessModalOpen}
+          location="/"
+          isRedirect={false}
+        />
+      </BaseModal>
     </div>
   );
 };

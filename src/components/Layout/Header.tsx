@@ -25,6 +25,7 @@ import MainNav from "./MainNav";
 import { LuShieldCheck } from "react-icons/lu";
 import { IoClose } from "react-icons/io5";
 import { RiHeart3Fill } from "react-icons/ri";
+import NotificationBar from "./NotificationBar";
 
 // import SeoSection from "./SeoSection";
 const Header: React.FC = () => {
@@ -248,6 +249,7 @@ const Header: React.FC = () => {
                 </button>
               </>
             )}
+            {user && <NotificationBar />}
             <div
               className="country-flag-container cursor-pointer border-2 border-yellow-300"
               onClick={() => setModalOpen(true)}

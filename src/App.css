@@ -124,11 +124,90 @@ body {
   border-radius: 5px !important;
 }
 
-
 .react-phone-input {
   border: 1px solid rgba(255, 255, 255, 0.379) !important;
   background: rgb(88 88 88) !important;
   padding: 10px 12px !important;
   border-radius: 5px !important;
   width: 100% !important;
+}
+
+/* error styles */
+
+.custom-error-btn {
+  background: linear-gradient(90deg, #ff4400, #ea511a, #ef5016, #ff4400);
+  background-size: 300% 100%;
+  color: #fff;
+  border: 3px solid #ff4400;
+  border-radius: 5px;
+  padding: 4px 20px;
+  font-size: 14px;
+  cursor: default;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px #ff4400, inset 0 0 10px #ff4400;
+  animation: gradientMove 3s linear infinite;
+  padding-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-error-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: wave 3s infinite linear;
+}
+
+/* .header-auth .signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.8),
+    inset 0 0 15px rgba(255, 215, 0, 0.6);
+  border-color: #ffb700;
+} */
+
+.custom-error-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 215, 0, 0.6),
+    inset 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+/* .header-auth .signup-btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px #00ff99, inset 0 0 15px #00ff99a7;
+  border-color: #00ff99;
+} */
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes wave {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }

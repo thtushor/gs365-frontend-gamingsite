@@ -30,7 +30,7 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   formatDate,
 }) => {
   return (
-    <div className="user-section md:block hidden relative group">
+    <div className="user-section md:flex flex-row-reverse gap-2 hidden relative group">
       <UserProfileButton
         className="user-profile-btn signup-btn gap-2 !light-bg !px-2 !pr-3"
         title="View Profile"
@@ -38,7 +38,7 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
         <span className="user-avatar">👤</span>
         <span className="username">Profile</span>
       </UserProfileButton>
-      <div className="profile-dropdown shadow-2xl absolute right-0 mt-0 pt-2 w-[330px] md:w-[400px] hidden group-hover:block z-[9999999]">
+      <div className="profile-dropdown shadow-2xl absolute right-0 top-7  mt-0 pt-2 w-[330px] md:w-[400px] hidden group-hover:block z-[9999999]">
         <div className="second-bg text-left  rounded-lg profile-shadow">
           <div className="border-b px-4 py-3 light-border">
             <div className=" flex gap-2 items-start">

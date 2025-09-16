@@ -172,3 +172,9 @@ body {
   padding: 0 7px !important;
   max-height: 30px !important;
 }
+input[type="date"] {
+  color-scheme: dark !important;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
