@@ -271,17 +271,15 @@ const Register = () => {
   return (
     <div className="register-page">
       <div className="register-wrap">
-        <div className="register-notice">
-          If you face any issues, contact{" "}
-          <a
-            style={{ color: "red" }}
-            className="intercom_custom_launcher"
-            onClick={() => void 0}
-          >
-            Online Customer Service
-          </a>
+        <div className="header-auth  mb-5">
+          <p className="signup-btn-green w-full !py-2 pointer-events-none select-none !text-base !font-semibold !capitalize">
+            Register as a{" "}
+            <span className="bg-black text-[#00ff99] px-2 rounded-full">
+              Player
+            </span>{" "}
+            with just one click and instantly unlock a world of exciting games.
+          </p>
         </div>
-
         {errors.general && (
           <div
             className="error-message"
@@ -293,12 +291,6 @@ const Register = () => {
 
         <div className="register-content">
           <div className="left-register-info">
-            <ul className="register-tab register-tab-one">
-              <li className="active">
-                <a href="javascript:void(0);">Sign Up</a>
-              </li>
-            </ul>
-
             <div className="general-register text-left">
               <form onSubmit={handleFormSubmit}>
                 <ul>
@@ -648,7 +640,7 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="right-register-banner mt-[66px]">
+          <div className="right-register-banner ">
             <Slider {...sliderSettings}>
               {bannerImages.map((banner) => (
                 <div key={banner.id} className="banner-slide">
