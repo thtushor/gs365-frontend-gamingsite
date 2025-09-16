@@ -10,12 +10,15 @@ const ToastSuccess = ({
   description = "Your request is successful.",
   onClose,
   location = "/",
+  isRedirect = true,
   extraFn,
 }) => {
   const navigate = useNavigate();
   const handleClose = () => {
-    navigate(location);
-    window.location.reload();
+    if (isRedirect) {
+      navigate(location);
+      window.location.reload();
+    }
     onClose(false);
     if (extraFn) {
       extraFn();

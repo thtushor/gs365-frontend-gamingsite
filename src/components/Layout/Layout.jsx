@@ -114,7 +114,7 @@ const Layout = ({ children }) => {
         const timer = setTimeout(() => {
           setKycModal(true);
           localStorage.setItem("kycModalShown", "true");
-        }, 1000);
+        }, 5000);
 
         return () => clearTimeout(timer);
       }
