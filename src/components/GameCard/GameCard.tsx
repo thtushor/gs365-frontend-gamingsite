@@ -185,36 +185,42 @@ const GameCard: React.FC<GameCardProps> = ({
         </div>
 
         {/* Favorite button */}
-
-        {addFavoriteMutation.isPending || removeFavoriteMutation.isPending ? (
-          <div
-            className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
-              isFavorite
-                ? "bg-red-500 border-red-500 text-white"
-                : "bg-yellow-300 border-orange-300 text-gray-600"
-            } ${
-              addFavoriteMutation.isPending || removeFavoriteMutation.isPending
-                ? "cursor-progress opacity-70"
-                : "cursor-pointer"
-            }`}
-          >
-            {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
-          </div>
-        ) : (
-          <div
-            onClick={handleFavoriteFunction}
-            className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
-              isFavorite
-                ? "bg-red-500 border-red-500 text-white"
-                : "bg-yellow-300 border-orange-300 text-gray-600"
-            } ${
-              addFavoriteMutation.isPending || removeFavoriteMutation.isPending
-                ? "cursor-progress opacity-70"
-                : "cursor-pointer"
-            }`}
-          >
-            {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
-          </div>
+        {user && (
+          <>
+            {addFavoriteMutation.isPending ||
+            removeFavoriteMutation.isPending ? (
+              <div
+                className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
+                  isFavorite
+                    ? "bg-red-500 border-red-500 text-white"
+                    : "bg-yellow-300 border-orange-300 text-gray-600"
+                } ${
+                  addFavoriteMutation.isPending ||
+                  removeFavoriteMutation.isPending
+                    ? "cursor-progress opacity-70"
+                    : "cursor-pointer"
+                }`}
+              >
+                {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
+              </div>
+            ) : (
+              <div
+                onClick={handleFavoriteFunction}
+                className={`w-[22px] h-[22px] absolute right-1 top-1 flex items-center justify-center rounded-full border-2 ${
+                  isFavorite
+                    ? "bg-red-500 border-red-500 text-white"
+                    : "bg-yellow-300 border-orange-300 text-gray-600"
+                } ${
+                  addFavoriteMutation.isPending ||
+                  removeFavoriteMutation.isPending
+                    ? "cursor-progress opacity-70"
+                    : "cursor-pointer"
+                }`}
+              >
+                {isFavorite ? <RiHeart3Fill /> : <RiHeart3Line />}
+              </div>
+            )}
+          </>
         )}
       </div>
       <BaseModal
