@@ -82,6 +82,7 @@ const SupportMessagesTab: React.FC<SupportMessagesTabProps> = () => {
   };
   console.log(input);
   const handleSend = () => {
+    console.log("click me")
     // Implement send logic here
     setInput("");
   };
