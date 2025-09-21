@@ -31,7 +31,7 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
         <div
           className={`support-panel-content ${
             parenScroll ? "overflow-y-auto" : ""
-          }`}
+          } ${activeTab==="messages" ? "!mb-0":""}`}
         >
           {activeTab === "home" && <SupportHomeTab />}
           {activeTab === "messages" && <SupportMessagesTab />}

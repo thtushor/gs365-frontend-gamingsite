@@ -4,9 +4,13 @@ import "./SupportHomeTab.scss";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import PromotionList from "../Promotion/PromotionList";
 import { useQuery } from "@tanstack/react-query";
+import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 const SupportHomeTab = () => {
   const getRequest = useGetRequest();
+
+  const { activeTab, handleTabChange, parenScroll, setParentScroll } =
+    useSupportPanelContext();
 
   const {
     data: promotionList,
@@ -69,7 +73,9 @@ const SupportHomeTab = () => {
         </div>
       </div>
 
-      <div className="support-home-card send-message-card">
+      <div className="support-home-card send-message-card" onClick={()=>{
+        handleTabChange("messages")
+      }}>
         <span>Send us a message</span>
         <FiArrowRight className="arrow-icon" />
       </div>
@@ -80,17 +86,17 @@ const SupportHomeTab = () => {
           promotions={
             Array.isArray(promotionList?.data) && promotionList?.data.length > 0
               ? promotionList?.data.map((promo) => ({
-                  image: promo?.bannerImg || "/fallback-image.jpg",
-                  title: promo?.promotionName || "Untitled Promotion",
-                  description:
-                    promo?.description || "No description available.",
-                  tag: Array.isArray(promo?.promotionType?.data)
-                    ? promo?.promotionType?.data
-                    : [],
-                  time: promo?.dateRange || "Date not available",
-                  signupLink: "/register",
-                  detailsLink: `/promotions/${promo?.id || "unknown"}`,
-                }))
+                image: promo?.bannerImg || "/fallback-image.jpg",
+                title: promo?.promotionName || "Untitled Promotion",
+                description:
+                  promo?.description || "No description available.",
+                tag: Array.isArray(promo?.promotionType?.data)
+                  ? promo?.promotionType?.data
+                  : [],
+                time: promo?.dateRange || "Date not available",
+                signupLink: "/register",
+                detailsLink: `/promotions/${promo?.id || "unknown"}`,
+              }))
               : []
           }
         />
