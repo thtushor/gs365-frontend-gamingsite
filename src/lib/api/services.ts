@@ -57,6 +57,7 @@ export interface UserProfile {
   referred_by: number | null;
   referred_by_admin_user: number | null;
   created_at: string; // datetime as ISO string
+  role?: string; // Add role property
 }
 
 export interface Game {
