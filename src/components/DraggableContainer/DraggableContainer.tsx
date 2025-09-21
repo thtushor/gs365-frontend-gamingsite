@@ -77,6 +77,23 @@ const DraggableContainer: React.FC<DraggableContainerProps> = ({
 
   const handleDragEnd = () => {
     setIsDragging(false);
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const screenMidpoint = window.innerWidth / 2;
+      const currentX = position.x;
+
+      let newX;
+      const offset = 40; // 40px offset
+      if (currentX + containerWidth / 2 < screenMidpoint) {
+        // Closer to the left side
+        newX = offset;
+      } else {
+        // Closer to the right side
+        newX = window.innerWidth - containerWidth - offset;
+      }
+
+      setPosition((prev) => ({ ...prev, x: newX }));
+    }
   };
 
   // Mouse event handlers
