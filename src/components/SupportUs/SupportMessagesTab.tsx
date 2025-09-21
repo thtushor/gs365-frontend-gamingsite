@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./SupportMessagesTab.scss";
 import { ArrowLeftIcon, SendIcon } from "lucide-react";
+import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 const messages = [
   {
@@ -59,11 +60,10 @@ const messages = [
   },
 ];
 interface SupportMessagesTabProps {
-  setParentScroll: (scroll: boolean) => void;
+  // setParentScroll: (scroll: boolean) => void; // No longer needed as it's from context
 }
-const SupportMessagesTab: React.FC<SupportMessagesTabProps> = ({
-  setParentScroll,
-}) => {
+const SupportMessagesTab: React.FC<SupportMessagesTabProps> = () => {
+  const { setParentScroll } = useSupportPanelContext();
   const [selectedMessage, setSelectedMessage] = useState<number | null>(null);
   console.log(selectedMessage);
   const [input, setInput] = useState("");

@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SupportPanel.scss";
 import SupportTabBar from "./SupportTabBar";
 import SupportHomeTab from "./SupportHomeTab";
 import SupportMessagesTab from "./SupportMessagesTab";
 import SupportHelpTab from "./SupportHelpTab";
 import { XIcon } from "lucide-react";
+import useSupportPanel from "./useSupportPanel";
+import { SupportPanelProvider, useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 interface SupportPanelProps {
   open: boolean;
   onClose: () => void;
 }
 
-const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
-  const [activeTab, setActiveTab] = useState("home");
-  const [parenScroll, setParentScroll] = useState(true);
-  if (!open) return null;
+const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { activeTab, handleTabChange, parenScroll, setParentScroll } =
+    useSupportPanelContext();
+
   return (
     <div className="support-panel-overlay" onClick={onClose}>
       <div className="support-panel-modal" onClick={(e) => e.stopPropagation()}>
@@ -32,16 +34,24 @@ const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
           }`}
         >
           {activeTab === "home" && <SupportHomeTab />}
-          {activeTab === "messages" && (
-            <SupportMessagesTab setParentScroll={setParentScroll} />
-          )}
+          {activeTab === "messages" && <SupportMessagesTab />}
           {activeTab === "help" && <SupportHelpTab />}
         </div>
         {parenScroll && (
-          <SupportTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+          <SupportTabBar activeTab={activeTab} onTabChange={handleTabChange} />
         )}
       </div>
     </div>
+  );
+};
+
+const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
+  if (!open) return null;
+
+  return (
+    <SupportPanelProvider>
+      <SupportPanelContent onClose={onClose} />
+    </SupportPanelProvider>
   );
 };
 

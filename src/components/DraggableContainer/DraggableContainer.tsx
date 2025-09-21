@@ -149,7 +149,7 @@ const DraggableContainer: React.FC<DraggableContainerProps> = ({
         top: `${position.y}px`,
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "none",
-        zIndex: isDragging ? 1001 : 1000,
+        zIndex: isDragging ? 9999999 : 9999999,
       }}
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
