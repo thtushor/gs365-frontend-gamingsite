@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-// import ChatAvatar from "../../assets/chat-avatar.png";
+import ChatAvatar from "/assets/cs-image.jpg";
 import { LuSend } from "react-icons/lu";
 import moment from "moment";
 import { useAuth } from "../../contexts/auth-context";
@@ -7,6 +7,7 @@ import { useChat, Message, ChatUser } from "../../contexts/ChatContext";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
+import './SupportMessagesTab.scss'
 
 interface SupportRightProps {
   isAffiliate: boolean;
@@ -98,7 +99,7 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
             className="flex items-center gap-2 cursor-pointer"
           >
             <img
-              src={''}
+              src={ChatAvatar}
               alt="image avatar"
               className="w-[35px] h-[35px] border rounded-md bg-white border-white"
             />
