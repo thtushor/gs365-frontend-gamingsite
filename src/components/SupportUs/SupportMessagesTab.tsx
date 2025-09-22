@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SupportMessagesTab.scss";
-import { ArrowLeftIcon, SendIcon } from "lucide-react";
+import { ArrowLeft, ArrowLeftIcon, SendIcon } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 const messages = [
@@ -93,7 +93,7 @@ const SupportMessagesTab: React.FC<SupportMessagesTabProps> = () => {
       <div className="support-messages-tab chat-view">
         <div className="chat-header">
           <button className="back-btn" onClick={handleBack}>
-            <ArrowLeftIcon />
+            <ArrowLeft />
           </button>
           <div className="header-content">
             <img className="avatar" src={msg?.avatar} alt="avatar" />
@@ -131,6 +131,9 @@ const SupportMessagesTab: React.FC<SupportMessagesTabProps> = () => {
         <div className="chat-input-bar">
           <input
             type="text"
+            onFocus={()=>{
+              console.log("focus","hello")
+            }}
             placeholder="Type your message..."
             value={input}
             onChange={handleInput}

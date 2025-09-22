@@ -32,10 +32,13 @@ import { GameTypes } from "../components/GameTypes/GameTypes";
 import AllProviders from "./AllProviders";
 import { Event } from "../components/Event";
 import { ExclusiveGames } from "../components/ExclusiveGames";
+import SupportPanel from "../components/SupportUs/SupportPanel";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const [open, setOpen] = useState(true);
 
   console.log({ activeFilters, searchTerm });
 
@@ -49,6 +52,16 @@ const HomePage: React.FC = () => {
     setSearchTerm(term);
     // Here you would implement search logic
     console.log("Search term:", term);
+  };
+
+  
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -93,7 +106,9 @@ const HomePage: React.FC = () => {
           y: window.innerHeight - 120,
         }}
       >
-        <SupportUs />
+        <SupportUs handleClick={()=>{
+          setOpen(true)
+        }} />
       </DraggableContainer>
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
@@ -102,6 +117,8 @@ const HomePage: React.FC = () => {
       <GameSlider title="NEW RELEASES" games={newGames} />
       <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
       {/* <FAQ /> */}
+
+      {open && <SupportPanel open={open} onClose={handleClose} />}
     </div>
   );
 };

@@ -3,20 +3,12 @@ import "./SupportUs.scss";
 import logo from "../../assets/brand-logo.png";
 import SupportPanel from "./SupportPanel";
 
-const SupportUs: React.FC = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+const SupportUs: React.FC<{handleClick:()=>void}> = ({handleClick}) => {
+  
 
   return (
     <>
-      {open && <SupportPanel open={open} onClose={handleClose} />}
+      {/* {open && <SupportPanel open={open} onClose={handleClose} />} */}
       <button
         className="support-us-floating-button border w-[40px] h-[40px] md:w-[50px] md:h-[50px] text-[18px] md:text-[20px] text-black p-0"
         style={{
