@@ -230,7 +230,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     },
     onSuccess: (newChat) => {
       setActiveConversation(newChat);
-      queryClient.invalidateQueries({ queryKey: ["chatMessages", newChat.id] });
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
     },
@@ -258,7 +258,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chatMessages", activeConversation?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
     },
     onError: (err) => {
@@ -308,7 +308,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
     const handleNewMessage = (message: Message) => {
       console.log("New message received via socket:", message);
-      queryClient.invalidateQueries({ queryKey: ["chatMessages", activeConversation?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
       if (activeConversation?.id === message.chatId) {
         readMessagesMutation.mutate(activeConversation.id);
@@ -318,7 +318,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const handleChatUpdated = (chatUpdate: Chat) => {
       console.log("Chat updated via socket:", chatUpdate);
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
-      queryClient.invalidateQueries({ queryKey: ["chatMessages", chatUpdate.id] });
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
     };
 
