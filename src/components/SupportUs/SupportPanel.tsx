@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SupportPanel.scss";
 import SupportTabBar from "./SupportTabBar";
 import SupportHomeTab from "./SupportHomeTab";
-import SupportMessagesTab from "./SupportMessagesTab";
+import SupportRight from "./SupportMessagesTab"; // Renamed import
 import SupportHelpTab from "./SupportHelpTab";
 import { XIcon } from "lucide-react";
 import useSupportPanel from "./useSupportPanel";
@@ -17,6 +17,7 @@ interface SupportPanelProps {
 const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { activeTab, handleTabChange, parenScroll } =
     useSupportPanelContext();
+  const [showLeftPanelMobile, setShowLeftPanelMobile] = useState(true); // State for mobile view
 
   return (
     <div className="support-panel-overlay" onClick={onClose}>
@@ -26,7 +27,13 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
             } ${activeTab === "messages" ? "!mb-0" : ""}`}
         >
           {activeTab === "home" && <SupportHomeTab />}
-          {activeTab === "messages" && <SupportMessagesTab />}
+          {activeTab === "messages" && (
+            <SupportRight
+              isAffiliate={false} // Placeholder, adjust as needed
+              showLeftPanelMobile={showLeftPanelMobile}
+              setShowLeftPanelMobile={setShowLeftPanelMobile}
+            />
+          )}
           {activeTab === "help" && <SupportHelpTab />}
         </div>
         {parenScroll && activeTab !== "messages" && (

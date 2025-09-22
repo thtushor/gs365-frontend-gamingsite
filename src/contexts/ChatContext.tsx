@@ -17,29 +17,102 @@ import { useSocket } from "../socket"; // Import useSocket
 import { AxiosError } from "axios";
 
 // Define types for Chat and Message
-interface Message {
-  id: string;
-  chatId: string;
-  senderId: string;
-  senderType: "user" | "admin";
-  content: string;
-  attachmentUrl?: string;
-  read: boolean;
-  createdAt: string;
-  updatedAt: string;
+interface UserProfileForMessage {
+  id: number;
+  username: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  password: string;
+  currency_id: number;
+  country_id: string | null;
+  refer_code: string;
+  created_by: string | null;
+  status: string;
+  isAgreeWithTerms: boolean;
+  isLoggedIn: boolean;
+  isVerified: boolean;
+  lastIp: string;
+  lastLogin: string;
+  tokenVersion: number;
+  device_type: string;
+  device_name: string;
+  os_version: string;
+  browser: string;
+  browser_version: string;
+  ip_address: string;
+  device_token: string;
+  referred_by: string | null;
+  referred_by_admin_user: string | null;
+  created_at: string;
+  kyc_status: string;
 }
 
-interface Chat {
-  id: string;
-  userId: string;
-  adminUserId: string;
+interface AdminProfileForMessage {
+  id: number;
+  username: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  password: string;
+  country: string;
+  city: string;
+  street: string;
+  remainingBalance: number | null;
+  minTrx: string;
+  maxTrx: string;
+  currency: number;
+  designation: string | null;
+  role: string;
+  status: string;
+  refCode: string;
+  isLoggedIn: boolean;
+  isVerified: boolean;
+  lastIp: string;
+  lastLogin: string;
+  commission_percent: number | null;
+  main_balance: number;
+  downline_balance: number;
+  withdrawable_balance: number;
+  device_type: string;
+  device_name: string;
+  os_version: string;
+  browser: string;
+  browser_version: string;
+  ip_address: string;
+  device_token: string;
+  createdBy: number;
+  referred_by: string | null;
+  created_at: string;
+  kyc_status: string;
+}
+
+export interface Message { // Exported for use in other components
+  id: number;
+  chatId: number;
+  senderId: number;
+  senderType: "user" | "admin";
+  messageType: "text" | "attachment";
+  content: string;
+  attachmentUrl: string | null;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+  senderUser?: UserProfileForMessage;
+  senderAdmin?: AdminProfileForMessage;
+}
+
+export interface Chat { // Exported for use in other components
+  id: number;
+  userId: number;
+  adminUserId: number;
   messages: Message[];
   createdAt: string;
   updatedAt: string;
 }
 
 // Extend UserProfile for chat context to include chats array
-interface ChatUser extends UserProfile {
+export interface ChatUser extends UserProfile { // Exported for use in other components
   chats?: Chat[];
 }
 
@@ -53,17 +126,17 @@ interface ChatContextType {
   createChat: (data: {
     initialMessageContent: string;
     targetUserId?: string;
-    targetAdminId?: string;
-    targetAffiliateId?: string;
+    targetAdminId?: number;
+    targetAffiliateId?: number;
     attachmentUrl?: string;
     senderType: "user" | "admin";
   }) => Promise<Chat>;
   sendMessage: (data: {
-    chatId: string;
+    chatId: number;
     content: string;
     attachmentUrl?: string;
   }) => Promise<Message>;
-  readMessages: (chatId: string) => void;
+  readMessages: (chatId: number) => void;
   uploadAttachment: (file: File) => Promise<string>;
   refetchMessages: UseQueryResult<Message[], Error>['refetch'];
 }
@@ -78,16 +151,13 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  // const isAffiliate = ["superAffiliate", "affiliate"].includes(user?.role || "");
+  const [selectedChatUser, setSelectedChatUser] = useState<ChatUser | null>(null);
+  const [activeConversation, setActiveConversation] = useState<Chat | null>(null);
 
-  const [selectedChatUser, setSelectedChatUser] = useState<ChatUser | null>(null); // This will hold the selected user object with its chats array
-  const [activeConversation, setActiveConversation] = useState<Chat | null>(null); // This will hold the specific active chat conversation
+  const { socket, emitEvent, joinChat, leaveChat } = useSocket();
 
-  const { socket, emitEvent, joinChat, leaveChat } = useSocket(); // Initialize socket without chatId
-
-  // Effect to determine the active conversation when selectedChatUser changes and handle joining/leaving chat rooms
   useEffect(() => {
-    let previousChatId: string | null = null;
+    let previousChatId: number | null = null;
     if (activeConversation?.id) {
       previousChatId = activeConversation.id;
     }
@@ -98,23 +168,22 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       );
       setActiveConversation(latestChat);
       if (latestChat.id && latestChat.id !== previousChatId) {
-        joinChat(latestChat.id);
+        joinChat(String(latestChat.id));
       }
     } else {
       setActiveConversation(null);
       if (previousChatId) {
-        leaveChat(previousChatId);
+        leaveChat(String(previousChatId));
       }
     }
 
     return () => {
       if (previousChatId) {
-        leaveChat(previousChatId);
+        leaveChat(String(previousChatId));
       }
     };
   }, [selectedChatUser, joinChat, leaveChat, activeConversation]);
 
-  // Fetch messages using useQuery
   const {
     data: messages = [],
     isLoading: messagesLoading,
@@ -123,24 +192,22 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   } = useQuery<Message[], Error>({
     queryKey: ["chatMessages", user?.id],
     queryFn: async () => {
-      if (!user?.id) return []; // Ensure user is defined
-      // const isSelectedAdminChat = Boolean(selectedChatUser?.role);
-      const url = `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/user`; // Use GET_MESSAGES for user chats
+      if (!user?.id) return [];
+      const url = `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/user`;
       const response = await Axios.get(url);
       return response.data.data;
     },
     enabled: !!user?.id,
   });
 
-  // Create chat using useMutation
   const createChatMutation: UseMutationResult<
     Chat,
     Error,
     {
       initialMessageContent: string;
       targetUserId?: string;
-      targetAdminId?: string;
-      targetAffiliateId?: string;
+      targetAdminId?: number;
+      targetAffiliateId?: number;
       attachmentUrl?: string;
       senderType: "user" | "admin";
     }
@@ -172,11 +239,10 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     },
   });
 
-  // Send message using useMutation
   const sendMessageMutation: UseMutationResult<
     Message,
     Error,
-    { chatId: string; content: string; attachmentUrl?: string }
+    { chatId: number; content: string; attachmentUrl?: string }
   > = useMutation({
     mutationFn: async ({ chatId, content, attachmentUrl }) => {
       if (!user?.id) throw new Error("User not authenticated");
@@ -200,8 +266,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     },
   });
 
-  // Read messages using useMutation
-  const readMessagesMutation: UseMutationResult<void, Error, string> = useMutation({
+  const readMessagesMutation: UseMutationResult<void, Error, number> = useMutation({
     mutationFn: async (chatId) => {
       if (!chatId || !user?.role) return;
       await Axios.post(`${API_ENDPOINTS.CHAT.READ_MESSAGES}/${chatId}`, {
@@ -213,7 +278,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     },
   });
 
-  // Upload attachment using useMutation
   const uploadAttachmentMutation: UseMutationResult<string, Error, File> = useMutation({
     mutationFn: async (file) => {
       const formData = new FormData();
@@ -230,10 +294,8 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     },
   });
 
-  // Use a ref to track the last chat ID for which messages were marked as read
-  const lastReadChatIdRef = useRef<string | null>(null);
+  const lastReadChatIdRef = useRef<number | null>(null);
 
-  // Effect to mark messages as read when activeConversation changes
   useEffect(() => {
     if (activeConversation?.id && activeConversation.id !== lastReadChatIdRef.current) {
       readMessagesMutation.mutate(activeConversation.id);
@@ -241,7 +303,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }
   }, [activeConversation, readMessagesMutation]);
 
-  // Effect to handle socket events
   useEffect(() => {
     if (!socket) return;
 
