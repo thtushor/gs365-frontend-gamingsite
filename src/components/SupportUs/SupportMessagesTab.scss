@@ -206,15 +206,20 @@
       border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
       position: relative;
       .header-content {
+        width: 100%;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 7px;
         text-align: left;
       }
       .back-btn {
-        position: absolute;
-        right: -20px;
-        top: 0px;
+        // position: absolute;
+        // right: -20px;
+        // top: 0px;
+        cursor: default;
+        outline:none;
+        width: auto;
         background: none;
         border: none;
         color: #ffd93d;

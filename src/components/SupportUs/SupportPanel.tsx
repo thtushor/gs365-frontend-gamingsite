@@ -7,6 +7,7 @@ import SupportHelpTab from "./SupportHelpTab";
 import { XIcon } from "lucide-react";
 import useSupportPanel from "./useSupportPanel";
 import { SupportPanelProvider, useSupportPanelContext } from "../../contexts/SupportPanelContext";
+import { ChatProvider } from "../../contexts/ChatContext";
 
 interface SupportPanelProps {
   open: boolean;
@@ -29,15 +30,14 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
           </button> */}
         </div>
         <div
-          className={`support-panel-content ${
-            parenScroll ? "overflow-y-auto" : ""
-          } ${activeTab==="messages" ? "!mb-0":""}`}
+          className={`support-panel-content ${parenScroll ? "overflow-y-auto" : ""
+            } ${activeTab === "messages" ? "!mb-0" : ""}`}
         >
           {activeTab === "home" && <SupportHomeTab />}
           {activeTab === "messages" && <SupportMessagesTab />}
           {activeTab === "help" && <SupportHelpTab />}
         </div>
-        {parenScroll && (
+        {parenScroll && activeTab !== "messages" && (
           <SupportTabBar activeTab={activeTab} onTabChange={handleTabChange} />
         )}
       </div>
@@ -50,7 +50,10 @@ const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
 
   return (
     <SupportPanelProvider>
-      <SupportPanelContent onClose={onClose} />
+      <ChatProvider>
+        <SupportPanelContent onClose={onClose} />
+      </ChatProvider>
+
     </SupportPanelProvider>
   );
 };

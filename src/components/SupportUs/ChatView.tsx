@@ -28,11 +28,10 @@ const ChatView: React.FC<ChatViewProps> = ({
   return (
     <div className="support-messages-tab chat-view">
       <div className="chat-header">
-        <button className="back-btn" onClick={handleBack}>
-          <ArrowLeft />
-        </button>
+
         <div className="header-content">
-          <img className="avatar" src={msg?.avatar} alt="avatar" />
+        <div className="flex items-center gap-2">
+            <img className="avatar" src={msg?.avatar} alt="avatar" />
           <div className="sender-info">
             <div className="sender">
               {msg?.sender
@@ -44,20 +43,23 @@ const ChatView: React.FC<ChatViewProps> = ({
             <div className="meta">Online</div>
           </div>
         </div>
+
+          <span className="back-btn" onClick={handleBack}>
+            <ArrowLeft />
+          </span>
+        </div>
       </div>
       <div className="chat-body overflow-y-auto">
         {msg?.chat.map((c, i) => (
           <div
             key={i}
-            className={`chat-bubble ${
-              c.from === "support" ? "support text-left" : "user text-right"
-            }`}
+            className={`chat-bubble ${c.from === "support" ? "support text-left" : "user text-right"
+              }`}
           >
             <div className="bubble-text">{c.text}</div>
             <div
-              className={`bubble-time ${
-                c.from === "support" ? "text-right pr-1" : " text-left pl-1"
-              }`}
+              className={`bubble-time ${c.from === "support" ? "text-right pr-1" : " text-left pl-1"
+                }`}
             >
               {c.time}
             </div>
