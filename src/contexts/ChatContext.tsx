@@ -78,7 +78,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const isAffiliate = ["superAffiliate", "affiliate"].includes(user?.role || "");
+  // const isAffiliate = ["superAffiliate", "affiliate"].includes(user?.role || "");
 
   const [selectedChatUser, setSelectedChatUser] = useState<ChatUser | null>(null); // This will hold the selected user object with its chats array
   const [activeConversation, setActiveConversation] = useState<Chat | null>(null); // This will hold the specific active chat conversation
@@ -124,16 +124,14 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     queryKey: ["chatMessages", activeConversation?.id],
     queryFn: async () => {
       if (!user?.id) return []; // Ensure user is defined
-      const isSelectedAdminChat = Boolean(selectedChatUser?.role);
-      const url = isAffiliate
-        ? `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/admin`
-        : `${API_ENDPOINTS.CHAT.GET_MESSAGES}/${activeConversation?.id}`; // Use GET_MESSAGES for user chats
+      // const isSelectedAdminChat = Boolean(selectedChatUser?.role);
+      const url = `${API_ENDPOINTS.CHAT.GET_MESSAGES}/${activeConversation?.id}`; // Use GET_MESSAGES for user chats
 
-      if (!activeConversation?.id && !isAffiliate) return [];
+      if (!activeConversation?.id) return [];
       const response = await Axios.get(url);
       return response.data.data;
     },
-    enabled: isAffiliate ? !!user?.id : !!activeConversation?.id,
+    enabled: !!user?.id,
   });
 
   // Create chat using useMutation

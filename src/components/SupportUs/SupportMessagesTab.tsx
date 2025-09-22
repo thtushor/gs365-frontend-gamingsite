@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./SupportMessagesTab.scss";
-import { ArrowLeft, ArrowLeftIcon, SendIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
+import ChatView from "./ChatView";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 const messages = [
@@ -90,61 +91,13 @@ const SupportMessagesTab: React.FC<SupportMessagesTabProps> = () => {
   if (selectedMessage !== null) {
     const msg = messages.find((m) => m.id === selectedMessage);
     return (
-      <div className="support-messages-tab chat-view">
-        <div className="chat-header">
-          <button className="back-btn" onClick={handleBack}>
-            <ArrowLeft />
-          </button>
-          <div className="header-content">
-            <img className="avatar" src={msg?.avatar} alt="avatar" />
-            <div className="sender-info">
-              <div className="sender">
-                {msg?.sender
-                  ? msg.sender.length > 20
-                    ? msg.sender.slice(0, 20) + "..."
-                    : msg.sender
-                  : "Customer Care"}
-              </div>
-              <div className="meta">Online</div>
-            </div>
-          </div>
-        </div>
-        <div className="chat-body overflow-y-auto">
-          {msg?.chat.map((c, i) => (
-            <div
-              key={i}
-              className={`chat-bubble ${
-                c.from === "support" ? "support text-left" : "user text-right"
-              }`}
-            >
-              <div className="bubble-text">{c.text}</div>
-              <div
-                className={`bubble-time ${
-                  c.from === "support" ? "text-right pr-1" : " text-left pl-1"
-                }`}
-              >
-                {c.time}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="chat-input-bar">
-          <input
-            type="text"
-            onFocus={()=>{
-              console.log("focus","hello")
-            }}
-            placeholder="Type your message..."
-            value={input}
-            onChange={handleInput}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            name="text"
-          />
-          <button className="send-btn" onClick={handleSend}>
-            <SendIcon className="" />
-          </button>
-        </div>
-      </div>
+      <ChatView
+        msg={msg}
+        handleBack={handleBack}
+        input={input}
+        handleInput={handleInput}
+        handleSend={handleSend}
+      />
     );
   } else {
     return (

@@ -14,7 +14,7 @@ interface SupportPanelProps {
 }
 
 const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { activeTab, handleTabChange, parenScroll, setParentScroll } =
+  const { activeTab, handleTabChange, parenScroll } =
     useSupportPanelContext();
 
   return (
