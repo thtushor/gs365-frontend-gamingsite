@@ -5,6 +5,8 @@ import moment from "moment";
 import { useAuth } from "../../contexts/auth-context";
 import { useChat, Message, ChatUser } from "../../contexts/ChatContext";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 
 interface SupportRightProps {
   isAffiliate: boolean;
@@ -14,8 +16,9 @@ interface SupportRightProps {
 
 const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelMobile, setShowLeftPanelMobile }) => {
   const { user } = useAuth();
-  const { selectedChat,setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
+  const { selectedChat, setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
   const navigate = useNavigate();
+  const { handleTabChange } = useSupportPanelContext();
 
   const [messageInput, setMessageInput] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -38,7 +41,7 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
 
       const hasMessage = Boolean(messages?.length)
 
-      const chatid = activeConversation?.id ? activeConversation?.id: hasMessage ? messages[messages.length-1].chatId:undefined
+      const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
 
       if (!chatid) {
         const isSelectedAdminChat = Boolean(selectedChat?.role)
@@ -90,31 +93,9 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
     <>
       <div className={`text-[#07122b] w-full relative flex flex-col h-full ${showLeftPanelMobile ? "hidden md:flex" : "block"}`}>
         {/* top */}
-        <div className="p-4 py-[9.5px] flex items-center gap-2 border-b-2 border-[#01dc84] text-white bg-[#07122b] flex-shrink-0">
-          {!showLeftPanelMobile && (
-            <button
-              className="md:hidden text-white text-2xl mr-2"
-              onClick={() => {
-                setSelectedChat(null);
-                setShowLeftPanelMobile(true);
-              }}
-            >
-              &larr;
-            </button>
-          )}
+        <div className="p-4 py-[9.5px] w-full flex items-center justify-between gap-2 border-b-2 border-[#ffd93d] text-white bg-[#07122b] flex-shrink-0">
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => {
-              if (selectedChat) {
-                if (selectedChat.role) {
-                  // It's an affiliate
-                  navigate(`/affiliate-list/${selectedChat.id}`);
-                } else {
-                  // It's a player
-                  navigate(`/players/${selectedChat.id}/profile`);
-                }
-              }
-            }}
           >
             <img
               src={''}
@@ -122,48 +103,44 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
               className="w-[35px] h-[35px] border rounded-md bg-white border-white"
             />
             <div>
-              <h1 className="flex items-center mt-[-2px] text-[#01dc84] gap-1 font-semibold">
-                {selectedChat?.fullname || selectedChat?.username || "Support"}{" "}
-                <span className="text-[12px] bg-[#01dc84] px-[6px] text-white leading-4 capitalize block rounded-full">
-                  {selectedChat?.role ? selectedChat?.role : "Admin"}
-                </span>
+              <h1 className="flex text-base items-center mt-[-2px] text-[#ffd93d] gap-1 font-semibold">
+                Customer Support
               </h1>
-              <p className="text-[12px] mt-[-3px] text-white/80">
-                {selectedChat?.email && selectedChat?.email}
-              </p>
             </div>
           </div>
+
+          <span className="text-[#ffd93d] cursor-pointer" onClick={() => handleTabChange("home")}>
+            <ArrowLeft />
+          </span>
         </div>
 
         {/* center */}
         <div className="p-4 py-2 flex-1 overflow-y-auto space-y-1">
-          {loading && <p className="text-green-500 text-center">Loading messages...</p>}
-          
+          {loading && <p className="text-[#ffd93d] text-center">Loading messages...</p>}
+
           {messages.map((message) => {
-            const isCurrentUser = user?.id === message?.senderAdmin?.id && user?.role === message?.senderAdmin?.role && message?.senderType==="admin";
+            console.log({message})
+            const isCurrentUser = user?.id === message?.senderUser?.id && message?.senderType === "user";
             const senderName = getSenderName(message);
             return (
               <div
                 key={message?.id}
-                className={`flex flex-col ${
-                  isCurrentUser ? "items-end" : "items-start"
-                }`}
+                className={`flex flex-col ${isCurrentUser ? "items-end" : "items-start"
+                  }`}
               >
                 <div
-                  className={`${
-                    isCurrentUser
-                      ? "bg-[#01dc84] text-white"
-                      : "bg-gray-200 text-black"
-                  } px-4 py-2 rounded-lg max-w-[80%] md:max-w-sm relative group`}
+                  className={`${isCurrentUser
+                    ? "bg-[#ffd93d] text-white"
+                    : "bg-gray-200 text-black"
+                    } px-4 py-2 rounded-lg max-w-[80%] md:max-w-sm relative group`}
                 >
                   {message?.content && <p>{message?.content}</p>}
                 </div>
                 <span
-                  className={`text-xs mt-1 ${
-                    isCurrentUser ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`text-xs mt-1 ${isCurrentUser ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
-                  {moment(message?.createdAt?.replace("Z","")).calendar()}
+                  {moment(message?.createdAt?.replace("Z", "")).calendar()}
                 </span>
               </div>
             );
@@ -172,11 +149,11 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
         </div>
 
         {/* bottom */}
-        <div className="p-2 py-2 flex items-center gap-2 w-full bg-[#07122b] border-t-2 border-[#01dc84] flex-shrink-0">
+        <div className="p-2 py-2 flex items-center gap-2 w-full bg-[#07122b] border-t-2 border-[#ffd93d] flex-shrink-0">
           <div className="flex w-full">
             <input
               placeholder="What's on your mind?"
-              className="border border-[#01dc84] text-white placeholder:text-white/70 placeholder:font-normal w-full rounded-l-md px-3 outline-none font-medium"
+              className="border border-[#ffd93d] text-white placeholder:text-white/70 placeholder:font-normal w-full rounded-l-md px-3 outline-none font-medium"
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -184,7 +161,7 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
             />
             <div className="header-auth">
               <button
-                className="signup-btn-green !cursor-pointer !min-w-[40px] !rounded-l-none !rounded-md !max-w-[40px] !p-0 flex items-center justify-center !border-[2px] !max-h-[40px] !min-h-[40px]"
+                className="send-btn !cursor-pointer !min-w-[40px] !rounded-l-none !rounded-md !max-w-[40px] !p-0 flex items-center justify-center !border-[2px] !max-h-[40px] !min-h-[40px]"
                 onClick={handleSendMessage}
                 disabled={sendingMessage} // Disable button while sending
               >
