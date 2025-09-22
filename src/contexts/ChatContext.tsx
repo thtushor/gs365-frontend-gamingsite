@@ -121,13 +121,11 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     error: messagesError,
     refetch: refetchMessages,
   } = useQuery<Message[], Error>({
-    queryKey: ["chatMessages", activeConversation?.id],
+    queryKey: ["chatMessages", user?.id],
     queryFn: async () => {
       if (!user?.id) return []; // Ensure user is defined
       // const isSelectedAdminChat = Boolean(selectedChatUser?.role);
-      const url = `${API_ENDPOINTS.CHAT.GET_MESSAGES}/${activeConversation?.id}`; // Use GET_MESSAGES for user chats
-
-      if (!activeConversation?.id) return [];
+      const url = `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/user`; // Use GET_MESSAGES for user chats
       const response = await Axios.get(url);
       return response.data.data;
     },

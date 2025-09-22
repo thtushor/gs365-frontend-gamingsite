@@ -9,6 +9,10 @@ const SupportMessagesTab: React.FC = () => {
   const { handleTabChange } = useSupportPanelContext();
   const [input, setInput] = useState("");
 
+  const {messages} = useChat();
+
+  console.log({messages})
+
   // Define a default message for ChatView
   const defaultMsg = {
     id: 0,

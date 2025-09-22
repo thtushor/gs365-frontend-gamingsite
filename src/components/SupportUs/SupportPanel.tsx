@@ -45,7 +45,6 @@ const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
       <ChatProvider>
         <SupportPanelContent onClose={onClose} />
       </ChatProvider>
-
     </SupportPanelProvider>
   );
 };
