@@ -21,14 +21,6 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
   return (
     <div className="support-panel-overlay" onClick={onClose}>
       <div className="support-panel-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="flex justify-end ">
-          {/* <button
-            className="text-[10px] bg-transparent focus:outline-0 focus-visible:outline-0"
-            onClick={onClose}
-          >
-            <XIcon className="text-[10px]" />
-          </button> */}
-        </div>
         <div
           className={`support-panel-content ${parenScroll ? "overflow-y-auto" : ""
             } ${activeTab === "messages" ? "!mb-0" : ""}`}
