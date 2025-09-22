@@ -198,6 +198,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       return response.data.data;
     },
     enabled: !!user?.id,
+    refetchInterval:2*1000,
   });
 
   const createChatMutation: UseMutationResult<

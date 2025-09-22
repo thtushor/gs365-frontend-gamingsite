@@ -11,11 +11,9 @@ import './SupportMessagesTab.scss'
 
 interface SupportRightProps {
   isAffiliate: boolean;
-  showLeftPanelMobile: boolean;
-  setShowLeftPanelMobile: (show: boolean) => void;
 }
 
-const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelMobile, setShowLeftPanelMobile }) => {
+const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
   const { user } = useAuth();
   const { selectedChat, setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
   const navigate = useNavigate();
@@ -92,7 +90,7 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate, showLeftPanelM
 
   return (
     <>
-      <div className={`text-[#07122b] w-full relative flex flex-col h-full ${showLeftPanelMobile ? "hidden md:flex" : "block"}`}>
+      <div className={`text-[#07122b] w-full relative flex flex-col h-full`}>
         {/* top */}
         <div className="p-4 py-[9.5px] w-full flex items-center justify-between gap-2 border-b-2 border-[#ffd93d] text-white bg-[#07122b] flex-shrink-0">
           <div

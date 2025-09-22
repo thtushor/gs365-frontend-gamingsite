@@ -17,7 +17,6 @@ interface SupportPanelProps {
 const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { activeTab, handleTabChange, parenScroll } =
     useSupportPanelContext();
-  const [showLeftPanelMobile, setShowLeftPanelMobile] = useState(true); // State for mobile view
 
   return (
     <div className="support-panel-overlay" onClick={onClose}>
@@ -30,8 +29,6 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
           {activeTab === "messages" && (
             <SupportRight
               isAffiliate={false} // Placeholder, adjust as needed
-              showLeftPanelMobile={showLeftPanelMobile}
-              setShowLeftPanelMobile={setShowLeftPanelMobile}
             />
           )}
           {activeTab === "help" && <SupportHelpTab />}
