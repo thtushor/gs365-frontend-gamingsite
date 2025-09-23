@@ -70,6 +70,7 @@ export const API_ENDPOINTS = {
     SEND_MESSAGE: "/api/messages/send-message",
     READ_MESSAGES: "/api/messages/read", // Will append chatId
     ADMIN_USER_MESSAGES: "/api/messages/user-admin",
+    GUEST_USER_MESSAGES: "/api/messages/guest-sender/:guestSenderId",
   },
 } as const;
 

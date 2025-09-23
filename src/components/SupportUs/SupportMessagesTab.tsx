@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import './SupportMessagesTab.scss'
+import { getOrCreateGuestId } from "../../lib/utils";
 
 interface SupportRightProps {
   isAffiliate: boolean;
@@ -41,6 +42,8 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
       const hasMessage = Boolean(messages?.length)
 
       const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
+      
+      console.log({chatid})
 
       if (!chatid) {
         const isSelectedAdminChat = Boolean(selectedChat?.role)
@@ -119,7 +122,7 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
 
           {messages.map((message) => {
             console.log({message})
-            const isCurrentUser = user?.id === message?.senderUser?.id && message?.senderType === "user";
+            const isCurrentUser = message?.senderType === "user" ?  user?.id === message?.senderUser?.id: message.guestSenderId===getOrCreateGuestId();
             const senderName = getSenderName(message);
             return (
               <div
