@@ -137,6 +137,11 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
                     } px-4 py-2 rounded-lg max-w-[80%] md:max-w-sm relative group`}
                 >
                   {message?.content && <p>{message?.content}</p>}
+
+                  {message?.attachmentUrl &&  <img
+                  className="w-auto h-24"
+                  src={message?.attachmentUrl}
+                  />}
                 </div>
                 <span
                   className={`text-xs mt-1 ${isCurrentUser ? "text-gray-400" : "text-gray-500"
