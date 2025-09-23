@@ -1,187 +1,181 @@
-import React, { useState } from "react";
-import "./SupportMessagesTab.scss";
-import { ArrowLeftIcon, SendIcon } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import ChatAvatar from "/assets/cs-image.jpg";
+import { LuSend } from "react-icons/lu";
+import moment from "moment";
+import { useAuth } from "../../contexts/auth-context";
+import { useChat, Message, ChatUser } from "../../contexts/ChatContext";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
+import './SupportMessagesTab.scss'
 
-const messages = [
-  {
-    id: 1,
-    avatar:
-      "https://static.intercomassets.com/avatars/7986453/square_128/Screenshot_2025-01-07_164341-1736248445.png",
-    sender: "GS365 Customer Service",
-    text: "প্রিয় গ্রাহক , কিভাবে আপনাকে সহায়তা করতে পারি...",
-    time: "1h ago",
-    preview: true,
-    chat: [
-      {
-        from: "support",
-        text: "Dear Valued Customer,\nDue to some technical issue, we are unable to reply in Facebook Messenger today. Thanks for your understanding.",
-        time: "1h ago",
-      },
-      {
-        from: "user",
-        text: "Hi, welcome to GS365! Please select a language to continue. পরবর্তী ধাপে যেতে একটি ভাষা সিলেক্ট করুন।",
-        time: "1h ago",
-      },
-      {
-        from: "support",
-        text: "প্রিয় গ্রাহক, কিভাবে আপনাকে সহায়তা করতে পারি? আপনার অনুসন্ধানটি ভালোভাবে বুঝার জন্য নিচের বিকল্পগুলির মধ্যে থেকে যে কোনো একটি অপশন সিলেক্ট করুন।",
-        time: "1h ago",
-      },
-    ],
-    isRead: false,
-  },
-  {
-    id: 2,
-    avatar:
-      "https://static.intercomassets.com/avatars/7986453/square_128/Screenshot_2025-01-07_164341-1736248445.png",
-    sender: "GS365 Customer Service",
-    text: "প্রিয় গ্রাহক , কিভাবে আপনাকে সহায়তা করতে পারি...",
-    time: "1h ago",
-    preview: true,
-    chat: [
-      {
-        from: "support",
-        text: "Dear Valued Customer,\nDue to some technical issue, we are unable to reply in Facebook Messenger today. Thanks for your understanding.",
-        time: "1h ago",
-      },
-      {
-        from: "support",
-        text: "Hi, welcome to GS365! Please select a language to continue. পরবর্তী ধাপে যেতে একটি ভাষা সিলেক্ট করুন।",
-        time: "1h ago",
-      },
-      {
-        from: "support",
-        text: "প্রিয় গ্রাহক, কিভাবে আপনাকে সহায়তা করতে পারি? আপনার অনুসন্ধানটি ভালোভাবে বুঝার জন্য নিচের বিকল্পগুলির মধ্যে থেকে যে কোনো একটি অপশন সিলেক্ট করুন।",
-        time: "1h ago",
-      },
-    ],
-    isRead: true,
-  },
-];
-interface SupportMessagesTabProps {
-  setParentScroll: (scroll: boolean) => void;
+interface SupportRightProps {
+  isAffiliate: boolean;
 }
-const SupportMessagesTab: React.FC<SupportMessagesTabProps> = ({
-  setParentScroll,
-}) => {
-  const [selectedMessage, setSelectedMessage] = useState<number | null>(null);
-  console.log(selectedMessage);
-  const [input, setInput] = useState("");
 
-  const handleSelect = (id: number) => {
-    setSelectedMessage(id);
-    setParentScroll(false);
-  };
-  const handleBack = () => {
-    setSelectedMessage(null);
-    setParentScroll(true);
-  };
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setInput(e.target.value);
-  };
-  console.log(input);
-  const handleSend = () => {
-    // Implement send logic here
-    setInput("");
+const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
+  const { user } = useAuth();
+  const { selectedChat, setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
+  const navigate = useNavigate();
+  const { handleTabChange } = useSupportPanelContext();
+
+  const [messageInput, setMessageInput] = useState("");
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
   };
 
-  if (selectedMessage !== null) {
-    const msg = messages.find((m) => m.id === selectedMessage);
-    return (
-      <div className="support-messages-tab chat-view">
-        <div className="chat-header">
-          <button className="back-btn" onClick={handleBack}>
-            <ArrowLeftIcon />
-          </button>
-          <div className="header-content">
-            <img className="avatar" src={msg?.avatar} alt="avatar" />
-            <div className="sender-info">
-              <div className="sender">
-                {msg?.sender
-                  ? msg.sender.length > 20
-                    ? msg.sender.slice(0, 20) + "..."
-                    : msg.sender
-                  : "Customer Care"}
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSendMessage = async () => {
+    if (messageInput.trim() === "") return;
+    setSendingMessage(true);
+
+    try {
+      const senderType = ["superAdmin", "admin", "superAgent", "agent", "superAffiliate", "affiliate"].includes(user?.role || "") ? "admin" : "user";
+
+      const hasMessage = Boolean(messages?.length)
+
+      const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
+
+      if (!chatid) {
+        const isSelectedAdminChat = Boolean(selectedChat?.role)
+        await createChat({
+          initialMessageContent: messageInput,
+          targetUserId: !isSelectedAdminChat && selectedChat?.id ? String(selectedChat.id) : undefined,
+          targetAffiliateId: isSelectedAdminChat && selectedChat?.id ? Number(selectedChat.id) : undefined,
+          targetAdminId: user?.id ? Number(user.id) : undefined,
+          attachmentUrl: undefined,
+          senderType,
+        });
+      } else {
+        await sendMessage({ chatId: chatid, content: messageInput, attachmentUrl: undefined });
+      }
+      setMessageInput("");
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      // Handle error (e.g., show a toast notification)
+    } finally {
+      setSendingMessage(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
+  const getSenderName = (message: Message) => {
+    if (message.senderType === "user" && message.senderUser) {
+      return message.senderUser.fullname || message.senderUser.username;
+    }
+    if (message.senderType === "admin" && message.senderAdmin) {
+      return message.senderAdmin.fullname || message.senderAdmin.username;
+    }
+    return "Unknown";
+  };
+
+  // if (!selectedChat && !isAffiliate) {
+  //   return (
+  //     <div className="text-[#07122b] w-full relative flex items-center justify-center h-full">
+  //       <p className="text-white/70">Select a chat to start messaging</p>
+  //     </div>
+  //   );
+  // }
+
+  return (
+    <>
+      <div className={`text-[#07122b] w-full relative flex flex-col h-full`}>
+        {/* top */}
+        <div className="p-4 py-[9.5px] w-full flex items-center justify-between gap-2 border-b-2 border-[#ffd93d] text-white bg-[#07122b] flex-shrink-0">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <img
+              src={ChatAvatar}
+              alt="image avatar"
+              className="w-[35px] h-[35px] border rounded-md bg-white border-white"
+            />
+            <div>
+              <h1 className="flex text-base items-center mt-[-2px] text-[#ffd93d] gap-1 font-semibold">
+                Customer Support
+              </h1>
+            </div>
+          </div>
+
+          <span className="text-[#ffd93d] cursor-pointer" onClick={() => handleTabChange("home")}>
+            <ArrowLeft />
+          </span>
+        </div>
+
+        {/* center */}
+        <div className="p-4 py-2 flex-1 overflow-y-auto space-y-1">
+          {loading && <p className="text-[#ffd93d] text-center">Loading messages...</p>}
+
+          {messages.map((message) => {
+            console.log({message})
+            const isCurrentUser = user?.id === message?.senderUser?.id && message?.senderType === "user";
+            const senderName = getSenderName(message);
+            return (
+              <div
+                key={message?.id}
+                className={`flex flex-col ${isCurrentUser ? "items-end" : "items-start"
+                  }`}
+              >
+                <div
+                  className={`${isCurrentUser
+                    ? "bg-[#ffd93d] text-white"
+                    : "bg-gray-200 text-black"
+                    } px-4 py-2 rounded-lg max-w-[80%] md:max-w-sm relative group`}
+                >
+                  {message?.content && <p>{message?.content}</p>}
+                </div>
+                <span
+                  className={`text-xs mt-1 ${isCurrentUser ? "text-gray-400" : "text-gray-500"
+                    }`}
+                >
+                  {moment(message?.createdAt?.replace("Z", "")).calendar()}
+                </span>
               </div>
-              <div className="meta">Online</div>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* bottom */}
+        <div className="p-2 py-2 flex items-center gap-2 w-full bg-[#07122b] border-t-2 border-[#ffd93d] flex-shrink-0">
+          <div className="flex w-full">
+            <input
+              placeholder="What's on your mind?"
+              className="border border-[#ffd93d] text-white placeholder:text-white/70 placeholder:font-normal w-full rounded-l-md px-3 outline-none font-medium"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={sendingMessage} // Disable input while sending
+            />
+            <div className="header-auth">
+              <button
+                className="send-btn !cursor-pointer !min-w-[40px] !rounded-l-none !rounded-md !max-w-[40px] !p-0 flex items-center justify-center !border-[2px] !max-h-[40px] !min-h-[40px]"
+                onClick={handleSendMessage}
+                disabled={sendingMessage} // Disable button while sending
+              >
+                {sendingMessage ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> // Spinner
+                ) : (
+                  <LuSend />
+                )}
+              </button>
             </div>
           </div>
         </div>
-        <div className="chat-body overflow-y-auto">
-          {msg?.chat.map((c, i) => (
-            <div
-              key={i}
-              className={`chat-bubble ${
-                c.from === "support" ? "support text-left" : "user text-right"
-              }`}
-            >
-              <div className="bubble-text">{c.text}</div>
-              <div
-                className={`bubble-time ${
-                  c.from === "support" ? "text-right pr-1" : " text-left pl-1"
-                }`}
-              >
-                {c.time}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="chat-input-bar">
-          <input
-            type="text"
-            placeholder="Type your message..."
-            value={input}
-            onChange={handleInput}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            name="text"
-          />
-          <button className="send-btn" onClick={handleSend}>
-            <SendIcon className="" />
-          </button>
-        </div>
       </div>
-    );
-  } else {
-    return (
-      <div
-        className={`support-messages-tab ${
-          selectedMessage !== null ? "hidden" : ""
-        }`}
-      >
-        <h2>Messages</h2>
-        <div className="message-list">
-          {messages.map((msg, i) => (
-            <div
-              className="bg-white relative duration-150 flex cursor-pointer items-center gap-1 p-2 rounded-[10px]"
-              key={i}
-              onClick={() => handleSelect(msg.id)}
-            >
-              <img
-                className="w-[35px] h-[35px] rounded-full border-[3px] border-gray-300"
-                src={msg.avatar}
-                alt="avatar"
-              />
-              <div className="flex items-start text-left text-black flex-col">
-                <div className="text-[12px] text-black font-semibold max-w-[240px] truncate">
-                  {msg.text}
-                </div>
-                <div className="text-[10px] opacity-70 font-medium text-black flex items-center gap-2">
-                  <div className="max-w-[100px] truncate">{msg.sender} </div>
-                  <div className="w-[5px] h-[5px] bg-black rounded-full" />{" "}
-                  {msg.time}
-                </div>
-              </div>
-              {!msg?.isRead && (
-                <div className="w-[8px] h-[8px] bg-blue-600 rounded-full absolute bottom-[10px] right-2" />
-              )}
-            </div>
-          ))}
-        </div>
-        <button className="send-message-btn">Send us a message</button>
-      </div>
-    );
-  }
+    </>
+  );
 };
 
-export default SupportMessagesTab;
+export default SupportRight;

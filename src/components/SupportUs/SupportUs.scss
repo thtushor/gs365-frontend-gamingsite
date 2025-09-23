@@ -1,7 +1,15 @@
 .support-us-floating-button {
   background: #18181b;
+  border-color:  linear-gradient(
+    90deg,
+    #ffd700 0%,
+    // Bright gold
+    #ffc107 50%,
+    // Amber
+    #ffb700 100% // Strong gold
+  );
   color: #fff;
-  border: none;
+  border: none; 
   border-radius: 50%;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   display: flex;

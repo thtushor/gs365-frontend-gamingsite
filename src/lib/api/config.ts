@@ -62,6 +62,15 @@ export const API_ENDPOINTS = {
     SUBMIT_KYC: "/api/users/create-update-kyc",
     GET_ALL_KYC: "/api/users/kyc",
   },
+
+  // Chat endpoints
+  CHAT: {
+    CREATE_CHAT: "/api/chats",
+    GET_MESSAGES: "/api/messages/chat", // Will append chatId
+    SEND_MESSAGE: "/api/messages/send-message",
+    READ_MESSAGES: "/api/messages/read", // Will append chatId
+    ADMIN_USER_MESSAGES: "/api/messages/user-admin",
+  },
 } as const;
 
 // Helper function to build full API URLs

@@ -6,23 +6,23 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
-  z-index: 2000;
+  z-index: 9999999;
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
-  padding-top: 50px;
 }
 
 .support-panel-modal {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 1.25rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  width: 400px;
-  max-width: 95vw;
-  max-height: 80vh;
+  width: 100%;
+  max-width: 400px;
+  height: 90vh;
+  max-height: 90vh;
   overflow-y: hidden;
   position: relative;
-  padding: .5rem 1.5rem 1.5rem 1.5rem;
+  // padding: .5rem 1.5rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   color: #fff;
@@ -187,12 +187,12 @@
 
 .support-panel-content {
   flex: 1; 
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-track {
@@ -206,9 +206,17 @@
 }
 
 @media (max-width: 600px) {
+  .support-panel-overlay {
+    justify-content:center; /* Align to the right on mobile */
+  }
+
   .support-panel-modal {
-    width: 98vw;
-    padding: .5rem 0.5rem 1rem 0.5rem;
+    width: 90vw; /* Adjust width for mobile */
+    height: 90vh; /* Keep height for mobile */
+    max-width: 400px; /* Keep max-width for mobile */
+    max-height: 90vh; /* Keep max-height for mobile */
+    border-radius: 1.25rem; /* Keep border-radius */
+    // padding: .5rem 0.5rem 1rem 0.5rem;
   }
   .support-panel-content{
     margin-bottom: 100px;

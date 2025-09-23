@@ -17,7 +17,7 @@ const ToastSuccess = ({
   const handleClose = () => {
     if (isRedirect) {
       navigate(location);
-      window.location.reload();
+      // window.location.reload();
     }
     onClose(false);
     if (extraFn) {

@@ -32,10 +32,13 @@ import { GameTypes } from "../components/GameTypes/GameTypes";
 import AllProviders from "./AllProviders";
 import { Event } from "../components/Event";
 import { ExclusiveGames } from "../components/ExclusiveGames";
+import SupportPanel from "../components/SupportUs/SupportPanel";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const [open, setOpen] = useState(true);
 
   console.log({ activeFilters, searchTerm });
 
@@ -49,6 +52,16 @@ const HomePage: React.FC = () => {
     setSearchTerm(term);
     // Here you would implement search logic
     console.log("Search term:", term);
+  };
+
+  
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -69,22 +82,7 @@ const HomePage: React.FC = () => {
       <ExclusiveGames />
       {/* <ProviderGames games={providerGames} /> */}
 
-      {/* Test Gaming Section - Moved to top for first look */}
-      <div className="text-center py-8">
-        <h2 className="text-2xl font-bold text-white mb-4">
-          Ready to Test Games?
-        </h2>
-        <p className="text-gray-400 mb-6">
-          Try out our game collection with real API integration
-        </p>
-        <Link
-          to="/test-game"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold px-6 py-3 rounded-lg hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
-        >
-          <FaGamepad />
-          Go to Test Gaming
-        </Link>
-      </div>
+     
 
       <GameGrid />
       {/* <SportGrid /> */}
@@ -108,7 +106,9 @@ const HomePage: React.FC = () => {
           y: window.innerHeight - 120,
         }}
       >
-        <SupportUs />
+        <SupportUs handleClick={()=>{
+          setOpen(true)
+        }} />
       </DraggableContainer>
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
@@ -117,6 +117,8 @@ const HomePage: React.FC = () => {
       <GameSlider title="NEW RELEASES" games={newGames} />
       <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
       {/* <FAQ /> */}
+
+      {open && <SupportPanel open={open} onClose={handleClose} />}
     </div>
   );
 };
