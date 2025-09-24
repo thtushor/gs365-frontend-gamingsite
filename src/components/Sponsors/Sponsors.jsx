@@ -93,43 +93,68 @@ const Sponsors = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {/* Gaming Licenses */}
-        {licensesList.length > 0 && (
-          <div className="ambassador-lists gaming-licenses">
-            <div className="ambassador-lists__title text-left">
-              Gaming Licenses
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {licensesList.map((license) => (
-                <div key={license.id}>
-                  <div className="w-[36px] h-[36px">
-                    <img alt={license.name} src={license.icon} loading="lazy" />
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Ambassadors */}
+      {licensesList.length > 0 && (
+        <div className="ambassador-lists brand-ambassadors">
+          <div className="ambassador-lists__title text-left">
+            Gaming Licenses
           </div>
-        )}
+          <div className="ambassador-lists__wrap">
+            {licensesList.map((license) => (
+              <div key={license.id} className="ambassador-lists__item item">
+                <a href={`/license?name=${license.id}`}>
+                  <div className="item__icon">
+                    <img
+                      alt={license.name}
+                      src={license.icon}
+                      loading="lazy"
+                      className="ambassador-img"
+                    />
+                    <div className="item__content">
+                      <div className="txt">{license.name}</div>
+                      <div className="sub-txt">
+                        <span className="sub-txt__years">
+                          {license.duration}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-        {/* Responsible Gaming */}
-        {responsibleList.length > 0 && (
-          <div className="ambassador-lists responsible-gaming">
-            <div className="ambassador-lists__title text-left">
-              Responsible Gaming
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {responsibleList.map((item) => (
-                <div key={item.id} className="">
-                  <div className="w-[36px] h-[36px">
-                    <img alt={item.name} src={item.icon} loading="lazy" />
-                  </div>
-                </div>
-              ))}
-            </div>
+      {responsibleList.length > 0 && (
+        <div className="ambassador-lists brand-ambassadors">
+          <div className="ambassador-lists__title text-left">
+            Responsible Gaming
           </div>
-        )}
-      </div>
+          <div className="ambassador-lists__wrap">
+            {responsibleList.map((item) => (
+              <div key={item.id} className="ambassador-lists__item item">
+                <a href={`/responsible-gaming?name=${item.id}`}>
+                  <div className="item__icon">
+                    <img
+                      alt={item.name}
+                      src={item.icon}
+                      loading="lazy"
+                      className="ambassador-img"
+                    />
+                    <div className="item__content">
+                      <div className="txt">{item.name}</div>
+                      <div className="sub-txt">
+                        <span className="sub-txt__years">{item.duration}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

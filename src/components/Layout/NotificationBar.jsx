@@ -2,51 +2,63 @@ import React, { useState, useRef } from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Placeholder from "../../assets/placeholder.svg";
+import { useAuth } from "../../contexts/auth-context";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../../lib/api/axios";
+import ClaimableNotificationModal from "./ClaimableNotificationModal";
+import InfoNotificationModal from "./InfoNotificationModal";
 
 const NotificationBar = () => {
+  const [selectedNote, setSelectedNote] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { user: authUser } = useAuth();
 
-  const notifications = [
-    {
-      title: "Order Update",
-      description: "Your order has been shipped",
-      image: Placeholder,
-      isClaimable: false,
-      isLinkable: true,
-      isStatic: false,
+  const {
+    data: notificationsData,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["notifications", authUser?.id],
+    queryFn: async () => {
+      if (!authUser?.id) return null;
+      const res = await axiosInstance.get(
+        `/api/users/notifications/${authUser.id}`
+      );
+      return res.data?.data;
     },
-    {
-      title: "New Friend Request",
-      description: "John Doe sent you a friend request",
-      image: Placeholder,
-      isClaimable: true,
-      isLinkable: false,
-      isStatic: false,
-    },
-    {
-      title: "Payment Success",
-      description: "Payment received successfully",
-      image: Placeholder,
-      isClaimable: false,
-      isLinkable: false,
-      isStatic: true,
-    },
-    {
-      title: "Weekly Report",
-      description: "Your weekly summary is ready",
-      image: Placeholder,
-      isClaimable: false,
-      isLinkable: true,
-      isStatic: false,
-    },
-  ];
+    enabled: !!authUser?.id,
+    refetchOnWindowFocus: false,
+  });
+  console.log(notificationsData);
+  const notifications = notificationsData || [];
 
   // Outside click check
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setIsOpen(false);
     }
+  };
+
+  const formatTimeAgo = (dateString) => {
+    if (!dateString) return "";
+
+    const now = new Date();
+    const created = new Date(dateString);
+
+    const diffMs = now.getTime() - created.getTime(); // milliseconds
+    const diffSec = Math.floor(diffMs / 1000); // seconds
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHr = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHr / 24);
+
+    if (diffSec < 5) return "just now";
+    if (diffSec < 60) return `${diffSec}s ago`;
+    if (diffMin < 60) return `${diffMin}m ago`;
+    if (diffHr < 24) return `${diffHr}h ago`;
+    if (diffDay < 30) return `${diffDay}d ago`;
+
+    return created.toLocaleDateString(); // fallback for old notifications
   };
 
   return (
@@ -69,7 +81,7 @@ const NotificationBar = () => {
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute text-left right-0 mt-[2px] w-80 max-w-[90vw] second-bg profile-shadow shadow-lg rounded-lg overflow-hidden z-[999]"
+          className="absolute text-left right-[-10px] md:right-0 mt-[2px] w-80 max-w-[90vw] second-bg profile-shadow shadow-lg rounded-lg overflow-hidden z-[999]"
         >
           {/* Header */}
           <div className="p-4 pr-2 py-0 flex items-center justify-between border-b border-white/10 mt-3 pb-3 font-semibold text-white text-[14px]">
@@ -88,11 +100,12 @@ const NotificationBar = () => {
                 <li
                   key={idx}
                   className="px-4 py-3 border-b border-white/10 flex gap-2 relative text-sm hover:bg-yellow-500/10 cursor-pointer"
+                  onClick={() => setSelectedNote(note)}
                 >
                   {/* Image with fallback */}
                   <img
-                    src={note?.image || Placeholder}
-                    className="w-[35px] h-[35px] rounded-full border-2 border-yellow-500"
+                    src={note?.posterImg || Placeholder}
+                    className="w-[35px] h-[35px] object-cover rounded-full border-2 border-yellow-500"
                     alt={note?.title || "Notification"}
                   />
 
@@ -102,12 +115,19 @@ const NotificationBar = () => {
                       {note?.title || "Untitled"}
                     </h1>
                     <p className="text-[12px] text-gray-300 truncate max-w-44">
-                      {note?.description || "No description available"}
-                      <span className="block absolute bottom-3 text-[10px] right-[10px] text-yellow-300">
-                        (29 days ago)
-                      </span>
-                      <div className="w-[8px] h-[8px] bg-yellow-300 rounded-full absolute top-3 right-4" />
+                      {/* description may contain HTML from backend */}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            note?.description || "No description available",
+                        }}
+                      />
                     </p>
+                    <div className="absolute bottom-2 right-3 flex items-center gap-2">
+                      <span className="text-[10px] text-yellow-300">
+                        {formatTimeAgo(note?.createdAt)}
+                      </span>
+                    </div>
                   </div>
                 </li>
               ))
@@ -118,6 +138,23 @@ const NotificationBar = () => {
             )}
           </ul>
         </div>
+      )}
+
+      {/* Conditional Modals */}
+      {selectedNote?.notificationType === "claimable" && (
+        <ClaimableNotificationModal
+          open={!!selectedNote}
+          onClose={() => setSelectedNote(null)}
+          notification={selectedNote}
+        />
+      )}
+      {(selectedNote?.notificationType === "linkable" ||
+        selectedNote?.notificationType === "static") && (
+        <InfoNotificationModal
+          open={!!selectedNote}
+          onClose={() => setSelectedNote(null)}
+          notification={selectedNote}
+        />
       )}
     </div>
   );

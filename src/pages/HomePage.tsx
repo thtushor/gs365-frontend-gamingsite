@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   console.log({ activeFilters, searchTerm });
 
@@ -53,8 +53,6 @@ const HomePage: React.FC = () => {
     // Here you would implement search logic
     console.log("Search term:", term);
   };
-
-  
 
   const handleClick = () => {
     setOpen(true);
@@ -82,8 +80,6 @@ const HomePage: React.FC = () => {
       <ExclusiveGames />
       {/* <ProviderGames games={providerGames} /> */}
 
-     
-
       <GameGrid />
       {/* <SportGrid /> */}
 
@@ -106,9 +102,11 @@ const HomePage: React.FC = () => {
           y: window.innerHeight - 120,
         }}
       >
-        <SupportUs handleClick={()=>{
-          setOpen(true)
-        }} />
+        <SupportUs
+          handleClick={() => {
+            setOpen(true);
+          }}
+        />
       </DraggableContainer>
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
