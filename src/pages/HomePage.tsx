@@ -54,10 +54,6 @@ const HomePage: React.FC = () => {
     console.log("Search term:", term);
   };
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
