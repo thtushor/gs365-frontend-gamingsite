@@ -3,7 +3,7 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback,
+  // useCallback,
   useRef,
   ReactNode,
 } from "react";
@@ -156,7 +156,9 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [selectedChatUser, setSelectedChatUser] = useState<ChatUser | null>(null);
   const [activeConversation, setActiveConversation] = useState<Chat | null>(null);
 
-  const { socket, emitEvent, joinChat, leaveChat } = useSocket();
+  const { socket, 
+    // emitEvent,
+     joinChat, leaveChat } = useSocket();
 
   useEffect(() => {
     let previousChatId: number | null = null;
@@ -220,7 +222,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       initialMessageContent,
       targetUserId,
       targetAdminId,
-      targetAffiliateId,
+      // targetAffiliateId,
       attachmentUrl,
       senderType,
     }) => {

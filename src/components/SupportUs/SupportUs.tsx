@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SupportUs.scss";
 import logo from "../../assets/brand-logo.png";
-import SupportPanel from "./SupportPanel";
+// import SupportPanel from "./SupportPanel";
 
 const SupportUs: React.FC<{handleClick:()=>void}> = ({handleClick}) => {
   

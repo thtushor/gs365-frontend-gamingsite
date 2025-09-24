@@ -3,21 +3,21 @@ import ChatAvatar from "/assets/cs-image.jpg";
 import { LuSend } from "react-icons/lu";
 import moment from "moment";
 import { useAuth } from "../../contexts/auth-context";
-import { useChat, Message, ChatUser } from "../../contexts/ChatContext";
-import { useNavigate } from "react-router-dom";
+import { useChat } from "../../contexts/ChatContext";
+// import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import './SupportMessagesTab.scss'
 import { getOrCreateGuestId } from "../../lib/utils";
 
 interface SupportRightProps {
-  isAffiliate: boolean;
+  isAffiliate?: boolean;
 }
 
-const SupportMessage: React.FC<SupportRightProps> = ({ isAffiliate }) => {
+const SupportMessage: React.FC<SupportRightProps> = () => {
   const { user } = useAuth();
-  const { selectedChat, setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
-  const navigate = useNavigate();
+  const { selectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
+  // const navigate = useNavigate();
   const { handleTabChange } = useSupportPanelContext();
 
   const [messageInput, setMessageInput] = useState("");
@@ -73,15 +73,15 @@ const SupportMessage: React.FC<SupportRightProps> = ({ isAffiliate }) => {
     }
   };
 
-  const getSenderName = (message: Message) => {
-    if (message.senderType === "user" && message.senderUser) {
-      return message.senderUser.fullname || message.senderUser.username;
-    }
-    if (message.senderType === "admin" && message.senderAdmin) {
-      return message.senderAdmin.fullname || message.senderAdmin.username;
-    }
-    return "Unknown";
-  };
+  // const getSenderName = (message: Message) => {
+  //   if (message.senderType === "user" && message.senderUser) {
+  //     return message.senderUser.fullname || message.senderUser.username;
+  //   }
+  //   if (message.senderType === "admin" && message.senderAdmin) {
+  //     return message.senderAdmin.fullname || message.senderAdmin.username;
+  //   }
+  //   return "Unknown";
+  // };
 
   // if (!selectedChat && !isAffiliate) {
   //   return (
@@ -123,7 +123,7 @@ const SupportMessage: React.FC<SupportRightProps> = ({ isAffiliate }) => {
           {messages.map((message) => {
             console.log({message})
             const isCurrentUser = message?.senderType === "user" ?  user?.id === message?.senderUser?.id: message.guestSenderId===getOrCreateGuestId();
-            const senderName = getSenderName(message);
+            // const senderName = getSenderName(message);
             return (
               <div
                 key={message?.id}
