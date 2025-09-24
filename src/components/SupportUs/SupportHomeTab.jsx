@@ -1,16 +1,21 @@
 import React from "react";
 import { FiArrowRight, FiExternalLink } from "react-icons/fi";
 import "./SupportHomeTab.scss";
+import ChatAvatar from "/assets/cs-image.jpg";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import PromotionList from "../Promotion/PromotionList";
 import { useQuery } from "@tanstack/react-query";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
+import { useChat } from "../../contexts/ChatContext";
+import moment from "moment";
 
 const SupportHomeTab = () => {
   const getRequest = useGetRequest();
 
   const { activeTab, handleTabChange, parenScroll, setParentScroll } =
     useSupportPanelContext();
+
+  const { messages } = useChat();
 
   const {
     data: promotionList,
@@ -25,6 +30,8 @@ const SupportHomeTab = () => {
         isPublic: true,
       }),
   });
+
+  const lastMessage = messages[messages.length - 1]
 
   return (
     <div className="support-home-tab">
@@ -56,24 +63,28 @@ const SupportHomeTab = () => {
         </h3>
       </div>
 
-      <div className="support-home-card recent-message-card">
+     {lastMessage && <div className="support-home-card recent-message-card" onClick={() => {
+        handleTabChange("messages")
+      }}>
         <div className="recent-message-header">Recent message</div>
         <div className="recent-message-body">
           <img
             className="avatar"
-            src="https://static.intercomassets.com/avatars/6483804/square_128/pexels-dreamlensproduction-2913125-1727340458.jpg"
+            src={ChatAvatar}
+            // src="https://static.intercomassets.com/avatars/6483804/square_128/pexels-dreamlensproduction-2913125-1727340458.jpg"
             alt="avatar"
           />
           <div className="recent-message-info">
-            <div className="recent-message-title">Gaming Support</div>
-            <div className="recent-message-meta">
-              GamingStar Support • 1d ago
-            </div>
+            <div className="recent-message-title">Customer support</div>
+            {lastMessage && <div className="recent-message-meta">
+              {`${lastMessage.content} • ${moment(new Date(lastMessage.createdAt.replace("Z",""))).calendar()}`
+              }
+            </div>}
           </div>
         </div>
-      </div>
+      </div>}
 
-      <div className="support-home-card send-message-card" onClick={()=>{
+      <div className="support-home-card send-message-card" onClick={() => {
         handleTabChange("messages")
       }}>
         <span>Send us a message</span>
@@ -102,14 +113,14 @@ const SupportHomeTab = () => {
         />
       </div>
 
-      <div className="support-home-card promo-link-card">
+      {/* <div className="support-home-card promo-link-card">
         <span>Alternative Site 1</span>
         <FiExternalLink className="external-link-icon" />
       </div>
       <div className="support-home-card promo-link-card">
         <span>Alternative Site 2</span>
         <FiExternalLink className="external-link-icon" />
-      </div>
+      </div> */}
     </div>
   );
 };

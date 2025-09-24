@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SupportPanel.scss";
 import SupportTabBar from "./SupportTabBar";
 import SupportHomeTab from "./SupportHomeTab";
-import SupportRight from "./SupportMessagesTab"; // Renamed import
+import SupportMessage from "./SupportMessagesTab"; // Renamed import
 import SupportHelpTab from "./SupportHelpTab";
 import { XIcon } from "lucide-react";
 import useSupportPanel from "./useSupportPanel";
@@ -27,7 +27,7 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
         >
           {activeTab === "home" && <SupportHomeTab />}
           {activeTab === "messages" && (
-            <SupportRight
+            <SupportMessage
               isAffiliate={false} // Placeholder, adjust as needed
             />
           )}

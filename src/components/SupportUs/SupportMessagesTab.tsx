@@ -14,7 +14,7 @@ interface SupportRightProps {
   isAffiliate: boolean;
 }
 
-const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
+const SupportMessage: React.FC<SupportRightProps> = ({ isAffiliate }) => {
   const { user } = useAuth();
   const { selectedChat, setSelectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
   const navigate = useNavigate();
@@ -186,4 +186,4 @@ const SupportRight: React.FC<SupportRightProps> = ({ isAffiliate }) => {
   );
 };
 
-export default SupportRight;
+export default SupportMessage;
