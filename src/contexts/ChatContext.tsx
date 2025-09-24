@@ -15,6 +15,7 @@ import { UserProfile } from "../lib/api/services"; // Import UserProfile type
 import axios from "axios";
 import { useSocket } from "../socket"; // Import useSocket
 import { AxiosError } from "axios";
+import { getOrCreateGuestId } from "../lib/utils";
 
 // Define types for Chat and Message
 interface UserProfileForMessage {
@@ -91,7 +92,7 @@ export interface Message { // Exported for use in other components
   id: number;
   chatId: number;
   senderId: number;
-  senderType: "user" | "admin";
+  senderType: "user" | "admin"|"guest";
   messageType: "text" | "attachment";
   content: string;
   attachmentUrl: string | null;
@@ -100,6 +101,7 @@ export interface Message { // Exported for use in other components
   updatedAt: string;
   senderUser?: UserProfileForMessage;
   senderAdmin?: AdminProfileForMessage;
+  guestSenderId?:string;
 }
 
 export interface Chat { // Exported for use in other components
@@ -192,13 +194,14 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   } = useQuery<Message[], Error>({
     queryKey: ["chatMessages", user?.id],
     queryFn: async () => {
-      if (!user?.id) return [];
-      const url = `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/user`;
+      let url = `${API_ENDPOINTS.CHAT.GUEST_USER_MESSAGES}`.replace(":guestSenderId", getOrCreateGuestId())
+      if (user?.id)
+        url = `${API_ENDPOINTS.CHAT.ADMIN_USER_MESSAGES}/${user.id}/user`;
       const response = await Axios.get(url);
       return response.data.data;
     },
-    enabled: !!user?.id,
-    refetchInterval:2*1000,
+    enabled: !!user?.id || !!getOrCreateGuestId(),
+    refetchInterval: 2 * 1000,
   });
 
   const createChatMutation: UseMutationResult<
@@ -224,7 +227,16 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       const payload: any = { initialMessageContent, attachmentUrl, senderType };
       if (targetUserId) payload.userId = targetUserId;
       if (targetAdminId) payload.adminUserId = targetAdminId;
-      if (targetAffiliateId) payload.targetAffiliateId = targetAffiliateId;
+      // if (targetAffiliateId) payload.targetAffiliateId = targetAffiliateId;
+
+      // if no user/admin, fallback to guest
+      if (!targetUserId && !targetAdminId) {
+        (payload as any).guestId = getOrCreateGuestId();
+      }
+
+      if (payload.guestId) {
+        payload.senderType = "guest"
+      }
 
       const response = await Axios.post(API_ENDPOINTS.CHAT.CREATE_CHAT, payload);
       return response.data.data;
@@ -246,13 +258,12 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     { chatId: number; content: string; attachmentUrl?: string }
   > = useMutation({
     mutationFn: async ({ chatId, content, attachmentUrl }) => {
-      if (!user?.id) throw new Error("User not authenticated");
+      if (!user?.id && !getOrCreateGuestId()) throw new Error("User not authenticated");
       const response = await Axios.post(API_ENDPOINTS.CHAT.SEND_MESSAGE, {
         chatId,
-        senderId: user.id,
-        senderType: ["superAdmin", "admin", "superAgent", "agent", "superAffiliate", "affiliate"].includes(user.role || "")
-          ? "admin"
-          : "user",
+        senderId: user?.id,
+        senderType: user?.id ? "user": getOrCreateGuestId() ? "guest":undefined,
+        guestSenderId: getOrCreateGuestId(),
         content,
         attachmentUrl,
       });
