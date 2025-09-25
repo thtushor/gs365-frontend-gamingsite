@@ -158,7 +158,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
   const { socket,
     emitEvent,
-    joinChat, leaveChat } = useSocket();
+    joinChat } = useSocket();
 
 
 
@@ -181,45 +181,28 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   });
 
 
+  const lastMessage = messages[messages?.length - 1];
+
   useEffect(() => {
-    if (!Boolean(messages?.length > 0))
+    if(!lastMessage?.chatId)
       return;
-
-
-    const lastMessage = messages[messages?.length - 1];
-
-    // console.log(`newMessage-${lastMessage.chatId}`)
-    if (lastMessage.chatId)
-      socket?.on(`newMessage`, (data) => {
-        console.log("New message found", data)
-        queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
-        queryClient.invalidateQueries({ queryKey: ["userChats"] });
-        queryClient.invalidateQueries({ queryKey: ["chats"] });
-      })
+    socket?.on(`newMessage`, (data) => {
+      console.log("New message found", data)
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["userChats"] });
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    })
 
     return () => {
       socket?.removeListener(`newMessage`)
     }
-  }, [messages, socket])
+  }, [lastMessage?.chatId, socket])
 
   useEffect(() => {
-
-    if (!Boolean(messages?.length > 0))
-      return;
-
-
-    const lastMessage = messages[messages?.length - 1];
-
-    if (lastMessage.chatId)
+    if (lastMessage?.chatId)
       joinChat(String(lastMessage.chatId));
 
-    // return () => {
-    //   if (lastMessage.chatId) {
-    //     leaveChat(String(lastMessage.chatId));
-    //   }
-    // };
-
-  }, [messages, joinChat, leaveChat]);
+  }, [lastMessage?.chatId]);
 
   const createChatMutation: UseMutationResult<
     Chat,
@@ -258,8 +241,12 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       const response = await Axios.post(API_ENDPOINTS.CHAT.CREATE_CHAT, payload);
       return response.data.data;
     },
-    onSuccess: (newChat) => {
+    onSuccess: (newChat,arg) => {
       setActiveConversation(newChat);
+        emitEvent('sendMessage', {
+        ...arg,
+        // chatId: String(arg.chatId)
+      });
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
@@ -287,13 +274,13 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       return response.data.data;
     },
     onSuccess: (_, arg) => {
-      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
-      queryClient.invalidateQueries({ queryKey: ["chats"] });
-
       emitEvent('sendMessage', {
         ...arg,
         chatId: String(arg.chatId)
       });
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      
     },
     onError: (err) => {
       console.error("Error sending message:", err);

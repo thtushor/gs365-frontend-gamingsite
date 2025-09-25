@@ -43,7 +43,7 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
 
       const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
       
-      console.log({chatid})
+      // console.log({chatid})
 
       if (!chatid) {
         const isSelectedAdminChat = Boolean(selectedChat?.role)
@@ -121,7 +121,7 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
           {loading && <p className="text-[#ffd93d] text-center">Loading messages...</p>}
 
           {messages.map((message) => {
-            console.log({message})
+            // console.log({message})
             const isCurrentUser = message?.senderType === "user" ?  user?.id === message?.senderUser?.id: message.guestSenderId===getOrCreateGuestId();
             // const senderName = getSenderName(message);
             return (
