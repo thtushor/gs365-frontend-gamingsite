@@ -92,7 +92,7 @@ export interface Message { // Exported for use in other components
   id: number;
   chatId: number;
   senderId: number;
-  senderType: "user" | "admin"|"guest";
+  senderType: "user" | "admin" | "guest";
   messageType: "text" | "attachment";
   content: string;
   attachmentUrl: string | null;
@@ -101,7 +101,7 @@ export interface Message { // Exported for use in other components
   updatedAt: string;
   senderUser?: UserProfileForMessage;
   senderAdmin?: AdminProfileForMessage;
-  guestSenderId?:string;
+  guestSenderId?: string;
 }
 
 export interface Chat { // Exported for use in other components
@@ -156,37 +156,11 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [selectedChatUser, setSelectedChatUser] = useState<ChatUser | null>(null);
   const [activeConversation, setActiveConversation] = useState<Chat | null>(null);
 
-  const { socket, 
-    // emitEvent,
-     joinChat, leaveChat } = useSocket();
+  const { socket,
+    emitEvent,
+    joinChat, leaveChat } = useSocket();
 
-  useEffect(() => {
-    let previousChatId: number | null = null;
-    if (activeConversation?.id) {
-      previousChatId = activeConversation.id;
-    }
 
-    if (selectedChatUser && selectedChatUser.chats && selectedChatUser.chats.length > 0) {
-      const latestChat = selectedChatUser.chats.reduce((prev, current) =>
-        (prev.id > current.id) ? prev : current
-      );
-      setActiveConversation(latestChat);
-      if (latestChat.id && latestChat.id !== previousChatId) {
-        joinChat(String(latestChat.id));
-      }
-    } else {
-      setActiveConversation(null);
-      if (previousChatId) {
-        leaveChat(String(previousChatId));
-      }
-    }
-
-    return () => {
-      if (previousChatId) {
-        leaveChat(String(previousChatId));
-      }
-    };
-  }, [selectedChatUser, joinChat, leaveChat, activeConversation]);
 
   const {
     data: messages = [],
@@ -203,8 +177,49 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       return response.data.data;
     },
     enabled: !!user?.id || !!getOrCreateGuestId(),
-    refetchInterval: 2 * 1000,
+    // refetchInterval: 2 * 1000,
   });
+
+
+  useEffect(() => {
+    if (!Boolean(messages?.length > 0))
+      return;
+
+
+    const lastMessage = messages[messages?.length - 1];
+
+    // console.log(`newMessage-${lastMessage.chatId}`)
+    if (lastMessage.chatId)
+      socket?.on(`newMessage`, (data) => {
+        console.log("New message found", data)
+        queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
+        queryClient.invalidateQueries({ queryKey: ["userChats"] });
+        queryClient.invalidateQueries({ queryKey: ["chats"] });
+      })
+
+    return () => {
+      socket?.removeListener(`newMessage`)
+    }
+  }, [messages, socket])
+
+  useEffect(() => {
+
+    if (!Boolean(messages?.length > 0))
+      return;
+
+
+    const lastMessage = messages[messages?.length - 1];
+
+    if (lastMessage.chatId)
+      joinChat(String(lastMessage.chatId));
+
+    // return () => {
+    //   if (lastMessage.chatId) {
+    //     leaveChat(String(lastMessage.chatId));
+    //   }
+    // };
+
+  }, [messages, joinChat, leaveChat]);
 
   const createChatMutation: UseMutationResult<
     Chat,
@@ -264,16 +279,21 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       const response = await Axios.post(API_ENDPOINTS.CHAT.SEND_MESSAGE, {
         chatId,
         senderId: user?.id,
-        senderType: user?.id ? "user": getOrCreateGuestId() ? "guest":undefined,
+        senderType: user?.id ? "user" : getOrCreateGuestId() ? "guest" : undefined,
         guestSenderId: getOrCreateGuestId(),
         content,
         attachmentUrl,
       });
       return response.data.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, arg) => {
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
+
+      emitEvent('sendMessage', {
+        ...arg,
+        chatId: String(arg.chatId)
+      });
     },
     onError: (err) => {
       console.error("Error sending message:", err);

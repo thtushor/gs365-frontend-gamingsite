@@ -55,7 +55,7 @@ export const useSocket = (): SocketContextType => {
 
   const leaveChat = (id: string) => {
     if (socketRef.current && socketRef.current.connected && id) {
-      socketRef.current.emit('leaveChat', id);
+      socketRef.current.removeListener('');
     }
   };
 
