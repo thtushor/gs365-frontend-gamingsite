@@ -42,7 +42,7 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
       const hasMessage = Boolean(messages?.length)
 
       const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
-      
+
       // console.log({chatid})
 
       if (!chatid) {
@@ -93,7 +93,7 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
 
   return (
     <>
-      <div className={`text-[#07122b] w-full relative flex flex-col h-full`}>
+      <div className={`text-[#07122b] w-full relative flex flex-col h-full pb-6`}>
         {/* top */}
         <div className="p-4 py-[9.5px] w-full flex items-center justify-between gap-2 border-b-2 border-[#ffd93d] text-white bg-[#07122b] flex-shrink-0">
           <div
@@ -122,7 +122,7 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
 
           {messages.map((message) => {
             // console.log({message})
-            const isCurrentUser = message?.senderType === "user" ?  user?.id === message?.senderUser?.id: message.guestSenderId===getOrCreateGuestId();
+            const isCurrentUser = message?.senderType === "user" ? user?.id === message?.senderUser?.id : message.guestSenderId === getOrCreateGuestId();
             // const senderName = getSenderName(message);
             return (
               <div
@@ -136,11 +136,11 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
                     : "bg-gray-200 text-black"
                     } px-4 py-2 rounded-lg max-w-[80%] md:max-w-sm relative group`}
                 >
-                  {message?.content && <p>{message?.content}</p>}
+                  {message?.content && <p className="text-left">{message?.content}</p>}
 
-                  {message?.attachmentUrl &&  <img
-                  className="w-auto h-24"
-                  src={message?.attachmentUrl}
+                  {message?.attachmentUrl && <img
+                    className="w-auto h-24"
+                    src={message?.attachmentUrl}
                   />}
                 </div>
                 <span

@@ -118,6 +118,7 @@ interface AuthContextType extends AuthState {
   setSocial: React.Dispatch<React.SetStateAction<Social[]>>;
   favorites: Favorite[];
   setFavorites: React.Dispatch<React.SetStateAction<Favorite[]>>;
+  setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
 }
 
 // Create Auth Context
@@ -320,9 +321,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const token = getToken();
       if (token) {
         await apiService.auth.logout();
+        clearAuth()
       }
+      
     } catch (error) {
       console.error("Logout API error:", error);
+      clearAuth()
     } finally {
       localStorage.removeItem("kycModalShown");
       clearAuth();
@@ -352,6 +356,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setSocial,
     favorites, // ✅
     setFavorites, // ✅
+    setAuthState,
   };
 
   return (

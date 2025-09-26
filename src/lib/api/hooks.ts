@@ -11,6 +11,7 @@ import { useCallback, useEffect } from "react";
 import { useAuth } from "../../contexts/auth-context";
 import axios from "axios";
 import { API_LIST, BASE_URL } from "./apiClient";
+import { useSocket } from "../../socket";
 
 /**
  * Authentication Hooks
@@ -59,13 +60,19 @@ interface RegisterResponseData {
 export const useLogin = () => {
   // const queryClient = useQueryClient();
 
-  // const { setUser } = useAuth();
+  // const { setAuthState } = useAuth();
+
+  const { emitEvent } = useSocket();
 
   return useMutation({
     mutationFn: (data: LoginRequest) => apiService.auth.login(data),
     onSuccess: (response) => {
       // Store tokens
-
+      // setAuthState((prev) => ({ ...prev, token: (response as unknown as { accessToken: string }).accessToken }))
+      emitEvent("loggedin-user", {
+        id: (response.data as unknown as { id: number }).id.toString(),
+        token: (response as unknown as { accessToken: string }).accessToken
+      })
       localStorage.setItem(
         "access_token",
         (response as unknown as { accessToken: string }).accessToken

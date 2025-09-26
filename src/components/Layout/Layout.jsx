@@ -14,14 +14,17 @@ import KycModal from "../KycModal";
 import { FiArrowUpCircle } from "react-icons/fi";
 import { IoIosArrowDropup } from "react-icons/io";
 import { useAutoLogout } from "../../lib/api/hooks";
+import { useSocket } from "../../socket";
 
 const Layout = ({ children }) => {
   useAutoLogout();
-  const { setCountries, user, countries, setSocial, setFavorites } = useAuth();
+  const { setCountries, user, token, logout, countries, setSocial, setFavorites } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
 
   const getRequest = useGetRequest();
+
+  const { socket } = useSocket();
 
   const {
     data: popupData,
@@ -120,6 +123,27 @@ const Layout = ({ children }) => {
       }
     }
   }, [user?.kyc_status]);
+
+
+  useEffect(() => {
+
+    if (!socket) return;
+
+    socket.on(`logout-user-${user?.id}`, (data) => {
+      console.log("New user logged into this device", data,token)
+      toast.warn("New user logged into this device")
+
+      
+      // if (token && data.token !== token) {
+      //   logout();
+      // }
+      window.location.reload();
+    })
+
+    return () => {
+      socket.removeListener(`loggedin-user-${user?.id}`)
+    }
+  }, [socket])
 
   const {
     data: favData,
