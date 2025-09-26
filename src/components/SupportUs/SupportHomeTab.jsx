@@ -8,8 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import { useChat } from "../../contexts/ChatContext";
 import moment from "moment";
+import { XIcon } from "lucide-react";
 
-const SupportHomeTab = () => {
+const SupportHomeTab = ({
+  onClose
+}) => {
   const getRequest = useGetRequest();
 
   const { activeTab, handleTabChange, parenScroll, setParentScroll } =
@@ -35,6 +38,11 @@ const SupportHomeTab = () => {
 
   return (
     <div className="support-home-tab">
+      <div className="flex justify-end items-center pb-4">
+        <span onClick={()=>{
+          onClose();
+        }}><XIcon className="text-gray-400 h-4 w-4 cursor-pointer"/></span>
+      </div>
       <div className="support-home-header">
         <div className="logo">GS365</div>
         <div className="avatar-group">

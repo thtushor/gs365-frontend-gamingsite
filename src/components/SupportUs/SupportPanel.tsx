@@ -4,7 +4,7 @@ import SupportTabBar from "./SupportTabBar";
 import SupportHomeTab from "./SupportHomeTab";
 import SupportMessage from "./SupportMessagesTab"; // Renamed import
 import SupportHelpTab from "./SupportHelpTab";
-// import { XIcon } from "lucide-react";
+
 // import useSupportPanel from "./useSupportPanel";
 import { SupportPanelProvider, useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import { ChatProvider } from "../../contexts/ChatContext";
@@ -25,13 +25,11 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
           className={`support-panel-content ${parenScroll ? "overflow-y-auto" : ""
             } ${activeTab === "messages" ? "!mb-0" : ""}`}
         >
-          {activeTab === "home" && <SupportHomeTab />}
+          {activeTab === "home" && <SupportHomeTab  onClose={onClose} />}
           {activeTab === "messages" && (
-            <SupportMessage
-              // isAffiliate={false} // Placeholder, adjust as needed
-            />
+            <SupportMessage onClose={onClose}/>
           )}
-          {activeTab === "help" && <SupportHelpTab />}
+          {activeTab === "help" && <SupportHelpTab onClose={onClose} />}
         </div>
         {parenScroll && activeTab !== "messages" && (
           <SupportTabBar activeTab={activeTab} onTabChange={handleTabChange} />

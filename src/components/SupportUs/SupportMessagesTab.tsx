@@ -5,16 +5,17 @@ import moment from "moment";
 import { useAuth } from "../../contexts/auth-context";
 import { useChat } from "../../contexts/ChatContext";
 // import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronLeft, XIcon } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import './SupportMessagesTab.scss'
 import { getOrCreateGuestId } from "../../lib/utils";
 
 interface SupportRightProps {
   isAffiliate?: boolean;
+  onClose?: () => void;
 }
 
-const SupportMessage: React.FC<SupportRightProps> = () => {
+const SupportMessage: React.FC<SupportRightProps> = ({ onClose }) => {
   const { user } = useAuth();
   const { selectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
   // const navigate = useNavigate();
@@ -96,24 +97,31 @@ const SupportMessage: React.FC<SupportRightProps> = () => {
       <div className={`text-[#07122b] w-full relative flex flex-col h-full pb-6`}>
         {/* top */}
         <div className="p-4 py-[9.5px] w-full flex items-center justify-between gap-2 border-b-2 border-[#ffd93d] text-white bg-[#07122b] flex-shrink-0">
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-          >
-            <img
-              src={ChatAvatar}
-              alt="image avatar"
-              className="w-[35px] h-[35px] border rounded-md bg-white border-white"
-            />
-            <div>
-              <h1 className="flex text-base items-center mt-[-2px] text-[#ffd93d] gap-1 font-semibold">
-                Customer Support
-              </h1>
+          <div className="flex items-center gap-2">
+            <span className="text-[#ffd93d] cursor-pointer" onClick={() => handleTabChange("home")}>
+              <ChevronLeft />
+            </span>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <img
+                src={ChatAvatar}
+                alt="image avatar"
+                className="w-[35px] h-[35px] border rounded-md bg-white border-white"
+              />
+              <div>
+                <h1 className="flex text-base items-center mt-[-2px] text-[#ffd93d] gap-1 font-semibold">
+                  Customer Support
+                </h1>
+              </div>
             </div>
           </div>
 
-          <span className="text-[#ffd93d] cursor-pointer" onClick={() => handleTabChange("home")}>
-            <ArrowLeft />
+          <span onClick={() => {
+            onClose?.();
+          }}><XIcon className="text-gray-400 h-4 w-4 cursor-pointer" />
           </span>
+
         </div>
 
         {/* center */}
