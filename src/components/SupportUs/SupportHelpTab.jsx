@@ -13,21 +13,42 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useEffect } from "react";
 
+// import { useEffect } from "react";
+
 export function useBackButton(callback) {
   useEffect(() => {
     const handlePopState = (event) => {
-      // prevent default back navigation
       event.preventDefault();
       callback();
     };
 
+    const handleKeyDown = (event) => {
+      // Detect Backspace when not typing in input/textarea
+      const target = event.target;
+      const isTyping =
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        (target).isContentEditable;
+
+      if (event.key === "Backspace" && !isTyping) {
+        event.preventDefault();
+        callback();
+      }
+    };
+
+    // push dummy state so that back triggers popstate
+    history.pushState(null, "", window.location.href);
+
     window.addEventListener("popstate", handlePopState);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [callback]);
 }
+
 
 
 const SupportHelpTab = ({
