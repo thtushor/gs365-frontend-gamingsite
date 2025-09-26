@@ -10,12 +10,36 @@ import {
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import { useQuery } from "@tanstack/react-query";
 
+
+import { useEffect } from "react";
+
+export function useBackButton(callback) {
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // prevent default back navigation
+      event.preventDefault();
+      callback();
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [callback]);
+}
+
+
 const SupportHelpTab = ({
   onClose
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+
+  useBackButton(()=>{
+    onClose();
+  })
 
   const handleBack = () => {
     if (selectedQuestion) {
