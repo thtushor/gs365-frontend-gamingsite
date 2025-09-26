@@ -5,7 +5,7 @@ import moment from "moment";
 import { useAuth } from "../../contexts/auth-context";
 import { useChat } from "../../contexts/ChatContext";
 // import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, XIcon } from "lucide-react";
+import { ChevronLeft, XIcon } from "lucide-react";
 import { useSupportPanelContext } from "../../contexts/SupportPanelContext";
 import './SupportMessagesTab.scss'
 import { getOrCreateGuestId } from "../../lib/utils";
