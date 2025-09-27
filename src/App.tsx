@@ -47,6 +47,9 @@ import BettingHistory from "./components/BettingHistory";
 import TransactionHistory from "./components/TransactionHistory";
 import PublicRoute from "./routes/PublicRoute";
 import NotFound from "./routes/NotFound";
+import AboutUs from "./pages/AboutUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsCondition from "./pages/TermsCondition";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -77,6 +80,9 @@ const App: React.FC = () => {
           />
           <Route path="/vip" element={<VipPage />} />
           <Route path="/promotions" element={<PromotionPage />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-condition" element={<TermsCondition />} />
 
           <Route
             path="/play/:providerId/:categoryId"
