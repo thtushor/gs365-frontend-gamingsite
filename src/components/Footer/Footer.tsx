@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaStar, FaGamepad, FaTrophy, FaHeadset } from "react-icons/fa";
+import { FaStar, FaTrophy } from "react-icons/fa";
 import "./Footer.scss";
 import { IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
