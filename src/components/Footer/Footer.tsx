@@ -145,7 +145,7 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
       <div className="footer-container">
         <div className="footer-collapses">
           <ul className="footer-collapses__ul">
-            <CollapseItem title="Gaming" icon={<FaGamepad />}>
+            {/* <CollapseItem title="Gaming" icon={<FaGamepad />}>
               <ul className="footer-links">
                 <li>
                   <a href="#">Casino Games</a>
@@ -163,34 +163,34 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
                   <a href="#">Lottery</a>
                 </li>
               </ul>
-            </CollapseItem>
+            </CollapseItem> */}
 
             <CollapseItem title="About Game Star 365" icon={<FaStar />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">About Us</a>
+                  <a href="/about-us">About Us</a>
                 </li>
                 <li>
-                  <a href="#">Privacy Policy</a>
+                  <a href="/privacy-policy">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="#">Terms & Conditions</a>
-                </li>
-                <li>
-                  <a href="#">Responsible Gaming</a>
+                  <a href="/terms-condition">Terms & Conditions</a>
                 </li>
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="Features" icon={<FaTrophy />}>
+            <CollapseItem title="Pages" icon={<FaTrophy />}>
               <ul className="footer-links">
                 <li>
-                  <a href="#">Mobile App</a>
+                  <a href="/">Home</a>
                 </li>
                 <li>
-                  <a href="#">Live Betting</a>
+                  <a href="/promotion">Promotion</a>
                 </li>
                 <li>
+                  <a href="/vip">VIP</a>
+                </li>
+                {/* <li>
                   <a href="#">Promotions</a>
                 </li>
                 <li>
@@ -200,11 +200,11 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
                 </li>
                 <li>
                   <a href="#">Cashout</a>
-                </li>
+                </li> */}
               </ul>
             </CollapseItem>
 
-            <CollapseItem title="Help" icon={<FaHeadset />}>
+            {/* <CollapseItem title="Help" icon={<FaHeadset />}>
               <ul className="footer-links">
                 <li>
                   <a href="#">Support Center</a>
@@ -222,7 +222,7 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
                   <a href="#">Contact Us</a>
                 </li>
               </ul>
-            </CollapseItem>
+            </CollapseItem> */}
           </ul>
         </div>
 
