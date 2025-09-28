@@ -38,7 +38,9 @@ const DepositPromotionSelect = ({
       <h1 className="text-xl font-bold text-white mb-4">Select Promotion</h1>
 
       {/* Promotions List */}
-      <div className="space-y-3 h-[40vh] overflow-y-auto">
+      <div className="space-y-3 h-[40vh] overflow-y-auto py-4" style={{
+        scrollbarWidth:"thin"
+      }}>
         {promotionList.length === 0 ? (
           <p className="text-center pt-10 text-gray-500">
             No promotions available
@@ -55,7 +57,7 @@ const DepositPromotionSelect = ({
               }`}
             >
               {promo?.isRecommended && (
-                <div className="absolute top-[-8px] text-[12px] bg-yellow-300 text-black font-medium px-2 rounded-full">
+                <div className="absolute top-[-8px] z-50 text-[12px] bg-yellow-300 text-black font-medium px-2 rounded-full">
                   Recommended
                 </div>
               )}

@@ -366,8 +366,10 @@ const SingleDepositAndWithdrawPage = () => {
         );
         if (promoFromUrl) defaultPromotion = promoFromUrl;
       }
+    
 
       setSelectedPromotion(defaultPromotion);
+
 
       setDepositOptions((prev) => ({
         ...prev,

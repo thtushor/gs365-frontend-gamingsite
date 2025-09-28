@@ -72,7 +72,7 @@ const DepositOptionsInfo = ({
     }
   }, [selectedDepositChannel]);
 
-  console.log(selectedPromotion);
+  console.log({selectedPromotion});
   return (
     <div className="mt-5">
       {/* Select Promotion */}
