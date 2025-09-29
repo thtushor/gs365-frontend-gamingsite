@@ -73,9 +73,9 @@ const App: React.FC = () => {
           <Route
             path="/affiliate-signup"
             element={
-              <PublicRoute>
-                <AffiliateRegister />
-              </PublicRoute>
+              // <PublicRoute>
+              <AffiliateRegister />
+              // </PublicRoute>
             }
           />
           <Route path="/vip" element={<VipPage />} />
