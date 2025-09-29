@@ -40,6 +40,8 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
+  console.log({depositOptions})
+
   const isInternational = (depositOptions.paymentMethod || "")
     .toLowerCase()
     .includes("international");
@@ -149,6 +151,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
       currencyId: selectedGateway?.currencyId || 1,
       promotionId: depositOptions?.promotionId || null,
       paymentGatewayProviderAccountId: accountInfo?.id,
+      gatewayId: selectedGateway?.id,
       givenTransactionId: referenceId,
       notes: "Deposit via " + (paymentType?.title || ""),
       attachment: uploadRes?.data?.original || uploadRes?.original,
