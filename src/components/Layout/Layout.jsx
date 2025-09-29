@@ -15,6 +15,7 @@ import { FiArrowUpCircle } from "react-icons/fi";
 import { IoIosArrowDropup } from "react-icons/io";
 import { useAutoLogout } from "../../lib/api/hooks";
 import { useSocket } from "../../socket";
+import ToastError from "../../lib/ToastError";
 
 const Layout = ({ children }) => {
   useAutoLogout();
@@ -108,6 +109,7 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   const [kycModal, setKycModal] = useState(false);
+  const [forceLogoutModal, setForceLogoutModal] = useState(false);
 
   useEffect(() => {
     if (user?.kyc_status === "required") {
@@ -126,24 +128,24 @@ const Layout = ({ children }) => {
 
 
   useEffect(() => {
+    if (!socket || !user?.id) return;
 
-    if (!socket) return;
+    const eventName = `logout-user-${user.id}`;
+    const handleLogoutEvent = (data) => {
+      // data = { userId, latestToken }
+      const latestToken = data?.latestToken;
+      if (token && latestToken && latestToken !== token) {
+        logout();
+        setForceLogoutModal(true);
+      }
+    };
 
-    socket.on(`logout-user-${user?.id}`, (data) => {
-      console.log("New user logged into this device", data,token)
-      toast.warn("New user logged into this device")
-
-      
-      // if (token && data.token !== token) {
-      //   logout();
-      // }
-      window.location.reload();
-    })
+    socket.on(eventName, handleLogoutEvent);
 
     return () => {
-      socket.removeListener(`loggedin-user-${user?.id}`)
-    }
-  }, [socket])
+      socket.off(eventName, handleLogoutEvent);
+    };
+  }, [socket, user?.id, token, logout])
 
   const {
     data: favData,
@@ -195,6 +197,17 @@ const Layout = ({ children }) => {
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
       </BaseModal>
       <PlayInstant />
+
+      {/* Forced logout warning modal for multi-device detection */}
+      <BaseModal open={forceLogoutModal} showClose={false}>
+        <ToastError
+          title="Logged out for security"
+          description="Your account was accessed from another device. You have been logged out on this device."
+          onClose={() => setForceLogoutModal(false)}
+          location="/"
+          isRedirect={true}
+        />
+      </BaseModal>
 
       <BaseModal
         open={kycModal}
