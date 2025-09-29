@@ -16,12 +16,13 @@ interface BalanceData {
   currencyId: number;
   currencyCode: string;
   currentBalance: number;
+  currentBalanceUSD:number;
 }
 
 export const UserBalance: React.FC = () => {
   const { data: settingsData } = useSettings();
-  const conversionRate =
-    settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
+  // const conversionRate =
+  //   settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
@@ -44,9 +45,9 @@ export const UserBalance: React.FC = () => {
     refetchOnWindowFocus: false,
   });
 
-  const bdtBalance = balance?.currentBalance ?? 0;
-  const dollarBalance =
-    (Number(bdtBalance) / Number(conversionRate)).toFixed(2) || "0";
+  const bdtBalance = Number(balance?.currentBalance ?? 0).toFixed(2);
+  const dollarBalance = Number(balance?.currentBalanceUSD??0).toFixed(2);
+    // (Number(bdtBalance) / Number(conversionRate)).toFixed(2) || "0";
 
   if (!user) return null;
 
