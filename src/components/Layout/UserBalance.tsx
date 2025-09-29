@@ -9,7 +9,7 @@ import dollarIcon from "../../assets/dollar.png";
 import BaseModal from "../Promotion/BaseModal";
 import BalanceModal from "./BalanceModal";
 import { TbRefresh } from "react-icons/tb";
-import { useSettings } from "../../lib/api/hooks";
+// import { useSettings } from "../../lib/api/hooks";
 
 interface BalanceData {
   userId: number;
@@ -20,7 +20,7 @@ interface BalanceData {
 }
 
 export const UserBalance: React.FC = () => {
-  const { data: settingsData } = useSettings();
+  // const { data: settingsData } = useSettings();
   // const conversionRate =
   //   settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
 
