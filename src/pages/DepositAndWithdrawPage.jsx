@@ -75,14 +75,15 @@ const DepositAndWithdrawPage = () => {
     const settingsDatas = settingsData?.data?.[0];
     const { start, end } = settingsDatas?.systemActiveTime || {};
 
+    
     if (start && end) {
       const now = new Date();
       const [startHour, startMinute] = start.split(":").map(Number);
       const [endHour, endMinute] = end.split(":").map(Number);
-
+      
       const startDate = new Date();
       startDate.setHours(startHour, startMinute, 0, 0);
-
+      
       const endDate = new Date();
       endDate.setHours(endHour, endMinute, 0, 0);
 
