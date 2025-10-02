@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./LoginPopup.scss";
 
-import { showToaster } from "../../lib/utils/toast";
+// import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
 import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
+import ToastError from "../../lib/ToastError";
 
 // Reusable PasswordInput component
 interface PasswordInputProps {
@@ -72,6 +73,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 }) => {
   const { login, isPendingLogin } = useAuth();
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorTitle, setErrorTitle] = useState<string>("Login failed");
+  const [errorDescription, setErrorDescription] = useState<string>(
+    "Please check your credentials and try again."
+  );
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
   const [formData, setFormData] = useState({
@@ -180,11 +186,12 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         });
         setErrors(serverErrors);
       } else {
-        // General error
-        showToaster(
-          "Login failed. Please check your credentials and try again",
-          "error"
+        // General error -> show ToastError modal
+        setErrorTitle("Login failed");
+        setErrorDescription(
+          "Login failed. Please check your credentials and try again"
         );
+        setErrorModalOpen(true);
       }
     }
   };
@@ -495,6 +502,22 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
           onClose={setSuccessModalOpen}
           location="/"
           extraFn={onClose}
+        />
+      </BaseModal>
+
+      {/* Error Modal */}
+      <BaseModal
+        open={errorModalOpen}
+        showClose={false}
+        onClose={() => setErrorModalOpen(false)}
+      >
+        <ToastError
+          title={errorTitle}
+          description={errorDescription}
+          onClose={setErrorModalOpen}
+          isRedirect={false}
+          location="/"
+          extraFn={() => {}}
         />
       </BaseModal>
     </div>
