@@ -1,8 +1,30 @@
 import React from "react";
 import BaseModal from "../Promotion/BaseModal";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../../lib/api/axios";
+import { API_ENDPOINTS } from "../../lib/api/config";
+import { useAuth } from "../../contexts/auth-context";
 
 const ClaimableNotificationModal = ({ open, onClose, notification }) => {
+  const { user } = useAuth();
   const isExpired = new Date(notification.endDate) < new Date();
+
+  const claimMutation = useMutation({
+    mutationFn: async () => {
+      const payload = {
+        notificationId: notification?.id || notification?._id,
+        userId: user?.id,
+      };
+      const res = await axiosInstance.post(
+        API_ENDPOINTS.PAYMENT.CLAIM_NOTIFICATION,
+        payload
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      onClose && onClose();
+    },
+  });
 
   return (
     <BaseModal open={open} onClose={onClose}>
@@ -41,14 +63,15 @@ const ClaimableNotificationModal = ({ open, onClose, notification }) => {
         />
         <div className="header-auth">
           <button
-            disabled={isExpired}
+            disabled={isExpired || claimMutation.isPending}
+            onClick={() => claimMutation.mutate()}
             className={`mx-auto signup-btn !pt-1 rounded-lg font-medium ${
               isExpired
                 ? "bg-gray-500 cursor-not-allowed"
                 : "bg-yellow-500 hover:bg-yellow-600 text-black"
             }`}
           >
-            {isExpired ? "Expired" : "Claim Now"}{" "}
+            {isExpired ? "Expired" : claimMutation.isPending ? "Claiming..." : "Claim Now"}{" "}
             {notification?.amount > 0 ? `- ${notification?.amount} BDT` : ""}
           </button>
         </div>

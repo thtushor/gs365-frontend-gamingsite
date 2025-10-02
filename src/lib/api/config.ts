@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
     WITHDRAW_TRANSACTION: "/api/transactions/withdraw",
     TURNOVER: "/api/turnover",
     CHECK_WITHDRAWAL_CAPABILITY: "/api/transactions/withdraw-capability",
+    CLAIM_NOTIFICATION: "/api/transactions/claim-notification",
   },
 
   GAME: {
