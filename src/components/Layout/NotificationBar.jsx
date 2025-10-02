@@ -1,18 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import Placeholder from "../../assets/placeholder.svg";
 import { useAuth } from "../../contexts/auth-context";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../lib/api/axios";
 import ClaimableNotificationModal from "./ClaimableNotificationModal";
 import InfoNotificationModal from "./InfoNotificationModal";
+import { useSocket } from "../../socket";
 
 const NotificationBar = () => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { user: authUser } = useAuth();
+  const { socket } = useSocket();
+  const queryClient = useQueryClient();
+  const [pendingNotificationId, setPendingNotificationId] = useState(null);
 
   const {
     data: notificationsData,
@@ -30,7 +34,6 @@ const NotificationBar = () => {
     enabled: !!authUser?.id,
     refetchOnWindowFocus: false,
   });
-  console.log(notificationsData);
   const notifications = notificationsData || [];
 
   // Outside click check
@@ -60,6 +63,45 @@ const NotificationBar = () => {
 
     return created.toLocaleDateString(); // fallback for old notifications
   };
+
+  // Socket listener for user notifications
+  useEffect(() => {
+    if (!socket || !authUser?.id) return;
+
+    const eventName = `user-notifications-${authUser.id}`;
+
+    const handleNotificationEvent = (payload) => {
+      // payload: { userId, event, notificationId, refresh }
+      if (payload?.refresh) {
+        setPendingNotificationId(payload?.notificationId || null);
+        // Invalidate and refetch notifications for this user
+        queryClient.invalidateQueries({ queryKey: ["notifications", authUser.id] });
+      }
+      // Open dropdown to show latest
+      setIsOpen(true);
+    };
+
+    socket.on(eventName, handleNotificationEvent);
+    return () => {
+      socket.off(eventName, handleNotificationEvent);
+    };
+  }, [socket, authUser?.id, queryClient]);
+
+  // When notifications update, auto-open the emitted one if present
+  useEffect(() => {
+    if (!pendingNotificationId || !Array.isArray(notifications) || notifications.length === 0) return;
+
+    const match = notifications.find((note) => {
+      const nid = note?.id || note?._id || note?.notificationId;
+      return String(nid) === String(pendingNotificationId);
+    });
+
+    if (match) {
+      setSelectedNote(match);
+      setIsOpen(true);
+      setPendingNotificationId(null);
+    }
+  }, [pendingNotificationId, notifications]);
 
   return (
     <div className="relative">
