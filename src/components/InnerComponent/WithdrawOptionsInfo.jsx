@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+import React, { useState, useEffect, useMemo } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axiosInstance from "../../lib/api/axios";
 import { API_ENDPOINTS } from "../../lib/api/config";
@@ -30,6 +30,7 @@ const WithdrawOptionsInfo = ({
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedWalletAccountNumber, setSelectedWalletAccountNumber] = useState("");
 
   const paymentMethod = withdrawOptions.paymentMethod
 
@@ -116,6 +117,59 @@ const WithdrawOptionsInfo = ({
     }
   });
 
+  // Fetch user phones (follow PhoneEditContainer.jsx pattern)
+  const userId = user?.id || user?._id || user?.userId;
+  const { data: phonesData } = useQuery({
+    enabled: Boolean(userId),
+    queryKey: ["user-phones", userId],
+    queryFn: async () => {
+      const url = API_ENDPOINTS.USER_PHONES.BY_USER.replace(":userId", String(userId));
+      const res = await axiosInstance.get(url);
+      return res.data?.data || [];
+    },
+    staleTime: 30_000,
+  });
+
+  // Compose options: saved phones + user.phone (as additional option)
+  const walletPhoneOptions = useMemo(() => {
+    const list = Array.isArray(phonesData)
+      ? phonesData
+          .filter((p) => !!p?.phoneNumber)
+          .map((p) => ({
+            value: p.phoneNumber,
+            label: p.phoneNumber,
+            isPrimary: !!p.isPrimary,
+            source: "Saved",
+            id: p.id || p._id || p.phoneNumber,
+          }))
+      : [];
+
+    const profilePhone = user?.phone;
+    if (profilePhone && !list.find((o) => o.value === profilePhone)) {
+      list.push({
+        value: profilePhone,
+        label: profilePhone,
+        isPrimary: false,
+        source: "Profile",
+        id: `profile-${profilePhone}`,
+      });
+    }
+    return list;
+  }, [phonesData, user?.phone]);
+
+  // Default wallet account selection: first phone if exists, else user.phone
+  useEffect(() => {
+    const isWallet = paymentMethod?.toLowerCase().includes("wallet");
+    if (!isWallet) return;
+
+    if (walletPhoneOptions.length > 0) {
+      const first = walletPhoneOptions[0]?.value || "";
+      setSelectedWalletAccountNumber((prev) => prev || first);
+    } else if (user?.phone) {
+      setSelectedWalletAccountNumber((prev) => prev || user.phone);
+    }
+  }, [paymentMethod, walletPhoneOptions, user?.phone]);
+
   // Validate form based on payment type
   const validateForm = () => {
     const newErrors = {};
@@ -175,7 +229,7 @@ const WithdrawOptionsInfo = ({
     }
 
     if (paymentMethod?.toLowerCase().includes("wallet")) {
-      requestData.accountNumber = user?.phone || "";
+      requestData.accountNumber = selectedWalletAccountNumber || user?.phone || "";
       requestData.walletAddress = walletAddress;
       requestData.network = network;
     } else if (paymentMethod?.toLowerCase().includes("crypto")) {
@@ -334,10 +388,50 @@ const WithdrawOptionsInfo = ({
       {paymentMethod?.toLowerCase().includes("wallet") && (
         <div className="mb-4">
           <p className="text-base text-left mb-2">Account Number</p>
-          <div className="second-bg border border-yellow-400 rounded-md px-5 py-4 text-white font-medium">
-            {user?.phone || "Phone number not available"}
-          </div>
-          <p className="text-sm text-gray-400 mt-1 text-left">This is your registered phone number</p>
+
+          {walletPhoneOptions.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {walletPhoneOptions.map((opt) => {
+                const isActive = selectedWalletAccountNumber === opt.value;
+                return (
+                  <div
+                    key={opt.id}
+                    className={`border flex-1 md:min-w-[30%] group cursor-pointer overflow-hidden flex items-center justify-between rounded-md max-w-[280px] p-3 px-4 relative ${
+                      isActive ? "border-yellow-400" : "border-[#1a1a1a]"
+                    }`}
+                    onClick={() => setSelectedWalletAccountNumber(opt.value)}
+                  >
+                    <div className="flex flex-col text-left">
+                      <span className="text-white font-medium text-[14px] md:text-[16px]">
+                        {opt.label}
+                      </span>
+                      <div className="flex items-center gap-2 mt-1">
+                        {/* {opt.isPrimary && (
+                          <span className="text-[11px] px-2 py-[2px] rounded bg-green-600 text-white">Primary</span>
+                        )} */}
+                        {/* {opt.source === "Profile" && (
+                          <span className="text-[11px] px-2 py-[2px] rounded bg-gray-700 text-white">Profile</span>
+                        )} */}
+                      </div>
+                    </div>
+                    {isActive && (
+                      <span className="text-yellow-400 text-[18px] font-semibold">✓</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="second-bg border border-yellow-400 rounded-md px-5 py-4 text-white font-medium">
+              {user?.phone || "Phone number not available"}
+            </div>
+          )}
+
+          <p className="text-sm text-gray-400 mt-1 text-left">
+            {walletPhoneOptions.length > 0
+              ? "Choose a phone number to receive wallet withdrawals"
+              : "This is your registered phone number"}
+          </p>
         </div>
       )}
 
