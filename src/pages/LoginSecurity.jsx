@@ -7,6 +7,7 @@ import { CgCloseO } from "react-icons/cg";
 import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/auth-context";
+import { pageList } from "./PersonalInformation";
 
 const LoginSecurity = () => {
   const { logout: handleContextLogout } = useAuth();
@@ -15,23 +16,6 @@ const LoginSecurity = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pageList = [
-    {
-      id: 1,
-      name: "Personal Info",
-      link: "/profile/personal-information",
-    },
-    {
-      id: 2,
-      name: "Login & Security",
-      link: "/profile/login-security",
-    },
-    {
-      id: 3,
-      name: "Verification",
-      link: "/profile/verification",
-    },
-  ];
 
   //   const user = {
   //     username: "hkitltd",

@@ -8,6 +8,29 @@ import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/auth-context";
 
+export const pageList = [
+  {
+    id: 1,
+    name: "Personal Info",
+    link: "/profile/personal-information",
+  },
+  {
+    id: 2,
+    name: "Login & Security",
+    link: "/profile/login-security",
+  },
+  {
+    id: 3,
+    name: "Verification",
+    link: "/profile/verification",
+  },
+  {
+    id: 4,
+    name: "Edit Phone",
+    link: "/profile/edit-phone",
+  },
+];
+
 const PersonalInformation = () => {
   const { logout: handleContextLogout } = useAuth();
 
@@ -16,23 +39,7 @@ const PersonalInformation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pageList = [
-    {
-      id: 1,
-      name: "Personal Info",
-      link: "/profile/personal-information",
-    },
-    {
-      id: 2,
-      name: "Login & Security",
-      link: "/profile/login-security",
-    },
-    {
-      id: 3,
-      name: "Verification",
-      link: "/profile/verification",
-    },
-  ];
+  
 
   //   const user = {
   //     username: "hkitltd",

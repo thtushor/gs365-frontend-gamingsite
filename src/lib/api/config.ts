@@ -74,6 +74,14 @@ export const API_ENDPOINTS = {
     ADMIN_USER_MESSAGES: "/api/messages/user-admin",
     GUEST_USER_MESSAGES: "/api/messages/guest-sender/:guestSenderId",
   },
+
+  // User phone endpoints
+  USER_PHONES: {
+    CREATE: "/api/user-phones",
+    BY_USER: "/api/user-phones/user/:userId",
+    UPDATE: "/api/user-phones/update/:id",
+    DELETE: "/api/user-phones/delete/:id",
+  },
 } as const;
 
 // Helper function to build full API URLs

@@ -50,6 +50,7 @@ import NotFound from "./routes/NotFound";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsCondition from "./pages/TermsCondition";
+import PhoneEditContainer from "./pages/PhoneEditContainer";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -190,6 +191,15 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <DocumentSubmitKyc />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/profile/edit-phone"
+            element={
+              <PrivateRoute>
+                <PhoneEditContainer />
               </PrivateRoute>
             }
           />

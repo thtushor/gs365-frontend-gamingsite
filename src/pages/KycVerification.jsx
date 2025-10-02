@@ -8,6 +8,7 @@ import handleCopy from "../lib/utils/handleCopy";
 import { IoIosArrowBack } from "react-icons/io";
 import { useAuth } from "../contexts/auth-context";
 import KycVerifyImg from "../assets/kyc-verify.png";
+import { pageList } from "./PersonalInformation";
 
 const KycVerification = () => {
   const { logout: handleContextLogout } = useAuth();
@@ -16,23 +17,6 @@ const KycVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pageList = [
-    {
-      id: 1,
-      name: "Personal Info",
-      link: "/profile/personal-information",
-    },
-    {
-      id: 2,
-      name: "Login & Security",
-      link: "/profile/login-security",
-    },
-    {
-      id: 3,
-      name: "Verification",
-      link: "/profile/verification",
-    },
-  ];
 
   //   const user = {
   //     username: "hkitltd",
