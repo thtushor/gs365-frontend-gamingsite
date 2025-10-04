@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { TbHistoryToggle, TbUserShare } from "react-icons/tb";
-import { TbFileDollar } from "react-icons/tb";
 
 import { MdOutlineLockPerson } from "react-icons/md";
 
@@ -75,11 +74,11 @@ const Header: React.FC = () => {
       icon: <LuShieldCheck />,
       url: "/profile/verification",
     },
-    {
-      name: "Transaction Records",
-      icon: <TbFileDollar />,
-      url: "/profile/transaction-records",
-    },
+    // {
+    //   name: "Transaction Records",
+    //   icon: <TbFileDollar />,
+    //   url: "/profile/transaction-records",
+    // },
     {
       name: "Turnover",
       icon: <TargetIcon className="w-4 h-4" />,

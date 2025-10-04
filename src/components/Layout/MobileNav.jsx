@@ -37,12 +37,12 @@ export const profileNavOption = [
     url: "/profile/verification",
     isPrivate: true,
   },
-  {
-    name: "Transaction Records",
-    icon: <TbFileDollar />,
-    url: "/profile/transaction-records",
-    isPrivate: true,
-  },
+  // {
+  //   name: "Transaction Records",
+  //   icon: <TbFileDollar />,
+  //   url: "/profile/transaction-records",
+  //   isPrivate: true,
+  // },
   {
     name: "Turnover",
     icon: <TargetIcon className="w-4 h-4" />,
@@ -116,6 +116,7 @@ const MobileNav = () => {
   const handleLogout = async () => {
     // Clear localStorage data
     handleContextLogout();
+    setIsProfileOpen(false);
 
     // Show success message
     // showToaster("Logged out successfully", "success");

@@ -51,6 +51,7 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsCondition from "./pages/TermsCondition";
 import PhoneEditContainer from "./pages/PhoneEditContainer";
+import Download from "./pages/Download";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -80,6 +81,7 @@ const App: React.FC = () => {
             }
           />
           <Route path="/vip" element={<VipPage />} />
+          <Route path="/download" element={<Download />} />
           <Route path="/promotions" element={<PromotionPage />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

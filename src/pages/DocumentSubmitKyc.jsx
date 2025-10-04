@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
+import kycFront from "../assets/kyc-front.jpeg";
+import kycBack from "../assets/kyc-back.jpeg";
+import kycProfile from "../assets/kyc-profile.jpeg";
 
 const DocumentSubmitKyc = () => {
   const navigate = useNavigate();
@@ -343,6 +346,39 @@ const DocumentSubmitKyc = () => {
               />
             )}
           </div>
+
+          {kycDetails?.data.holderKycStatus !== "verified" &&
+            status !== "Pending" && (
+              <div className="pt-10">
+                <h1 className="bg-yellow-300 text-black font-bold text-[15px] px-3 py-2 rounded-md w-fit">
+                  IMAGE INSTRUCTION
+                </h1>
+                <div className="grid grid-cols-3 gap-2 max-w-[500px] w-full">
+                  <div className="relative mt-5">
+                    <p className="absolute shadow-lg border border-yellow-300 top-[-7px] uppercase font-semibold text-[12px] bg-black px-2 rounded-full w-fit">
+                      front side
+                    </p>
+                    <img src={kycFront} className="w-full rounded-lg" alt="" />
+                  </div>
+                  <div className="relative mt-5">
+                    <p className="absolute shadow-lg border border-yellow-300 top-[-7px] uppercase font-semibold text-[12px] bg-black px-2 rounded-full w-fit">
+                      Back side
+                    </p>
+                    <img src={kycBack} className="w-full rounded-lg" alt="" />
+                  </div>
+                  <div className="relative mt-5">
+                    <p className="absolute shadow-lg border border-yellow-300 top-[-7px] uppercase font-semibold text-[12px] bg-black px-2 rounded-full w-fit">
+                      selfie
+                    </p>
+                    <img
+                      src={kycProfile}
+                      className="w-full rounded-lg"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
       </div>
 

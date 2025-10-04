@@ -275,6 +275,8 @@ const SingleDepositAndWithdrawPage = () => {
   const [selectedPromotion, setSelectedPromotion] = useState(null);
 
   const [depositOptions, setDepositOptions] = useState({
+    promotionId: null,
+    promotionDetails: null,
     payment_type: "",
     payment_channel: "",
     deposit_channel: "",
@@ -289,6 +291,8 @@ const SingleDepositAndWithdrawPage = () => {
       const paymentType = paymentMethodData?.name;
 
       setDepositOptions({
+        promotionId: depositOptions?.promotionId,
+        promotionDetails: depositOptions?.promotionDetails,
         payment_type: {
           bonus: "3%",
 
@@ -359,17 +363,18 @@ const SingleDepositAndWithdrawPage = () => {
 
   useEffect(() => {
     if (promotionList?.data?.length > 0) {
-      let defaultPromotion = promotionList.data?.find((item)=>item?.isRecommended); // fallback
+      let defaultPromotion = promotionList.data?.find(
+        (item) => item?.isRecommended
+      ); // fallback
       if (promotionIdFromUrl) {
         const promoFromUrl = promotionList.data.find(
           (promo) => String(promo.id) === promotionIdFromUrl
         );
         if (promoFromUrl) defaultPromotion = promoFromUrl;
       }
-    
 
       setSelectedPromotion(defaultPromotion);
-
+      console.log("defaultPromotion", defaultPromotion);
 
       setDepositOptions((prev) => ({
         ...prev,
@@ -377,8 +382,10 @@ const SingleDepositAndWithdrawPage = () => {
         promotionDetails: defaultPromotion,
       }));
     }
-  }, [promotionList?.data, promotionIdFromUrl]);
+  }, [promotionList?.data?.length, promotionIdFromUrl]);
 
+  console.log("depositOptions", depositOptions);
+  console.log("promotionList", promotionList);
   return (
     <div className="!max-w-[650px] mx-auto px-4 py-8">
       <h2 className="text-[22px] flex items-center font-bold ">

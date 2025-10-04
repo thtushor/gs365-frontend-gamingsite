@@ -38,9 +38,12 @@ const DepositPromotionSelect = ({
       <h1 className="text-xl font-bold text-white mb-4">Select Promotion</h1>
 
       {/* Promotions List */}
-      <div className="space-y-3 h-[40vh] overflow-y-auto py-4" style={{
-        scrollbarWidth:"thin"
-      }}>
+      <div
+        className="space-y-3 h-[40vh] overflow-y-auto py-4"
+        style={{
+          scrollbarWidth: "thin",
+        }}
+      >
         {promotionList.length === 0 ? (
           <p className="text-center pt-10 text-gray-500">
             No promotions available

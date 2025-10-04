@@ -41,6 +41,7 @@ const TopHeader: React.FC = () => {
   }, []);
 
   const handleDownloadApp = () => {
+    navigate("/download");
     console.log("Downloaded!");
   };
 

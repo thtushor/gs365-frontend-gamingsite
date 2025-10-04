@@ -40,7 +40,7 @@ const DepositSubmit = ({ depositOptions, stepDetails, setStep }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const { user } = useAuth();
 
-  console.log({depositOptions})
+  console.log({ depositOptions });
 
   const isInternational = (depositOptions.paymentMethod || "")
     .toLowerCase()

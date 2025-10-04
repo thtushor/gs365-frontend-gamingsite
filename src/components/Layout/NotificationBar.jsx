@@ -75,7 +75,9 @@ const NotificationBar = () => {
       if (payload?.refresh) {
         setPendingNotificationId(payload?.notificationId || null);
         // Invalidate and refetch notifications for this user
-        queryClient.invalidateQueries({ queryKey: ["notifications", authUser.id] });
+        queryClient.invalidateQueries({
+          queryKey: ["notifications", authUser.id],
+        });
       }
       // Open dropdown to show latest
       setIsOpen(true);
@@ -89,7 +91,12 @@ const NotificationBar = () => {
 
   // When notifications update, auto-open the emitted one if present
   useEffect(() => {
-    if (!pendingNotificationId || !Array.isArray(notifications) || notifications.length === 0) return;
+    if (
+      !pendingNotificationId ||
+      !Array.isArray(notifications) ||
+      notifications.length === 0
+    )
+      return;
 
     const match = notifications.find((note) => {
       const nid = note?.id || note?._id || note?.notificationId;
@@ -102,6 +109,12 @@ const NotificationBar = () => {
       setPendingNotificationId(null);
     }
   }, [pendingNotificationId, notifications]);
+
+  useEffect(() => {
+    if (selectedNote) {
+      setIsOpen();
+    }
+  }, [selectedNote]);
 
   return (
     <div className="relative">
@@ -156,7 +169,15 @@ const NotificationBar = () => {
                     <h1 className="text-[14px] text-white font-medium">
                       {note?.title || "Untitled"}
                     </h1>
-                    <p className="text-[12px] text-gray-300 truncate max-w-44">
+                    <p
+                      onClick={(e) => {
+                        const target = e.target;
+                        if (target.tagName === "A") {
+                          e.preventDefault(); // stop link navigation
+                        }
+                      }}
+                      className="text-[12px] text-gray-300 truncate max-w-44"
+                    >
                       {/* description may contain HTML from backend */}
                       <span
                         dangerouslySetInnerHTML={{
@@ -188,6 +209,7 @@ const NotificationBar = () => {
           open={!!selectedNote}
           onClose={() => setSelectedNote(null)}
           notification={selectedNote}
+          setIsOpen={setIsOpen}
         />
       )}
       {(selectedNote?.notificationType === "linkable" ||
@@ -196,6 +218,8 @@ const NotificationBar = () => {
           open={!!selectedNote}
           onClose={() => setSelectedNote(null)}
           notification={selectedNote}
+          setIsOpen={setIsOpen}
+          setSelectedNote={setSelectedNote}
         />
       )}
     </div>

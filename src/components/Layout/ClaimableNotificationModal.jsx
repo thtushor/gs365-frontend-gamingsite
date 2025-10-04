@@ -5,7 +5,12 @@ import axiosInstance from "../../lib/api/axios";
 import { API_ENDPOINTS } from "../../lib/api/config";
 import { useAuth } from "../../contexts/auth-context";
 
-const ClaimableNotificationModal = ({ open, onClose, notification }) => {
+const ClaimableNotificationModal = ({
+  open,
+  setIsOpen,
+  onClose,
+  notification,
+}) => {
   const { user } = useAuth();
   const isExpired = new Date(notification.endDate) < new Date();
 
@@ -25,6 +30,10 @@ const ClaimableNotificationModal = ({ open, onClose, notification }) => {
       onClose && onClose();
     },
   });
+
+  const handleSubmit = () => {
+    claimMutation.mutate();
+  };
 
   return (
     <BaseModal open={open} onClose={onClose}>
@@ -64,14 +73,18 @@ const ClaimableNotificationModal = ({ open, onClose, notification }) => {
         <div className="header-auth">
           <button
             disabled={isExpired || claimMutation.isPending}
-            onClick={() => claimMutation.mutate()}
+            onClick={handleSubmit}
             className={`mx-auto signup-btn !pt-1 rounded-lg font-medium ${
               isExpired
                 ? "bg-gray-500 cursor-not-allowed"
                 : "bg-yellow-500 hover:bg-yellow-600 text-black"
             }`}
           >
-            {isExpired ? "Expired" : claimMutation.isPending ? "Claiming..." : "Claim Now"}{" "}
+            {isExpired
+              ? "Expired"
+              : claimMutation.isPending
+              ? "Claiming..."
+              : "Claim Now"}{" "}
             {notification?.amount > 0 ? `- ${notification?.amount} BDT` : ""}
           </button>
         </div>

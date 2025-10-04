@@ -2,7 +2,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BaseModal from "../Promotion/BaseModal";
 
-const InfoNotificationModal = ({ open, onClose, notification }) => {
+const InfoNotificationModal = ({
+  open,
+  onClose,
+  setSelectedNote,
+  notification,
+}) => {
   const navigate = useNavigate();
   return (
     <BaseModal open={open} onClose={onClose}>
@@ -46,6 +51,7 @@ const InfoNotificationModal = ({ open, onClose, notification }) => {
           <div className="header-auth">
             <div
               onClick={() => {
+                setSelectedNote(null);
                 onClose();
                 navigate(`/deposit?promotionId=${notification?.promotionId}`);
               }}

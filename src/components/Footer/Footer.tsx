@@ -182,10 +182,10 @@ export const Footer: React.FC<FooterProps> = ({ socialData }) => {
             <CollapseItem title="Pages" icon={<FaTrophy />}>
               <ul className="footer-links">
                 <li>
-                  <a href="/">Home</a>
+                  <a href="/download">App Download</a>
                 </li>
                 <li>
-                  <a href="/promotion">Promotion</a>
+                  <a href="/promotions">Promotion</a>
                 </li>
                 <li>
                   <a href="/vip">VIP</a>
