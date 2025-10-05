@@ -1,6 +1,6 @@
 import React from "react";
 import BaseModal from "../Promotion/BaseModal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../lib/api/axios";
 import { API_ENDPOINTS } from "../../lib/api/config";
 import { useAuth } from "../../contexts/auth-context";
@@ -12,6 +12,7 @@ const ClaimableNotificationModal = ({
   notification,
 }) => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const isExpired = new Date(notification.endDate) < new Date();
 
   const claimMutation = useMutation({
@@ -27,6 +28,9 @@ const ClaimableNotificationModal = ({
       return res.data;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["notifications", user.id],
+      });
       onClose && onClose();
     },
   });
@@ -74,17 +78,16 @@ const ClaimableNotificationModal = ({
           <button
             disabled={isExpired || claimMutation.isPending}
             onClick={handleSubmit}
-            className={`mx-auto signup-btn !pt-1 rounded-lg font-medium ${
-              isExpired
+            className={`mx-auto signup-btn !pt-1 rounded-lg font-medium ${isExpired
                 ? "bg-gray-500 cursor-not-allowed"
                 : "bg-yellow-500 hover:bg-yellow-600 text-black"
-            }`}
+              }`}
           >
             {isExpired
               ? "Expired"
               : claimMutation.isPending
-              ? "Claiming..."
-              : "Claim Now"}{" "}
+                ? "Claiming..."
+                : "Claim Now"}{" "}
             {notification?.amount > 0 ? `- ${notification?.amount} BDT` : ""}
           </button>
         </div>
