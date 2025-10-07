@@ -15,9 +15,10 @@ interface SupportPanelProps {
   onClose: () => void;
 }
 
-const SupportPanelContent: React.FC<{ onClose: () => void,open:boolean,onOpen: ()=>void }> = ({ onClose,open,onOpen }) => {
+const SupportPanelContent: React.FC<{ onClose: () => void,open:boolean,onOpen: ()=>void }> = ({ onClose }) => {
   const { activeTab, handleTabChange, parenScroll } =
     useSupportPanelContext();
+
 
   return (
     <div className="support-panel-overlay" onClick={onClose}>
