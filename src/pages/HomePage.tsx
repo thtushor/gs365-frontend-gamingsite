@@ -33,6 +33,7 @@ import AllProviders from "./AllProviders";
 import { Event } from "../components/Event";
 import { ExclusiveGames } from "../components/ExclusiveGames";
 import SupportPanel from "../components/SupportUs/SupportPanel";
+import { ChatProvider } from "../contexts/ChatContext";
 
 const HomePage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -98,11 +99,14 @@ const HomePage: React.FC = () => {
           y: window.innerHeight - 120,
         }}
       >
-        <SupportUs
-          handleClick={() => {
-            setOpen(true);
-          }}
-        />
+        <ChatProvider>
+          <SupportUs
+            handleClick={() => {
+              setOpen(true);
+            }}
+
+          />
+        </ChatProvider>
       </DraggableContainer>
       {/* <GameSlider title="CRASH GAMES" games={crashGames} />
       <GameSlider title="POPULAR SLOTS" games={slotGames} />
@@ -112,7 +116,7 @@ const HomePage: React.FC = () => {
       <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
       {/* <FAQ /> */}
 
-      <SupportPanel open={open} onOpen={()=>{
+      <SupportPanel open={open} onOpen={() => {
         setOpen(true)
       }} onClose={handleClose} />
     </div>
