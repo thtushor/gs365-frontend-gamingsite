@@ -11,10 +11,11 @@ import { ChatProvider } from "../../contexts/ChatContext";
 
 interface SupportPanelProps {
   open: boolean;
+  onOpen:()=>void;
   onClose: () => void;
 }
 
-const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const SupportPanelContent: React.FC<{ onClose: () => void,open:boolean,onOpen: ()=>void }> = ({ onClose,open,onOpen }) => {
   const { activeTab, handleTabChange, parenScroll } =
     useSupportPanelContext();
 
@@ -39,13 +40,13 @@ const SupportPanelContent: React.FC<{ onClose: () => void }> = ({ onClose }) => 
   );
 };
 
-const SupportPanel: React.FC<SupportPanelProps> = ({ open, onClose }) => {
-  if (!open) return null;
+const SupportPanel: React.FC<SupportPanelProps> = ({ open,onOpen, onClose }) => {
+  // if (!open) return null;
 
   return (
     <SupportPanelProvider>
-      <ChatProvider>
-        <SupportPanelContent onClose={onClose} />
+      <ChatProvider onOpen={onOpen}>
+       {open &&  <SupportPanelContent onClose={onClose} onOpen={onOpen} open={open} />}
       </ChatProvider>
     </SupportPanelProvider>
   );

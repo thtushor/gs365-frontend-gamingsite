@@ -112,7 +112,9 @@ const HomePage: React.FC = () => {
       <GameSlider title="EXCLUSIVE GAMES" games={crashGames} /> */}
       {/* <FAQ /> */}
 
-      {open && <SupportPanel open={open} onClose={handleClose} />}
+      <SupportPanel open={open} onOpen={()=>{
+        setOpen(true)
+      }} onClose={handleClose} />
     </div>
   );
 };

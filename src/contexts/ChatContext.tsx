@@ -147,9 +147,10 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 interface ChatProviderProps {
   children: ReactNode;
+  onOpen: ()=>void;
 }
 
-export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
+export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -188,6 +189,8 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       return;
     socket?.on(`newMessage`, (data) => {
       console.log("New message found", data)
+
+      onOpen();
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
