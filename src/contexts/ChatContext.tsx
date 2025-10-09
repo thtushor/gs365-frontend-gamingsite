@@ -126,6 +126,7 @@ interface ChatContextType {
   messages: Message[];
   loading: boolean;
   error: Error | AxiosError | null;
+  unreadMsgCount?: { total: number };
   createChat: (data: {
     initialMessageContent: string;
     targetUserId?: string;
@@ -152,10 +153,10 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 interface ChatProviderProps {
   children: ReactNode;
   onOpen?: () => void;
-  onOpen?: () => void;
+  activeTab?:string;
 }
 
-export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) => {
+export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen,activeTab }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -189,23 +190,30 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
   const {
     data: unreadMsgCount,
     isLoading: unreadMsgCountIsLoading,
-
-  } = useQuery<Message[], Error>({
-    queryKey: ["chat-unread", user?.id],
+  } = useQuery<any, Error, { total: number }>({
+    queryKey: ["chat-unread", user?.id, getOrCreateGuestId()],
     queryFn: async () => {
-      let url = `${API_ENDPOINTS.CHAT.CHAT_UNREAD_COUNT}`
+      let url = `${API_ENDPOINTS.CHAT.CHAT_UNREAD_COUNT}`;
 
       const response = await Axios.get(url, {
         params: {
           playerId: user?.id,
-          guestId: !user?.id ? getOrCreateGuestId() : undefined
-        }
+          guestId: !user?.id ? getOrCreateGuestId() : undefined,
+        },
       });
-      return response.data;
+
+      return response?.data?.data;
     },
+    select: (data: any) => ({
+      total:
+        (data?.countGuest ?? 0) +
+        (data?.countUser ?? 0) +
+        (data?.countAffiliate ?? 0),
+    }),
     enabled: !!user?.id || !!getOrCreateGuestId(),
     // refetchInterval: 2 * 1000,
   });
+
 
   console.log({ unreadMsgCountIsLoading, unreadMsgCount })
 
@@ -225,7 +233,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-      queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chat-unread"] });
     })
 
     return () => {
@@ -240,15 +248,18 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
   }, [lastMessage?.chatId]);
 
 
+  console.log({lastMessage})
+
   // Effect to mark messages as read when activeConversation changes
   useEffect(() => {
-    if (lastMessage?.chatId && lastMessage?.chat?.status === "pending_user_response") {
+    if (lastMessage?.chatId && lastMessage?.chat?.status === "pending_user_response" && activeTab==="messages") {
+      console.log("test==>")
       readMessagesMutation.mutate({
         chatId: Number(lastMessage?.chatId),
         status: "open"
       });
     }
-  }, [lastMessage?.chatId]);
+  }, [lastMessage?.chatId,lastMessage?.chat?.status,activeTab]);
 
   const createChatMutation: UseMutationResult<
     Chat,
@@ -326,7 +337,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
       });
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chat-unread"] });
     },
     onError: (err) => {
       console.error("Error sending message:", err);
@@ -335,16 +346,16 @@ queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
 
   const readMessagesMutation = useMutation({
     mutationFn: async ({ chatId, status }: { chatId?: number, status: string }) => {
-      if (!chatId || !user?.role) return;
-      await Axios.post(`${API_ENDPOINTS.CHAT.CREATE_CHAT}/${chatId}/status`, {
+      if (!chatId) return;
+      await Axios.put(`${API_ENDPOINTS.CHAT.CREATE_CHAT}/${chatId}/status`, {
         chatId,
         status
       });
     },
-    onSuccess: ()=>{
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-      queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chat-unread"] });
     },
     onError: (err) => {
       console.error("Error marking messages as read:", err);
@@ -415,6 +426,7 @@ queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
     readMessages: readMessagesMutation.mutate,
     uploadAttachment: uploadAttachmentMutation.mutateAsync,
     refetchMessages,
+    unreadMsgCount,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

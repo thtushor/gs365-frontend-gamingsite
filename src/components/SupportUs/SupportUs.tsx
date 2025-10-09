@@ -6,9 +6,9 @@ import { useChat } from "../../contexts/ChatContext";
 
 const SupportUs: React.FC<{handleClick:()=>void}> = ({handleClick}) => {
   
-const {messages} = useChat();
+const {unreadMsgCount} = useChat();
 
-const hasNewMessages = messages && messages.length > 0;
+const hasNewMessages = Number(unreadMsgCount?.total||0) > 0;
 
   return (
     <>
