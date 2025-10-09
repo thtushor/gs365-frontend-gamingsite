@@ -5,6 +5,7 @@ import { pageList } from "./PersonalInformation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../lib/api/axios";
 import { API_ENDPOINTS } from "../lib/api/config";
+import { IoRemoveCircleOutline } from "react-icons/io5";
 
 const PhoneEditContainer = () => {
   const { logout: handleContextLogout } = useAuth();
@@ -259,9 +260,9 @@ const PhoneEditContainer = () => {
                     </button>
                     <button
                       onClick={() => handleDelete(phone)}
-                      className="px-3 py-1 text-sm rounded border border-red-600 text-red-400 hover:bg-red-600 hover:text-white hover:bg-opacity-20"
+                      className="px-1 py-1 text-sm rounded border border-red-600 text-red-400 hover:bg-red-600 hover:text-white hover:bg-opacity-20"
                     >
-                      Delete
+                      <IoRemoveCircleOutline/>
                     </button>
                   </div>
                 </div>

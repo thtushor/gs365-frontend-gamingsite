@@ -44,11 +44,8 @@ interface TurnoverResponse {
 
 const TurnoverPage: React.FC = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<
-    "active" | "inactive" | "completed"
-  >("active");
+  const [activeTab, setActiveTab] = useState<"active" | "inactive" | "completed">("active");
 
-  // Filter states
   const [filters, setFilters] = useState({
     userId: user?.id?.toString() || "",
     status: "",
@@ -56,7 +53,6 @@ const TurnoverPage: React.FC = () => {
     pageSize: 10,
   });
 
-  // Update filters when user changes
   useEffect(() => {
     if (user?.id) {
       setFilters((prev) => ({
@@ -66,14 +62,12 @@ const TurnoverPage: React.FC = () => {
     }
   }, [user?.id]);
 
-  // Build query parameters
   const queryParams = new URLSearchParams();
   if (filters.userId) queryParams.append("userId", filters.userId);
   if (filters.status) queryParams.append("status", filters.status);
   queryParams.append("page", filters.page.toString());
   queryParams.append("pageSize", filters.pageSize.toString());
 
-  // React Query for fetching turnovers
   const {
     data: turnoverData,
     isLoading,
@@ -86,17 +80,13 @@ const TurnoverPage: React.FC = () => {
       );
       return response.data?.data as TurnoverResponse;
     },
-    enabled: !!filters.userId, // Only run query when we have a userId
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: !!filters.userId,
+    staleTime: 5 * 60 * 1000,
   });
 
-  // Extract data from query result
   const turnovers = turnoverData?.data || [];
   const pagination = turnoverData?.pagination || null;
 
-  console.log({ turnoverData });
-
-  // Handle errors
   useEffect(() => {
     if (error) {
       toast.error("Failed to fetch turnover data");
@@ -107,28 +97,13 @@ const TurnoverPage: React.FC = () => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
-      page: 1, // Reset to first page when filters change
+      page: 1,
     }));
   };
 
   const handlePageChange = (newPage: number) => {
     setFilters((prev) => ({ ...prev, page: newPage }));
   };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "active":
-        return <FaClock className="text-blue-400" />;
-      case "completed":
-        return <FaCheckCircle className="text-green-400" />;
-      case "inactive":
-        return <FaTimesCircle className="text-red-400" />;
-      default:
-        return <FaClock className="text-gray-400" />;
-    }
-  };
-
-  console.log({ getStatusIcon });
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -163,469 +138,332 @@ const TurnoverPage: React.FC = () => {
     return Math.min((completed / targetNum) * 100, 100);
   };
 
-  const filteredTurnovers = turnovers.filter((turnover) => {
-    if (activeTab === "active") return turnover.status === "active";
-    if (activeTab === "inactive") return turnover.status === "inactive";
-    if (activeTab === "completed") return turnover.status === "completed";
-    return true;
-  });
+  const filteredTurnovers = turnovers.filter((t) => t.status === activeTab);
 
-  const formatCurrency = (amount: string) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount: string) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "BDT",
       minimumFractionDigits: 2,
     }).format(parseFloat(amount));
-  };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
 
   return (
-    <div className="min-h-screen second-bg py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <FaChartLine className="text-3xl text-yellow-400" />
-            <h1 className="text-3xl font-bold text-white">
-              Turnover Management
-            </h1>
-          </div>
-          <p className="text-gray-300">
-            Track and manage your turnover targets and progress
-          </p>
+    <div className="min-h-screen second-bg py-6 px-3 sm:px-6 lg:px-8">
+      {/* Header */}
+      <div className="mb-6 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 mb-2">
+          <FaChartLine className="text-3xl text-yellow-400" />
+          <h1 className="text-xl sm:text-3xl font-bold text-white">Turnover Management</h1>
         </div>
+        <p className="text-gray-300 text-sm sm:text-base">
+          Track and manage your turnover targets and progress
+        </p>
+      </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="light-bg rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-900 rounded-lg">
-                <FaChartLine className="text-blue-400 text-xl" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">
-                  Total Turnovers
-                </p>
-                <p className="text-2xl font-bold text-white">
-                  {pagination?.total || 0}
-                </p>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {[
+          {
+            title: "Total Turnovers",
+            value: pagination?.total || 0,
+            color: "blue",
+            icon: <FaChartLine className="text-blue-400 text-lg sm:text-xl" />,
+          },
+          {
+            title: "Active",
+            value: turnovers.filter((t) => t.status === "active").length,
+            color: "green",
+            icon: <FaClock className="text-green-400 text-lg sm:text-xl" />,
+          },
+          {
+            title: "Completed",
+            value: turnovers.filter((t) => t.status === "completed").length,
+            color: "blue",
+            icon: <FaCheckCircle className="text-blue-400 text-lg sm:text-xl" />,
+          },
+          {
+            title: "Total Target",
+            value: formatCurrency(
+              turnovers.reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0).toString()
+            ),
+            color: "purple",
+            icon: <FaTrophy className="text-purple-400 text-lg sm:text-xl" />,
+          },
+        ].map((card, i) => (
+          <div
+            key={i}
+            className={`light-bg rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-${card.color}-500`}
+          >
+            <div className="flex items-center justify-center sm:justify-start">
+              <div className={`p-1 md:p-2 bg-${card.color}-900 rounded-lg`}>{card.icon}</div>
+              <div className="ml-3">
+                <p className="text-xs sm:text-sm font-medium text-gray-300">{card.title}</p>
+                <p className="text-xs sm:text-2xl font-bold text-white">{card.value}</p>
               </div>
             </div>
           </div>
+        ))}
+      </div>
 
-          <div className="light-bg rounded-lg shadow-lg p-6 border-l-4 border-green-500">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-900 rounded-lg">
-                <FaClock className="text-green-400 text-xl" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Active</p>
-                <p className="text-2xl font-bold text-white">
-                  {turnovers.filter((t) => t.status === "active").length}
-                </p>
-              </div>
-            </div>
+      {/* Summary */}
+      <div className="light-bg rounded-lg shadow-md mb-6 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <FaChartLine className="text-yellow-400" />
+          Your Turnover Summary
+        </h3>
+        <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 text-center">
+          <div>
+            <p className="text-sm sm:text-2xl font-bold text-yellow-400">
+              {formatCurrency(
+                turnovers
+                  .reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0)
+                  .toString()
+              )}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-300">Total Target</p>
           </div>
-
-          <div className="light-bg rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-900 rounded-lg">
-                <FaCheckCircle className="text-blue-400 text-xl" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">Completed</p>
-                <p className="text-2xl font-bold text-white">
-                  {turnovers.filter((t) => t.status === "completed").length}
-                </p>
-              </div>
-            </div>
+          <div>
+            <p className="text-sm sm:text-2xl font-bold text-green-400">
+              {formatCurrency(
+                turnovers
+                  .reduce((sum, t) => sum + parseFloat(t.remainingTurnover), 0)
+                  .toString()
+              )}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-300">Total Remaining</p>
           </div>
-
-          <div className="light-bg rounded-lg shadow-lg p-6 border-l-4 border-purple-500">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-900 rounded-lg">
-                <FaTrophy className="text-purple-400 text-xl" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-300">
-                  Total Target
-                </p>
-                <p className="text-2xl font-bold text-white">
-                  {formatCurrency(
-                    turnovers
-                      .reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0)
-                      .toString()
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* User Turnover Summary */}
-        <div className="light-bg rounded-lg shadow-lg mb-6 p-6">
-          <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-            <FaChartLine className="text-yellow-400" />
-            Your Turnover Summary
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-yellow-400">
-                {formatCurrency(
-                  turnovers
-                    .reduce((sum, t) => sum + parseFloat(t.targetTurnover), 0)
-                    .toString()
-                )}
-              </p>
-              <p className="text-sm text-gray-300">Total Target Amount</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-400">
-                {formatCurrency(
-                  turnovers
-                    .reduce(
-                      (sum, t) => sum + parseFloat(t.remainingTurnover),
-                      0
-                    )
-                    .toString()
-                )}
-              </p>
-              <p className="text-sm text-gray-300">Total Remaining</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-400">
-                {formatCurrency(
-                  turnovers
-                    .reduce(
-                      (sum, t) =>
-                        sum +
-                        (parseFloat(t.targetTurnover) -
-                          parseFloat(t.remainingTurnover)),
-                      0
-                    )
-                    .toString()
-                )}
-              </p>
-              <p className="text-sm text-gray-300">Total Completed</p>
-            </div>
+          <div>
+            <p className="text-sm sm:text-2xl font-bold text-blue-400">
+              {formatCurrency(
+                turnovers
+                  .reduce(
+                    (sum, t) =>
+                      sum + (parseFloat(t.targetTurnover) - parseFloat(t.remainingTurnover)),
+                    0
+                  )
+                  .toString()
+              )}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-300">Total Completed</p>
           </div>
         </div>
+      </div>
 
-        {/* Filters */}
-        <div className="light-bg rounded-lg shadow-lg mb-6">
-          <div className="p-6 second-border border-b">
-            <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-              <FaFilter className="text-yellow-400" />
-              Filters
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  User ID
-                </label>
-                <input
-                  type="text"
-                  placeholder="Filter by User ID"
-                  value={filters.userId}
-                  onChange={(e) => handleFilterChange("userId", e.target.value)}
-                  className="w-full px-3 py-2 second-bg border second-border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  disabled
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Auto-filled from your account
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Status
-                </label>
-                <select
-                  value={filters.status}
-                  onChange={(e) => handleFilterChange("status", e.target.value)}
-                  className="w-full px-3 py-2 second-bg border second-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="">All Statuses</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Page Size
-                </label>
-                <select
-                  value={filters.pageSize}
-                  onChange={(e) =>
-                    handleFilterChange("pageSize", parseInt(e.target.value))
-                  }
-                  className="w-full px-3 py-2 second-bg border second-border rounded-md text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value={5}>5 per page</option>
-                  <option value={10}>10 per page</option>
-                  <option value={20}>20 per page</option>
-                  <option value={50}>50 per page</option>
-                </select>
-              </div>
-
-              <div className="flex items-center mt-[7px]">
-                <button
-                  onClick={() => {
-                    setFilters((prev) => ({
-                      ...prev,
-                      status: "",
-                      page: 1,
-                    }));
-                  }}
-                  className="w-full px-4 py-[7px] bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
-                >
-                  Clear Filters
-                </button>
-              </div>
-            </div>
+      {/* Filters */}
+      <div className="light-bg rounded-lg shadow-md mb-6 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <FaFilter className="text-yellow-400" />
+          Filters
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div>
+            <label className="text-xs sm:text-sm text-gray-300 mb-1 block">User ID</label>
+            <input
+              type="text"
+              value={filters.userId}
+              disabled
+              className="w-full px-3 py-2 second-bg border second-border rounded-md text-white text-sm"
+            />
           </div>
-        </div>
 
-        {/* Tabs */}
-        <div className="light-bg rounded-lg shadow-lg mb-6">
-          <div className="border-b second-border">
-            <nav className="flex space-x-8 px-6" aria-label="Tabs">
-              {[
-                {
-                  key: "active",
-                  label: "Active",
-                  count: turnovers.filter((t) => t.status === "active").length,
-                },
-                {
-                  key: "inactive",
-                  label: "Inactive",
-                  count: turnovers.filter((t) => t.status === "inactive")
-                    .length,
-                },
-                {
-                  key: "completed",
-                  label: "Completed",
-                  count: turnovers.filter((t) => t.status === "completed")
-                    .length,
-                },
-              ].map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() =>
-                    setActiveTab(tab.key as "active" | "inactive" | "completed")
-                  }
-                  className={`py-4 px-1 border-b-2 !w-full max-w-[220px] mt-5 font-medium text-sm ${
-                    activeTab === tab.key
-                      ? "border-yellow-400 text-yellow-400"
-                      : "border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600"
-                  }`}
-                >
-                  {tab.label}
-                  <span
-                    className={`ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium ${
-                      activeTab === tab.key
-                        ? "bg-yellow-900 text-yellow-300"
-                        : "bg-gray-700 text-gray-300"
-                    }`}
-                  >
-                    {tab.count}
-                  </span>
-                </button>
+          <div>
+            <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Status</label>
+            <select
+              value={filters.status}
+              onChange={(e) => handleFilterChange("status", e.target.value)}
+              className="w-full px-3 py-2 second-bg border second-border rounded-md text-white text-sm"
+            >
+              <option value="">All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Page Size</label>
+            <select
+              value={filters.pageSize}
+              onChange={(e) => handleFilterChange("pageSize", parseInt(e.target.value))}
+              className="w-full px-3 py-2 second-bg border second-border rounded-md text-white text-sm"
+            >
+              {[5, 10, 20, 50].map((size) => (
+                <option key={size} value={size}>
+                  {size} per page
+                </option>
               ))}
-            </nav>
+            </select>
           </div>
 
-          {/* Tab Content */}
-          <div className="p-6">
-            {isLoading ? (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
-              </div>
-            ) : filteredTurnovers.length === 0 ? (
-              <div className="text-center py-12">
-                <FaChartLine className="mx-auto h-12 w-12 text-gray-500" />
-                <h3 className="mt-2 text-sm font-medium text-white">
-                  No turnovers found
-                </h3>
-                <p className="mt-1 text-sm text-gray-400">
-                  No turnovers match your current filters.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {filteredTurnovers.map((turnover, index) => (
-                  <div
-                    key={index}
-                    className="second-bg rounded-lg p-6 border second-border"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-white">
-                            {turnover.turnoverName}
-                          </h3>
-                          <span
-                            className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeColor(
-                              turnover.type
-                            )}`}
-                          >
-                            {turnover.type}
-                          </span>
-                          <span
-                            className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                              turnover.status
-                            )}`}
-                          >
-                            {turnover.status}
-                          </span>
-                        </div>
+          <div className="flex items-end">
+            <button
+              onClick={() => setFilters((prev) => ({ ...prev, status: "", page: 1 }))}
+              className="w-full px-4 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700"
+            >
+              Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300 mb-4">
-                          <div>
-                            <span className="font-medium">User ID:</span>{" "}
-                            {turnover.userId}
-                          </div>
-                          <div>
-                            <span className="font-medium">Transaction ID:</span>{" "}
-                            {turnover.transactionId || "N/A"}
-                          </div>
-                          <div>
-                            <span className="font-medium">Created:</span>{" "}
-                            {formatDate(turnover.createdAt)}
-                          </div>
-                          <div>
-                            <span className="font-medium">Updated:</span>{" "}
-                            {formatDate(turnover.updatedAt)}
-                          </div>
-                        </div>
+      {/* Tabs */}
+      <div className="light-bg rounded-lg shadow-md mb-6">
+        <div className="flex justify-around border-b second-border">
+          {["active", "inactive", "completed"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              className={`py-2 sm:py-4 px-2 sm:px-4 font-medium text-xs sm:text-base w-full sm:w-auto border-b-2 ${
+                activeTab === tab
+                  ? "border-yellow-400 text-yellow-400"
+                  : "border-transparent text-gray-400 hover:text-gray-200"
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)} (
+              {turnovers.filter((t) => t.status === tab).length})
+            </button>
+          ))}
+        </div>
 
-                        {/* Progress Section */}
-                        <div className="mb-4">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-gray-200">
-                              Progress
-                            </span>
-                            <span className="text-sm text-gray-300">
-                              {formatCurrency(
-                                (
-                                  parseFloat(turnover.targetTurnover) -
-                                  parseFloat(turnover.remainingTurnover)
-                                ).toString()
-                              )}{" "}
-                              / {formatCurrency(turnover.targetTurnover)}
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-700 rounded-full h-3">
-                            <div
-                              className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full transition-all duration-300"
-                              style={{
-                                width: `${calculateProgress(
-                                  turnover.targetTurnover,
-                                  turnover.remainingTurnover
-                                )}%`,
-                              }}
-                            ></div>
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-400 mt-1">
-                            <span>0%</span>
-                            <span>
-                              {calculateProgress(
-                                turnover.targetTurnover,
-                                turnover.remainingTurnover
-                              ).toFixed(1)}
-                              %
-                            </span>
-                            <span>100%</span>
-                          </div>
-                        </div>
+        <div className="p-4 sm:p-6">
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-400"></div>
+            </div>
+          ) : filteredTurnovers.length === 0 ? (
+            <div className="text-center py-10">
+              <FaChartLine className="mx-auto h-10 w-10 text-gray-500" />
+              <h3 className="text-sm font-medium text-white mt-2">No turnovers found</h3>
+            </div>
+          ) : (
+            <div className="space-y-2 md:space-y-6">
+              {filteredTurnovers.map((turnover, index) => (
+                <div
+                  key={index}
+                  className="second-bg rounded-lg p-4 sm:p-6 border second-border"
+                >
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-sm sm:text-lg font-semibold text-white">
+                        {turnover.turnoverName}
+                      </h3>
+                      <span className={`px-2 py-1 text-xs rounded-full ${getTypeColor(turnover.type)}`}>
+                        {turnover.type}
+                      </span>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusColor(turnover.status)}`}
+                      >
+                        {turnover.status}
+                      </span>
+                    </div>
 
-                        {/* Amount Details */}
-                        <div className="grid grid-cols-3 gap-4">
-                          {turnover.type === "promotion" &&
-                          turnover.bonusAmount ? (
-                            <div className="light-bg p-3 rounded border second-border">
-                              <p className="text-xs text-gray-400 mb-1">
-                                Bonus
-                              </p>
-                              <p className="text-lg font-bold text-blue-400">
-                                {formatCurrency(turnover.bonusAmount)}
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="light-bg p-3 rounded border second-border">
-                              <p className="text-xs text-gray-400 mb-1">
-                                Deposit
-                              </p>
-                              <p className="text-lg font-bold text-blue-400">
-                                {formatCurrency(turnover.depositAmount)}
-                              </p>
-                            </div>
-                          )}
-                          <div className="light-bg p-3 rounded border second-border">
-                            <p className="text-xs text-gray-400 mb-1">
-                              Target Turnover
-                            </p>
-                            <p className="text-lg font-bold text-blue-400">
-                              {formatCurrency(turnover.targetTurnover)}
-                            </p>
-                          </div>
-                          <div className="light-bg p-3 rounded border second-border">
-                            <p className="text-xs text-gray-400 mb-1">
-                              Remaining
-                            </p>
-                            <p className="text-lg font-bold text-orange-400">
-                              {formatCurrency(turnover.remainingTurnover)}
-                            </p>
-                          </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm text-gray-300">
+                      <div><span className="font-medium">User:</span> {turnover.userId}</div>
+                      <div><span className="font-medium">Txn:</span> {turnover.transactionId || "N/A"}</div>
+                      <div><span className="font-medium">Created:</span> {formatDate(turnover.createdAt)}</div>
+                      <div><span className="font-medium">Updated:</span> {formatDate(turnover.updatedAt)}</div>
+                    </div>
+
+                    {/* Progress */}
+                    <div className="mt-2">
+                      <div className="flex justify-between text-xs sm:text-sm mb-1">
+                        <span className="text-gray-200">Progress</span>
+                        <span className="text-gray-300">
+                          {formatCurrency(
+                            (
+                              parseFloat(turnover.targetTurnover) -
+                              parseFloat(turnover.remainingTurnover)
+                            ).toString()
+                          )}{" "}
+                          / {formatCurrency(turnover.targetTurnover)}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-700 rounded-full h-2 sm:h-3">
+                        <div
+                          className="bg-gradient-to-r from-yellow-400 to-green-400 h-2 sm:h-3 rounded-full"
+                          style={{
+                            width: `${calculateProgress(
+                              turnover.targetTurnover,
+                              turnover.remainingTurnover
+                            )}%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    {/* Amounts */}
+                    <div className="grid grid-cols-3 sm:grid-cols-3 gap-3 mt-3">
+                      {turnover.type === "promotion" && turnover.bonusAmount ? (
+                        <div className="light-bg p-3 rounded border second-border text-center">
+                          <p className="text-xs text-gray-400 mb-1">Bonus</p>
+                          <p className="text-xs sm:text-lg font-bold text-blue-400">
+                            {formatCurrency(turnover.bonusAmount)}
+                          </p>
                         </div>
+                      ) : (
+                        <div className="light-bg p-1 md:p-3 rounded border second-border text-center">
+                          <p className="text-xs text-gray-400 mb-1">Deposit</p>
+                          <p className="text-xs sm:text-lg font-bold text-blue-400">
+                            {formatCurrency(turnover.depositAmount)}
+                          </p>
+                        </div>
+                      )}
+                      <div className="light-bg p-1 md:p-3 rounded border second-border text-center">
+                        <p className="text-xs text-gray-400 mb-1">Target</p>
+                        <p className="text-xs sm:text-lg font-bold text-blue-400">
+                          {formatCurrency(turnover.targetTurnover)}
+                        </p>
+                      </div>
+                      <div className="light-bg p-1 md:p-3 rounded border second-border text-center">
+                        <p className="text-xs text-gray-400 mb-1">Remaining</p>
+                        <p className="text-xs sm:text-lg font-bold text-orange-400">
+                          {formatCurrency(turnover.remainingTurnover)}
+                        </p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
 
-        {/* Pagination */}
-        {pagination && pagination.totalPages > 1 && (
-          <div className="light-bg rounded-lg shadow-lg px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-300">
-                Showing page {pagination.page} of {pagination.totalPages}(
-                {pagination.total} total results)
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => handlePageChange(pagination.page - 1)}
-                  disabled={!pagination.hasPrev}
-                  className="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-700 border second-border rounded-md hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => handlePageChange(pagination.page + 1)}
-                  disabled={!pagination.hasNext}
-                  className="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-700 border second-border rounded-md hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
+      {/* Pagination */}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="light-bg rounded-lg shadow-md px-4 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-xs sm:text-sm text-gray-300">
+              Page {pagination.page} of {pagination.totalPages} ({pagination.total} results)
+            </p>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                onClick={() => handlePageChange(pagination.page - 1)}
+                disabled={!pagination.hasPrev}
+                className="flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-gray-700 rounded-md text-white disabled:opacity-50"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => handlePageChange(pagination.page + 1)}
+                disabled={!pagination.hasNext}
+                className="flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-gray-700 rounded-md text-white disabled:opacity-50"
+              >
+                Next
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
