@@ -253,7 +253,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen,act
   // Effect to mark messages as read when activeConversation changes
   useEffect(() => {
     if (lastMessage?.chatId && lastMessage?.chat?.status === "pending_user_response" && activeTab==="messages") {
-      console.log("test==>")
       readMessagesMutation.mutate({
         chatId: Number(lastMessage?.chatId),
         status: "open"
