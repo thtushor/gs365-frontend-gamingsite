@@ -17,7 +17,7 @@ interface SupportRightProps {
 
 const SupportMessage: React.FC<SupportRightProps> = ({ onClose }) => {
   const { user } = useAuth();
-  const { selectedChat, activeConversation, messages, loading, sendMessage, createChat } = useChat();
+  const { selectedChat, messages, loading, sendMessage, createChat } = useChat();
   // const navigate = useNavigate();
   const { handleTabChange } = useSupportPanelContext();
 
