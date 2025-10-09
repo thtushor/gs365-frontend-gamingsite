@@ -69,6 +69,7 @@ export const API_ENDPOINTS = {
   // Chat endpoints
   CHAT: {
     CREATE_CHAT: "/api/chats",
+    CHAT_UNREAD_COUNT: "/api/chats/count-unread",
     GET_MESSAGES: "/api/messages/chat", // Will append chatId
     SEND_MESSAGE: "/api/messages/send-message",
     READ_MESSAGES: "/api/messages/read", // Will append chatId

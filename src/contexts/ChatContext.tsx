@@ -102,6 +102,7 @@ export interface Message { // Exported for use in other components
   senderUser?: UserProfileForMessage;
   senderAdmin?: AdminProfileForMessage;
   guestSenderId?: string;
+  chat: any;
 }
 
 export interface Chat { // Exported for use in other components
@@ -138,7 +139,10 @@ interface ChatContextType {
     content: string;
     attachmentUrl?: string;
   }) => Promise<Message>;
-  readMessages: (chatId: number) => void;
+  readMessages: ({ chatId, status }: {
+    chatId: number;
+    status: string;
+  }) => void;
   uploadAttachment: (file: File) => Promise<string>;
   refetchMessages: UseQueryResult<Message[], Error>['refetch'];
 }
@@ -147,6 +151,7 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 interface ChatProviderProps {
   children: ReactNode;
+  onOpen?: () => void;
   onOpen?: () => void;
 }
 
@@ -181,6 +186,32 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
     // refetchInterval: 2 * 1000,
   });
 
+  const {
+    data: unreadMsgCount,
+    isLoading: unreadMsgCountIsLoading,
+
+  } = useQuery<Message[], Error>({
+    queryKey: ["chat-unread", user?.id],
+    queryFn: async () => {
+      let url = `${API_ENDPOINTS.CHAT.CHAT_UNREAD_COUNT}`
+
+      const response = await Axios.get(url, {
+        params: {
+          playerId: user?.id,
+          guestId: !user?.id ? getOrCreateGuestId() : undefined
+        }
+      });
+      return response.data;
+    },
+    enabled: !!user?.id || !!getOrCreateGuestId(),
+    // refetchInterval: 2 * 1000,
+  });
+
+  console.log({ unreadMsgCountIsLoading, unreadMsgCount })
+
+
+
+
 
   const lastMessage = messages[messages?.length - 1];
 
@@ -194,6 +225,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["userChats"] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
+      queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
     })
 
     return () => {
@@ -205,6 +237,17 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
     if (lastMessage?.chatId)
       joinChat(String(lastMessage.chatId));
 
+  }, [lastMessage?.chatId]);
+
+
+  // Effect to mark messages as read when activeConversation changes
+  useEffect(() => {
+    if (lastMessage?.chatId && lastMessage?.chat?.status === "pending_user_response") {
+      readMessagesMutation.mutate({
+        chatId: Number(lastMessage?.chatId),
+        status: "open"
+      });
+    }
   }, [lastMessage?.chatId]);
 
   const createChatMutation: UseMutationResult<
@@ -283,19 +326,25 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
       });
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-
+queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
     },
     onError: (err) => {
       console.error("Error sending message:", err);
     },
   });
 
-  const readMessagesMutation: UseMutationResult<void, Error, number> = useMutation({
-    mutationFn: async (chatId) => {
+  const readMessagesMutation = useMutation({
+    mutationFn: async ({ chatId, status }: { chatId?: number, status: string }) => {
       if (!chatId || !user?.role) return;
-      await Axios.post(`${API_ENDPOINTS.CHAT.READ_MESSAGES}/${chatId}`, {
-        senderType: user.role === "admin" ? "admin" : "user",
+      await Axios.post(`${API_ENDPOINTS.CHAT.CREATE_CHAT}/${chatId}/status`, {
+        chatId,
+        status
       });
+    },
+    onSuccess: ()=>{
+      queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      queryClient.invalidateQueries({ queryKey: ["chat-unread", user?.id] });
     },
     onError: (err) => {
       console.error("Error marking messages as read:", err);
@@ -318,15 +367,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
     },
   });
 
-  const lastReadChatIdRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (activeConversation?.id && activeConversation.id !== lastReadChatIdRef.current) {
-      readMessagesMutation.mutate(activeConversation.id);
-      lastReadChatIdRef.current = activeConversation.id;
-    }
-  }, [activeConversation, readMessagesMutation]);
-
   useEffect(() => {
     if (!socket) return;
 
@@ -334,9 +374,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) 
       console.log("New message received via socket:", message);
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-      if (activeConversation?.id === message.chatId) {
-        readMessagesMutation.mutate(activeConversation.id);
-      }
+
     };
 
     const handleChatUpdated = (chatUpdate: Chat) => {
