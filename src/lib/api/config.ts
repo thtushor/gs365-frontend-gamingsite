@@ -1,9 +1,9 @@
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://glorypos.com/gs-server",
-  SOCKET_URL: "https://glorypos.com",
-  // BASE_URL: "http://localhost:3000",
-  // SOCKET_URL: "http://localhost:3000",
+  // BASE_URL: "https://glorypos.com/gs-server",
+  // SOCKET_URL: "https://glorypos.com",
+  BASE_URL: "http://localhost:3000",
+  SOCKET_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
   SINGLE_IMAGE_UPLOAD_URL: `https://glorypos.com/image-upload/upload`,

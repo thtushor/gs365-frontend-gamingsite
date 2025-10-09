@@ -42,7 +42,7 @@ const SupportMessage: React.FC<SupportRightProps> = ({ onClose }) => {
 
       const hasMessage = Boolean(messages?.length)
 
-      const chatid = activeConversation?.id ? activeConversation?.id : hasMessage ? messages[messages.length - 1].chatId : undefined
+      const chatid =  hasMessage ? messages[messages.length - 1].chatId : undefined
 
       // console.log({chatid})
 
@@ -50,9 +50,9 @@ const SupportMessage: React.FC<SupportRightProps> = ({ onClose }) => {
         const isSelectedAdminChat = Boolean(selectedChat?.role)
         await createChat({
           initialMessageContent: messageInput,
-          targetUserId: !isSelectedAdminChat && selectedChat?.id ? String(selectedChat.id) : undefined,
+          targetUserId: user?.id ? String(user.id) : "",
           targetAffiliateId: isSelectedAdminChat && selectedChat?.id ? Number(selectedChat.id) : undefined,
-          targetAdminId: user?.id ? Number(user.id) : undefined,
+          // targetAdminId: user?.id ? Number(user.id) : undefined,
           attachmentUrl: undefined,
           senderType,
         });

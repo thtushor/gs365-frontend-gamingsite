@@ -147,10 +147,10 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 interface ChatProviderProps {
   children: ReactNode;
-  onOpen?: ()=>void;
+  onOpen?: () => void;
 }
 
-export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) => {
+export const ChatProvider: React.FC<ChatProviderProps> = ({ children, onOpen }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -185,7 +185,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) =
   const lastMessage = messages[messages?.length - 1];
 
   useEffect(() => {
-    if(!lastMessage?.chatId)
+    if (!lastMessage?.chatId)
       return;
     socket?.on(`newMessage`, (data) => {
       console.log("New message found", data)
@@ -233,7 +233,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) =
       // if (targetAffiliateId) payload.targetAffiliateId = targetAffiliateId;
 
       // if no user/admin, fallback to guest
-      if (!targetUserId && !targetAdminId) {
+      if (!targetUserId) {
         (payload as any).guestId = getOrCreateGuestId();
       }
 
@@ -244,9 +244,9 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) =
       const response = await Axios.post(API_ENDPOINTS.CHAT.CREATE_CHAT, payload);
       return response.data.data;
     },
-    onSuccess: (newChat,arg) => {
+    onSuccess: (newChat, arg) => {
       setActiveConversation(newChat);
-        emitEvent('sendMessage', {
+      emitEvent('sendMessage', {
         ...arg,
         // chatId: String(arg.chatId)
       });
@@ -270,7 +270,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) =
         chatId,
         senderId: user?.id,
         senderType: user?.id ? "user" : getOrCreateGuestId() ? "guest" : undefined,
-        guestSenderId: getOrCreateGuestId(),
+        guestSenderId: !user?.id ? getOrCreateGuestId() : undefined,
         content,
         attachmentUrl,
       });
@@ -283,7 +283,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children,onOpen }) =
       });
       queryClient.invalidateQueries({ queryKey: ["chatMessages", user?.id] });
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-      
+
     },
     onError: (err) => {
       console.error("Error sending message:", err);

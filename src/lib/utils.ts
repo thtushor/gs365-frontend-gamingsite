@@ -12,9 +12,12 @@ export const getOrCreateGuestId = (): string => {
   let guestId = localStorage.getItem(key);
 
   if (!guestId) {
-    guestId = `guest_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    const timePart = Date.now().toString(36); // shorter timestamp
+    const randomPart = Math.random().toString(36).substring(2, 6); // 4 random chars
+    guestId = `g_${timePart}${randomPart}`;
     localStorage.setItem(key, guestId);
   }
 
   return guestId;
 };
+
