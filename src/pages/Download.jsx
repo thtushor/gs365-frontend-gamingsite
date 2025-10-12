@@ -14,7 +14,7 @@ const Download = () => {
           alt=""
           className="absolute h-full z-[-1] object-cover w-full"
         />
-        <div className="max-w-[1200px] grid gap-5 grid-cols-1 md:grid-cols-2 px-[15px] pt-10 mx-auto">
+        <div className="max-w-[1200px] grid gap-5 grid-cols-1 md:grid-cols-2 px-[15px] pt-16 mx-auto">
           {/* left */}
           <div>
             <h1 className="text-[24px] md:text-[40px] uppercase text-center md:text-left font-bold text-[#121212]">
@@ -30,13 +30,13 @@ const Download = () => {
             </p>
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
-              <Link to={"#"}>
+              <a href="/gs365.apk" download>
                 <img
                   src={playStore}
-                  alt=""
-                  className="w-[120px] md:w-[150px]"
+                  alt="Download Android App"
+                  className="w-[120px] md:w-[150px] cursor-pointer"
                 />
-              </Link>{" "}
+              </a>
               <Link to={"#"}>
                 <img src={appStore} alt="" className="w-[120px] md:w-[150px]" />
               </Link>
@@ -46,7 +46,7 @@ const Download = () => {
             <img
               src={downloadGirl}
               alt=""
-              className="md:h-[400px]   w-full md:w-auto"
+              className="md:h-[430px]   w-full md:w-auto"
             />
           </div>
         </div>
