@@ -150,8 +150,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
     try {
       // Call login API
       await login({
-        userNameOrEmailorPhone: formData.userNameOrEmailorPhone,
-        password: formData.password,
+        userNameOrEmailorPhone: formData.userNameOrEmailorPhone.trim(),
+        password: formData.password.trim(),
       });
 
       // Success

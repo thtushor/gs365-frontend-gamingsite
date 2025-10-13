@@ -60,13 +60,13 @@ const MobileProfile = ({
   };
 
   return (
-    <div className="text-left text-[14px] h-full pb-[70px]">
+    <div className="text-left text-[14px] h-full pb-[20px]">
       {/* Header Section */}
-      <div className="px-4 py-3">
+      <div className="px-4 py-2">
         <div className="flex gap-2 items-start">
           <img src={profilePic} className="w-[40px] h-[40px] mt-1" />
           <div className="w-full">
-            <div className="flex items-center justify-between w-full mb-2">
+            <div className="flex items-center justify-between w-full mb-1">
               {/* Full Legal Name */}
               <div className="pr-2">
                 <span className="opacity-60 text-[14px]">Full legal name</span>
@@ -122,7 +122,7 @@ const MobileProfile = ({
       </div>
 
       {/* Wallet Section */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-[10px]">
         <div className="rounded-md relative p-3 text-white bg-gradient-to-r from-[#04c0722b] via-[#0260391d] to-[#04c07136]">
           {/* Header Icons */}
           <div className="absolute right-3 top-[10px] z-[2] flex items-center gap-2">
@@ -177,14 +177,21 @@ const MobileProfile = ({
       </div>
 
       {/* Navigation Options */}
-      <div>
+      <div className="grid grid-cols-2">
         {profileNavOption?.map((p, idx) => {
           const isActive = location.pathname === p.url;
           return (
             <div
               onClick={() => handleUserProfileClick(p.url)}
               key={idx}
-              className={`font-normal px-4 py-3 pr-4 cursor-pointer text-[14px] flex justify-between items-center w-full
+              className={`font-normal ${
+                p?.name === "Betting History" &&
+                "border-t border-opacity-30 mt-3 border-white"
+              } ${
+                (p?.name === "Betting History" ||
+                  p?.name === "Transaction History") &&
+                "col-span-full"
+              } px-4 py-[7px] pr-4 cursor-pointer text-[14px] flex justify-between items-center w-full
                 ${
                   isActive
                     ? "text-yellow-400 opacity-100"
@@ -204,7 +211,7 @@ const MobileProfile = ({
       </div>
 
       {/* Logout Button */}
-      <div className="px-4 py-3">
+      <div className="px-4 py-3 mt-[-5px] mb-4">
         <button
           className="w-full px-4 py-2 border light-border text-center hover:border-yellow-400 hover:text-yellow-400"
           onClick={handleLogout}
