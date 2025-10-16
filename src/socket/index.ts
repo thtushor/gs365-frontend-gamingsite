@@ -17,7 +17,7 @@ export const useSocket = (): SocketContextType => {
   useEffect(() => {
     // Initialize socket connection only once
     socketRef.current = io(SOCKET_URL, {
-      path:"/gs-server/socket/socket.io/",
+      // path:"/gs-server/socket/socket.io/",
       transports: ['websocket', 'polling'],
     });
 

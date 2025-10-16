@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://glorypos.com/gs-server";
+export const BASE_URL = "https://api.gamestar365.com";
 // export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_SETTINGS: "/api/settings",
