@@ -195,7 +195,7 @@ const MobileNav = () => {
   return (
     <>
       {/* Bottom Navigation */}
-      <div className="md:hidden flex fixed bottom-8 w-full z-[999999]">
+      <div className="md:hidden flex fixed bottom-[10px] w-full z-[999999]">
         <div className="w-[90%] bg-[#00623b] mx-auto rounded-full footer-menu-mobile">
           <div className="w-full flex items-center justify-between gap-2 pt-[4px] pb-[2px] px-4">
             {sidebarLinks?.map((s) => {
