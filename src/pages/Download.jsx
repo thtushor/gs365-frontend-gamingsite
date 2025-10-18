@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Download = () => {
   const handleApkDownload = async () => {
     try {
-      const response = await fetch("/gs365.apk");
+      const response = await fetch("/gs365-v1.apk");
 
       if (!response.ok) {
         throw new Error(`Download failed: ${response.statusText}`);
@@ -19,7 +19,7 @@ const Download = () => {
 
       const link = document.createElement("a");
       link.href = fileURL;
-      link.download = "gs365.apk";
+      link.download = "gs365-v1.apk";
 
       document.body.appendChild(link);
       link.click();
