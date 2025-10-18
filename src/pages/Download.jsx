@@ -6,6 +6,33 @@ import appStore from "../assets/app-store.png";
 import { Link } from "react-router-dom";
 
 const Download = () => {
+  const handleApkDownload = async () => {
+    try {
+      const response = await fetch("/gs365.apk");
+
+      if (!response.ok) {
+        throw new Error(`Download failed: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const fileURL = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.download = "gs365.apk";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(fileURL);
+    } catch (error) {
+      console.error("APK Download Error:", error);
+      alert(
+        "⚠️ Failed to download the app. Please try again later or contact support."
+      );
+    }
+  };
   return (
     <div>
       <div className="relative z-[1]  md:min-h-[350px] ">
@@ -30,13 +57,13 @@ const Download = () => {
             </p>
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
-              <a href="/gs365.apk" download>
+              <div className="cursor-pointer" onClick={handleApkDownload}>
                 <img
                   src={playStore}
                   alt="Download Android App"
                   className="w-[120px] md:w-[150px] cursor-pointer"
                 />
-              </a>
+              </div>
               <Link to={"#"}>
                 <img src={appStore} alt="" className="w-[120px] md:w-[150px]" />
               </Link>

@@ -211,3 +211,6 @@ body {
     left: 100%;
   }
 }
+.footer-menu-mobile-screen {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+}
