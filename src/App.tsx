@@ -52,7 +52,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsCondition from "./pages/TermsCondition";
 import PhoneEditContainer from "./pages/PhoneEditContainer";
 import Download from "./pages/Download";
-import PullToRefresh from "./components/Shared/DraggRefreshButton";
+// import PullToRefresh from "./components/Shared/DraggRefreshButton";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
