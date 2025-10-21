@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { Footer } from "../Footer/Footer";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_LIST, BASE_URL, useGetRequest } from "../../lib/api/apiClient";
 import BaseModal from "../Promotion/BaseModal";
 import PopupContent from "../PopupContent";
@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
   const { setCountries, user, token, logout, countries, setSocial, setFavorites } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
-
+  const queryClient = useQueryClient();
   const getRequest = useGetRequest();
 
   const { socket } = useSocket();
@@ -131,6 +131,7 @@ const Layout = ({ children }) => {
     if (!socket || !user?.id) return;
 
     const eventName = `logout-user-${user.id}`;
+    const betHistoryUpdateEvent = `betResultUpdated-${user.id}`;
     const handleLogoutEvent = (data) => {
       // data = { userId, latestToken }
       const latestToken = data?.latestToken;
@@ -140,7 +141,13 @@ const Layout = ({ children }) => {
       }
     };
 
+
+
     socket.on(eventName, handleLogoutEvent);
+    socket.on(betHistoryUpdateEvent, () => {
+      queryClient.invalidateQueries({ queryKey: ["betResults"] });
+      queryClient.invalidateQueries({ queryKey: ["turnover"] });
+    });
 
     return () => {
       socket.off(eventName, handleLogoutEvent);
