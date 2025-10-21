@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./contexts/auth-context.tsx";
+import PullToRefresh from "./components/Shared/DraggRefreshButton.tsx";
 
 
 // Create a client
@@ -22,6 +23,7 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    <PullToRefresh children={null} />
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ToastContainer />

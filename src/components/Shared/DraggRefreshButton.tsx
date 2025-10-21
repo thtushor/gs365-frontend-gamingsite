@@ -100,6 +100,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           !pulling.current || refreshing
             ? "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)"
             : "none",
+            zIndex: "9999999999 !important",
       }}
     >
       {/* Pull-to-refresh overlay */}
@@ -114,7 +115,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           justifyContent: "center",
           alignItems: "center",
 
-          zIndex: 999999999, // max priority visibility
+          zIndex: "9999999999 !important",
           transition: "height 0.25s ease",
           boxShadow: pullDistance > 0 ? "0 2px 4px rgba(0,0,0,0.1)" : "none",
           fontWeight: 500,
@@ -135,6 +136,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               borderRadius: "20px",
               transform: `translateY(${pullDistance < threshold ? 0 : 5}px)`,
               transition: "transform 0.2s ease, opacity 0.2s ease",
+              zIndex: "9999999999 !important",
             }}
           >
             <RefreshCcw

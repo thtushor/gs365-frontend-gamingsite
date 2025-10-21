@@ -66,7 +66,7 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <PullToRefresh children={null}/>
+      {/* <PullToRefresh children={null}/> */}
         <Layout>
           <Routes>
             {/* --------------------- */}
