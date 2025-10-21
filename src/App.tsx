@@ -52,6 +52,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsCondition from "./pages/TermsCondition";
 import PhoneEditContainer from "./pages/PhoneEditContainer";
 import Download from "./pages/Download";
+import PullToRefresh from "./components/Shared/DraggRefreshButton";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,202 +66,204 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          {/* --------------------- */}
-          {/* Public Pages--------------------- */}
-          {/* --------------------- */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/demo-deposit" element={<Deposit />} />
-          <Route
-            path="/affiliate-signup"
-            element={
-              // <PublicRoute>
-              <AffiliateRegister />
-              // </PublicRoute>
-            }
-          />
-          <Route path="/vip" element={<VipPage />} />
-          <Route path="/download" element={<Download />} />
-          <Route path="/promotions" element={<PromotionPage />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-condition" element={<TermsCondition />} />
+      <PullToRefresh children={null}/>
+        <Layout>
+          <Routes>
+            {/* --------------------- */}
+            {/* Public Pages--------------------- */}
+            {/* --------------------- */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/demo-deposit" element={<Deposit />} />
+            <Route
+              path="/affiliate-signup"
+              element={
+                // <PublicRoute>
+                <AffiliateRegister />
+                // </PublicRoute>
+              }
+            />
+            <Route path="/vip" element={<VipPage />} />
+            <Route path="/download" element={<Download />} />
+            <Route path="/promotions" element={<PromotionPage />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-condition" element={<TermsCondition />} />
 
-          <Route
-            path="/play/:providerId/:categoryId"
-            element={<GameProviderPage />}
-          />
-          <Route path="/provider/:providerId" element={<GameProviderPage />} />
-          <Route path="/category/:categoryId" element={<CategoryGames />} />
-          <Route path="/promotions/:id" element={<PromotionDetails />} />
+            <Route
+              path="/play/:providerId/:categoryId"
+              element={<GameProviderPage />}
+            />
+            <Route path="/provider/:providerId" element={<GameProviderPage />} />
+            <Route path="/category/:categoryId" element={<CategoryGames />} />
+            <Route path="/promotions/:id" element={<PromotionDetails />} />
 
-          {/* --------------------- */}
-          {/* Private Pages--------------------- */}
-          {/* --------------------- */}
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/deposit"
-            element={
-              <PrivateRoute>
-                <DepositAndWithdrawPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/favorites"
-            element={
-              <PrivateRoute>
-                <FavoriteGames />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/withdraw"
-            element={
-              <PrivateRoute>
-                <DepositAndWithdrawPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/deposit/:depositId"
-            element={
-              <PrivateRoute>
-                <SingleDepositAndWithdrawPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/withdraw/:withdrawId"
-            element={
-              <PrivateRoute>
-                <SingleDepositAndWithdrawPage />
-              </PrivateRoute>
-            }
-          />
-          {/* pages under user profile */}
-          <Route
-            path="/profile/personal-information"
-            element={
-              <PrivateRoute>
-                <PersonalInformation />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/login-security"
-            element={
-              <PrivateRoute>
-                <LoginSecurity />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/betting-history"
-            element={
-              <PrivateRoute>
-                <BettingHistory />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/transaction-history"
-            element={
-              <PrivateRoute>
-                <TransactionHistory />
-              </PrivateRoute>
-            }
-          />
+            {/* --------------------- */}
+            {/* Private Pages--------------------- */}
+            {/* --------------------- */}
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <Register />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/deposit"
+              element={
+                <PrivateRoute>
+                  <DepositAndWithdrawPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <PrivateRoute>
+                  <FavoriteGames />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/withdraw"
+              element={
+                <PrivateRoute>
+                  <DepositAndWithdrawPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/deposit/:depositId"
+              element={
+                <PrivateRoute>
+                  <SingleDepositAndWithdrawPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/withdraw/:withdrawId"
+              element={
+                <PrivateRoute>
+                  <SingleDepositAndWithdrawPage />
+                </PrivateRoute>
+              }
+            />
+            {/* pages under user profile */}
+            <Route
+              path="/profile/personal-information"
+              element={
+                <PrivateRoute>
+                  <PersonalInformation />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/login-security"
+              element={
+                <PrivateRoute>
+                  <LoginSecurity />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/betting-history"
+              element={
+                <PrivateRoute>
+                  <BettingHistory />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/transaction-history"
+              element={
+                <PrivateRoute>
+                  <TransactionHistory />
+                </PrivateRoute>
+              }
+            />
 
-          <Route
-            path="/profile/verification"
-            element={
-              <PrivateRoute>
-                <KycVerification />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/verification/documents"
-            element={
-              <PrivateRoute>
-                <DocumentSubmitKyc />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/profile/verification"
+              element={
+                <PrivateRoute>
+                  <KycVerification />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/verification/documents"
+              element={
+                <PrivateRoute>
+                  <DocumentSubmitKyc />
+                </PrivateRoute>
+              }
+            />
 
-          <Route
-            path="/profile/edit-phone"
-            element={
-              <PrivateRoute>
-                <PhoneEditContainer />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/login-security/change-password"
-            element={
-              <PrivateRoute>
-                <PasswordChangePage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/turnover"
-            element={
-              <PrivateRoute>
-                <TurnoverPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/test-game"
-            element={
-              <PrivateRoute>
-                <TestGame />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/referral-info"
-            element={
-              <PrivateRoute>
-                <ReferralInfo />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/referral-program" element={<ReferralInfo />} />
-          <Route
-            path="/profile/referral-details"
-            element={
-              <PrivateRoute>
-                <ReferralDetails />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile/referral-details/cash-reward-history"
-            element={
-              <PrivateRoute>
-                <CashRewardHistory />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/profile/edit-phone"
+              element={
+                <PrivateRoute>
+                  <PhoneEditContainer />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/login-security/change-password"
+              element={
+                <PrivateRoute>
+                  <PasswordChangePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/turnover"
+              element={
+                <PrivateRoute>
+                  <TurnoverPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/test-game"
+              element={
+                <PrivateRoute>
+                  <TestGame />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/referral-info"
+              element={
+                <PrivateRoute>
+                  <ReferralInfo />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/referral-program" element={<ReferralInfo />} />
+            <Route
+              path="/profile/referral-details"
+              element={
+                <PrivateRoute>
+                  <ReferralDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile/referral-details/cash-reward-history"
+              element={
+                <PrivateRoute>
+                  <CashRewardHistory />
+                </PrivateRoute>
+              }
+            />
 
-          {/* --------------------- */}
-          {/* Extra Pages--------------------- */}
-          {/* --------------------- */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
+            {/* --------------------- */}
+            {/* Extra Pages--------------------- */}
+            {/* --------------------- */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
+      
     </BrowserRouter>
   );
 };
