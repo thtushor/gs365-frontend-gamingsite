@@ -21,7 +21,6 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const handleMove = (y: number) => {
     if (!pulling.current || startY.current === null || refreshing) return;
     const distance = y - startY.current;
-
     if (distance > 0 && window.scrollY === 0) {
       setPullDistance(Math.min(distance, maxPull));
     }
@@ -29,21 +28,15 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   // Handle release
   const handleEnd = () => {
-    if (pullDistance >= threshold && window.scrollY === 0) {
-      triggerRefresh();
-    } else {
-      reset();
-    }
+    if (pullDistance >= threshold && window.scrollY === 0) triggerRefresh();
+    else reset();
   };
 
   // Refresh logic
   const triggerRefresh = async () => {
     setRefreshing(true);
     setPullDistance(threshold);
-
-    // Simulate async operation (e.g., fetch new data)
     await new Promise((res) => setTimeout(res, 1000));
-
     window.location.reload(); // full page refresh
   };
 
@@ -93,16 +86,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [refreshing]);
 
   return (
-    <div
-      style={{
-        transform: `translateY(${pullDistance}px)`,
-        transition:
-          !pulling.current || refreshing
-            ? "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)"
-            : "none",
-            zIndex: "9999999999 !important",
-      }}
-    >
+    <>
       {/* Pull-to-refresh overlay */}
       <div
         style={{
@@ -110,17 +94,17 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           top: 0,
           left: 0,
           right: 0,
-          height: pullDistance > 0 ? "60px" : 0,
+          height: pullDistance > 0 ? "60px" : "0",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
-          zIndex: "9999999999 !important",
+          zIndex: 999999999,
           transition: "height 0.25s ease",
           boxShadow: pullDistance > 0 ? "0 2px 4px rgba(0,0,0,0.1)" : "none",
           fontWeight: 500,
           fontSize: "15px",
-          pointerEvents: "none", // don't block clicks
+          pointerEvents: "none",
+          
         }}
       >
         {pullDistance > 0 && (
@@ -130,13 +114,12 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               alignItems: "center",
               gap: "8px",
               opacity: 1,
-              color: "#333",
-              background: "#f9f9f9",
+              color: "#000",
               padding: "6px 12px",
               borderRadius: "20px",
+              background: pullDistance > 0 ? "#ffb700" : "transparent",
               transform: `translateY(${pullDistance < threshold ? 0 : 5}px)`,
               transition: "transform 0.2s ease, opacity 0.2s ease",
-              zIndex: "9999999999 !important",
             }}
           >
             <RefreshCcw
@@ -153,15 +136,26 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               {refreshing
                 ? "Refreshing..."
                 : pullDistance >= threshold
-                  ? "Release to refresh"
-                  : "Pull to refresh"}
+                ? "Release to refresh"
+                : "Pull to refresh"}
             </span>
           </div>
         )}
       </div>
 
-      {/* Main content */}
-      <div className={pullDistance > 0 ? `h-[60px] duration-300 transition-all` : "duration-300 h-0 transition-all"}>{children}</div>
+      {/* Main content with smooth pull transform */}
+      <div
+        className="transition-all duration-300"
+        style={{
+          transform: `translateY(${pullDistance}px)`,
+          transition:
+            !pulling.current || refreshing
+              ? "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)"
+              : "none",
+        }}
+      >
+        {children}
+      </div>
 
       {/* Spinner animation */}
       <style>{`
@@ -170,7 +164,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           100% { transform: rotate(360deg); }
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
