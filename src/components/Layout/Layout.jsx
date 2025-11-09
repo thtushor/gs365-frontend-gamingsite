@@ -151,6 +151,7 @@ const Layout = ({ children }) => {
 
     return () => {
       socket.off(eventName, handleLogoutEvent);
+      socket.off(betHistoryUpdateEvent);
     };
   }, [socket, user?.id, token, logout])
 
