@@ -62,8 +62,10 @@ const Download = () => {
             </p>
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
-              <button
-                onClick={handleApkDownload}
+              <a
+               href="/gs365.apk"
+               download={true}
+               alt="Download Android App"
                 disabled={loading}
                 className="relative p-0"
               >
@@ -79,7 +81,7 @@ const Download = () => {
                     Downloading...
                   </span>
                 )}
-              </button>
+              </a>
 
               <Link to={"#"}>
                 <img src={appStore} alt="" className="w-[120px] md:w-[150px]" />
