@@ -63,7 +63,7 @@ const Download = () => {
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
               <a
-               href="/gs365.apk"
+               href="/gs365-v1.apk"
                download={true}
                alt="Download Android App"
                 disabled={loading}
@@ -72,7 +72,7 @@ const Download = () => {
                 <img
                   src={playStore}
                   alt="Download Android App"
-                  className={`w-[120px] md:w-[150px] cursor-pointer ${
+                  className={`w-[130px] md:w-[170px] cursor-pointer ${
                     loading ? "opacity-50 pointer-events-none" : ""
                   }`}
                 />
@@ -84,7 +84,7 @@ const Download = () => {
               </a>
 
               <Link to={"#"}>
-                <img src={appStore} alt="" className="w-[120px] md:w-[150px]" />
+                <img src={appStore} alt="" className="w-[130px] md:w-[170px]" />
               </Link>
             </div>
           </div>
