@@ -63,7 +63,7 @@ const Download = () => {
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
               <a
-               href="/gs365-v1.apk"
+               href="/gs365.apk"
                download={true}
                alt="Download Android App"
                 disabled={loading}

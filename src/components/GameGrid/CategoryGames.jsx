@@ -68,7 +68,7 @@ const CategoryGames = () => {
   return (
     <div className="max-w-[1200px] px-[15px] mx-auto text-left">
       <div className="py-5 md:py-10">
-        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
           Play Now
         </h1>
         <div className="game-grid-container !px-0 !pb-0">
@@ -85,8 +85,12 @@ const CategoryGames = () => {
               ))}
             </div>
           ) : (
-            <div className="no-games-message">
-              No games and sports found in this category.
+           <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center md:!justify-start">
+             <div 
+                  style={{ animationDelay: `1s` }}
+                >
+                  <GameCard  isNothing={true} />
+                </div>
             </div>
           )}
         </div>

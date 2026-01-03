@@ -10,9 +10,11 @@ import BaseModal from "../Promotion/BaseModal";
 import ToastError from "../../lib/ToastError";
 import LoginPopup from "../Auth/LoginPopup";
 import { useNavigate } from "react-router-dom";
+import GameSkeleton from "../Shared/GameSkeleton";
 
-interface GameCardProps {
+interface GameCardProps { 
   id: number;
+  isNothing?: boolean;
   name: string;
   status: string;
   logo: string;
@@ -21,6 +23,7 @@ interface GameCardProps {
   sportLogo: string;
   ggrPercent: string;
   categoryInfo: string;
+  version: string;
   providerInfo: {
     id: number;
     name: string;
@@ -41,6 +44,8 @@ const GameCard: React.FC<GameCardProps> = ({
   logo,
   onPlayClick,
   className = "",
+  isNothing=false,
+  version="parent"
 }) => {
   const { user, favorites, setFavorites } = useAuth();
   const queryClient = useQueryClient();
@@ -156,12 +161,21 @@ const GameCard: React.FC<GameCardProps> = ({
     }
   };
 
+  if(isNothing){
+return (
+  <div
+        className={`${className} cursor-pointer relative min-h-[140px] md:w-[140px] md:h-[185px]`}
+      > <GameSkeleton variant={version} />
+      </div> 
+)
+  }
   return (
     <>
       <div
         className={`game-card ${className} cursor-pointer relative min-h-[140px] md:w-[140px] md:h-[185px]`}
-      >
-        <img
+      > 
+       <>
+            <img
           src={Logo}
           className="absolute top-1 left-1 w-[22px] h-[22px] border border-yellow-300 bg-[#121212] rounded-full"
           alt=""
@@ -171,6 +185,7 @@ const GameCard: React.FC<GameCardProps> = ({
           alt=""
           className="w-full h-full object-cover min-h-[140px] max-h-[140px] md:w-[140px] md:min-h-[185px]"
         />
+            </>
 
         <div className="absolute game-card-image top-0 left-0 flex items-center justify-center">
           <div className="game-card-overlay">
@@ -230,7 +245,7 @@ const GameCard: React.FC<GameCardProps> = ({
       >
         <ToastError
           title="Login required!"
-          description="You must be logged in to play games. Please sign in or create an account to continue."
+          description="You must be logged in to play games. Please sign in or create an account to continue.asdfsdf"
           onClose={setSuccessModalOpen}
           location={"/"}
           isRedirect={false}

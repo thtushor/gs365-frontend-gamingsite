@@ -150,7 +150,7 @@ export const Event = () => {
     const event = eventList[0];
     return (
       <div className="max-w-[1200px] px-[15px] mx-auto text-left pt-5 mb-5">
-        <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+        <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
           Events
         </h1>
         <div
@@ -167,9 +167,13 @@ export const Event = () => {
     );
   }
 
+  if(eventList?.length <1){
+    return null;
+  }
+
   return (
     <div className="max-w-[1200px] px-[15px] mx-auto text-left pt-5">
-      <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+      <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
         Events
       </h1>
       <div className="game-slider-container  !p-0 !py-3 !pb-5 relative justify-start">

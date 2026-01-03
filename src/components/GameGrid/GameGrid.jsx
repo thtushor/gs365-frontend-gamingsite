@@ -104,19 +104,11 @@ const GameGrid = () => {
     playGameMutation.mutate(request);
   };
 
-  if (categoryLoading || gamesLoading) {
-    return (
-      <div className="game-grid-container flex items-center justify-center loading !p-0 !min-h-[120px] md:!min-h-[300px]">
-        <div className="loading-spinner !w-[30px] !h-[30px] md:!w-[50px] md:!h-[50px]"></div>
-      </div>
-    );
-  }
-
-  console.log(games);
+ 
 
   return (
     <div className="game-grid-container">
-      <h2 className="game-grid-title">Popular Games ({totalGames})</h2>
+      <h2 className="game-grid-title">Popular Games ({totalGames || 0})</h2>
 
       {/* Category Tabs */}
       <div className="category-tabs">
@@ -133,6 +125,7 @@ const GameGrid = () => {
               activeCategory === String(category.id) ? "active" : ""
             }`}
             onClick={() => handleCategoryChange(String(category.id))}
+            disabled={totalGames?.length < 1}
           >
             {category.title}
           </button>
@@ -140,8 +133,12 @@ const GameGrid = () => {
       </div>
 
       {/* Game Grid */}
-      <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center md:!justify-start">
-        {games.map((game, index) => (
+      <div className="grid grid-cols-3 md:flex md:flex-wrap gap-[6px] md:gap-3 items-center justify-center ">
+        {(categoryLoading || gamesLoading) ? [1.2,3,4,6].map((game, index) => (
+          <div>
+            <GameCard isNothing />
+          </div>
+        )) : games.map((game, index) => (
           <div key={game.id} style={{ animationDelay: `${index * 0.05}s` }}>
             <GameCard key={game.id} {...game} onPlayClick={handlePlayGame} />
           </div>

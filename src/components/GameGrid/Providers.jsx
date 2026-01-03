@@ -6,6 +6,7 @@ import "../GameSlider/GameSlider.scss";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // optional: using react-icons
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import SmallProviderCard from "./SmallProviderCard";
 
 // Custom Previous Arrow
 const PrevArrow = ({ onClick }) => {
@@ -82,55 +83,25 @@ export const Providers = ({ providerList = [], type = "games" }) => {
     ],
   };
 
+  if(providerList.length <1){
+    return null;
+  }
+
   // If only one provider, render it normally
-  if (providerList.length === 1) {
+  if (providerList.length !== 1) {
     const provider = providerList[0];
     return (
-      <div className="game-slider-container !p-0 !py-3 !pb-5">
-        <div
-          onClick={() =>
-            navigate(
-              `/provider/${provider?.id}?type=${type}&providerName=${provider?.name}`
-            )
-          }
-          className="flex items-center justify-center w-fit cursor-pointer hover:bg-gray-700 bg-gray-800 gap-3 px-3 md:px-[15px] py-[6px] md:py-3 rounded-md"
-        >
-          <img
-            loading="lazy"
-            src={provider?.logo}
-            className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] object-cover rounded-full"
-          />
-          <p className="md:!leading-3 text-[14px] md:!text-[16px]">
-            {provider?.name}
-          </p>
-        </div>
+      <div className="game-slider-container !p-0 !pt-[6px] !pb-5 relative justify-start">
+      <SmallProviderCard key={1} provider={provider} type={type} navigate={navigate} />
       </div>
     );
   }
 
   return (
-    <div className="game-slider-container !p-0 !py-3 !pb-5 relative justify-start">
+    <div className="game-slider-container !p-0 !pt-[6px] !pb-5 relative justify-start">
       <Slider {...settings}>
         {providerList.map((provider) => (
-          <div key={provider.id} className="pr-2 md:pr-3">
-            <div
-              onClick={() =>
-                navigate(
-                  `/provider/${provider?.id}?type=${type}&providerName=${provider?.name}`
-                )
-              }
-              className="flex items-center justify-center cursor-pointer hover:bg-gray-700 bg-gray-800 gap-3 px-1 md:px-[15px] py-[6px] md:py-3 rounded-md"
-            >
-              <img
-                loading="lazy"
-                src={provider?.logo}
-                className="w-[30px] h-[30px] md:w-[50px] md:h-[50px] object-cover rounded-full"
-              />
-              <p className="md:!leading-3 text-[14px] md:!text-[16px]">
-                {provider?.name}
-              </p>
-            </div>
-          </div>
+          <SmallProviderCard key={provider.id} provider={provider} type={type} navigate={navigate} />
         ))}
       </Slider>
     </div>

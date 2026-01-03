@@ -8,7 +8,7 @@ const GameProviderPage = () => {
   return (
     <div className="max-w-[1200px] px-[15px] mx-auto text-left">
       <div className="py-5 md:py-10">
-        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+        <h1 className="text-[18px] md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
           Play Now
         </h1>
 

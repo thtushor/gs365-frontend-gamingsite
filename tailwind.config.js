@@ -7,6 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        primary: '#ffd700',
+        secondary: '#00ff99',
+        black: '#121212',
         sports: '#FF9F1C',
         crash: '#074CE3',
         slots: '#FF3300',

@@ -33,10 +33,31 @@ const AllProviders = ({ type }) => {
     return;
   }
 
+  // No data at all
+  if (!providersData?.data) {
+    return null;
+  }
+
+  // Determine the correct provider list based on type
+  const providerList =
+    type === "games"
+      ? providersData.data.game_providers
+      : providersData.data.sports_providers;
+
+  // If the list is empty or undefined, return null
+  if (!providerList || providerList.length === 0) {
+    return null;
+  }
+
+  // Optional: If type is not "games" and we're strict about only showing game providers, return null
+  // Remove this block if you want to support other types in the future
+  if (type !== "games") {
+    return null;
+  }
   return (
     <div className="max-w-[1200px] px-[15px] mx-auto text-left pt-5">
       <div className="">
-        <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+        <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
           {type} Providers
         </h1>
 

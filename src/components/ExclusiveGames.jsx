@@ -13,6 +13,8 @@ import axiosInstance from "../lib/api/axios";
 import { API_ENDPOINTS } from "../lib/api/config";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/auth-context";
+import { numberToArray } from "../lib/utils";
+import LoginPopup from "./Auth/LoginPopup";
 
 // Custom Previous Arrow
 const PrevArrow = ({ onClick }) => {
@@ -85,6 +87,7 @@ const eventList = [
   },
 ];
 export const ExclusiveGames = () => {
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -180,6 +183,15 @@ export const ExclusiveGames = () => {
 
     playGameMutation.mutate(request);
   };
+ 
+
+  const handleRegisterClick = (affiliate = false) => {
+    if (affiliate) {
+      navigate("/affiliate-signup");
+    } else {
+      navigate("/register");
+    }
+  };
 
   // If only one provider, render it normally
   if (exclusiveData?.data.length === 1) {
@@ -213,27 +225,44 @@ export const ExclusiveGames = () => {
   }
 
   return (
+    <>
     <div className="max-w-[1200px] px-[15px] mx-auto text-left pt-5">
-      <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[4px] pl-1 border-yellow-300">
+      <h1 className="text-[18px] capitalize md:text-[22px] font-semibold border-l-[2px] sm:border-l-[4px] pl-1 border-yellow-300">
         Exclusive
       </h1>
       <div className="game-slider-container  !p-0 !py-3 !pb-5 relative justify-start">
-        {exclusiveData?.data?.length > 0 ? (
+        {exclusiveData?.data?.length < 1 ? (
+          <Slider {...settings}>
+           {numberToArray(5).map((n) => (
+              <div key={n} className="pr-2 md:pr-3">
+                <GameCard
+                 isNothing
+                />
+              </div>
+            ))}
+          </Slider>
+        ) : (
           <Slider {...settings}>
             {exclusiveData?.data.map((exclusive) => (
               <div key={exclusive.id} className="pr-2 md:pr-3">
                 <GameCard
                   key={exclusive.id}
                   {...exclusive}
-                  onPlayClick={handlePlayGame}
+                  onPlayClick={handlePlayGame}  
+                  setIsLoginPopupOpen={setIsLoginPopupOpen} 
                 />
               </div>
             ))}
           </Slider>
-        ) : (
-          <div>Exclusive data not found!</div>
         )}
       </div>
     </div>
+
+    <LoginPopup
+        isOpen={isLoginPopupOpen}
+        onClose={() => setIsLoginPopupOpen(false)}
+        onSignUpClick={handleRegisterClick}
+      /> 
+      </>
   );
 };

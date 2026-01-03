@@ -24,6 +24,12 @@ select {
 select option {
   background-color: #242424;
 }
+.primary{
+  background-color: #ffd700;
+}
+.secondary{
+  background-color: #00ff99;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -61,6 +67,11 @@ button {
   max-width: 1152px;
   margin: 0 auto;
   padding: 0 20px 20px 20px;
+}
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px 0px 15px;
 }
 .second-bg {
   background-color: #1a1a1a;

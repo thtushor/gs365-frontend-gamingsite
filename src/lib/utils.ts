@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function numberToArray(num: number): number[] {
+  return Array.from({ length: num }, (_, i) => i + 1);
+}
+
 
 // @/src/utils/guest.ts
 export const getOrCreateGuestId = (): string => {
