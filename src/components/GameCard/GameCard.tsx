@@ -23,7 +23,7 @@ interface GameCardProps {
   sportLogo: string;
   ggrPercent: string;
   categoryInfo: string;
-  version: string;
+  variant: string;
   providerInfo: {
     id: number;
     name: string;
@@ -45,7 +45,7 @@ const GameCard: React.FC<GameCardProps> = ({
   onPlayClick,
   className = "",
   isNothing=false,
-  version="parent"
+  variant="parent"
 }) => {
   const { user, favorites, setFavorites } = useAuth();
   const queryClient = useQueryClient();
@@ -165,7 +165,7 @@ const GameCard: React.FC<GameCardProps> = ({
 return (
   <div
         className={`${className} cursor-pointer relative min-h-[140px] md:w-[140px] md:h-[185px]`}
-      > <GameSkeleton variant={version} />
+      > <GameSkeleton variant={variant} />
       </div> 
 )
   }

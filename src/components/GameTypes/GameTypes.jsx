@@ -215,7 +215,7 @@ export const GameTypes = () => {
                   className="opacity-0 animate-fadeIn"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <GameCard isNothing version={"content"} onPlayClick={handlePlayGame}  />
+                  <GameCard isNothing  onPlayClick={handlePlayGame}  />
                 </div>
                 
               ))}

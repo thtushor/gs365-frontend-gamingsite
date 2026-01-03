@@ -1,10 +1,5 @@
-const GameSkeleton = ({ variant = "content" }) => {
-  const parentBg =
-    variant === "parent" ? "bg-yellow-800" : "bg-slate-800";
-
-  const contentBg =
-    variant === "parent" ? "bg-slate-800" : "bg-black";
-
+const GameSkeleton = ({ variant = "content" }) => { 
+console.log(variant);
   return (
     <div>
       <div
