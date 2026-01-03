@@ -23,7 +23,7 @@ interface GameCardProps {
   sportLogo: string;
   ggrPercent: string;
   categoryInfo: string;
-  variant: string;
+  variant?: string;
   providerInfo: {
     id: number;
     name: string;
