@@ -146,7 +146,7 @@ const Header: React.FC = () => {
               onClick={() => navigate("/")}
               className="hidden cursor-pointer sm:flex items-center"
             >
-              <Logo /> 
+              <Logo />
             </div>
 
             {/* open menu after click this */}

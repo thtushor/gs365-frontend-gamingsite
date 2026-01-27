@@ -76,7 +76,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorTitle, setErrorTitle] = useState<string>("Login failed");
   const [errorDescription, setErrorDescription] = useState<string>(
-    "Please check your credentials and try again."
+    "Please check your credentials and try again.",
   );
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
@@ -168,7 +168,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
       // onClose(); // Close popup after successful login
       // window.location.reload();
-      setSuccessModalOpen(true);
+      // setSuccessModalOpen(true);
+      onClose();
       // Optionally redirect or update app state
     } catch (error: unknown) {
       console.error("Login failed:", error);
@@ -178,7 +179,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         // Server validation errors
         const serverErrors: Record<string, string> = {};
         Object.entries(
-          (error as { errors: Record<string, string[]> }).errors
+          (error as { errors: Record<string, string[]> }).errors,
         ).forEach(([field, messages]) => {
           if (Array.isArray(messages) && messages.length > 0) {
             serverErrors[field] = messages[0];
@@ -189,8 +190,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         // General error -> show ToastError modal
         setErrorTitle("Login failed");
         setErrorDescription(
-          "Login failed. Please check your credentials and try again"
+          "Authentication was unsuccessful, please review your credentials and attempt to sign in again.",
         );
+
         setErrorModalOpen(true);
       }
     }

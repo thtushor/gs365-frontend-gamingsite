@@ -16,10 +16,19 @@ import { IoIosArrowDropup } from "react-icons/io";
 import { useAutoLogout } from "../../lib/api/hooks";
 import { useSocket } from "../../socket";
 import ToastError from "../../lib/ToastError";
+import Spin from "../Spin";
 
 const Layout = ({ children }) => {
   useAutoLogout();
-  const { setCountries, user, token, logout, countries, setSocial, setFavorites } = useAuth();
+  const {
+    setCountries,
+    user,
+    token,
+    logout,
+    countries,
+    setSocial,
+    setFavorites,
+  } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
   const queryClient = useQueryClient();
@@ -109,6 +118,7 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   const [kycModal, setKycModal] = useState(false);
+  const [spinModal, setSpinModal] = useState(false);
   const [forceLogoutModal, setForceLogoutModal] = useState(false);
 
   useEffect(() => {
@@ -126,6 +136,17 @@ const Layout = ({ children }) => {
     }
   }, [user?.kyc_status]);
 
+  // spin modal logic
+  useEffect(() => {
+    if (!user) return;
+    if (!user?.isDailySpinCompleted || user?.isSpinForcedByAdmin) {
+      const timer = setTimeout(() => {
+        setSpinModal(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user, user?.isDailySpinCompleted, user?.isSpinForcedByAdmin]);
 
   useEffect(() => {
     if (!socket || !user?.id) return;
@@ -141,8 +162,6 @@ const Layout = ({ children }) => {
       }
     };
 
-
-
     socket.on(eventName, handleLogoutEvent);
     socket.on(betHistoryUpdateEvent, () => {
       queryClient.invalidateQueries({ queryKey: ["betResults"] });
@@ -153,7 +172,7 @@ const Layout = ({ children }) => {
       socket.off(eventName, handleLogoutEvent);
       socket.off(betHistoryUpdateEvent);
     };
-  }, [socket, user?.id, token, logout])
+  }, [socket, user?.id, token, logout]);
 
   const {
     data: favData,
@@ -171,7 +190,7 @@ const Layout = ({ children }) => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!res.ok) throw new Error("Failed to fetch favorites");
@@ -231,6 +250,15 @@ const Layout = ({ children }) => {
       >
         <IoIosArrowDropup />
       </div>
+
+      <BaseModal
+        open={spinModal}
+        showClose={true}
+        onClose={() => setSpinModal(false)}
+        isBackdrop={false}
+      >
+        <Spin data={user} onClose={() => setSpinModal(false)} />
+      </BaseModal>
     </div>
   );
 };

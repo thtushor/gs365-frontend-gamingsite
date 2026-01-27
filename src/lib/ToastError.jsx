@@ -40,7 +40,7 @@ const ToastError = ({
       <h2 className="text-[18px] md:text-[22px] font-bold w-fit rounded-full mx-auto text-[#ff4400] mt-2">
         {title}
       </h2>
-      <div className="popup-message mt-1 text-[14px] md:text-[16px]">
+      <div className="popup-message mt-1 text-[14px] md:text-[16px] !text-center">
         {" "}
         {description}
       </div>
