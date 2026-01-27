@@ -9,6 +9,7 @@ const BaseModal = ({
   onClose,
   showClose = true,
   children,
+  isOutsideClickable = true,
 }) => {
   const modalContent = (
     <AnimatePresence>
@@ -18,7 +19,7 @@ const BaseModal = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={isOutsideClickable ? onClose : undefined}
         >
           <motion.div
             className={`rounded-2xl shadow-2xl max-w-[450px]  md:w-full relative ${isBackdrop ? "second-bg p-4 px-3 md:p-6 w-[90%]" : "bg-transparent w-full"}`}

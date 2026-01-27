@@ -256,6 +256,7 @@ const Layout = ({ children }) => {
         showClose={true}
         onClose={() => setSpinModal(false)}
         isBackdrop={false}
+        isOutsideClickable={false}
       >
         <Spin data={user} onClose={() => setSpinModal(false)} />
       </BaseModal>

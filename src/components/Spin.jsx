@@ -198,7 +198,7 @@ const Spin = ({ data, onClose }) => {
   };
 
   return (
-    <div className="px-4 mt-[10px]">
+    <div className="px-4 mt-[10px] select-none">
       <img src={TopBanner} alt="gs365.com" className="w-full bg-contain" />
 
       <p className="font-semibold text-center mt-[6px]">
