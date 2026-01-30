@@ -9,7 +9,6 @@ export function Wheel({
   playWin,
   handleWinner,
   sectors,
-  isSpinOff,
 }: {
   wheelRef: React.RefObject<PrizeWheelRef>;
   outerSpin?: string;
@@ -17,7 +16,6 @@ export function Wheel({
   playWin?: () => void;
   handleWinner: (sector: Sector) => void;
   sectors: Sector[];
-  isSpinOff: boolean;
 }) {
   // Define your 8 slots + desired relative weights
   // Example: "10" has high weight → ~52% chance if total ≈124
