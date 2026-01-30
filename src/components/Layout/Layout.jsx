@@ -13,10 +13,16 @@ import { toast } from "react-toastify";
 import KycModal from "../KycModal";
 import { FiArrowUpCircle } from "react-icons/fi";
 import { IoIosArrowDropup } from "react-icons/io";
-import { useAutoLogout } from "../../lib/api/hooks";
+import { useAutoLogout, useSettings } from "../../lib/api/hooks";
 import { useSocket } from "../../socket";
 import ToastError from "../../lib/ToastError";
 import Spin from "../Spin";
+import spinWheelButton from "../../assets/spinWheelButton.gif";
+
+import TopBanner from "../../assets/top-banner.png";
+import SpinLight from "../../assets/lighting.gif";
+import spinSfx from "../../assets/start-13691.mp3";
+import winSfx from "../../assets/tada-fanfare-a-6313.mp3";
 
 const Layout = ({ children }) => {
   useAutoLogout();
@@ -33,6 +39,7 @@ const Layout = ({ children }) => {
   const [popupDataToShow, setPopupDataToShow] = useState(null);
   const queryClient = useQueryClient();
   const getRequest = useGetRequest();
+  const { data: settingsData } = useSettings();
 
   const { socket } = useSocket();
 
@@ -138,7 +145,7 @@ const Layout = ({ children }) => {
 
   // spin modal logic
   useEffect(() => {
-    if (!user) return;
+    if (!user?.id) return;
     if (!user?.isDailySpinCompleted || user?.isSpinForcedByAdmin) {
       const timer = setTimeout(() => {
         setSpinModal(true);
@@ -146,7 +153,7 @@ const Layout = ({ children }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [user, user?.isDailySpinCompleted, user?.isSpinForcedByAdmin]);
+  }, [user?.id, user?.isDailySpinCompleted, user?.isSpinForcedByAdmin]);
 
   useEffect(() => {
     if (!socket || !user?.id) return;
@@ -251,15 +258,36 @@ const Layout = ({ children }) => {
         <IoIosArrowDropup />
       </div>
 
-      <BaseModal
-        open={spinModal}
-        showClose={true}
-        onClose={() => setSpinModal(false)}
-        isBackdrop={false}
-        isOutsideClickable={false}
-      >
-        <Spin data={user} onClose={() => setSpinModal(false)} />
-      </BaseModal>
+      {settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
+        <div className="bg-yellow-300  cursor-pointer text-black fixed bottom-[125px] left-5 flex items-center justify-center rounded-full text-[30px] md:text-[40px]">
+          <img
+            onClick={() => setSpinModal(true)}
+            src={spinWheelButton}
+            alt="Spin Wheel"
+            className="w-[65px] h-[65px]"
+          />
+        </div>
+      )}
+
+      {settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
+        <BaseModal
+          open={spinModal}
+          showClose={true}
+          onClose={() => setSpinModal(false)}
+          isBackdrop={false}
+          isOutsideClickable={false}
+        >
+          <Spin
+            data={user}
+            onClose={() => setSpinModal(false)}
+            TopBanner={TopBanner}
+            SpinLight={SpinLight}
+            spinSfx={spinSfx}
+            winSfx={winSfx}
+            settingsData={settingsData}
+          />
+        </BaseModal>
+      )}
     </div>
   );
 };

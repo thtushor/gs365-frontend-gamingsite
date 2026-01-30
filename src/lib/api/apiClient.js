@@ -5,8 +5,8 @@ import axios from "axios";
 import { useAuth } from "../../contexts/auth-context";
 
 // Base URL for API requests
-export const BASE_URL = "https://api.gamestar365.com";
-// export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "https://api.gamestar365.com";
+export const BASE_URL = "http://localhost:3000";
 export const API_LIST = {
   GET_SETTINGS: "/api/settings",
   GET_HERO_BANNERS: "/api/public/banners-list",
@@ -85,7 +85,7 @@ export const usePostRequest = () => {
 
       if (!res.ok || data.status === false) {
         throw new Error(
-          errorMessage || data.message || "Something went wrong."
+          errorMessage || data.message || "Something went wrong.",
         );
       }
 
@@ -150,7 +150,7 @@ export const useGetRequest = () => {
 
       if (!res.ok || data.status === false) {
         throw new Error(
-          errorMessage || data.message || "Something went wrong."
+          errorMessage || data.message || "Something went wrong.",
         );
       }
 
@@ -221,7 +221,7 @@ export const useUpdateRequest = () => {
 
       if (!res.ok || data.status === false) {
         throw new Error(
-          errorMessage || data.message || "Something went wrong."
+          errorMessage || data.message || "Something went wrong.",
         );
       }
 
@@ -233,7 +233,7 @@ export const useUpdateRequest = () => {
     } catch (err) {
       console.error("Update request error:", err);
       toast.error(
-        err.message || errorMessage || "Failed to send update request."
+        err.message || errorMessage || "Failed to send update request.",
       );
       throw err;
     }
