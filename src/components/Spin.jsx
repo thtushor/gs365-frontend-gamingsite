@@ -1,20 +1,186 @@
-import React, { useEffect, useState } from "react";
-import TopBanner from "../assets/top-banner.png";
-import SpinOuter from "../assets/spin.png";
-import SpinInner from "../assets/spin-inner.png";
-import SpinArrow from "../assets/spin-arrow.png";
+import React, { useEffect, useRef, useState } from "react";
 import { Clock } from "lucide-react";
+import { Wheel } from "./Wheel";
+import useSound from "use-sound";
+import BaseModal from "./Promotion/BaseModal";
+import ToastSuccess from "../lib/ToastSuccess";
+import { useAuth } from "../contexts/auth-context";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { API_ENDPOINTS } from "../lib/api/config";
+import { useSettings } from "../lib/api/hooks";
+import axiosInstance from "../lib/api/axios";
 
 const COUNTDOWN_KEY = "spin_countdown_end_time"; // key in localStorage
+const sectors = [
+  { id: 1, label: "10", probability: 60 },
+  { id: 2, label: "100", probability: 8 },
+  { id: 3, label: "Better Luck", probability: 25 },
+  { id: 4, label: "10000", probability: 0 },
+  { id: 8, label: "10", probability: 60 },
+  { id: 5, label: "500", probability: 4 },
+  { id: 6, label: "1000", probability: 2 },
+  { id: 7, label: "Better Luck", probability: 25 },
+];
+const defaultWinner = {
+  successMessage: "",
+  amount: 0,
+  description: "",
+};
 
-const Spin = ({ data, onClose }) => {
-  const [rotation, setRotation] = useState(0);
-  const [isSpinning, setIsSpinning] = useState(false);
+export default function Spin({
+  data,
+  onClose,
+  SpinLight,
+  TopBanner,
+  spinSfx,
+  winSfx,
+  settingsData,
+}) {
+  const spinOff = data?.isDailySpinCompleted && !data?.isSpinForcedByAdmin;
+  const [isSpinOff, setIsSpinOff] = useState(spinOff);
+  const [winningModal, setWinningModal] = useState(false);
+  const [winner, setWinner] = useState(defaultWinner);
+
+  const wheelRef = useRef(null);
+
+  const rafRef = useRef(null);
+  const lastTickTimeRef = useRef(0);
+  const currentDelayRef = useRef(80);
+  const stopTimeoutRef = useRef(null);
+
+  const [playTick] = useSound(spinSfx, {
+    volume: 0.5,
+    interrupt: true,
+  });
+
+  const [playWin] = useSound(winSfx, {
+    volume: 0.8,
+    interrupt: true,
+  });
+
+  const startTicking = () => {
+    stopTicking(); // 👈 IMPORTANT
+
+    lastTickTimeRef.current = performance.now();
+    currentDelayRef.current = 80;
+
+    const loop = (now) => {
+      if (now - lastTickTimeRef.current >= currentDelayRef.current) {
+        playTick();
+        lastTickTimeRef.current = now;
+
+        currentDelayRef.current = Math.min(currentDelayRef.current + 15, 350);
+      }
+
+      rafRef.current = requestAnimationFrame(loop);
+    };
+
+    rafRef.current = requestAnimationFrame(loop);
+  };
+
+  // 🛑 STOP RAF LOOP
+  const stopTicking = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  };
+
+  const handleSpin = () => {
+    if (wheelRef.current) {
+      startTicking();
+      wheelRef.current.spin();
+
+      // 🛑 Stop ticking slightly before spin ends
+      stopTimeoutRef.current = setTimeout(() => {
+        stopTicking();
+      }, 4000); // 4.5s (500ms before stop)
+    }
+  };
+
+  // after spin logic and api fetching
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const claimSpinMutation = useMutation({
+    mutationFn: async (amount) => {
+      const payload = {
+        spinBonusAmount: Number(amount || 0),
+        isDailySpinCompleted:
+          user?.isSpinForcedByAdmin && !user?.isDailySpinCompleted
+            ? false
+            : true,
+        isSpinForcedByAdmin: false,
+        lastSpinDate: new Date().toString(),
+        isForcedSpinComplete: user?.isSpinForcedByAdmin ? true : false,
+        spinTurnOverMultiply: Number(
+          settingsData?.data[0]?.spinTurnoverMultiply || 0,
+        ),
+        userId: user?.id,
+      };
+      const res = await axiosInstance.post(
+        API_ENDPOINTS.PAYMENT.CLAIM_SPIN_BONUS,
+        payload,
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["spin_bonus", user.id],
+      });
+      onCloseCallback();
+    },
+  });
+
+  const handleWinner = (selectedSector) => {
+    console.log("Winner:", selectedSector);
+
+    const isBetterLuck = selectedSector.label === "Better Luck";
+    const amount = isBetterLuck ? 0 : Number(selectedSector.label);
+
+    let successMessage = "";
+    let description = "";
+    setWinner({
+      successMessage,
+      amount,
+      description,
+    });
+    if (isBetterLuck) {
+      successMessage = "BETTER LUCK NEXT TIME!";
+      description =
+        "Don’t worry! Every spin is a new chance to win big. Wait for the next spin and try again to test your luck!";
+    } else {
+      successMessage = "CONGRATULATIONS, YOU WON!";
+      description = `Amazing! You have successfully won ${amount} BDT. Enjoy your reward and keep spinning for bigger prizes!`;
+    }
+
+    setWinningModal(true);
+    setIsSpinOff(true);
+    claimSpinMutation.mutate(amount);
+  };
+
+  const handleCloseWinningModal = () => {
+    setWinningModal(false);
+    setWinner(defaultWinner);
+  };
+
+  const handleCollectMoney = () => {
+    // Implement the logic to add money to user's account
+    console.log(`Collecting ${winner.amount} coins for the user.`);
+    handleCloseWinningModal();
+  };
+
   const [timeLeft, setTimeLeft] = useState({
     hours: "00",
     minutes: "00",
     seconds: "00",
   });
+  useEffect(() => {
+    return () => {
+      stopTicking();
+      if (stopTimeoutRef.current) clearTimeout(stopTimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const getTodayEndTime = () => {
@@ -76,133 +242,20 @@ const Spin = ({ data, onClose }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const SLOTS = [
-    { name: "10", from: 337.5, to: 22.5 }, // slot centered at top
-    { name: "100", from: 22.5, to: 67.5 },
-    { name: "BetterLuck1", from: 67.5, to: 112.5 },
-    { name: "10000", from: 112.5, to: 157.5 }, // ❌ never used
-    { name: "500", from: 157.5, to: 202.5 },
-    { name: "1000", from: 202.5, to: 247.5 },
-    { name: "BetterLuck2", from: 247.5, to: 292.5 },
-    { name: "10", from: 292.5, to: 337.5 },
-  ];
-
-  const PROBABILITY_POOL = [
-    { name: "10", weight: 52 },
-    { name: "100", weight: 5 },
-    { name: "500", weight: 2 },
-    { name: "1000", weight: 1 },
-    { name: "BetterLuck1", weight: 20 },
-    { name: "BetterLuck2", weight: 20 },
-    // ❌ 10,000 NOT INCLUDED
-  ];
-
-  const pickByWeight = () => {
-    const total = PROBABILITY_POOL.reduce((s, i) => s + i.weight, 0);
-    let rand = Math.random() * total;
-
-    for (const item of PROBABILITY_POOL) {
-      if (rand < item.weight) return item.name;
-      rand -= item.weight;
-    }
-  };
-
-  const ANGLES = {
-    10: [330, 360],
-    "10_alt": [300, 330],
-    100: [20, 60],
-    BetterLuck1: [70, 110],
-    500: [160, 200],
-    1000: [210, 250],
-    BetterLuck2: [260, 300],
-  };
-
-  const getAngleForResult = (result) => {
-    const range = ANGLES[result] || ANGLES["10"];
-    return Math.random() * (range[1] - range[0]) + range[0];
-  };
-
-  const getSpinResult = () => {
-    const rand = Math.random() * 100;
-
-    if (rand < 52) return SLOT_INDEX.TEN;
-    if (rand < 57) return SLOT_INDEX.HUNDRED;
-    if (rand < 59) return SLOT_INDEX.FIVE_HUNDRED;
-    if (rand < 60) return SLOT_INDEX.THOUSAND;
-    if (rand < 80) return SLOT_INDEX.BETTER_LUCK_1;
-    return SLOT_INDEX.BETTER_LUCK_2;
-  };
-  const FORBIDDEN_10000 = {
-    from: 110,
-    to: 160,
-  };
-
-  const normalize = (angle) => ((angle % 360) + 360) % 360;
-
-  const isInForbiddenZone = (angle) => {
-    const a = normalize(angle);
-    return a >= FORBIDDEN_10000.from && a <= FORBIDDEN_10000.to;
-  };
-
-  const createSpinPool = () => {
-    const pool = [
-      ...Array(52).fill("10"),
-      ...Array(20).fill("BetterLuck1"),
-      ...Array(20).fill("BetterLuck2"),
-      ...Array(5).fill("100"),
-      ...Array(2).fill("500"),
-      ...Array(1).fill("1000"),
-      // ❌ 10,000 NOT INCLUDED
-    ];
-
-    // Fisher–Yates shuffle
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-
-    return pool;
-  };
-
-  const [spinPool, setSpinPool] = useState(() => createSpinPool());
-
-  const getNextResult = () => {
-    setSpinPool((prev) => {
-      if (prev.length === 0) {
-        return createSpinPool();
-      }
-      return prev;
-    });
-
-    return spinPool[0];
-  };
-
-  const handleSpin = () => {
-    if (isSpinning) return;
-    setIsSpinning(true);
-
-    const result = spinPool[0];
-    const angle = getAngleForResult(result);
-
-    setSpinPool((prev) => prev.slice(1));
-
-    const spins = 7;
-    const finalRotation = spins * 360 + (360 - angle);
-
-    setRotation((prev) => prev + finalRotation);
-
-    setTimeout(() => {
-      setIsSpinning(false);
-      console.log("RESULT:", result);
-    }, 5000);
+  const handleNoSpinClick = () => {
+    console.log("no spin");
   };
 
   return (
     <div className="px-4 mt-[10px] select-none">
-      <img src={TopBanner} alt="gs365.com" className="w-full bg-contain" />
+      <img
+        src={TopBanner}
+        alt="gs365.com"
+        className="w-[60%] mx-auto bg-contain"
+      />
 
-      <p className="font-semibold text-center mt-[6px]">
-        The dream journey begins, lucky roulette
+      <p className="font-semibold text-center text-[18px] mt-[6px] uppercase">
+        dream begins with lucky spin
       </p>
 
       <div className="flex items-center justify-center mt-0">
@@ -211,60 +264,67 @@ const Spin = ({ data, onClose }) => {
             <Clock size={20} /> Remaining
           </p>
 
-          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[20px] !px-[6px]">
+          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[16px] !px-[6px]">
             {timeLeft.hours}h
           </div>
           <span className="text-primary font-bold text-[30px] mt-[-10px]">
             :
           </span>
 
-          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[20px] !px-[6px]">
+          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[16px] !px-[6px]">
             {timeLeft.minutes}m
           </div>
           <span className="text-primary font-bold text-[30px] mt-[-10px]">
             :
           </span>
 
-          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[20px] !px-[6px]">
+          <div className="signup-btn-green !h-[35px] flex items-center justify-center font-semibold !text-[16px] !px-[6px]">
             {timeLeft.seconds}s
           </div>
         </div>
       </div>
 
       <div
-        onClick={handleSpin}
+        onClick={isSpinOff ? handleNoSpinClick : handleSpin}
         className="relative flex items-center justify-center"
       >
-        <img src={SpinOuter} alt="gs365.com" className="md:w-full" />
-        <img
-          src={SpinInner}
-          className="w-[58%] mt-[8px] absolute"
-          style={{
-            transform: `rotate(${rotation}deg)`,
-            transition: isSpinning
-              ? "transform 5s cubic-bezier(0.22, 1, 0.36, 1)"
-              : "none",
-          }}
-        />
-
-        <img
-          src={SpinArrow}
-          alt="gs365.com"
-          className="bottom-[64px] left-1/2 transform -translate-x-1/2 absolute w-[40px]"
+        <Wheel
+          wheelRef={wheelRef}
+          outerSpin={SpinLight}
+          stopTicking={stopTicking}
+          playWin={playWin}
+          handleWinner={handleWinner}
+          sectors={sectors}
+          isSpinOff={isSpinOff}
         />
       </div>
 
       <div className="flex items-center justify-center">
         <div className="header-auth">
-          <div className="signup-btn-green" onClick={handleSpin}>
-            TRY YOUR LUCK NOW!
-          </div>
-
-          <div className="custom-error-btn">WAIT FOR THE NEXT SPIN</div>
+          {isSpinOff ? (
+            <div className="custom-error-btn">WAIT FOR THE NEXT SPIN</div>
+          ) : (
+            <div className="signup-btn-green" onClick={handleSpin}>
+              TRY YOUR LUCK NOW!
+            </div>
+          )}
         </div>
       </div>
+
+      <BaseModal
+        open={winningModal}
+        showClose={false}
+        onClose={handleCollectMoney}
+      >
+        <ToastSuccess
+          title={winner.successMessage || "Congratulations!"}
+          description={winner.description || "You have won a prize!"}
+          icon={winner.amount || 0}
+          onClose={handleCollectMoney}
+          // location="/"
+          extraFn={handleCollectMoney}
+        />
+      </BaseModal>
     </div>
   );
-};
-
-export default Spin;
+}

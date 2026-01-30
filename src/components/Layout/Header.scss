@@ -55,6 +55,7 @@
 
   
   .signup-btn {
+    cursor: pointer !important;
     background: linear-gradient(
       90deg,
       #ffd700,  // Bright gold
@@ -119,6 +120,7 @@
 
   
   .signup-btn-dynamic {
+    cursor: pointer !important;
     background: linear-gradient(
       90deg,
       #ffd700,  // Bright gold
@@ -180,8 +182,101 @@
     }
   }
 
+  .animated-border-parent {
+  position: relative;
+  padding: 20px; /* border thickness */
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    #00ff99,
+    #00ce7c,
+    #00dc84,
+    #00ff99
+  );
+  background-size: 300% 100%;
+  animation: gradientMove 3s linear infinite;
+
+  box-shadow:
+    0 0 20px #00ff998e,
+    inset 0 0 10px #00ff9985;
+}
+
+
+/* wave shine */
+.animated-border-parent::after {
+  content: "";
+  position: absolute;
+  inset: 0; 
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  animation: wave 3s linear infinite;
+  pointer-events: none;
+}
+
+.animated-border-inner-container {
+  position: relative; 
+  background: #1a1a2ef2; // inner background
+  overflow: hidden;
+}
+.animated-border {
+  position: relative; 
+  padding: 15px; // THIS is your border thickness
+  overflow: hidden;
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #00ff99,
+    #00ce7c,
+    #00dc84,
+    #00ff99
+  );
+  background-size: 300% 100%;
+  animation: gradientMove 3s linear infinite;
+  z-index: 0;
+}
+
+/* Wave shine */
+.animated-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: wave 3s linear infinite;
+  z-index: 1;
+}
+
+/* Inner content */
+.animated-border-inner {
+  position: relative;
+  background: #000; 
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Optional glow */
+.animated-border {
+  box-shadow: 
+    0 0 15px #00ff998e,
+    inset 0 0 10px #00ff9985;
+}
 
   .signup-btn-green {
+    cursor: pointer !important;
     background: linear-gradient(
       90deg,
       #00ff99,  // Bright gold
@@ -402,6 +497,7 @@
   }
 
   .signup-btn-green {
+    cursor: pointer !important;
     background: linear-gradient(
       90deg,
       #00ff99,  // Bright gold

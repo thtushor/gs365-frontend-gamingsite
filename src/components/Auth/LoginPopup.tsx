@@ -167,7 +167,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       window.dispatchEvent(new Event("userLogin"));
 
       // onClose(); // Close popup after successful login
-      // window.location.reload();
+      window.location.reload();
       // setSuccessModalOpen(true);
       onClose();
       // Optionally redirect or update app state

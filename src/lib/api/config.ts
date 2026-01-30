@@ -1,9 +1,9 @@
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://api.gamestar365.com",
-  SOCKET_URL: "https://api.gamestar365.com",
-  // BASE_URL: "http://localhost:3000",
-  // SOCKET_URL: "http://localhost:3000",
+  // BASE_URL: "https://api.gamestar365.com",
+  // SOCKET_URL: "https://api.gamestar365.com",
+  BASE_URL: "http://localhost:3000",
+  SOCKET_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
   SINGLE_IMAGE_UPLOAD_URL: `https://api.gamestar365.com/image-upload/upload`,
@@ -43,6 +43,7 @@ export const API_ENDPOINTS = {
     TURNOVER: "/api/turnover",
     CHECK_WITHDRAWAL_CAPABILITY: "/api/transactions/withdraw-capability",
     CLAIM_NOTIFICATION: "/api/transactions/claim-notification",
+    CLAIM_SPIN_BONUS: "/api/transactions/claim-spin-bonus",
   },
 
   GAME: {
