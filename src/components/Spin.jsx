@@ -295,7 +295,6 @@ export default function Spin({
           playWin={playWin}
           handleWinner={handleWinner}
           sectors={sectors}
-          isSpinOff={isSpinOff}
         />
       </div>
 
