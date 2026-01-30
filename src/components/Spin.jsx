@@ -36,6 +36,15 @@ export default function Spin({
   winSfx,
   settingsData,
 }) {
+  if (!settingsData) {
+    return (
+      <div className="bg-yellow-700 p-10 rounded-md">
+        <h1 className="text-[20px]">
+          Something wrong, try again after some time.
+        </h1>
+      </div>
+    );
+  }
   const spinOff = data?.isDailySpinCompleted && !data?.isSpinForcedByAdmin;
   const [isSpinOff, setIsSpinOff] = useState(spinOff);
   const [winningModal, setWinningModal] = useState(false);
@@ -140,11 +149,7 @@ export default function Spin({
 
     let successMessage = "";
     let description = "";
-    setWinner({
-      successMessage,
-      amount,
-      description,
-    });
+
     if (isBetterLuck) {
       successMessage = "BETTER LUCK NEXT TIME!";
       description =
@@ -153,6 +158,11 @@ export default function Spin({
       successMessage = "CONGRATULATIONS, YOU WON!";
       description = `Amazing! You have successfully won ${amount} BDT. Enjoy your reward and keep spinning for bigger prizes!`;
     }
+    setWinner({
+      successMessage,
+      amount,
+      description,
+    });
 
     setWinningModal(true);
     setIsSpinOff(true);

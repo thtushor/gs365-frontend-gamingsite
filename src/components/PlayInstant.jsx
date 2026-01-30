@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import axiosInstance from "../lib/api/axios";
 import { API_LIST, BASE_URL, useGetRequest } from "../lib/api/apiClient";
 
-const PlayInstant = () => {
+const PlayInstant = ({ settingsData }) => {
   const { user } = useAuth();
   const [showPlayInstant, setShowPlayInstant] = React.useState(true);
   const handleClose = () => {
@@ -20,7 +20,7 @@ const PlayInstant = () => {
     mutationFn: async (request) => {
       const response = await axiosInstance.post(
         API_ENDPOINTS.GAME.PLAY_GAME,
-        request
+        request,
       );
       return response.data;
     },
@@ -76,20 +76,22 @@ const PlayInstant = () => {
     isLoading || !featuredGameDetails?.data ? (
       ""
     ) : (
-      <div className="fixed bottom-20 md:bottom-5 left-3 md:left-10 z-[999]">
+      <div
+        className={`fixed ${settingsData ? "bottom-[145px] md:bottom-[185px]" : "bottom-[95px] md:bottom-[115px]"} select-none  left-4 z-[999]`}
+      >
         <div
           onClick={handleClose}
-          className="ml-auto mr-[-15px] mb-[-10px] cursor-pointer text-[17px] md:text-[25px] bg-white/10 md:w-[35px] md:h-[35px] w-[23px] h-[23px] flex items-center justify-center rounded-full"
+          className="ml-auto mr-[-15px] mb-[-14px] cursor-pointer text-[18px] bg-yellow-500 text-black w-[20px] h-[20px] flex items-center justify-center rounded-full"
         >
           <IoClose />
         </div>
         <div
           onClick={() => handlePlayGame(1)}
-          className="md:w-[130px] cursor-pointer md:h-[130px] w-[70px] h-[70px]"
+          className="w-[50px] h-[50px] cursor-pointer"
         >
           <img
             src={featuredGameDetails?.data?.images?.original || playGif}
-            className="md:w-[130px] md:h-[130px] w-[70px] h-[70px] rounded-full"
+            className="w-[50px] h-[50px] rounded-full"
             alt=""
           />
         </div>

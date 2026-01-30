@@ -23,6 +23,7 @@ import TopBanner from "../../assets/top-banner.png";
 import SpinLight from "../../assets/lighting.gif";
 import spinSfx from "../../assets/start-13691.mp3";
 import winSfx from "../../assets/tada-fanfare-a-6313.mp3";
+import { IoClose } from "react-icons/io5";
 
 const Layout = ({ children }) => {
   useAutoLogout();
@@ -37,6 +38,10 @@ const Layout = ({ children }) => {
   } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [popupDataToShow, setPopupDataToShow] = useState(null);
+  const [showPlayInstant, setShowPlayInstant] = React.useState(true);
+  const handleClose = () => {
+    setShowPlayInstant(false);
+  };
   const queryClient = useQueryClient();
   const getRequest = useGetRequest();
   const { data: settingsData } = useSettings();
@@ -230,7 +235,7 @@ const Layout = ({ children }) => {
       <BaseModal open={modalOpen} showClose={false}>
         <PopupContent data={popupDataToShow} onClose={handleCloseModal} />
       </BaseModal>
-      <PlayInstant />
+      <PlayInstant settingsData={settingsData} />
 
       {/* Forced logout warning modal for multi-device detection */}
       <BaseModal open={forceLogoutModal} showClose={false}>
@@ -253,41 +258,51 @@ const Layout = ({ children }) => {
 
       <div
         onClick={scrollToTop}
-        className="bg-yellow-300 cursor-pointer text-black fixed bottom-[80px] left-5 flex items-center justify-center rounded-full text-[30px] md:text-[40px]"
+        className="bg-yellow-300 cursor-pointer text-black fixed bottom-[60px] left-5 flex items-center justify-center rounded-full text-[30px] md:text-[40px]"
       >
         <IoIosArrowDropup />
       </div>
 
-      {settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
-        <div className="bg-yellow-300  cursor-pointer text-black fixed bottom-[125px] left-5 flex items-center justify-center rounded-full text-[30px] md:text-[40px]">
-          <img
-            onClick={() => setSpinModal(true)}
-            src={spinWheelButton}
-            alt="Spin Wheel"
-            className="w-[65px] h-[65px]"
-          />
-        </div>
-      )}
+      {showPlayInstant &&
+        settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
+          <div className="bg-yellow-300 cursor-pointer text-black fixed bottom-[95px] md:bottom-[110px] left-4 flex items-center justify-center rounded-full text-[30px] md:text-[40px]">
+            <div className="relative">
+              <img
+                onClick={() => setSpinModal(true)}
+                src={spinWheelButton}
+                alt="Spin Wheel"
+                className="md:w-[65px] md:h-[65px] w-[40px] h-[40px]"
+              />
+              <div
+                onClick={handleClose}
+                className="ml-auto top-[-5px] right-[-12px] cursor-pointer text-[18px] bg-yellow-500 text-black w-[20px] h-[20px] flex items-center justify-center rounded-full absolute"
+              >
+                <IoClose />
+              </div>
+            </div>
+          </div>
+        )}
 
-      {settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
-        <BaseModal
-          open={spinModal}
-          showClose={true}
-          onClose={() => setSpinModal(false)}
-          isBackdrop={false}
-          isOutsideClickable={false}
-        >
-          <Spin
-            data={user}
+      {settingsData &&
+        settingsData?.data[0]?.isGlobalSpinEnabled === "Enabled" && (
+          <BaseModal
+            open={spinModal}
+            showClose={true}
             onClose={() => setSpinModal(false)}
-            TopBanner={TopBanner}
-            SpinLight={SpinLight}
-            spinSfx={spinSfx}
-            winSfx={winSfx}
-            settingsData={settingsData}
-          />
-        </BaseModal>
-      )}
+            isBackdrop={false}
+            isOutsideClickable={false}
+          >
+            <Spin
+              data={user}
+              onClose={() => setSpinModal(false)}
+              TopBanner={TopBanner}
+              SpinLight={SpinLight}
+              spinSfx={spinSfx}
+              winSfx={winSfx}
+              settingsData={settingsData}
+            />
+          </BaseModal>
+        )}
     </div>
   );
 };
