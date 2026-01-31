@@ -24,10 +24,13 @@ import { toast } from "react-toastify";
 import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
+import VerifyOtpPopup from "../components/Auth/VerifyOtpPopup";
 
 const Register = () => {
   const { user, selectedCurrency } = useAuth();
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [showVerifyOtp, setShowVerifyOtp] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   console.log(selectedCurrency);
   const getRequest = useGetRequest();
 
@@ -218,12 +221,10 @@ const Register = () => {
 
       const response = await registerMutation.mutateAsync(apiData);
       console.log("Registration successful:", response.data);
-      // showToaster(
-      //   "Registration successful! Welcome to GameStar365!",
-      //   "success"
-      // );
-      // navigate("/");
-      setSuccessModalOpen(true);
+
+      // Store email and show OTP verification popup
+      setRegisteredEmail(formData.email.trim().toLowerCase());
+      setShowVerifyOtp(true);
     } catch (error) {
       // console.log({error})
       // console.error("Registration failed:", error);
@@ -354,7 +355,7 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      // error={}
+                    // error={}
                     />
 
                     {getFieldError("password") && (
@@ -374,7 +375,7 @@ const Register = () => {
                       placeholder="6-20 characters"
                       minLength={6}
                       maxLength={20}
-                      // error={getFieldError("confirmPassword")}
+                    // error={getFieldError("confirmPassword")}
                     />
                     {getFieldError("confirmPassword") && (
                       <div className="text-[#ff0000] text-base mt-1">
@@ -458,7 +459,7 @@ const Register = () => {
                     {getFieldError("country") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("country")}
                       </div>
@@ -508,7 +509,7 @@ const Register = () => {
                     {getFieldError("currency") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("currency")}
                       </div>
@@ -535,7 +536,7 @@ const Register = () => {
                     {getFieldError("realName") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("realName")}
                       </div>
@@ -586,7 +587,7 @@ const Register = () => {
                     {getFieldError("email") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("email")}
                       </div>
@@ -618,7 +619,7 @@ const Register = () => {
                     {getFieldError("ageCheck") && (
                       <div
                         className="text-[#ff0000] text-base mt-1"
-                        // style={{ color: "#ff0000", fontSize: "12px" }}
+                      // style={{ color: "#ff0000", fontSize: "12px" }}
                       >
                         {getFieldError("ageCheck")}
                       </div>
@@ -652,14 +653,26 @@ const Register = () => {
         </div>
       </div>
 
+      {/* OTP Verification Popup */}
+      <VerifyOtpPopup
+        isOpen={showVerifyOtp}
+        onClose={() => setShowVerifyOtp(false)}
+        email={registeredEmail}
+        onVerified={() => {
+          setShowVerifyOtp(false);
+          setSuccessModalOpen(true);
+        }}
+      />
+
+      {/* Success Modal - shown after OTP verification */}
       <BaseModal
         open={successModalOpen}
         showClose={false}
         onClose={() => setSuccessModalOpen(false)}
       >
         <ToastSuccess
-          title="Player Registered!"
-          description="Welcome to the GS365! Your journey starts now, get ready to play and win big."
+          title="Email Verified!"
+          description="Welcome to GS365! Your journey starts now, get ready to play and win big."
           onClose={setSuccessModalOpen}
           location="/"
         />
