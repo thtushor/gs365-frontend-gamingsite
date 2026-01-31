@@ -208,14 +208,27 @@ export const authService = {
     return response.data;
   },
 
+  // Verify OTP
+  verifyOtp: async (data: {
+    email: string;
+    otp: string;
+  }): Promise<ApiResponse<void>> => {
+    const response = await axiosInstance.post("/api/users/verify-otp", data);
+    return response.data;
+  },
+
+  // Resend OTP
+  resendOtp: async (data: { email: string }): Promise<ApiResponse<void>> => {
+    const response = await axiosInstance.post("/api/users/resend-otp", data);
+    return response.data;
+  },
+
   // Forgot password
   forgotPassword: async (data: {
-    username: string;
-    email?: string;
-    phone?: string;
+    email: string;
   }): Promise<ApiResponse<void>> => {
     const response = await axiosInstance.post(
-      API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
+      "/api/users/forgot-password",
       data
     );
     return response.data;
@@ -224,11 +237,10 @@ export const authService = {
   // Reset password
   resetPassword: async (data: {
     token: string;
-    password: string;
-    confirmPassword: string;
+    newPassword: string;
   }): Promise<ApiResponse<void>> => {
     const response = await axiosInstance.post(
-      API_ENDPOINTS.AUTH.RESET_PASSWORD,
+      "/api/users/reset-password",
       data
     );
     return response.data;

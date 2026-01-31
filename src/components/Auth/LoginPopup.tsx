@@ -8,6 +8,8 @@ import { EyeHideIcon } from "../Icon/EyeHideIcon";
 import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
+import VerifyOtpPopup from "./VerifyOtpPopup";
+import ForgotPasswordPopup from "./ForgotPasswordPopup";
 
 // Reusable PasswordInput component
 interface PasswordInputProps {
@@ -79,6 +81,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
     "Please check your credentials and try again.",
   );
   const [showForgetPassword, setShowForgetPassword] = useState(false);
+  const [showVerifyOtp, setShowVerifyOtp] = useState(false);
+  const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
   const [forgetPasswordTab, setForgetPasswordTab] = useState("email"); // 'email' or 'sms'
   const [formData, setFormData] = useState({
     userNameOrEmailorPhone: "",
@@ -108,7 +113,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
   const handleForgetPasswordClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setShowForgetPassword(true);
+    setShowForgotPasswordPopup(true);
   };
 
   const handleBackToLoginClick = (e: React.MouseEvent) => {
@@ -174,6 +179,19 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
     } catch (error: unknown) {
       console.error("Login failed:", error);
 
+      // Check if error is email verification related
+      if (
+        error &&
+        typeof error === "object" &&
+        "requiresVerification" in error &&
+        (error as any).requiresVerification
+      ) {
+        // Email not verified - show OTP popup
+        setVerificationEmail((error as any).email || formData.userNameOrEmailorPhone);
+        setShowVerifyOtp(true);
+        return;
+      }
+
       // Handle API errors
       if (error && typeof error === "object" && "errors" in error) {
         // Server validation errors
@@ -214,9 +232,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       {/* <div className="tips-group tips-warning"><b></b></div> */}
 
       <div
-        className={`pop-wrap login ${successModalOpen && "opacity-0"} ${
-          showForgetPassword ? "forget-password-active" : ""
-        }`}
+        className={`pop-wrap login ${successModalOpen && "opacity-0"} ${showForgetPassword ? "forget-password-active" : ""
+          }`}
       >
         <div className="pop-title px-[10px] md:px-[20px] py-[8px] md:py-[20px]">
           <h3 className="text-[16px] md:text-[20px]">
@@ -340,9 +357,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                 <div className="main-tab-content">
                   {/* Email Tab */}
                   <section
-                    className={`tab-pane ${
-                      forgetPasswordTab === "email" ? "active" : ""
-                    }`}
+                    className={`tab-pane ${forgetPasswordTab === "email" ? "active" : ""
+                      }`}
                     id="forgetPasswordEmailSection"
                     style={{
                       display: forgetPasswordTab === "email" ? "block" : "none",
@@ -388,9 +404,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
                   {/* SMS Tab */}
                   <section
-                    className={`tab-pane ${
-                      forgetPasswordTab === "sms" ? "active" : ""
-                    }`}
+                    className={`tab-pane ${forgetPasswordTab === "sms" ? "active" : ""
+                      }`}
                     id="forgetPasswordSmsSection"
                     style={{
                       display: forgetPasswordTab === "sms" ? "block" : "none",
@@ -519,9 +534,25 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
           onClose={setErrorModalOpen}
           isRedirect={false}
           location="/"
-          extraFn={() => {}}
+          extraFn={() => { }}
         />
       </BaseModal>
+
+      {/* OTP Verification Popup */}
+      <VerifyOtpPopup
+        isOpen={showVerifyOtp}
+        onClose={() => setShowVerifyOtp(false)}
+        email={verificationEmail}
+        onVerified={() => {
+          setShowVerifyOtp(false);
+        }}
+      />
+
+      {/* Forgot Password Popup */}
+      <ForgotPasswordPopup
+        isOpen={showForgotPasswordPopup}
+        onClose={() => setShowForgotPasswordPopup(false)}
+      />
     </div>
   );
 };
