@@ -73,7 +73,6 @@ const TopHeader: React.FC = () => {
           className="flex items-center md:hidden"
           onClick={() => navigate("/")}
         >
-          <Logo />
           <div className="flex items-start flex-col">
             <p className="text-[10px] font-semibold text-yellow-300">
               GS365 APP
