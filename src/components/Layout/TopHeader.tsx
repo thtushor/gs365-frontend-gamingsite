@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TopHeader.scss";
 import { FaStar } from "react-icons/fa";
-import { Logo } from "../Logo/Logo";
 import { BiCloudDownload } from "react-icons/bi";
 import { CurrencyModal } from "../Modal/CurrencyModal";
 import { useNavigate } from "react-router-dom";
