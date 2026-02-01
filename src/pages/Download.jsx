@@ -12,7 +12,7 @@ const Download = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("/gs365v1.apk");
+      const response = await fetch("/gs365_v1.apk");
 
       if (!response.ok) {
         throw new Error(`Download failed: ${response.statusText}`);
@@ -23,7 +23,7 @@ const Download = () => {
 
       const link = document.createElement("a");
       link.href = fileURL;
-      link.download = "gs365v1.apk";
+      link.download = "gs365_v1.apk";
 
       document.body.appendChild(link);
       link.click();
@@ -63,7 +63,7 @@ const Download = () => {
 
             <div className="flex mt-5 gap-2 md:gap-4 md:justify-start justify-center items-center">
               <a
-                href="/gs365v1.apk"
+                href="/gs365_v1.apk"
                 download={true}
                 alt="Download Android App"
                 disabled={loading}
