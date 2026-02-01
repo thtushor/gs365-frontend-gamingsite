@@ -25,6 +25,10 @@ import { PasswordInputBox } from "../components/Shared/PasswordInputBox";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
 import VerifyOtpPopup from "../components/Auth/VerifyOtpPopup";
+import AuthInput from "../components/Auth/AuthInput";
+import { UserIcon } from "../components/Icon/UserIcon";
+import { LockIcon } from "../components/Icon/LockIcon";
+import { EmailIcon } from "../components/Icon/EmailIcon";
 
 const Register = () => {
   const { user, selectedCurrency } = useAuth();
@@ -295,185 +299,112 @@ const Register = () => {
             <div className="general-register text-left">
               <form onSubmit={handleFormSubmit}>
                 <ul>
-                  <li>
-                    <label htmlFor="refCode">Referral Code</label>
-                    <input
-                      id="refCode"
-                      name="refCode"
-                      type="text"
-                      value={formData.refCode}
-                      onChange={handleInputChange}
-                      placeholder="Referral code"
-                      readOnly={!!refCodeParam}
-                      style={{
-                        borderColor: isFieldValid("refCode")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                    />
-                    {getFieldError("refCode") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                        style={{ color: "#ff0000", fontSize: "12px" }}
-                      >
-                        {getFieldError("refCode")}
-                      </div>
-                    )}
-                  </li>
+                  <AuthInput
+                    as="li"
+                    label="Refer Code"
+                    id="friendReferCode"
+                    name="friendReferCode"
+                    type="text"
+                    placeholder="Refer code"
+                    value={formData.friendReferCode}
+                    onChange={handleInputChange}
+                    error={getFieldError("friendReferCode")}
+                  />
 
-                  <li>
-                    <label htmlFor="username">Username</label>
-                    <input
-                      id="username"
-                      type="text"
-                      name="username"
-                      placeholder="4-15 characters"
-                      style={{
-                        textTransform: "lowercase",
-                        borderColor: isFieldValid("username")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                      // required
-                      value={formData.username}
-                      onChange={handleInputChange}
-                    />
-                    {getFieldError("username") && (
-                      <div className="text-[#ff0000] text-base mt-1">
-                        {getFieldError("username")}
-                      </div>
-                    )}
-                  </li>
+                  <AuthInput
+                    as="li"
+                    label="Username"
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="4-15 characters"
+                    style={{
+                      textTransform: "lowercase",
+                      borderColor: isFieldValid("username")
+                        ? undefined
+                        : "#ff0000",
+                    }}
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    icon={<UserIcon color="#ffd700" />}
+                    error={getFieldError("username")}
+                    required
+                  />
 
-                  <li>
-                    <label htmlFor="password">Password</label>
-                    <PasswordInputBox
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="6-20 characters"
-                      minLength={6}
-                      maxLength={20}
-                    // error={}
-                    />
+                  <AuthInput
+                    as="li"
+                    label="Password"
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="6-20 characters"
+                    minLength={6}
+                    maxLength={20}
+                    icon={<LockIcon color="#ffd700" />}
+                    error={getFieldError("password")}
+                    required
+                  />
 
-                    {getFieldError("password") && (
-                      <div className="text-[#ff0000] text-base mt-1">
-                        {getFieldError("password")}
-                      </div>
-                    )}
-                  </li>
-
-                  <li>
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <PasswordInputBox
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      placeholder="6-20 characters"
-                      minLength={6}
-                      maxLength={20}
-                    // error={getFieldError("confirmPassword")}
-                    />
-                    {getFieldError("confirmPassword") && (
-                      <div className="text-[#ff0000] text-base mt-1">
-                        {getFieldError("confirmPassword")}
-                      </div>
-                    )}
-                  </li>
+                  <AuthInput
+                    as="li"
+                    label="Confirm Password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="6-20 characters"
+                    minLength={6}
+                    maxLength={20}
+                    icon={<LockIcon color="#ffd700" />}
+                    error={getFieldError("confirmPassword")}
+                    required
+                  />
 
                   {/* COUNTRY */}
-                  <div className="register-select">
-                    <label
-                      htmlFor="country"
-                      className="text-white font-medium mb-1 block"
-                    >
-                      Country
-                    </label>
-                    {countryLoading ? (
-                      <p className="text-gray-500 text-sm">
-                        Loading countries...
-                      </p>
-                    ) : (
-                      <Select
-                        options={countryOptions}
-                        name="country"
-                        // defaultValue={selectedCurrency?.country?.id}
-                        value={
-                          formData.country || {
-                            id: selectedCurrency.country.id,
-                            value: selectedCurrency?.country?.code,
-                            flagUrl: `data:image/png;base64,${selectedCurrency?.country?.flagUrl}`,
-                            currency: {
-                              id: selectedCurrency?.country.currency?.id,
-                              value: selectedCurrency?.country.currency?.id,
-                              label: `${selectedCurrency?.country.currency?.name} (${selectedCurrency?.country.currency.code})`,
-                            },
-                          }
-                        }
-                        // inputValue={formData.country||{name: selectedCurrency?.country.name, id: selectedCurrency?.country?.id}}
-                        onChange={(selected) => {
-                          // console.log({ selected, selectedCurrency, formData })
-                          handleInputChange({
-                            target: {
-                              name: "country",
-                              value: selected,
-                            },
-                          });
+                  <AuthInput
+                    as="li"
+                    label="Select Country"
+                    error={getFieldError("country")}
+                  >
+                    <Select
+                      className="register-select w-full"
+                      options={countryOptions}
+                      defaultValue={defaultCountry}
+                      onChange={(option) => {
+                        setForm((prev) => ({
+                          ...prev,
+                          country: option.value,
+                          currency: option.currency.id,
+                          phoneCode: option.phoneCode,
+                          countryId: option.id,
+                        }));
+                        setFormData((prev) => ({
+                          ...prev,
+                          currencyType: option.currency.id,
+                          callingCode: option.phoneCode,
+                        }));
+                      }}
+                      formatOptionLabel={(country) => (
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={country.flagUrl}
+                            alt=""
+                            className="w-5 h-4 object-cover"
+                          />
+                          <span>{country.label}</span>
+                        </div>
+                      )}
+                    />
+                  </AuthInput>
 
-                          setFormData((prev) => ({
-                            ...prev,
-                            currency: selected.currency,
-                          }));
-                        }}
-                        isSearchable
-                        placeholder="Select Country"
-                        styles={{
-                          menuList: (base) => ({
-                            ...base,
-                            maxHeight: "300px",
-                            overflowY: "auto",
-                            background: "rgb(255 255 255 / 61%)",
-                            color: "#1a1a1a",
-                          }),
-                          input: (base) => ({ ...base, color: "#fff" }),
-                        }}
-                        getOptionLabel={(option) => (
-                          <div className="flex items-center gap-2">
-                            <img
-                              src={option.flagUrl}
-                              alt=""
-                              width={20}
-                              height={14}
-                              style={{ borderRadius: "2px" }}
-                            />
-                            {option.label}
-                          </div>
-                        )}
-                        getOptionValue={(option) => option.value}
-                      />
-                    )}
-
-                    {getFieldError("country") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
-                      >
-                        {getFieldError("country")}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* CURRENCY */}
-                  <div className="mt-3 register-select">
-                    <label
-                      htmlFor="currency"
-                      className="text-white font-medium mb-1 block"
-                    >
-                      Currency
-                    </label>
+                  <AuthInput
+                    as="li"
+                    label="Currency"
+                    error={getFieldError("currency")}
+                  >
                     <Select
                       options={currencyOptions}
                       name="currency"
@@ -505,94 +436,77 @@ const Register = () => {
                         input: (base) => ({ ...base, color: "#fff" }),
                       }}
                     />
+                  </AuthInput>
 
-                    {getFieldError("currency") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
-                      >
-                        {getFieldError("currency")}
-                      </div>
-                    )}
-                  </div>
+                  <AuthInput
+                    as="li"
+                    label="Full Name"
+                    id="realName"
+                    type="text"
+                    name="realName"
+                    placeholder="Enter your full name"
+                    maxLength={100}
+                    style={{
+                      borderColor: isFieldValid("realName")
+                        ? undefined
+                        : "#ff0000",
+                    }}
+                    value={formData.realName}
+                    onChange={handleInputChange}
+                    icon={<UserIcon color="#ffd700" />}
+                    error={getFieldError("realName")}
+                    required
+                  />
 
-                  <li className="mt-3">
-                    <label htmlFor="realName">Full Name</label>
-                    <input
-                      id="realName"
-                      type="text"
-                      name="realName"
-                      placeholder="Enter your full name"
-                      maxLength={100}
-                      style={{
-                        borderColor: isFieldValid("realName")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                      // required
-                      value={formData.realName}
-                      onChange={handleInputChange}
-                    />
-                    {getFieldError("realName") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
-                      >
-                        {getFieldError("realName")}
-                      </div>
-                    )}
-                  </li>
-
-                  <li>
-                    <label htmlFor="phoneNumber">Phone Number</label>
+                  <AuthInput
+                    as="li"
+                    label="Phone Number"
+                    error={getFieldError("phoneNumber")}
+                  >
                     <PhoneInput
                       id="phoneNumber"
                       name="phoneNumber"
                       international
-                      defaultCountry={formData?.country?.value || "BD"}
-                      disableCountryCode={true}
-                      countryCodeEditable={false}
-                      disableDropdown={true}
+                      defaultCountry="BD"
                       value={phoneValue}
+                      disableDropdown={true}
+                      disableCountryCode={true}
                       onChange={(value) => {
-                        handleInputChange({
-                          target: { name: "phoneNumber", value: value || "" },
-                        });
+                        setPhoneValue(value);
+                        setFormData((prev) => ({
+                          ...prev,
+                          phoneNumber: value || "",
+                        }));
+                        if (errors["phoneNumber"]) {
+                          setErrors((prev) => ({
+                            ...prev,
+                            phoneNumber: "",
+                          }));
+                        }
                       }}
+                      className="custom-phone-input w-full"
                       placeholder="Enter phone number"
                     />
-                    {getFieldError("phoneNumber") && (
-                      <div className="text-[#ff0000] text-base mt-1">
-                        {getFieldError("phoneNumber")}
-                      </div>
-                    )}
-                  </li>
+                  </AuthInput>
 
-                  <li>
-                    <label htmlFor="email">Email</label>
-                    <input
-                      id="email"
-                      type="email"
-                      name="email"
-                      placeholder="Enter a valid email"
-                      style={{
-                        borderColor: isFieldValid("email")
-                          ? undefined
-                          : "#ff0000",
-                      }}
-                      // required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                    {getFieldError("email") && (
-                      <div
-                        className="text-[#ff0000] text-base mt-1"
-                      // style={{ color: "#ff0000", fontSize: "12px" }}
-                      >
-                        {getFieldError("email")}
-                      </div>
-                    )}
-                  </li>
+                  <AuthInput
+                    as="li"
+                    label="Email"
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Enter a valid email"
+                    style={{
+                      borderColor: isFieldValid("email")
+                        ? undefined
+                        : "#ff0000",
+                    }}
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    icon={<EmailIcon color="#ffd700" />}
+                    error={getFieldError("email")}
+                    required
+                  />
 
                   <li className="check-wrap !items-start">
                     <input

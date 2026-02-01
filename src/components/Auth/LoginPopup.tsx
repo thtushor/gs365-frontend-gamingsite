@@ -10,6 +10,8 @@ import ToastError from "../../lib/ToastError";
 import VerifyOtpPopup from "./VerifyOtpPopup";
 import ForgotPasswordPopup from "./ForgotPasswordPopup";
 import AuthInput from "./AuthInput";
+import { UserIcon } from "../Icon/UserIcon";
+import { LockIcon } from "../Icon/LockIcon";
 
 
 
@@ -226,7 +228,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                       placeholder="Username or email address"
                       value={formData.userNameOrEmailorPhone}
                       onChange={handleInputChange}
-                      iconClass="icon-user"
+                      icon={<UserIcon color="#ffd700" />}
                       error={getFieldError("userNameOrEmailorPhone")}
                       required
                     />
@@ -240,7 +242,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                       placeholder="Password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      iconClass="icon-password"
+                      icon={<LockIcon color="#ffd700" />}
                       minLength={6}
                       maxLength={20}
                       error={getFieldError("password")}

@@ -26,6 +26,12 @@ import { toast } from "react-toastify";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
 import VerifyOtpPopup from "../components/Auth/VerifyOtpPopup";
+import AuthInput from "../components/Auth/AuthInput";
+import { UserIcon } from "../components/Icon/UserIcon";
+import { LockIcon } from "../components/Icon/LockIcon";
+import { EmailIcon } from "../components/Icon/EmailIcon";
+import { EyeHideIcon } from "../components/Icon/EyeHideIcon";
+import { EyeShowIcon } from "../components/Icon/EyeShowIcon";
 
 const AffiliateRegister = () => {
   const navigate = useNavigate();
@@ -345,154 +351,125 @@ const AffiliateRegister = () => {
                 {currentStep === 1 && (
                   <div id="register-form-step1" className="form-inner v2_step1">
                     <ul>
-                      <li>
-                        <label htmlFor="refCode">Referral Code</label>
-                        <input
-                          id="refCode"
-                          name="refCode"
-                          type="text"
-                          value={formData.refCode || ""}
-                          onChange={handleInputChange}
-                          placeholder="Referral code"
-                          readOnly={!!refCodeParam}
-                          style={{
-                            borderColor: isFieldValid("refCode")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                        />
-                        {getFieldError("refCode") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("refCode")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Referral Code"
+                        id="refCode"
+                        name="refCode"
+                        type="text"
+                        value={formData.refCode || ""}
+                        onChange={handleInputChange}
+                        placeholder="Referral code"
+                        readOnly={!!refCodeParam}
+                        error={getFieldError("refCode")}
+                      />
 
-                      <li>
-                        <label htmlFor="realName">Full Name</label>
-                        <input
-                          id="realName"
-                          type="text"
-                          name="realName"
-                          placeholder="Enter your full name"
-                          maxLength={100}
-                          style={{
-                            borderColor: isFieldValid("realName")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                          // required
-                          value={formData.realName}
-                          onChange={handleInputChange}
-                        />
-                        {getFieldError("realName") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("realName")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Full Name"
+                        id="realName"
+                        type="text"
+                        name="realName"
+                        placeholder="Enter your full name"
+                        maxLength={100}
+                        style={{
+                          borderColor: isFieldValid("realName")
+                            ? undefined
+                            : "#ff0000",
+                        }}
+                        value={formData.realName}
+                        onChange={handleInputChange}
+                        icon={<UserIcon color="#ffd700" />}
+                        error={getFieldError("realName")}
+                        required
+                      />
 
-                      <li>
-                        <label htmlFor="email">Email Address</label>
-                        <input
-                          id="email"
-                          type="email"
-                          name="email"
-                          placeholder="Enter your valid email address"
-                          style={{
-                            borderColor: isFieldValid("email")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                          // required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                        />
-                        {getFieldError("email") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("email")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Email Address"
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Enter your valid email address"
+                        style={{
+                          borderColor: isFieldValid("email")
+                            ? undefined
+                            : "#ff0000",
+                        }}
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        icon={<EmailIcon color="#ffd700" />}
+                        error={getFieldError("email")}
+                        required
+                      />
 
-                      <li>
-                        <label htmlFor="username">Username</label>
-                        <input
-                          id="username"
-                          type="text"
-                          name="username"
-                          placeholder="Enter 4-15 characters (numbers allowed)"
-                          style={{
-                            textTransform: "lowercase",
-                            borderColor: isFieldValid("username")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                          // required
-                          value={formData.username}
-                          onChange={handleInputChange}
-                        />
-                        {getFieldError("username") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("username")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Username"
+                        id="username"
+                        type="text"
+                        name="username"
+                        placeholder="Enter 4-15 characters (numbers allowed)"
+                        style={{
+                          textTransform: "lowercase",
+                          borderColor: isFieldValid("username")
+                            ? undefined
+                            : "#ff0000",
+                        }}
+                        value={formData.username}
+                        onChange={handleInputChange}
+                        icon={<UserIcon color="#ffd700" />}
+                        error={getFieldError("username")}
+                        required
+                      />
 
-                      <li>
-                        <label htmlFor="password">Password</label>
-                        <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="Enter 6-20 characters (numbers allowed)"
-                          style={{
-                            borderColor: isFieldValid("password")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                          // required
-                          value={formData.password}
-                          onChange={handleInputChange}
-                        />
-                        {getFieldError("password") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("password")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Password"
+                        id="password"
+                        name="password"
+                        type="password"
+                        minLength={6}
+                        maxLength={20}
+                        placeholder="Enter 6-20 characters (numbers allowed)"
+                        style={{
+                          borderColor: isFieldValid("password")
+                            ? undefined
+                            : "#ff0000",
+                        }}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        icon={<LockIcon color="#ffd700" />}
+                        error={getFieldError("password")}
+                        required
+                      />
 
-                      <li>
-                        <label htmlFor="confirmPassword">
-                          Confirm Password
-                        </label>
-                        <input
-                          id="confirmPassword"
-                          name="confirmPassword"
-                          type="password"
-                          minLength={6}
-                          maxLength={20}
-                          placeholder="Confirm password"
-                          style={{
-                            borderColor: isFieldValid("confirmPassword")
-                              ? undefined
-                              : "#ff0000",
-                          }}
-                          // required
-                          value={formData.confirmPassword}
-                          onChange={handleInputChange}
-                        />
-                        {getFieldError("confirmPassword") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("confirmPassword")}
-                          </div>
-                        )}
-                      </li>
+                      <AuthInput
+                        as="li"
+                        label="Confirm Password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        minLength={6}
+                        maxLength={20}
+                        placeholder="Confirm password"
+                        style={{
+                          borderColor: isFieldValid("confirmPassword")
+                            ? undefined
+                            : "#ff0000",
+                        }}
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        icon={<LockIcon color="#ffd700" />}
+                        error={getFieldError("confirmPassword")}
+                        required
+                      />
 
-                      <li>
-                        <label htmlFor="phoneNumber">Phone Number</label>
+                      <AuthInput
+                        as="li"
+                        label="Phone Number"
+                        error={getFieldError("phoneNumber")}
+                      >
                         <PhoneInput
                           id="phoneNumber"
                           name="phoneNumber"
@@ -514,20 +491,10 @@ const AffiliateRegister = () => {
                               }));
                             }
                           }}
-                          className="custom-phone-input"
+                          className="custom-phone-input w-full"
                           placeholder="Enter phone number"
-                          style={{
-                            borderColor: isFieldValid("phoneNumber")
-                              ? undefined
-                              : "#ff0000",
-                          }}
                         />
-                        {getFieldError("phoneNumber") && (
-                          <div className="text-[#ff0000] text-base mt-1">
-                            {getFieldError("phoneNumber")}
-                          </div>
-                        )}
-                      </li>
+                      </AuthInput>
                     </ul>
                   </div>
                 )}

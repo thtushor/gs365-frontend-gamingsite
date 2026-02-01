@@ -4,6 +4,7 @@ import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
 import AuthInput from "./AuthInput";
+import { EmailIcon } from "../Icon/EmailIcon";
 
 interface VerifyOtpPopupProps {
     isOpen: boolean;
@@ -106,7 +107,7 @@ const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
                                 onChange={(e) =>
                                     setOtp(e.target.value.replace(/\D/g, ""))
                                 }
-                                // iconClass="icon-mail"
+                                icon={<EmailIcon color="#ffd700" />}
                                 required
                             />
                         </ul>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { authService } from "../lib/api/services";
 import AuthInput from "../components/Auth/AuthInput";
+import { LockIcon } from "../components/Icon/LockIcon";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
 import ToastError from "../lib/ToastError";
@@ -88,52 +89,48 @@ const ResetPasswordPage: React.FC = () => {
                         </p>
                         <form onSubmit={handleSubmit}>
                             <ul className="input-group md:mb-[24px] mb-2">
-                                <li className="md:mb-5 mb-2">
-                                    <label className="md:mb-2 text-left md:text-center">
-                                        New Password
-                                    </label>
-                                    <AuthInput
-                                        id="newPassword"
-                                        name="newPassword"
-                                        type="password"
-                                        value={newPassword}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            setNewPassword(e.target.value);
-                                            if (errors.newPassword) {
-                                                setErrors((prev) => ({ ...prev, newPassword: "" }));
-                                            }
-                                        }}
-                                        placeholder="Enter new password"
-                                        minLength={6}
-                                        maxLength={20}
-                                        error={errors.newPassword}
-                                        required
-                                        as="li"
-                                    />
-                                </li>
-                                <li className="md:mb-5 mb-2">
-                                    <label className="md:mb-2 text-left md:text-center">
-                                        Confirm Password
-                                    </label>
-                                    <AuthInput
-                                        id="confirmPassword"
-                                        name="confirmPassword"
-                                        type="password"
-                                        value={confirmPassword}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            setConfirmPassword(e.target.value);
-                                            if (errors.confirmPassword) {
-                                                setErrors((prev) => ({ ...prev, confirmPassword: "" }));
-                                            }
-                                        }}
-                                        placeholder="Confirm new password"
-                                        minLength={6}
-                                        maxLength={20}
-                                        error={errors.confirmPassword}
-                                        required
-                                        as="li"
-                                    />
-                                </li>
+                                <AuthInput
+                                    as="li"
+                                    label="New Password"
+                                    id="newPassword"
+                                    name="newPassword"
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setNewPassword(e.target.value);
+                                        if (errors.newPassword) {
+                                            setErrors((prev) => ({ ...prev, newPassword: "" }));
+                                        }
+                                    }}
+                                    placeholder="Enter new password"
+                                    minLength={6}
+                                    maxLength={20}
+                                    icon={<LockIcon color="#ffd700" />}
+                                    error={errors.newPassword}
+                                    required
+                                    wrapperClassName="md:mb-5 mb-2"
+                                />
+                                <AuthInput
+                                    as="li"
+                                    label="Confirm Password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setConfirmPassword(e.target.value);
+                                        if (errors.confirmPassword) {
+                                            setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+                                        }
+                                    }}
+                                    placeholder="Confirm new password"
+                                    minLength={6}
+                                    maxLength={20}
+                                    icon={<LockIcon color="#ffd700" />}
+                                    error={errors.confirmPassword}
+                                    required
+                                    wrapperClassName="md:mb-5 mb-2"
+                                />
                             </ul>
 
                             <button

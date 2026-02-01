@@ -7,18 +7,21 @@ interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     labelClassName?: string;
     wrapperClassName?: string;
+    containerClassName?: string;
     iconClass?: string;
     icon?: React.ReactNode;
     startAdornment?: React.ReactNode;
     endAdornment?: React.ReactNode;
     error?: string;
     as?: keyof JSX.IntrinsicElements;
+    children?: React.ReactNode;
 }
 
 const AuthInput: React.FC<AuthInputProps> = ({
     label,
     labelClassName = "",
     wrapperClassName = "",
+    containerClassName = "",
     iconClass,
     icon,
     startAdornment,
@@ -28,6 +31,7 @@ const AuthInput: React.FC<AuthInputProps> = ({
     className = "",
     style,
     as: Component = "div",
+    children,
     ...props
 }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -45,21 +49,25 @@ const AuthInput: React.FC<AuthInputProps> = ({
                     {label}
                 </label>
             )}
-            <div className="input-icon-type">
+            <div className={`input-icon-type ${containerClassName}`}>
                 {iconClass && <i className={iconClass}></i>}
                 {icon && <div className="start-adornment">{icon}</div>}
                 {startAdornment && <div className="start-adornment">{startAdornment}</div>}
 
-                <input
-                    className={`auth-input-field ${error ? "error" : ""} ${className}`}
-                    style={{
-                        paddingLeft: hasStartAdornment ? "40px" : "12px",
-                        paddingRight: hasEndAdornment ? "40px" : "12px",
-                        ...style
-                    }}
-                    type={inputType}
-                    {...props}
-                />
+                {children ? (
+                    children
+                ) : (
+                    <input
+                        className={`auth-input-field ${error ? "error" : ""} ${className}`}
+                        style={{
+                            paddingLeft: hasStartAdornment ? "40px" : "12px",
+                            paddingRight: hasEndAdornment ? "40px" : "12px",
+                            ...style
+                        }}
+                        type={inputType}
+                        {...props}
+                    />
+                )}
 
                 {endAdornment && <div className="end-adornment">{endAdornment}</div>}
 

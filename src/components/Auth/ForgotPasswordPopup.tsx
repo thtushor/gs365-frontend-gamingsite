@@ -4,6 +4,7 @@ import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
 import AuthInput from "./AuthInput";
+import { EmailIcon } from "../Icon/EmailIcon";
 
 interface ForgotPasswordPopupProps {
     isOpen: boolean;
@@ -70,7 +71,7 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                iconClass="icon-mail"
+                                icon={<EmailIcon color="#ffd700" />}
                                 required
                             />
                         </ul>

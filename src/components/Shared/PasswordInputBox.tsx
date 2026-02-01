@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EyeHideIcon } from "../Icon/EyeHideIcon";
 import { EyeShowIcon } from "../Icon/EyeShowIcon";
+import { LockIcon } from "../Icon/LockIcon";
 
 
 interface PasswordInputProps {
@@ -29,7 +30,7 @@ export const PasswordInputBox: React.FC<PasswordInputProps> = ({
   return (
     <div className="relative flex items-center">
       {/* Left icon */}
-      <i className="icon-password absolute left-3 text-yellow-400 text-lg" />
+      <LockIcon className="absolute left-3 text-yellow-400" color="#ffd700" />
 
       {/* Password Input */}
       <input
@@ -65,7 +66,7 @@ export const PasswordInputBox: React.FC<PasswordInputProps> = ({
         {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
       </div>
 
-      
+
     </div>
   );
 };
