@@ -3,6 +3,7 @@ import { authService } from "../../lib/api/services";
 import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
+import AuthInput from "./AuthInput";
 
 interface VerifyOtpPopupProps {
     isOpen: boolean;
@@ -84,24 +85,20 @@ const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
                     </p>
                     <form onSubmit={handleVerifyOtp}>
                         <ul className="input-group md:mb-[24px] mb-2">
-                            <li className="md:mb-5 mb-2">
-                                <label className="md:mb-2 text-left md:text-center">
-                                    Enter OTP
-                                </label>
-                                <div className="input-icon-type">
-                                    <i className="icon-mail"></i>
-                                    <input
-                                        type="text"
-                                        maxLength={6}
-                                        placeholder="Enter 6-digit OTP"
-                                        value={otp}
-                                        onChange={(e) =>
-                                            setOtp(e.target.value.replace(/\D/g, ""))
-                                        }
-                                        required
-                                    />
-                                </div>
-                            </li>
+                            <AuthInput
+                                as="li"
+                                wrapperClassName="md:mb-5 mb-2"
+                                label="Enter OTP"
+                                type="text"
+                                maxLength={6}
+                                placeholder="Enter 6-digit OTP"
+                                value={otp}
+                                onChange={(e) =>
+                                    setOtp(e.target.value.replace(/\D/g, ""))
+                                }
+                                // iconClass="icon-mail"
+                                required
+                            />
                         </ul>
 
                         <button

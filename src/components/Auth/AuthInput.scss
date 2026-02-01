@@ -1,0 +1,103 @@
+.auth-input-wrapper {
+    width: 100%;
+
+    .auth-input-label {
+        display: block;
+        font-weight: 500;
+        color: #ffd700;
+        font-size: 14px;
+
+        text-align: left;
+
+        @media (min-width: 768px) {
+            text-align: center;
+        }
+    }
+
+    .input-icon-type {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        i {
+            position: absolute;
+            left: 12px;
+            color: #ffd700;
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        input.auth-input-field {
+            width: 100%;
+            padding: 12px 12px 12px 12px; // Default padding, overridden by component if icon exists
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 215, 0, 0.05);
+            color: #ffffff;
+            transition: all 0.3s ease;
+
+            &:focus {
+                outline: none;
+                border-color: #ffd700;
+                box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+            }
+
+            &::placeholder {
+                color: rgba(255, 215, 0, 0.4);
+            }
+
+            &.error {
+                border-color: #ff4d4f;
+                box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+            }
+        }
+
+
+
+        .start-adornment {
+            position: absolute;
+            left: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            z-index: 1;
+        }
+
+        .end-adornment {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            z-index: 1;
+        }
+
+        .eyes {
+            position: absolute;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            transition: all 0.3s ease;
+            z-index: 1;
+
+            &:hover {
+                color: #ffed4a;
+            }
+        }
+    }
+
+    .error-message {
+        color: #ff4d4f;
+        font-size: 12px;
+        margin-top: 4px;
+        text-align: left;
+    }
+}

@@ -3,6 +3,7 @@ import { authService } from "../../lib/api/services";
 import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
+import AuthInput from "./AuthInput";
 
 interface ForgotPasswordPopupProps {
     isOpen: boolean;
@@ -61,21 +62,17 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
                     </p>
                     <form onSubmit={handleSubmit}>
                         <ul className="input-group md:mb-[24px] mb-2">
-                            <li className="md:mb-5 mb-2">
-                                <label className="md:mb-2 text-left md:text-center">
-                                    Email Address
-                                </label>
-                                <div className="input-icon-type">
-                                    <i className="icon-mail"></i>
-                                    <input
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                            </li>
+                            <AuthInput
+                                as="li"
+                                wrapperClassName="md:mb-5 mb-2"
+                                label="Email Address"
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                iconClass="icon-mail"
+                                required
+                            />
                         </ul>
 
                         <button

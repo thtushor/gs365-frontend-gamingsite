@@ -3,64 +3,15 @@ import "./LoginPopup.scss";
 
 // import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
-import { EyeShowIcon } from "../Icon/EyeShowIcon";
-import { EyeHideIcon } from "../Icon/EyeHideIcon";
+
 import BaseModal from "../Promotion/BaseModal";
 import ToastSuccess from "../../lib/ToastSuccess";
 import ToastError from "../../lib/ToastError";
 import VerifyOtpPopup from "./VerifyOtpPopup";
 import ForgotPasswordPopup from "./ForgotPasswordPopup";
+import AuthInput from "./AuthInput";
 
-// Reusable PasswordInput component
-interface PasswordInputProps {
-  id: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  minLength?: number;
-  maxLength?: number;
-  error?: string;
-  required?: boolean;
-}
 
-export const PasswordInput: React.FC<PasswordInputProps> = ({
-  id,
-  name,
-  value,
-  onChange,
-  placeholder = "Password",
-  minLength = 6,
-  maxLength = 20,
-  error,
-  required = false,
-}) => {
-  const [showPassword, setShowPassword] = useState(false);
-  return (
-    <div className="input-icon-type">
-      <i className="icon-password"></i>
-      <div
-        className="eyes"
-        onClick={() => setShowPassword((prev) => !prev)}
-        style={{ cursor: "pointer" }}
-      >
-        {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
-      </div>
-      <input
-        id={id}
-        name={name}
-        type={showPassword ? "text" : "password"}
-        minLength={minLength}
-        maxLength={maxLength}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-      />
-      {error && <div className="error-message">{error}</div>}
-    </div>
-  );
-};
 
 interface LoginPopupProps {
   isOpen: boolean;
@@ -251,45 +202,36 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                   {/* Error section - can be controlled by state later */}
                   {/* <div className="error"><i className="icon-error"></i></div> */}
                   <ul className="input-group md:mb-[24px] mb-2">
-                    <li className="md:mb-5 mb-2">
-                      <label className="md:mb-2 text-left md:text-center">
-                        Username
-                      </label>
-                      <div className="input-icon-type">
-                        {/* Placeholder for user icon */}
-                        <i className="icon-user"></i>
-                        <input
-                          type="text"
-                          id="loginUsername"
-                          name="userNameOrEmailorPhone"
-                          placeholder="Username or email address"
-                          value={formData.userNameOrEmailorPhone}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-                      {getFieldError("userNameOrEmailorPhone") && (
-                        <div className="error-message">
-                          {getFieldError("userNameOrEmailorPhone")}
-                        </div>
-                      )}
-                    </li>
-                    <li>
-                      <label className="md:mb-2 text-left md:text-center">
-                        Password
-                      </label>
-                      <PasswordInput
-                        id="loginPassword"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="Password"
-                        minLength={6}
-                        maxLength={20}
-                        error={getFieldError("password")}
-                        required
-                      />
-                    </li>
+                    <AuthInput
+                      as="li"
+                      label="Username"
+                      labelClassName="md:mb-2 text-left md:text-center"
+                      wrapperClassName="md:mb-5 mb-2"
+                      id="loginUsername"
+                      name="userNameOrEmailorPhone"
+                      placeholder="Username or email address"
+                      value={formData.userNameOrEmailorPhone}
+                      onChange={handleInputChange}
+                      iconClass="icon-user"
+                      error={getFieldError("userNameOrEmailorPhone")}
+                      required
+                    />
+                    <AuthInput
+                      as="li"
+                      label="Password"
+                      labelClassName="md:mb-2 text-left md:text-center"
+                      id="loginPassword"
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      iconClass="icon-password"
+                      minLength={6}
+                      maxLength={20}
+                      error={getFieldError("password")}
+                      required
+                    />
                   </ul>
 
                   <a
@@ -368,36 +310,26 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                       {/* Error section - can be controlled by state later */}
                       {/* <div className="error"><i className="icon-error"></i></div> */}
                       <ul className="input-group">
-                        <li>
-                          <label htmlFor="userId_reset">ব্যবহারকারীর নাম</label>
-                          <div className="input-icon-type">
-                            {/* Placeholder for user icon */}
-                            <i className="icon-user"></i>
-                            <input
-                              type="text"
-                              id="userId_reset"
-                              name="userId_reset"
-                              placeholder="ব্যবহারকারীর নাম"
-                              required
-                            />
-                          </div>
-                        </li>
-                        <li>
-                          <label htmlFor="email_reset">
-                            দয়াকরে ইমেল ইনপুট করুন
-                          </label>
-                          <div className="input-icon-type">
-                            {/* Placeholder for mail icon */}
-                            <i className="icon-mail"></i>
-                            <input
-                              type="email"
-                              id="email_reset"
-                              name="email_reset"
-                              placeholder="দয়াকরে ইমেল ইনপুট করুন"
-                              required
-                            />
-                          </div>
-                        </li>
+                        <AuthInput
+                          as="li"
+                          label="ব্যবহারকারীর নাম"
+                          type="text"
+                          id="userId_reset"
+                          name="userId_reset"
+                          placeholder="ব্যবহারকারীর নাম"
+                          iconClass="icon-user"
+                          required
+                        />
+                        <AuthInput
+                          as="li"
+                          label="দয়াকরে ইমেল ইনপুট করুন"
+                          type="email"
+                          id="email_reset"
+                          name="email_reset"
+                          placeholder="দয়াকরে ইমেল ইনপুট করুন"
+                          iconClass="icon-mail"
+                          required
+                        />
                       </ul>
                     </form>
                   </section>
@@ -415,22 +347,16 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
                       {/* Error section - can be controlled by state later */}
                       {/* <div className="error"><i className="icon-error"></i></div> */}
                       <ul className="input-group">
-                        <li>
-                          <label htmlFor="userIdSms_reset">
-                            ব্যবহারকারীর নাম
-                          </label>
-                          <div className="input-icon-type">
-                            {/* Placeholder for user icon */}
-                            <i className="icon-user"></i>
-                            <input
-                              type="text"
-                              id="userIdSms_reset"
-                              name="userIdSms_reset"
-                              placeholder="ব্যবহারকারীর নাম"
-                              required
-                            />
-                          </div>
-                        </li>
+                        <AuthInput
+                          as="li"
+                          label="ব্যবহারকারীর নাম"
+                          type="text"
+                          id="userIdSms_reset"
+                          name="userIdSms_reset"
+                          placeholder="ব্যবহারকারীর নাম"
+                          iconClass="icon-user"
+                          required
+                        />
                         <li>
                           <label htmlFor="phone_reset">ফোন</label>
                           <div className="phone-info">
@@ -540,6 +466,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
 
       {/* OTP Verification Popup */}
       <VerifyOtpPopup
+        // isOpen={true}
         isOpen={showVerifyOtp}
         onClose={() => setShowVerifyOtp(false)}
         email={verificationEmail}
