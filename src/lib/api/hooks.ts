@@ -298,8 +298,8 @@ export const useAutoLogout = (timeout = 300000) => {
 
 export const useForgotPassword = () => {
   return useMutation({
-    mutationFn: (data: { username: string; email?: string; phone?: string }) =>
-      apiService.auth.forgotPassword(data),
+    mutationFn: (data: { username?: string; email: string; phone?: string }) =>
+      apiService.auth.forgotPassword({ email: data.email }),
   });
 };
 
@@ -309,7 +309,7 @@ export const useResetPassword = () => {
       token: string;
       password: string;
       confirmPassword: string;
-    }) => apiService.auth.resetPassword(data),
+    }) => apiService.auth.resetPassword({ token: data.token, newPassword: data.password }),
   });
 };
 
