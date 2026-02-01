@@ -97,8 +97,7 @@ axiosInstance.interceptors.response.use(
     // Log response in development
     if (import.meta.env.DEV) {
       console.log(
-        `✅ API Response: ${response.config.method?.toUpperCase()} ${
-          response.config.url
+        `✅ API Response: ${response.config.method?.toUpperCase()} ${response.config.url
         }`,
         {
           status: response.status,
@@ -117,8 +116,7 @@ axiosInstance.interceptors.response.use(
     // Log error in development
     if (import.meta.env.DEV) {
       console.error(
-        `❌ API Error: ${error.config?.method?.toUpperCase()} ${
-          error.config?.url
+        `❌ API Error: ${error.config?.method?.toUpperCase()} ${error.config?.url
         }`,
         {
           status: error.response?.status,
@@ -139,13 +137,14 @@ axiosInstance.interceptors.response.use(
     }
 
     // Handle other errors
-    const apiError: ApiError = {
+    const apiError: ApiError & { data: any } = {
       message:
         error.response?.data?.message ||
         error.message ||
         "An unexpected error occurred",
       status: error.response?.status || 500,
       errors: error.response?.data?.errors,
+      data: error?.response?.data
     };
 
     return Promise.reject(apiError);

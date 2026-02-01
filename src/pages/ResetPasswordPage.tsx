@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { authService } from "../lib/api/services";
-import { PasswordInput } from "../components/Auth/LoginPopup";
+import AuthInput from "../components/Auth/AuthInput";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
 import ToastError from "../lib/ToastError";
@@ -92,11 +92,12 @@ const ResetPasswordPage: React.FC = () => {
                                     <label className="md:mb-2 text-left md:text-center">
                                         New Password
                                     </label>
-                                    <PasswordInput
+                                    <AuthInput
                                         id="newPassword"
                                         name="newPassword"
+                                        type="password"
                                         value={newPassword}
-                                        onChange={(e) => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             setNewPassword(e.target.value);
                                             if (errors.newPassword) {
                                                 setErrors((prev) => ({ ...prev, newPassword: "" }));
@@ -107,17 +108,19 @@ const ResetPasswordPage: React.FC = () => {
                                         maxLength={20}
                                         error={errors.newPassword}
                                         required
+                                        as="li"
                                     />
                                 </li>
                                 <li className="md:mb-5 mb-2">
                                     <label className="md:mb-2 text-left md:text-center">
                                         Confirm Password
                                     </label>
-                                    <PasswordInput
+                                    <AuthInput
                                         id="confirmPassword"
                                         name="confirmPassword"
+                                        type="password"
                                         value={confirmPassword}
-                                        onChange={(e) => {
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             setConfirmPassword(e.target.value);
                                             if (errors.confirmPassword) {
                                                 setErrors((prev) => ({ ...prev, confirmPassword: "" }));
@@ -128,6 +131,7 @@ const ResetPasswordPage: React.FC = () => {
                                         maxLength={20}
                                         error={errors.confirmPassword}
                                         required
+                                        as="li"
                                     />
                                 </li>
                             </ul>

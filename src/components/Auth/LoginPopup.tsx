@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./LoginPopup.scss";
 
-// import { showToaster } from "../../lib/utils/toast";
+import { showToaster } from "../../lib/utils/toast";
 import { useAuth } from "../../contexts/auth-context";
 
 import BaseModal from "../Promotion/BaseModal";
@@ -130,38 +130,52 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
     } catch (error: unknown) {
       console.error("Login failed:", error);
 
-      // Check if error is email verification related
-      if (
-        error &&
-        typeof error === "object" &&
-        "requiresVerification" in error &&
-        (error as any).requiresVerification
-      ) {
-        // Email not verified - show OTP popup
-        setVerificationEmail((error as any).email || formData.userNameOrEmailorPhone);
-        setShowVerifyOtp(true);
-        return;
-      }
-
       // Handle API errors
-      if (error && typeof error === "object" && "errors" in error) {
-        // Server validation errors
-        const serverErrors: Record<string, string> = {};
-        Object.entries(
-          (error as { errors: Record<string, string[]> }).errors,
-        ).forEach(([field, messages]) => {
-          if (Array.isArray(messages) && messages.length > 0) {
-            serverErrors[field] = messages[0];
-          }
-        });
-        setErrors(serverErrors);
+      if (error && typeof error === "object") {
+        const err = error as any;
+        const responseData = err.data || err.response?.data; // Interceptor puts backend response in err.data
+
+        // Check for verification requirement
+        if (responseData?.requiresVerification) {
+          setVerificationEmail(responseData.email || formData.userNameOrEmailorPhone);
+          // Show toaster with the message from backend (which indicates if new OTP was sent)
+          showToaster(responseData.message || "Please verify your email.", "error");
+          setShowVerifyOtp(true);
+          return;
+        }
+
+        // Also check legacy/direct property just in case
+        if (err.requiresVerification) {
+          setVerificationEmail(err.email || formData.userNameOrEmailorPhone);
+          setShowVerifyOtp(true);
+          return;
+        }
+
+        if (responseData?.errors) {
+          // Server validation errors
+          const serverErrors: Record<string, string> = {};
+          Object.entries(
+            responseData.errors as Record<string, string[]>
+          ).forEach(([field, messages]) => {
+            if (Array.isArray(messages) && messages.length > 0) {
+              serverErrors[field] = messages[0];
+            }
+          });
+          setErrors(serverErrors);
+        } else {
+          // General error -> show ToastError modal
+          setErrorTitle("Login failed");
+          setErrorDescription(
+            responseData?.message || err.message || "Authentication was unsuccessful, please review your credentials and attempt to sign in again.",
+          );
+          setErrorModalOpen(true);
+        }
       } else {
-        // General error -> show ToastError modal
+        // Fallback for non-object errors
         setErrorTitle("Login failed");
         setErrorDescription(
-          "Authentication was unsuccessful, please review your credentials and attempt to sign in again.",
+          "An unexpected error occurred. Please try again."
         );
-
         setErrorModalOpen(true);
       }
     }
