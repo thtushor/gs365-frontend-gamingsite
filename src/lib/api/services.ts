@@ -217,9 +217,24 @@ export const authService = {
     return response.data;
   },
 
+  // Verify Admin OTP
+  verifyAdminOtp: async (data: {
+    email: string;
+    otp: string;
+  }): Promise<ApiResponse<void>> => {
+    const response = await axiosInstance.post("/api/admin/verify-otp", data);
+    return response.data;
+  },
+
   // Resend OTP
   resendOtp: async (data: { email: string }): Promise<ApiResponse<void>> => {
     const response = await axiosInstance.post("/api/users/resend-otp", data);
+    return response.data;
+  },
+
+  // Resend Admin OTP
+  resendAdminOtp: async (data: { email: string }): Promise<ApiResponse<void>> => {
+    const response = await axiosInstance.post("/api/admin/resend-otp", data);
     return response.data;
   },
 

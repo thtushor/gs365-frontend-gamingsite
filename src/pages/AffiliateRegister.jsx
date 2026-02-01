@@ -25,10 +25,12 @@ import { useGetRequest } from "../lib/api/apiClient";
 import { toast } from "react-toastify";
 import BaseModal from "../components/Promotion/BaseModal";
 import ToastSuccess from "../lib/ToastSuccess";
+import VerifyOtpPopup from "../components/Auth/VerifyOtpPopup";
 
 const AffiliateRegister = () => {
   const navigate = useNavigate();
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
   const [searchParams] = useSearchParams();
   const refCodeParam =
     searchParams.get("refCode") || searchParams.get("refcode");
@@ -58,9 +60,8 @@ const AffiliateRegister = () => {
         code: country.currency?.code,
         name: country.currency?.name,
       },
-      phoneCode: `+${
-        country.callingCode || (country.code === "BD" ? "880" : "")
-      }`,
+      phoneCode: `+${country.callingCode || (country.code === "BD" ? "880" : "")
+        }`,
       flagUrl: `data:image/png;base64,${country.flagUrl}`,
     })) || [];
 
@@ -265,7 +266,7 @@ const AffiliateRegister = () => {
 
       // Redirect to home page or dashboard
       // navigate("/");
-      setSuccessModalOpen(true);
+      setShowOtpPopup(true);
     } catch (error) {
       setLoading(false);
       let errorMessage = "Registration failed. Please try again.";
@@ -570,6 +571,13 @@ const AffiliateRegister = () => {
           location="/"
         />
       </BaseModal>
+      <VerifyOtpPopup
+        isOpen={showOtpPopup}
+        onClose={() => setShowOtpPopup(false)}
+        email={formData.email}
+        onVerified={() => setSuccessModalOpen(true)}
+        isAdmin={true}
+      />
     </div>
   );
 };

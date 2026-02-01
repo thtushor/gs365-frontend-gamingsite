@@ -10,6 +10,7 @@ interface VerifyOtpPopupProps {
     onClose: () => void;
     email: string;
     onVerified: () => void;
+    isAdmin?: boolean;
 }
 
 const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
@@ -17,6 +18,7 @@ const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
     onClose,
     email,
     onVerified,
+    isAdmin = false,
 }) => {
     const [otp, setOtp] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +41,11 @@ const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
         setIsLoading(true);
 
         try {
-            await authService.verifyOtp({ email, otp });
+            if (isAdmin) {
+                await authService.verifyAdminOtp({ email, otp });
+            } else {
+                await authService.verifyOtp({ email, otp });
+            }
             setSuccessModalOpen(true);
             setTimeout(() => {
                 onVerified();
@@ -60,7 +66,11 @@ const VerifyOtpPopup: React.FC<VerifyOtpPopupProps> = ({
         setIsResending(true);
 
         try {
-            await authService.resendOtp({ email });
+            if (isAdmin) {
+                await authService.resendAdminOtp({ email });
+            } else {
+                await authService.resendOtp({ email });
+            }
             setErrorMessage("A new OTP has been sent to your email");
             setErrorModalOpen(true);
         } catch (error: any) {
