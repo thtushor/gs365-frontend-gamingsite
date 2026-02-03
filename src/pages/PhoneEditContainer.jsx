@@ -203,19 +203,21 @@ const PhoneEditContainer = () => {
                       type="checkbox"
                       name="isPrimary"
                       checked={formState.isPrimary}
+                      disabled={editingId && phonesData?.find(p => (p.id || p._id) === editingId)?.isVerified}
                       onChange={onChange}
                     />
                     Primary
                   </label>
-                  <label className="flex items-center gap-2 text-gray-300 text-sm cursor-pointer">
+                  {/* <label className="flex items-center gap-2 text-gray-300 text-sm cursor-pointer">
                     <input
                       type="checkbox"
                       name="isSmsCapable"
                       checked={formState.isSmsCapable}
+                      disabled={editingId && phonesData?.find(p => (p.id || p._id) === editingId)?.isVerified}
                       onChange={onChange}
                     />
                     SMS Capable
-                  </label>
+                  </label> */}
                 </div>
               </div>
               <div className="mt-4 flex gap-2">
@@ -275,10 +277,10 @@ const PhoneEditContainer = () => {
                         }`}>
                         {phone.isPrimary ? "Primary" : "Secondary"}
                       </span>
-                      <span className={`text-[10px] px-2 py-0.5 rounded ${phone.isSmsCapable ? "bg-blue-600/30 text-blue-400 border border-blue-600/50" : "bg-gray-700/30 text-gray-400 border border-gray-700/50"
+                      {/* <span className={`text-[10px] px-2 py-0.5 rounded ${phone.isSmsCapable ? "bg-blue-600/30 text-blue-400 border border-blue-600/50" : "bg-gray-700/30 text-gray-400 border border-gray-700/50"
                         }`}>
                         {phone.isSmsCapable ? "SMS Enabled" : "No SMS"}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
 
@@ -297,18 +299,18 @@ const PhoneEditContainer = () => {
                     >
                       {phone.isPrimary ? "Unset Primary" : "Set Primary"}
                     </button>
-                    <button
+                    {!phone.isVerified && <button
                       onClick={() => handleEdit(phone)}
                       className="px-3 py-1 text-xs rounded border light-border hover:bg-white hover:bg-opacity-5"
                     >
                       Edit
-                    </button>
-                    <button
+                    </button>}
+                    {!phone?.isVerified && <button
                       onClick={() => handleDelete(phone)}
                       className="px-2 py-1 text-sm rounded border border-red-600/50 text-red-400 hover:bg-red-600 hover:text-white transition-all"
                     >
                       <IoRemoveCircleOutline />
-                    </button>
+                    </button>}
                   </div>
                 </div>
               ))
