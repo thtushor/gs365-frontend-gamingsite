@@ -1,9 +1,9 @@
 export const API_CONFIG = {
   // Base URLs for different environments
-  BASE_URL: "https://api.gamestar365.com",
-  SOCKET_URL: "https://api.gamestar365.com",
-  // BASE_URL: "http://localhost:3000",
-  // SOCKET_URL: "http://localhost:3000",
+  // BASE_URL: "https://api.gamestar365.com",
+  // SOCKET_URL: "https://api.gamestar365.com",
+  BASE_URL: "http://localhost:3000",
+  SOCKET_URL: "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
   // BASE_URL: import.meta.env.VITE_API_ONLY_BASE_URL,
   SINGLE_IMAGE_UPLOAD_URL: `https://api.gamestar365.com/image-upload/upload`,
@@ -84,6 +84,8 @@ export const API_ENDPOINTS = {
     BY_USER: "/api/user-phones/user/:userId",
     UPDATE: "/api/user-phones/update/:id",
     DELETE: "/api/user-phones/delete/:id",
+    SEND_OTP: "/api/user-phones/:id/send-otp",
+    VERIFY_OTP: "/api/user-phones/:id/verify-otp",
   },
 } as const;
 
