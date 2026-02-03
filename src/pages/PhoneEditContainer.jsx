@@ -198,7 +198,7 @@ const PhoneEditContainer = () => {
                   />
                 </div>
                 <div className="flex items-center gap-6 mt-2 md:mt-7">
-                  <label className="flex items-center gap-2 text-gray-300 text-sm cursor-pointer">
+                  {/* <label className="flex items-center gap-2 text-gray-300 text-sm cursor-pointer">
                     <input
                       type="checkbox"
                       name="isPrimary"
@@ -207,7 +207,7 @@ const PhoneEditContainer = () => {
                       onChange={onChange}
                     />
                     Primary
-                  </label>
+                  </label> */}
                   {/* <label className="flex items-center gap-2 text-gray-300 text-sm cursor-pointer">
                     <input
                       type="checkbox"
@@ -273,10 +273,10 @@ const PhoneEditContainer = () => {
                       )}
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
-                      <span className={`text-[10px] px-2 py-0.5 rounded ${phone.isPrimary ? "bg-green-600/30 text-green-400 border border-green-600/50" : "bg-gray-700/30 text-gray-400 border border-gray-700/50"
+                      {/* <span className={`text-[10px] px-2 py-0.5 rounded ${phone.isPrimary ? "bg-green-600/30 text-green-400 border border-green-600/50" : "bg-gray-700/30 text-gray-400 border border-gray-700/50"
                         }`}>
                         {phone.isPrimary ? "Primary" : "Secondary"}
-                      </span>
+                      </span> */}
                       {/* <span className={`text-[10px] px-2 py-0.5 rounded ${phone.isSmsCapable ? "bg-blue-600/30 text-blue-400 border border-blue-600/50" : "bg-gray-700/30 text-gray-400 border border-gray-700/50"
                         }`}>
                         {phone.isSmsCapable ? "SMS Enabled" : "No SMS"}
@@ -293,12 +293,12 @@ const PhoneEditContainer = () => {
                         Verify Now
                       </button>
                     )}
-                    <button
+                    {/* <button
                       onClick={() => togglePrimary(phone)}
                       className="px-3 py-1 text-xs rounded border light-border hover:bg-white hover:bg-opacity-5"
                     >
                       {phone.isPrimary ? "Unset Primary" : "Set Primary"}
-                    </button>
+                    </button> */}
                     {!phone.isVerified && <button
                       onClick={() => handleEdit(phone)}
                       className="px-3 py-1 text-xs rounded border light-border hover:bg-white hover:bg-opacity-5"

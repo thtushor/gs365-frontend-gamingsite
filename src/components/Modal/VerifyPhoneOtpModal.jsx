@@ -85,14 +85,17 @@ const VerifyPhoneOtpModal = ({ isOpen, onClose, phoneId, phoneNumber, onVerified
         }
     };
 
-    const handleResendOtp = async () => {
+    const lastSentIdRef = React.useRef(null);
+
+    const handleResendOtp = React.useCallback(async () => {
+        if (!phoneId) return;
         setIsResending(true);
         try {
             const url = API_ENDPOINTS.USER_PHONES.SEND_OTP.replace(":id", String(phoneId));
             await axiosInstance.post(url, { phoneNumber: phoneNumber?.replaceAll(" ", "") });
             setErrorMessage("A new OTP has been sent to your phone");
             setOtp(["", "", "", "", "", ""]);
-            setErrorModalOpen(true); // Re-use ErrorModal as a generic notification modal for simplicity in this UI
+            setErrorModalOpen(true);
         } catch (error) {
             console.error("Resend OTP failed:", error);
             setErrorMessage(error?.response?.data?.message || "Failed to resend OTP. Please try again.");
@@ -100,14 +103,20 @@ const VerifyPhoneOtpModal = ({ isOpen, onClose, phoneId, phoneNumber, onVerified
         } finally {
             setIsResending(false);
         }
-    };
+    }, [phoneId, phoneNumber]);
 
     // Auto-send OTP when modal opens if needed
     useEffect(() => {
-        if (isOpen && phoneId) {
+        if (isOpen && phoneId && lastSentIdRef.current !== phoneId) {
             handleResendOtp();
+            lastSentIdRef.current = phoneId;
         }
-    }, [isOpen, phoneId]);
+
+        // Reset when closure occurs to allow re-sending if reopened with same ID later
+        if (!isOpen) {
+            lastSentIdRef.current = null;
+        }
+    }, [isOpen, phoneId, handleResendOtp]);
 
     if (!isOpen) return null;
 
