@@ -71,16 +71,16 @@ export const useLogin = () => {
       // setAuthState((prev) => ({ ...prev, token: (response as unknown as { accessToken: string }).accessToken }))
       emitEvent("loggedin-user", {
         id: (response.data as unknown as { id: number }).id.toString(),
-        token: (response as unknown as { accessToken: string }).accessToken
-      })
+        token: (response as unknown as { accessToken: string }).accessToken,
+      });
       localStorage.setItem(
         "access_token",
-        (response as unknown as { accessToken: string }).accessToken
+        (response as unknown as { accessToken: string }).accessToken,
       );
 
       localStorage.setItem(
         "refresh_token",
-        (response as unknown as { accessToken: string }).accessToken
+        (response as unknown as { accessToken: string }).accessToken,
       );
 
       localStorage.setItem("user", JSON.stringify(response.data));
@@ -242,7 +242,7 @@ export const useLogout = () => {
   });
 };
 
-export const useAutoLogout = (timeout = 300000) => {
+export const useAutoLogout = (timeout = 600000) => {
   const { clearAuth } = useAuth();
 
   useEffect(() => {
@@ -289,7 +289,7 @@ export const useAutoLogout = (timeout = 300000) => {
     return () => {
       clearInterval(interval);
       events.forEach((event) =>
-        window.removeEventListener(event, updateActivity)
+        window.removeEventListener(event, updateActivity),
       );
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
@@ -309,13 +309,17 @@ export const useResetPassword = () => {
       token: string;
       password: string;
       confirmPassword: string;
-    }) => apiService.auth.resetPassword({ token: data.token, newPassword: data.password }),
+    }) =>
+      apiService.auth.resetPassword({
+        token: data.token,
+        newPassword: data.password,
+      }),
   });
 };
 
 // Enhanced User Profile Hook with Authentication
 export const useUserProfile = (
-  options?: UseQueryOptions<ApiResponse<UserProfile>>
+  options?: UseQueryOptions<ApiResponse<UserProfile>>,
 ) => {
   const getToken = useCallback(() => {
     return localStorage.getItem("access_token");

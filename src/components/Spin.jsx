@@ -7,19 +7,19 @@ import ToastSuccess from "../lib/ToastSuccess";
 import { useAuth } from "../contexts/auth-context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_ENDPOINTS } from "../lib/api/config";
-import { useSettings } from "../lib/api/hooks";
+import { queryKeys, useSettings } from "../lib/api/hooks";
 import axiosInstance from "../lib/api/axios";
 
 const COUNTDOWN_KEY = "spin_countdown_end_time"; // key in localStorage
 const sectors = [
   { id: 1, label: "10", probability: 60 },
   { id: 2, label: "100", probability: 8 },
-  { id: 3, label: "Better Luck", probability: 25 },
+  { id: 3, label: "Better Luck", probability: 26 },
   { id: 4, label: "10000", probability: 0 },
   { id: 8, label: "10", probability: 60 },
   { id: 5, label: "500", probability: 4 },
-  { id: 6, label: "1000", probability: 2 },
-  { id: 7, label: "Better Luck", probability: 25 },
+  { id: 6, label: "1000", probability: 1 },
+  { id: 7, label: "Better Luck", probability: 26 },
 ];
 const defaultWinner = {
   successMessage: "",
@@ -136,6 +136,12 @@ export default function Spin({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["spin_bonus", user.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["settings"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.user.profile,
       });
       onCloseCallback();
     },

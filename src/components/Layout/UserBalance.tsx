@@ -9,6 +9,7 @@ import dollarIcon from "../../assets/dollar.png";
 import BaseModal from "../Promotion/BaseModal";
 import BalanceModal from "./BalanceModal";
 import { TbRefresh } from "react-icons/tb";
+import { useSettings } from "../../lib/api/hooks";
 // import { useSettings } from "../../lib/api/hooks";
 
 interface BalanceData {
@@ -16,7 +17,7 @@ interface BalanceData {
   currencyId: number;
   currencyCode: string;
   currentBalance: number;
-  currentBalanceUSD:number;
+  currentBalanceUSD: number;
 }
 
 export const UserBalance: React.FC = () => {
@@ -44,10 +45,15 @@ export const UserBalance: React.FC = () => {
     enabled: !!user?.id,
     refetchOnWindowFocus: false,
   });
+  const { data: settingsData } = useSettings();
+
+  const conversionRate =
+    settingsData?.data?.length > 0 ? settingsData?.data[0]?.conversionRate : 0;
 
   const bdtBalance = Number(balance?.currentBalance ?? 0).toFixed(2);
-  const dollarBalance = Number(balance?.currentBalanceUSD??0).toFixed(2);
-    // (Number(bdtBalance) / Number(conversionRate)).toFixed(2) || "0";
+  const dollarBalance = (
+    Number(bdtBalance ?? 0) / Number(conversionRate ?? 0)
+  ).toFixed(2);
 
   if (!user) return null;
 
